@@ -1,6 +1,17 @@
 import {Authenticator} from "remix-auth";
 import {MicrosoftStrategy} from "remix-auth-microsoft";
-import {getClientId, getClientSecret, getScopes, getTenantId} from "./config.server";
+import {
+  getApplicationRoot,
+  getClientId,
+  getClientSecret,
+  getEmployeeIdFromToken,
+  getScopes,
+  getSessionSecret,
+  getTenantId
+} from "./config.server";
+import {createCookie} from "@remix-run/node";
+import {Params} from "@remix-run/react";
+import {sessionStorage} from "~/server/session.server";
 
 export type UserData = {
   accessToken: string;
@@ -11,14 +22,14 @@ export const authenticator = new Authenticator<UserData>(sessionStorage);
 
 const entraIdStrategy = new MicrosoftStrategy(
   {
-    redirectUri: `${getApplicationRoot()}redirect`,
+    redirectUri: `${getApplicationRoot()}/redirect`,
     clientId: getClientId(),
     clientSecret: getClientSecret(),
     scope: getScopes(),
     tenantId: getTenantId(),
     prompt: '',
   },
-  async ({ accessToken, extraParams }) => {
+  async ({accessToken, extraParams}) => {
     const employeeId = getEmployeeIdFromToken(extraParams.id_token);
 
     if (!employeeId) {
@@ -50,12 +61,12 @@ export const getUserDataOrAuthenticate = async ({
   request: Request;
   params: Params<string>;
 }) => {
-  const requestUrl = new URL(request.url);
+  const requestUrl = new URL(request.url)
 
   return await authenticator.isAuthenticated(request, {
     failureRedirect:
       Object.values(params).length > 0
-        ? '/auth' + `?returnTo=${requestUrl.pathname}`
-        : '/auth',
+        ? '/auth/login' + `?returnTo=${requestUrl.pathname}`
+        : '/',
   });
 };
