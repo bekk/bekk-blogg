@@ -7,8 +7,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   try {
     return await authenticator.authenticate('microsoft', request, {
-      successRedirect: 'http://localhost:3333',
-      failureRedirect: 'http://localhost:3333',
+      successRedirect: returnTo ?? '/',
+      failureRedirect: returnTo ?? '/',
     });
   } catch (error) {
     if (error instanceof Response && error.status === 302) {
