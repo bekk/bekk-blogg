@@ -27,5 +27,5 @@ export default defineConfig({
         logo: 'static/logo.svg',
       },
     ],
-  }
+  },
 })

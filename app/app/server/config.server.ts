@@ -23,6 +23,6 @@ export const getSessionSecret = () => {
 }
 
 export function getEmployeeIdFromToken(token: string): number | null {
-  console.log("TOKEN", token)
+  console.log('TOKEN', token)
   return 1798
 }
