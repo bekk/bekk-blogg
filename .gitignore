@@ -4,6 +4,5 @@ node_modules
 /build
 .env
 .env.local
-.env.development
 
 .idea
