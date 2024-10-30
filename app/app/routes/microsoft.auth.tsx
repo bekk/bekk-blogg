@@ -6,10 +6,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const returnTo = url.searchParams.get('returnTo') as string | null;
 
   try {
-    return await authenticator.authenticate('microsoft', request, {
-      successRedirect: returnTo ?? '/',
-      failureRedirect: returnTo ?? '/',
-    });
+    return await authenticator.authenticate('microsoft', request);
   } catch (error) {
     if (error instanceof Response && error.status === 302) {
       error.headers.append(

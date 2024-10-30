@@ -1,10 +1,10 @@
 import {Authenticator} from "remix-auth";
 import {MicrosoftStrategy} from "remix-auth-microsoft";
 import {
-  getApplicationRoot,
+  getSanityRoot,
   getClientId,
   getClientSecret,
-  getEmployeeIdFromToken,
+  getEmailFromToken,
   getScopes,
   getSessionSecret,
   getTenantId
@@ -15,14 +15,14 @@ import {sessionStorage} from "~/server/session.server";
 
 export type UserData = {
   accessToken: string;
-  employeeId: number;
+  email: string;
 };
 
 export const authenticator = new Authenticator<UserData>(sessionStorage);
 
 const entraIdStrategy = new MicrosoftStrategy(
   {
-    redirectUri: `${getApplicationRoot()}/redirect`,
+    redirectUri: `${getSanityRoot()}`,
     clientId: getClientId(),
     clientSecret: getClientSecret(),
     scope: getScopes(),
@@ -30,15 +30,15 @@ const entraIdStrategy = new MicrosoftStrategy(
     prompt: '',
   },
   async ({accessToken, extraParams}) => {
-    const employeeId = getEmployeeIdFromToken(extraParams.id_token);
+    const email = getEmailFromToken(extraParams.id_token);
 
-    if (!employeeId) {
+    if (!email) {
       throw new Error('Missing employee ID on token');
     }
 
     return {
       accessToken,
-      employeeId
+      email
     };
   }
 );
