@@ -1,7 +1,11 @@
 import {defineConfig} from 'sanity'
-import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
-import {schemaTypes} from './schemaTypes'
+import schemas from './schemas/schema'
+import {deskTool} from 'sanity/desk'
+import {media} from 'sanity-plugin-media'
+import {codeInput} from '@sanity/code-input'
+import deskStructure, {defaultDocumentNode} from './deskStructure'
+import resolveProductionUrl from './resolveProductionUrl'
 
 export default defineConfig({
   name: 'default',
@@ -10,20 +14,30 @@ export default defineConfig({
   projectId: 'ah2n1vfr',
   dataset: 'bekk-blogg',
 
-  plugins: [structureTool(), visionTool()],
+  plugins: [
+    deskTool({
+      defaultDocumentNode,
+      structure: deskStructure,
+    }),
+    visionTool(),
+    media(),
+    codeInput(),
+  ],
 
   schema: {
-    types: schemaTypes,
+    types: schemas,
+  },
+  document: {
+    productionUrl: async (_, context) => resolveProductionUrl(context.document),
   },
 
   auth: {
     redirectOnSingle: true,
-    mode: 'replace',
     providers: [
       {
         name: 'bekk-login',
         title: 'Logg inn med Bekk',
-        url: 'https://fagdag.bekk.no/api/auth/signin',
+        url: 'https://bekk-christmas.vercel.app/api/auth/login',
         logo: 'static/logo.svg',
       },
     ],
