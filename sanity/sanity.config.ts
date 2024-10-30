@@ -9,6 +9,7 @@ export default defineConfig({
 
   projectId: 'ah2n1vfr',
   dataset: 'bekk-blogg',
+  apiVersion: process.env.sanityApiVersion || 'v2021-08-18',
 
   plugins: [structureTool(), visionTool()],
 
@@ -18,12 +19,11 @@ export default defineConfig({
 
   auth: {
     redirectOnSingle: true,
-    mode: 'replace',
     providers: [
       {
         name: 'bekk-login',
         title: 'Logg inn med Bekk',
-        url: 'https://fagdag.bekk.no/api/auth/signin',
+        url: 'http://localhost:5173/microsoft/auth',
         logo: 'static/logo.svg',
       },
     ],
