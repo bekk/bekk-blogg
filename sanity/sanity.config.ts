@@ -1,7 +1,11 @@
 import {defineConfig} from 'sanity'
-import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
-import {schemaTypes} from './schemaTypes'
+import schemas from './schemas/schema'
+import {media} from 'sanity-plugin-media'
+import {codeInput} from '@sanity/code-input'
+import deskStructure, {defaultDocumentNode} from './deskStructure'
+import resolveProductionUrl from './resolveProductionUrl'
+import {deskTool} from "sanity/lib/desk";
 
 export default defineConfig({
   name: 'default',
@@ -11,10 +15,21 @@ export default defineConfig({
   dataset: 'bekk-blogg',
   apiVersion: process.env.sanityApiVersion || 'v2021-08-18',
 
-  plugins: [structureTool(), visionTool()],
+  plugins: [
+    deskTool({
+      defaultDocumentNode,
+      structure: deskStructure,
+    }),
+    visionTool(),
+    media(),
+    codeInput(),
+  ],
 
   schema: {
-    types: schemaTypes,
+    types: schemas,
+  },
+  document: {
+    productionUrl: async (_, context) => resolveProductionUrl(context.document),
   },
 
   auth: {
@@ -27,5 +42,5 @@ export default defineConfig({
         logo: 'static/logo.svg',
       },
     ],
-  }
+  },
 })

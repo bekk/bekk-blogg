@@ -1,5 +1,5 @@
-import {getSessionSecret} from "~/server/config.server";
-import {createCookieSessionStorage} from "@remix-run/node";
+import { getSessionSecret } from '~/server/config.server'
+import { createCookieSessionStorage } from '@remix-run/node'
 
 export const sessionStorage = createCookieSessionStorage({
   cookie: {
@@ -11,4 +11,4 @@ export const sessionStorage = createCookieSessionStorage({
     secure: process.env.NODE_ENV === 'production',
     maxAge: 3600,
   },
-});
+})
