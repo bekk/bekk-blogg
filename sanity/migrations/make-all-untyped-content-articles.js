@@ -1,7 +1,7 @@
 import sanityClient from "part:@sanity/base/client";
 
 const client = sanityClient.withConfig({
-  apiVersion: "2021-08-21",
+  apiVersion: process.env.SANITY_API_VERSION,
 });
 
 const fetchDocuments = () =>

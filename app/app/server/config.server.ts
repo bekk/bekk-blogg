@@ -21,7 +21,3 @@ export function getSanityRoot(): string {
 export const getSessionSecret = () => {
   return process.env.SESSION_SECRET ?? ''
 }
-
-export function getEmailFromToken(token: string): string | null {
-  return "ole.norstrand@bekk.no"
-}

@@ -30,6 +30,7 @@ export type User = {
 interface ExtendedJwtPayload extends JwtPayload {
   email: string;
   name: string;
+  employeeId: number;
 }
 
 export const loader = async ({request}: { request: Request }) => {
@@ -50,6 +51,9 @@ export const loader = async ({request}: { request: Request }) => {
       })
     })
 
+
+    console.log("VERIFIED TOKEN", verifiedToken)
+    console.log("TOKEN", token)
 
     const returnTo = await logIntoSanity(verifiedToken);
     return redirect(returnTo);
@@ -88,6 +92,8 @@ const logIntoSanity = async (
     // if they're not already a member.
     await addUserToGroup(sanityAuthor._id);
 
+    console.log("SANITY AUTHOR", sanityAuthor)
+
     // And then we're going to get your "log in to Sanity" URL,
     // which will set the user's session cookie.
     return await getEndUserClaimUrl(sanityAuthor, token)
@@ -101,7 +107,7 @@ const logIntoSanity = async (
 async function getSanityUser() {
   try {
     const res = await fetch(
-      `https://${sanityConfig.projectId}.api.sanity.io/${sanityConfig.apiVersion}/users/me`,
+      `https://${sanityConfig.projectId}.api.sanity.io/${process.env.SANITY_API_VERSION}/users/me`,
       {
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -228,7 +234,7 @@ async function getEndUserClaimUrl(
   const dateIn24Hours = new Date(Date.now() + 24 * 60 * 60 * 1000);
   try {
     const response = await fetch(
-      `https://${sanityConfig.projectId}.api.sanity.io/${sanityConfig.apiVersion}/auth/thirdParty/session`,
+      `https://${sanityConfig.projectId}.api.sanity.io/${process.env.SANITY_API_VERSION}/auth/thirdParty/session`,
       {
         method: "POST",
         headers: {
@@ -239,7 +245,7 @@ async function getEndUserClaimUrl(
           userId: getSanityUserId(sanityUser._id),
           userFullName: sanityUser.fullName,
           userEmail: token.email,
-          userImage: 'https://res.cloudinary.com/bekkimg/w_768,h_1024,c_fill,f_auto/d_default_image_departmentId2.png/1768',
+          userImage: `https://res.cloudinary.com/bekkimg/w_768,h_1024,c_fill,f_auto/d_default_image_departmentId2.png/${token.employeeId}`,
           userRole: "editor",
           sessionExpires: dateIn24Hours.toISOString(),
           sessionLabel: "SSO",

@@ -4,7 +4,6 @@ import {
   getSanityRoot,
   getClientId,
   getClientSecret,
-  getEmailFromToken,
   getScopes,
   getSessionSecret,
   getTenantId,
@@ -15,7 +14,6 @@ import { sessionStorage } from '~/server/session.server'
 
 export type UserData = {
   accessToken: string;
-  email: string;
 };
 
 export const authenticator = new Authenticator<UserData>(sessionStorage)
@@ -29,16 +27,9 @@ const entraIdStrategy = new MicrosoftStrategy(
     tenantId: getTenantId(),
     prompt: '',
   },
-  async ({accessToken, extraParams}) => {
-    const email = getEmailFromToken(extraParams.id_token);
-
-    if (!email) {
-      throw new Error('Missing employee ID on token');
-    }
-
+  async ({accessToken}) => {
     return {
       accessToken,
-      email
     };
   }
 )
