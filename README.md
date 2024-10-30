@@ -55,4 +55,4 @@ Sanity Studio kjører på [http://localhost:3333](http://localhost:3333)
 
 ## Annet
 
-Team Las Vegas har ansvar for og forvalter applikasjonen.
+Team Las Vegas har utviklet applikasjonen.
