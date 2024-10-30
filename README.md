@@ -27,12 +27,6 @@ Når du har fått tilgang, gjør følgende:
 
 ### Installasjon
 
-Stå i rot og kjør:
-
-```
-npm install
-```
-
 For å kjøre opp applikasjonen:
 
 ```
