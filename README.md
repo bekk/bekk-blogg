@@ -1,8 +1,8 @@
 # bekk-blogg
 
-Denne README-filen inneholder informasjon om hvordan du kjører opp applikasjonen lokalt. Du kan lese mer om prosjektet i wikien.
+Denne README-filen inneholder informasjon om hvordan du kjører opp applikasjonen lokalt. Du kan lese mer om prosjektet i [wikien](https://github.com/bekk/bekk-blogg/wiki).
 
-(Skriv noe om hvor applikasjonen hostes/lever og )
+_(Skriv noe om hvor applikasjonen hostes og URL-en til prod)_
 
 ## Teknologier
 
