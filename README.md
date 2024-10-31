@@ -22,7 +22,7 @@ Hemmeligheter finner du i **Team Las Vegas** sitt vault i 1Password. Be et teamm
 
 Når du har fått tilgang, gjør følgende:
 
-1. Opprett en fil `.env.local` i rot
+1. Opprett en fil `.env` i `/web`
 2. Kopier innholdet i notatet med samme navn i 1Password og lim det inn i filen din.
 
 ### Installasjon
