@@ -4,6 +4,7 @@ import {POST_BY_SLUG} from "../../utils/sanity/queries/postQueries";
 import {useLoaderData} from "@remix-run/react";
 import {loadQuery} from "../../utils/sanity/store";
 import {PortableText} from "@portabletext/react";
+import {components} from "../../utils/sanity/portable-text/Components";
 
 export const meta: MetaFunction = () => {
   return [{title: 'New Remix App'}, {name: 'description', content: 'Welcome to Remix!'}]
@@ -13,21 +14,6 @@ export const meta: MetaFunction = () => {
 export async function loader({params}: { params: { slug: string } }) {
   const {data: post} = await loadQuery<Post>(POST_BY_SLUG, {slug: params.slug})
   return post
-}
-
-const components = {
-  types: {
-    code: () => (
-      <div>
-        <p>HELL YES</p>
-      </div>
-    ),
-    imageWithMetadata: () => (
-      <div>
-        <p>FUCKEN PICHURE</p>
-      </div>
-    )
-  }
 }
 
 export default function Index() {
