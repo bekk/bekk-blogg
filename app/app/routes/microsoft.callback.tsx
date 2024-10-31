@@ -1,14 +1,15 @@
-import { authenticator } from '~/server/auth.server'
+import { redirect } from '@remix-run/react'
+import { SanityDocument } from '@sanity/client'
 import { createHash } from 'crypto'
-import sanityConfig from '~/../../sanity/sanity.config'
-
+import { HttpError } from 'http-errors'
 import type { GetPublicKeyOrSecret, JwtPayload } from 'jsonwebtoken'
 import jwt from 'jsonwebtoken'
 import jwksClient from 'jwks-rsa'
-import { redirect } from '@remix-run/react'
+
 import { authClient, writeClient } from '../../utils/sanity/sanity.server'
-import { SanityDocument } from '@sanity/client'
-import { HttpError } from 'http-errors'
+
+import sanityConfig from '~/../../sanity/sanity.config'
+import { authenticator } from '~/server/auth.server'
 
 const client = jwksClient({
   jwksUri: `https://login.microsoftonline.com/${process.env.AZURE_AD_TENANT_ID}/discovery/v2.0/keys`,

@@ -1,8 +1,9 @@
-import { Authenticator } from 'remix-auth'
-import { MicrosoftStrategy } from 'remix-auth-microsoft'
-import { getSanityRoot, getClientId, getClientSecret, getScopes, getSessionSecret, getTenantId } from './config.server'
 import { createCookie } from '@remix-run/node'
 import { Params } from '@remix-run/react'
+import { Authenticator } from 'remix-auth'
+import { MicrosoftStrategy } from 'remix-auth-microsoft'
+
+import { getClientId, getClientSecret, getSanityRoot, getScopes, getSessionSecret, getTenantId } from './config.server'
 import { sessionStorage } from '~/server/session.server'
 
 export type UserData = {

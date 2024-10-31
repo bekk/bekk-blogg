@@ -1,5 +1,6 @@
-import { authenticator, returnToCookie } from '~/server/auth.server'
 import { LoaderFunctionArgs } from '@remix-run/node'
+
+import { authenticator, returnToCookie } from '~/server/auth.server'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url)
