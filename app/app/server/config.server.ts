@@ -14,15 +14,10 @@ export function getScopes(): string {
   return process.env.AZURE_AD_SCOPES ?? ''
 }
 
-export function getApplicationRoot(): string {
+export function getSanityRoot(): string {
   return process.env.APPLICATION_ROOT ?? ''
 }
 
 export const getSessionSecret = () => {
   return process.env.SESSION_SECRET ?? ''
-}
-
-export function getEmployeeIdFromToken(token: string): number | null {
-  console.log('TOKEN', token)
-  return 1798
 }
