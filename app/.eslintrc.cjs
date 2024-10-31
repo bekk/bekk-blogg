@@ -20,10 +20,16 @@ module.exports = {
     es6: true,
   },
   ignorePatterns: ['!**/.server', '!**/.client'],
-
+  plugins: ['import'],
   // Base config
   extends: ['eslint:recommended'],
-
+  settings: {
+    'import/resolver': {
+      typescript: {
+        project: './tsconfig.json',
+      },
+    },
+  },
   overrides: [
     // React
     {
@@ -48,6 +54,7 @@ module.exports = {
           typescript: {},
         },
       },
+      rules: {},
     },
 
     // Typescript
