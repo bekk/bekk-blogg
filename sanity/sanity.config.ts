@@ -1,9 +1,9 @@
-import {defineConfig} from 'sanity'
 import {visionTool} from '@sanity/vision'
-import type {Config} from 'sanity'
 import {media} from "sanity-plugin-media";
 import {codeInput} from "@sanity/code-input";
 import {structureTool} from "sanity/structure";
+import {defineConfig, SchemaTypeDefinition} from "sanity";
+import schemas from './schemas/schema'
 
 // Define the auth provider type
 interface AuthProvider {
@@ -14,10 +14,11 @@ interface AuthProvider {
 }
 
 // Define your schema types explicitly
-const schemas = (await import('./schemas/schema')).default
+const schemaTypes = schemas as SchemaTypeDefinition[]
 
 // Create the configuration with explicit typing
-const config: Config = {
+const config = defineConfig({
+  basePath: '/',
   name: 'default',
   title: 'sanity',
   projectId: 'ah2n1vfr',
@@ -30,7 +31,7 @@ const config: Config = {
     codeInput(),
   ],
   schema: {
-    types: schemas,
+    types: schemaTypes,
   },
   auth: {
     redirectOnSingle: true,
@@ -43,6 +44,6 @@ const config: Config = {
       } as AuthProvider,
     ],
   },
-}
+})
 
-export default defineConfig(config)
+export default config
