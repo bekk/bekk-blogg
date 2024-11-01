@@ -7,4 +7,11 @@ export const meta: MetaFunction = () => {
 
 
 export default function Index() {
+  return(
+    <main id="content">
+      <h1>Halla</h1>
+      <p className='font-gt-standard-italic'>Her kommer det masse tekst.</p>
+      <p className='font-gt-standard-light text-xl'>Keynote: har vi glemt føkkings smidig?</p>
+    </main>
+  )
 }
