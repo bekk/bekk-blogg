@@ -5,6 +5,15 @@ export default {
   content: ['./app/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      backgroundColor:{
+        'postcard-beige': '#F7F3EE',
+      },
+      textColor:{
+        'base': '#000000',
+        'reindeer-brown': '#714319',
+        'santa-red': '#D0332E',
+        'christmas-tree-green': '#2F7346',
+      },
       fontFamily: {
         'gt-expanded': ['GT-America-Expanded-Medium', 'Arial', 'sans-serif'],
         'gt-standard-medium': ['GT-America-Standard-Medium', 'Arial', 'sans-serif'],
@@ -15,17 +24,26 @@ export default {
         'gt-light-italic': ['GT-America-Standard-Light-Italic', 'Arial', 'sans-serif'],
         'delicious': ['Delicious Handrawn', 'cursive'],
       },
-      theme: {
-        bekk: {
-          rebell: '#dfff26',
-          natt: '#1f1f1f',
-          dag: '#f8f8f8',
-          'natt-lys': '#2E2E2E',
-          base: 'var(--background-color-base)',
-          accent: 'var(--background-color-accent)',
-          'text-color': 'var(--text-color-base)',
-          'text-color-accent': 'var(--text-color-accent)',
-        },
+      fontSize: {
+        'display-desktop': '56px',
+        'headline-desktop': '48px',
+        'leading-desktop': '32px',
+        'subtitle-desktop': '24px',
+        'body-desktop': '20px',
+        'action-desktop': '16px',
+        'display-mobile': '40px',
+        'headline-mobile': '32px',
+        'leading-mobile': '24px',
+        'subtitle-mobile': '20px',
+        'body-mobile': '16px',
+        'action-mobile': '12px',
+      },
+      screens: {
+        sm: '640px',
+        md: '900px',
+        lg: '1024px',
+        xl: '1280px',
+        '2xl': '1536px',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -33,7 +51,6 @@ export default {
         sm: 'calc(var(--radius) - 4px)',
       },
       colors: {
-        background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
           DEFAULT: 'hsl(var(--card))',

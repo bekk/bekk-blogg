@@ -87,15 +87,4 @@
         font-display: swap;
     }
 
-    h1 {
-        @apply font-gt-standard
-    }
-
-    h2 {
-        @apply font-gt-standard-medium;
-    }
-
-    h3 {
-        @apply font-gt-standard;
-    }
 }
