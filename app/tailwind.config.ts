@@ -6,6 +6,7 @@ export default {
   theme: {
     extend: {
       backgroundColor:{
+        'envelope-beige': '#E0C190',
         'postcard-beige': '#F7F3EE',
       },
       textColor:{

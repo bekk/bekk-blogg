@@ -17,7 +17,7 @@
         @apply text-body-mobile md:text-body-desktop
     }
     body {
-        @apply bg-postcard-beige;
+        @apply bg-envelope-beige;
         padding: 5rem;
     }
 }
