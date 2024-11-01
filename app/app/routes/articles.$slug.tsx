@@ -18,7 +18,6 @@ export async function loader({params}: { params: { slug: string } }) {
 
 export default function Index() {
   const post = useLoaderData<Post>()
-  console.log(post)
 
   return (
     <>
