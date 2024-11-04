@@ -53,7 +53,40 @@ module.exports = {
     // Typescript
     {
       files: ['**/*.{ts,tsx}'],
-      plugins: ['@typescript-eslint', 'import'],
+      plugins: ['@typescript-eslint', 'import', 'simple-import-sort', 'eslint-plugin-unused-imports'],
+      rules: {
+        'simple-import-sort/exports': 'error',
+        '@typescript-eslint/no-unused-vars': 'off',
+        'unused-imports/no-unused-imports': 'error',
+        'unused-imports/no-unused-vars': [
+          'warn',
+          {
+            vars: 'all',
+            varsIgnorePattern: '^_',
+            args: 'after-used',
+            argsIgnorePattern: '^_',
+          },
+        ],
+        'simple-import-sort/imports': [
+          'warn',
+          {
+            groups: [
+              // Packages `react` related packages come first.
+              ['^react', '^@?\\w'],
+              // Internal packages.
+              ['^(@/.*|$)'],
+              // Side effect imports.
+              ['^\\u0000'],
+              // Parent imports. Put `..` last.
+              ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
+              // Other relative imports. Put same-folder imports and `.` last.
+              ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
+              // Style imports.
+              ['^.+\\.?(css)$'],
+            ],
+          },
+        ],
+      },
       parser: '@typescript-eslint/parser',
       settings: {
         'import/internal-regex': '^~/',
@@ -66,7 +99,7 @@ module.exports = {
           },
         },
       },
-      extends: ['plugin:@typescript-eslint/recommended', 'plugin:import/recommended', 'plugin:import/typescript'],
+      extends: ['plugin:@typescript-eslint/recommended', 'plugin:import/typescript'],
     },
 
     // Node
