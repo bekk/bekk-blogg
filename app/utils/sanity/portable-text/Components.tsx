@@ -1,8 +1,9 @@
-import {Code, CodePen, ImageWithMetadata} from "../types/sanity.types";
+import {Code, CodePen, CodeSandbox, ImageWithMetadata} from "../types/sanity.types";
 
 import {CodeBlock} from "./CodeBlock";
 import ImageWithMetadataBlock from "./ImageWithMetadataBlock";
 import {CodePenBlock} from "./CodePenBlock";
+import {CodeSandboxBlock} from "./CodeSandboxBlock";
 
 export const components = {
   types: {
@@ -12,8 +13,8 @@ export const components = {
     imageWithMetadata: (props: { value: ImageWithMetadata }) => (
       <ImageWithMetadataBlock image={props.value}/>
     ),
-    codeSandbox: () => (
-      <p>FILL IN</p>
+    codeSandbox: (props: { value: CodeSandbox }) => (
+      <CodeSandboxBlock codeSandbox={props.value}/>
     ),
     codePen: (props: { value: CodePen }) => (
       <CodePenBlock codePen={props.value}/>
