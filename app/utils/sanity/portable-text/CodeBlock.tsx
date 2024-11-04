@@ -1,14 +1,17 @@
-import {Prism as SyntaxHighlighter} from "react-syntax-highlighter";
-import {Code} from "../types/sanity.types";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { Code } from "../types/sanity.types";
 
-export const CodeBlock = ({code}: {code: Code}) => {
+interface CodeBlockProps {
+  code: Code;
+}
 
+export const CodeBlock = ({ code }: CodeBlockProps) => {
   if (!code?.code) {
     return <p>Hmmm, ingen kode her</p>;
   }
   return (
-      <SyntaxHighlighter language={code.language ?? "text"}>
-        {code.code}
-      </SyntaxHighlighter>
+    <SyntaxHighlighter language={code.language ?? "text"}>
+      {code.code}
+    </SyntaxHighlighter>
   );
 };
