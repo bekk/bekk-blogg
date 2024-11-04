@@ -32,15 +32,21 @@ const post = defineType({
       validation: (rule) => rule.required(),
     },
     {
-      title: 'Language',
-      name: 'language',
+      title: 'Title',
+      description: 'Make it snappy!',
+      name: 'title',
       type: 'string',
+      group: 'author',
+      validation: (rule) => rule.required(),
+    },
+    {
+      title: 'Slug',
+      description:
+        'The slug is used in the URL. The complete URL will be `/post/{year}/{day}/{slug}`',
+      name: 'slug',
+      type: 'slug',
       options: {
-        list: [
-          {title: 'English', value: 'en-US'},
-          {title: 'Norwegian (Bokmål)', value: 'nb-NO'},
-          {title: 'Norwegian (Nynorsk)', value: 'nn-NO'},
-        ],
+        source: 'title',
       },
       group: 'author',
       validation: (rule) => rule.required(),
@@ -85,34 +91,6 @@ const post = defineType({
       },
     },
     {
-      title: 'Title',
-      description: 'Make it snappy!',
-      name: 'title',
-      type: 'string',
-      group: 'author',
-      validation: (rule) => rule.required(),
-    },
-    {
-      title: 'Slug',
-      description:
-        'The slug is used in the URL. The complete URL will be `/post/{year}/{day}/{slug}`',
-      name: 'slug',
-      type: 'slug',
-      options: {
-        source: 'title',
-      },
-      group: 'author',
-      validation: (rule) => rule.required(),
-    },
-    {
-      name: 'canonicalUrl',
-      type: 'url',
-      title: 'Canonical URL',
-      description:
-        'If the content has been posted elsewhere originally, please specify the original (canonical) url here.',
-      group: 'author',
-    },
-    {
       title: 'Description',
       description:
         'This is the excerpt, shown at the top of the page, as well as when shared on social media.',
@@ -121,17 +99,11 @@ const post = defineType({
       group: 'author',
     },
     {
-      title: 'Authors',
-      description: 'Remember to add yourself as an author as well!',
-      name: 'authors',
-      type: 'array',
-      of: [
-        {
-          type: 'reference',
-          to: [{type: 'author'}],
-        },
-      ],
+      title: 'Content',
+      name: 'content',
+      type: 'portableText',
       group: 'author',
+      validation: (rule) => rule.required(),
     },
     {
       title: 'Cover image',
@@ -154,14 +126,17 @@ const post = defineType({
       group: 'author',
     },
     {
-      title: 'Available from',
-      name: 'availableFrom',
-      description:
-        "The date the post was or will be posted. If you don't know, just let this be as is, and somebody will do this for you :)",
-      type: 'date',
-      validation: (rule) => rule.required(),
-      initialValue: `${new Date().getUTCFullYear()}-12-25`,
-      group: 'admin',
+      title: 'Authors',
+      description: 'Remember to add yourself as an author as well!',
+      name: 'authors',
+      type: 'array',
+      of: [
+        {
+          type: 'reference',
+          to: [{type: 'author'}],
+        },
+      ],
+      group: 'author',
     },
     {
       title: 'Category',
@@ -188,13 +163,6 @@ const post = defineType({
         layout: 'tags',
       },
       group: 'author',
-    },
-    {
-      title: 'Content',
-      name: 'content',
-      type: 'portableText',
-      group: 'author',
-      validation: (rule) => rule.required(),
     },
     {
       title: 'Related links',
@@ -226,6 +194,38 @@ const post = defineType({
         },
       ],
       group: 'author',
+    },
+    {
+      name: 'canonicalUrl',
+      type: 'url',
+      title: 'Canonical URL',
+      description:
+        'If the content has been posted elsewhere originally, please specify the original (canonical) url here.',
+      group: 'author',
+    },
+    {
+      title: 'Language',
+      name: 'language',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'English', value: 'en-US'},
+          {title: 'Norwegian (Bokmål)', value: 'nb-NO'},
+          {title: 'Norwegian (Nynorsk)', value: 'nn-NO'},
+        ],
+      },
+      group: 'author',
+      validation: (rule) => rule.required(),
+    },
+    {
+      title: 'Available from',
+      name: 'availableFrom',
+      description:
+        "The date the post was or will be posted. If you don't know, just let this be as is, and somebody will do this for you :)",
+      type: 'date',
+      group: 'admin',
+      validation: (rule) => rule.required(),
+      initialValue: `${new Date().getUTCFullYear()}-12-25`,
     },
     {
       title: 'Priority',
