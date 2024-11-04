@@ -6,9 +6,9 @@ import type { GetPublicKeyOrSecret, JwtPayload } from 'jsonwebtoken'
 import jwt from 'jsonwebtoken'
 import jwksClient from 'jwks-rsa'
 
+import {sanityConfig} from "../../utils/sanity/config";
 import { authClient, writeClient } from '../../utils/sanity/sanity.server'
 
-import sanityConfig from '~/../../sanity/sanity.config'
 import { authenticator } from '~/server/auth.server'
 
 const client = jwksClient({
