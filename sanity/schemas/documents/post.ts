@@ -1,7 +1,7 @@
 import {defineType} from 'sanity'
 
 const post = defineType({
-  title: 'Post',
+  title: 'Innlegg',
   name: 'post',
   type: 'document',
   groups: [
@@ -16,24 +16,23 @@ const post = defineType({
   ],
   fields: [
     {
-      title: 'Type of content',
-      description: "Pick what kind of content you're creating.",
+      title: 'Type',
       name: 'type',
       type: 'string',
       initialValue: 'article',
       options: {
         list: [
-          {title: 'Article', value: 'article'},
+          {title: 'Artikkel', value: 'article'},
           {title: 'Video', value: 'video'},
-          {title: 'Podcast', value: 'podcast'},
+          {title: 'Podkast', value: 'podcast'},
         ],
       },
       group: 'author',
       validation: (rule) => rule.required(),
     },
     {
-      title: 'Title',
-      description: 'Make it snappy!',
+      title: 'Tittel',
+      description: 'Hold det kort og beskrivende!',
       name: 'title',
       type: 'string',
       group: 'author',
@@ -41,8 +40,7 @@ const post = defineType({
     },
     {
       title: 'Slug',
-      description:
-        'The slug is used in the URL. The complete URL will be `/post/{year}/{day}/{slug}`',
+      description: 'Det som kommer etter bekk.christmas/post/år/dag/.. i URL-en',
       name: 'slug',
       type: 'slug',
       options: {
@@ -54,7 +52,7 @@ const post = defineType({
     {
       title: 'Embed URL',
       description:
-        "If you're uploading a video or a podcast, you need to upload your content to somebody who knows what they're doing. Upload podcasts to anchor.fm, and videos to vimeo.com. If you need access, contact Kristofer G. Selbekk.",
+        'Hvis du laster opp en video eller podkast, må du laste opp innholdet til noen som har erfaring med dette. Last opp podkaster til anchor.fm og videoer til vimeo.com. Hvis du trenger tilgang, ta kontakt med Kristofer G. Selbekk.',
       name: 'embedUrl',
       type: 'url',
       group: 'author',
@@ -62,10 +60,10 @@ const post = defineType({
         rule.custom((url: string | undefined, context) => {
           const postType = context.document?.type as string
           if (['podcast', 'video'].includes(postType) && !url) {
-            return 'A URL to embed is required'
+            return 'Embed URL er påkrevd'
           }
           if (postType === 'video' && !url?.startsWith('https://player.vimeo.com')) {
-            return 'Get the embed URL, not the regular URL. It should start with player.vimeo.com/video'
+            return 'Bruk embed-URL, ikke vanlig URL. Den skal starte med player.vimeo.com/video'
           }
           return true
         }),
@@ -74,8 +72,8 @@ const post = defineType({
       },
     },
     {
-      title: 'Podcast length',
-      description: 'The length of the podcast in minutes. You can find this on Anchor',
+      title: 'Podkastlengde',
+      description: 'Lengden på podkasten i minutter',
       name: 'podcastLength',
       type: 'number',
       group: 'author',
@@ -84,41 +82,41 @@ const post = defineType({
           if (context.document?._type !== 'podcast') {
             return true
           }
-          return length ? true : 'Please specify the length of the podcast'
+          return length ? true : 'Vennligst oppgi lengden på podkasten'
         }),
       hidden: ({document}) => {
         return document?.type !== 'podcast'
       },
     },
     {
-      title: 'Description',
-      description:
-        'This is the excerpt, shown at the top of the page, as well as when shared on social media.',
+      title: 'Ingress',
+      description: 'En kort intro',
       name: 'description',
       type: 'descriptionText',
       group: 'author',
     },
     {
-      title: 'Content',
+      title: 'Innhold',
       name: 'content',
       type: 'portableText',
       group: 'author',
       validation: (rule) => rule.required(),
     },
     {
-      title: 'Cover image',
+      title: 'Forsidebilde',
+      description: 'Vises øverst på siden og i innleggkortene',
       name: 'coverImage',
       type: 'image',
       fields: [
         {
-          title: 'Image source',
+          title: 'Bildekilde',
           name: 'src',
           type: 'string',
         },
         {
-          title: 'Hide from post',
+          title: 'Skjul fra innlegget',
           description:
-            'Check this if you only want the image to show up on the daily summary page, not in your own post',
+            'Kryss av her hvis du kun vil at bildet skal vises på lukesiden, ikke i ditt eget innlegg',
           name: 'hideFromPost',
           type: 'boolean',
         },
@@ -126,8 +124,8 @@ const post = defineType({
       group: 'author',
     },
     {
-      title: 'Authors',
-      description: 'Remember to add yourself as an author as well!',
+      title: 'Bidragsytere',
+      description: 'De som har laget innholdet. Husk å legge til deg selv!',
       name: 'authors',
       type: 'array',
       of: [
@@ -139,10 +137,9 @@ const post = defineType({
       group: 'author',
     },
     {
-      title: 'Category',
+      title: 'Kategori',
       name: 'tags',
-      description:
-        "Choose a main category for your post. Or add a new one, if you can't find the perfect one",
+      description: 'Hovedkategori for innlegget',
       type: 'array',
       of: [
         {
@@ -153,10 +150,9 @@ const post = defineType({
       group: 'author',
     },
     {
-      title: 'Searcahable keywords',
+      title: 'Søkbare nøkkelord',
       name: 'keywords',
-      description:
-        "These are keywords people might want to search for to find your article. By default we'll include the title and category.",
+      description: 'Nøkkelord som hjelper å søke seg fram til innlegget',
       type: 'array',
       of: [{type: 'string'}],
       options: {
@@ -165,28 +161,28 @@ const post = defineType({
       group: 'author',
     },
     {
-      title: 'Related links',
+      title: 'Relevante lenker',
       name: 'relatedLinks',
-      description: 'Recommended reading or links from the post',
+      description: 'Fagstoff som er relevant for innholdet',
       type: 'array',
       of: [
         {
-          title: 'Related link',
+          title: 'Relevant lenke',
           name: 'relatedLink',
           type: 'object',
           fields: [
             {
-              title: 'Title',
+              title: 'Tittel',
               name: 'title',
               type: 'string',
             },
             {
-              title: 'Description',
+              title: 'Beskrivelse',
               name: 'description',
               type: 'string',
             },
             {
-              title: 'URL',
+              title: 'Lenke',
               name: 'url',
               type: 'url',
             },
@@ -198,40 +194,38 @@ const post = defineType({
     {
       name: 'canonicalUrl',
       type: 'url',
-      title: 'Canonical URL',
+      title: 'Originallenke',
       description:
-        'If the content has been posted elsewhere originally, please specify the original (canonical) url here.',
+        'Hvis innholdet har blitt publisert et annet sted først kan du lenke til det her',
       group: 'author',
     },
     {
-      title: 'Language',
+      title: 'Språk',
       name: 'language',
       type: 'string',
       options: {
         list: [
-          {title: 'English', value: 'en-US'},
-          {title: 'Norwegian (Bokmål)', value: 'nb-NO'},
-          {title: 'Norwegian (Nynorsk)', value: 'nn-NO'},
+          {title: 'Engelsk', value: 'en-US'},
+          {title: 'Norsk (Bokmål)', value: 'nb-NO'},
+          {title: 'Norsk (Nynorsk)', value: 'nn-NO'},
         ],
       },
       group: 'author',
       validation: (rule) => rule.required(),
     },
     {
-      title: 'Available from',
+      title: 'Publiseringsdato',
       name: 'availableFrom',
-      description:
-        "The date the post was or will be posted. If you don't know, just let this be as is, and somebody will do this for you :)",
+      description: 'Når innlegget skal publiseres',
       type: 'date',
       group: 'admin',
       validation: (rule) => rule.required(),
       initialValue: `${new Date().getUTCFullYear()}-12-25`,
     },
     {
-      title: 'Priority',
+      title: 'Prioritet',
       name: 'priority',
-      description:
-        'Defines the ordering of posts in certain lists. Higher number means higher priority',
+      description: 'Hvilken rekkefølge innlegg skal være i. Jo høyere tall jo høyere opp på siden',
       type: 'number',
       initialValue: 0,
       group: 'admin',
@@ -249,7 +243,7 @@ const post = defineType({
       const authors = extraAuthor ? `${author}, ${extraAuthor}` : author
       return {
         title: title,
-        subtitle: `${authors} – ${tag || 'No category 🤷'}`,
+        subtitle: `${authors} – ${tag || 'Ingen kategori 🤷'}`,
         media: media,
       }
     },
