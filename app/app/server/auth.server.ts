@@ -3,7 +3,7 @@ import { Params } from '@remix-run/react'
 import { Authenticator } from 'remix-auth'
 import { MicrosoftStrategy } from 'remix-auth-microsoft'
 
-import { getClientId, getClientSecret, getSanityRoot, getScopes, getSessionSecret, getTenantId } from './config.server'
+import { getClientId, getClientSecret, getApplicationRoot, getScopes, getSessionSecret, getTenantId } from './config.server'
 
 import { sessionStorage } from '~/server/session.server'
 
@@ -15,7 +15,7 @@ export const authenticator = new Authenticator<UserData>(sessionStorage)
 
 const entraIdStrategy = new MicrosoftStrategy(
   {
-    redirectUri: `${getSanityRoot()}`,
+    redirectUri: `${getApplicationRoot()}/microsoft/callback`,
     clientId: getClientId(),
     clientSecret: getClientSecret(),
     scope: getScopes(),

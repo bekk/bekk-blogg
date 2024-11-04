@@ -4,6 +4,7 @@ import {codeInput} from "@sanity/code-input";
 import {structureTool} from "sanity/structure";
 import {defineConfig, SchemaTypeDefinition} from "sanity";
 import schemas from './schemas/schema'
+import {frontendUrl} from "./src/environment";
 
 // Define the auth provider type
 interface AuthProvider {
@@ -39,7 +40,7 @@ const config = defineConfig({
       {
         name: 'bekk-login',
         title: 'Logg inn med Bekk',
-        url: 'http://localhost:5173/microsoft/auth',
+        url: `${frontendUrl}/microsoft/auth`,
         logo: 'static/logo.svg',
       } as AuthProvider,
     ],
