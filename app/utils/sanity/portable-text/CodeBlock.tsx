@@ -1,5 +1,6 @@
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { Code } from "../types/sanity.types";
+import {Prism as SyntaxHighlighter} from "react-syntax-highlighter";
+
+import {Code} from "../types/sanity.types";
 
 interface CodeBlockProps {
   code: Code;

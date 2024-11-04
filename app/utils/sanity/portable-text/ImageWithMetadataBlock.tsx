@@ -1,5 +1,6 @@
-import {ImageWithMetadata} from "../types/sanity.types";
 import {useEffect, useState} from "react";
+
+import {ImageWithMetadata} from "../types/sanity.types";
 
 type ImageWithMetadataDisplayProps = {
   image: ImageWithMetadata;

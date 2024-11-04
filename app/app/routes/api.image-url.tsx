@@ -1,4 +1,5 @@
 import { json } from '@remix-run/node';
+
 import { urlFor } from '../../utils/sanity/sanity.server';
 
 export async function action({ request }: { request: Request }) {

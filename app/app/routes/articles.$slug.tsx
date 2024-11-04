@@ -1,10 +1,11 @@
-import type {MetaFunction} from '@remix-run/node'
-import {Post} from "../../utils/sanity/types/sanity.types";
-import {POST_BY_SLUG} from "../../utils/sanity/queries/postQueries";
-import {useLoaderData} from "@remix-run/react";
-import {loadQuery} from "../../utils/sanity/store";
 import {PortableText} from "@portabletext/react";
+import type {MetaFunction} from '@remix-run/node'
+import {useLoaderData} from "@remix-run/react";
+
 import {components} from "../../utils/sanity/portable-text/Components";
+import {POST_BY_SLUG} from "../../utils/sanity/queries/postQueries";
+import {loadQuery} from "../../utils/sanity/store";
+import {Post} from "../../utils/sanity/types/sanity.types";
 
 export const meta: MetaFunction = () => {
   return [{title: 'New Remix App'}, {name: 'description', content: 'Welcome to Remix!'}]
@@ -22,7 +23,7 @@ export default function Index() {
   return (
     <>
       <h1>{post.title}</h1>
-      {post?.content && <PortableText value={post.content} components={components} />}
+      {post?.content && <PortableText value={post.content} components={components}/>}
     </>
   )
 }
