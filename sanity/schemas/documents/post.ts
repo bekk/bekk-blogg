@@ -130,6 +130,7 @@ const post = defineType({
       description: 'Remember to add yourself as an author as well!',
       name: 'authors',
       type: 'array',
+      validation: (rule) => rule.required(),
       of: [
         {
           type: 'reference',
