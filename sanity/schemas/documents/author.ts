@@ -1,43 +1,43 @@
-import { defineType } from "sanity";
+import {defineType} from 'sanity'
 
 const author = defineType({
-  title: "Author",
-  name: "author",
-  type: "document",
+  title: 'Forfatter',
+  name: 'author',
+  type: 'document',
   fields: [
     {
-      title: "Full name",
-      name: "fullName",
-      type: "string",
+      title: 'Fullt navn',
+      name: 'fullName',
+      type: 'string',
       validation: (rule) => rule.required(),
     },
     {
-      title: "Slug",
-      name: "slug",
-      type: "slug",
+      title: 'Slug',
+      name: 'slug',
+      type: 'slug',
       validation: (rule) => rule.required(),
       options: {
-        source: "fullName",
+        source: 'fullName',
       },
     },
     {
-      title: "Company name",
-      name: "companyName",
-      type: "string",
-      initialValue: "Bekk",
+      title: 'Firmanavn',
+      name: 'companyName',
+      type: 'string',
+      initialValue: 'Bekk',
     },
     {
-      title: "Profile picture",
-      name: "profilePicture",
-      type: "string",
+      title: 'Profilbilde',
+      name: 'profilePicture',
+      type: 'string',
     },
     {
-      title: "Social media links",
-      name: "socialMediaLinks",
-      type: "array",
-      of: [{ type: "socialMediaLink" }],
+      title: 'Lenker til sosiale medier',
+      name: 'socialMediaLinks',
+      type: 'array',
+      of: [{type: 'socialMediaLink'}],
     },
   ],
-});
+})
 
-export default author;
+export default author
