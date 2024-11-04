@@ -24,7 +24,7 @@ Når du har fått tilgang, gjør følgende:
 
 1. Opprett en fil `.env` i web-mappen.
 2. Kopier innholdet i notatet med samme navn i 1Password og lim det inn i filen din.
-3. Opprett en fil '.env.local' i sanity-mappen.
+3. Opprett en fil `.env.local` i sanity-mappen.
 4. Kopier innholdet i notatet med samme navn i 1Password og lim det inn i filen din.
 
 ### Installasjon
