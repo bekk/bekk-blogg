@@ -14,7 +14,7 @@ export function getScopes(): string {
   return process.env.AZURE_AD_SCOPES ?? ''
 }
 
-export function getSanityRoot(): string {
+export function getApplicationRoot(): string {
   return process.env.APPLICATION_ROOT ?? ''
 }
 
