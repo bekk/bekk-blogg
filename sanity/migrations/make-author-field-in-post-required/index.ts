@@ -1,13 +1,12 @@
-import {at, defineMigration, setIfMissing, unset} from 'sanity/migrate'
+import {at, defineMigration, setIfMissing} from 'sanity/migrate'
 
 import sanityClient from '@sanity/client'
 
 const client = sanityClient({
   projectId: 'ah2n1vfr',
   dataset: 'bekk-blogg',
-  apiVersion: 'v2021-08-21',
-  token:
-    'skNTFZFBibQiRXCuwV4hKLLQ9d4rYhk5j7mddpbiD3YkDVFtaBIjDnp68ZTHRH7SsBRZwHC8k8TbFlkGH8hmRHD9EGFtDr0I2aQTdHXRJAf6lq19gDUY7ZbAJGAtayirwyKnpIJ7cJispikMfbuW73oUGocXgo9zVihwybTk08xvUmZwX37n',
+  apiVersion: process.env.SANITY_API_VERSION,
+  token: process.env.SANITY_SESSION_API_TOKEN,
   useCdn: false,
 })
 
@@ -26,7 +25,7 @@ export default defineMigration({
   title: 'Make authors field in post required',
 
   migrate: {
-    document(doc) {
+    document(doc, context) {
       if (doc._type === 'post') {
         const defaultAuthor = {_type: 'reference', _ref: anonymAuthorId}
         return at('authors', setIfMissing([defaultAuthor]))
