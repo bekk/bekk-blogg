@@ -1,11 +1,9 @@
-import React from 'react'
-import getYouTubeId from 'get-youtube-id'
-import YouTube from 'react-youtube'
-import { Youtube as YouTubeSanityType } from '../types/sanity.types'
+import { Youtube } from '../types/sanity.types'
 import useMediaQuery from '~/hooks/useMediaQuery'
+import getYouTubeId from 'get-youtube-id'
 
 type YouTubeProps = {
-  youtube: YouTubeSanityType
+  youtube: Youtube
 }
 
 export const YouTubeBlock = ({ youtube }: YouTubeProps) => {
@@ -20,7 +18,15 @@ export const YouTubeBlock = ({ youtube }: YouTubeProps) => {
 
   return (
     <div>
-      <YouTube videoId={id as string} opts={{ width: '100%', height }} />
+      <iframe
+        width="100%"
+        height={height}
+        src={`https://www.youtube.com/embed/${id}`}
+        title="YouTube video player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerPolicy="strict-origin-when-cross-origin"
+        allowFullScreen
+      ></iframe>
     </div>
   )
 }
