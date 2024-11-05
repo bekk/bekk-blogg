@@ -1,3 +1,38 @@
+
+:root{
+    --santa-red: theme(textColor.santa-red);
+    --christmas-tree-green: theme(textColor.christmas-tree-green);
+    --postcard-beige: theme(backgroundColor.postcard-beige);
+}
+
+
 body {
     @apply bg-postcard-beige
+    p-0
+}
+
+/* articles.css */
+.article-container {
+    @apply bg-postcard-beige relative min-h-screen p-10 md:p-20;
+}
+
+.article-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 12px solid transparent;
+    border-image: repeating-linear-gradient(
+            -45deg,
+            var(--postcard-beige) 0px,
+            var(--postcard-beige) 30px,
+            var(--santa-red) 0px,
+            var(--santa-red) 40px,
+            var(--postcard-beige) 0px,
+            var(--postcard-beige) 70px,
+            var(--christmas-tree-green) 0px,
+            var(--christmas-tree-green) 80px
+    ) 12;
 }
