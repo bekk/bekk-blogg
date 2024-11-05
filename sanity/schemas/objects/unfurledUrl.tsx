@@ -1,5 +1,5 @@
 import { PreviewLink } from "@opengraphninja/react";
-import "@opengraphninja/react/styles.css?raw";
+import "@opengraphninja/react/styles.css";
 import { PreviewProps, defineType } from "sanity";
 
 type CastPreviewProps = PreviewProps & { href?: string };

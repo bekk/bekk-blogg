@@ -1,9 +1,10 @@
-import {defineConfig} from 'sanity'
 import {visionTool} from '@sanity/vision'
-import type {Config} from 'sanity'
 import {media} from "sanity-plugin-media";
 import {codeInput} from "@sanity/code-input";
 import {structureTool} from "sanity/structure";
+import {defineConfig, SchemaTypeDefinition} from "sanity";
+import schemas from './schemas/schema'
+import {frontendUrl} from "./src/environment";
 
 // Define the auth provider type
 interface AuthProvider {
@@ -14,10 +15,11 @@ interface AuthProvider {
 }
 
 // Define your schema types explicitly
-const schemas = (await import('./schemas/schema')).default
+const schemaTypes = schemas as SchemaTypeDefinition[]
 
 // Create the configuration with explicit typing
-const config: Config = {
+const config = defineConfig({
+  basePath: '/',
   name: 'default',
   title: 'sanity',
   projectId: 'ah2n1vfr',
@@ -30,7 +32,7 @@ const config: Config = {
     codeInput(),
   ],
   schema: {
-    types: schemas,
+    types: schemaTypes,
   },
   auth: {
     redirectOnSingle: true,
@@ -38,11 +40,11 @@ const config: Config = {
       {
         name: 'bekk-login',
         title: 'Logg inn med Bekk',
-        url: 'http://localhost:5173/microsoft/auth',
+        url: `${frontendUrl}/microsoft/auth`,
         logo: 'static/logo.svg',
       } as AuthProvider,
     ],
   },
-}
+})
 
-export default defineConfig(config)
+export default config

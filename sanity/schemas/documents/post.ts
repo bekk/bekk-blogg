@@ -1,237 +1,253 @@
-import { defineType } from "sanity";
+import {defineType} from 'sanity'
 
 const post = defineType({
-  title: "Post",
-  name: "post",
-  type: "document",
+  title: 'Innlegg',
+  name: 'post',
+  type: 'document',
+  groups: [
+    {
+      title: 'Forfatter',
+      name: 'author',
+    },
+    {
+      title: 'Admin',
+      name: 'admin',
+    },
+  ],
   fields: [
     {
-      title: "Type of content",
-      description: "Pick what kind of content you're creating.",
-      name: "type",
-      type: "string",
-      initialValue: "article",
+      title: 'Type',
+      name: 'type',
+      type: 'string',
+      initialValue: 'article',
       options: {
         list: [
-          { title: "Article", value: "article" },
-          { title: "Video", value: "video" },
-          { title: "Podcast", value: "podcast" },
+          {title: 'Artikkel', value: 'article'},
+          {title: 'Video', value: 'video'},
+          {title: 'Podkast', value: 'podcast'},
         ],
       },
+      group: 'author',
       validation: (rule) => rule.required(),
     },
     {
-      title: "Language",
-      name: "language",
-      type: "string",
-      options: {
-        list: [
-          { title: "English", value: "en-US" },
-          { title: "Norwegian (Bokmål)", value: "nb-NO" },
-          { title: "Norwegian (Nynorsk)", value: "nn-NO" },
-        ],
-      },
+      title: 'Tittel',
+      description: 'Hold det kort og beskrivende!',
+      name: 'title',
+      type: 'string',
+      group: 'author',
       validation: (rule) => rule.required(),
     },
     {
-      title: "Embed URL",
+      title: 'Slug',
+      description: 'Det som kommer etter bekk.christmas/post/år/dag/.. i URL-en',
+      name: 'slug',
+      type: 'slug',
+      options: {
+        source: 'title',
+      },
+      group: 'author',
+      validation: (rule) => rule.required(),
+    },
+    {
+      title: 'Embed URL',
       description:
-        "If you're uploading a video or a podcast, you need to upload your content to somebody who knows what they're doing. Upload podcasts to anchor.fm, and videos to vimeo.com. If you need access, contact Kristofer G. Selbekk.",
-      name: "embedUrl",
-      type: "url",
+        'Hvis du laster opp en video eller podkast, må du laste opp innholdet til noen som har erfaring med dette. Last opp podkaster til anchor.fm og videoer til vimeo.com. Hvis du trenger tilgang, ta kontakt med Kristofer G. Selbekk.',
+      name: 'embedUrl',
+      type: 'url',
+      group: 'author',
       validation: (rule) =>
         rule.custom((url: string | undefined, context) => {
-          const postType = context.document?.type as string;
-          if (["podcast", "video"].includes(postType) && !url) {
-            return "A URL to embed is required";
+          const postType = context.document?.type as string
+          if (['podcast', 'video'].includes(postType) && !url) {
+            return 'Embed URL er påkrevd'
           }
-          if (
-            postType === "video" &&
-            !url?.startsWith("https://player.vimeo.com")
-          ) {
-            return "Get the embed URL, not the regular URL. It should start with player.vimeo.com/video";
+          if (postType === 'video' && !url?.startsWith('https://player.vimeo.com')) {
+            return 'Bruk embed-URL, ikke vanlig URL. Den skal starte med player.vimeo.com/video'
           }
-          return true;
+          return true
         }),
-      hidden: ({ document }) => {
-        return document?.type === "article";
+      hidden: ({document}) => {
+        return document?.type === 'article'
       },
     },
     {
-      title: "Podcast length",
-      description:
-        "The length of the podcast in minutes. You can find this on Anchor",
-      name: "podcastLength",
-      type: "number",
+      title: 'Podkastlengde',
+      description: 'Lengden på podkasten i minutter',
+      name: 'podcastLength',
+      type: 'number',
+      group: 'author',
       validation: (rule) =>
         rule.custom((length, context) => {
-          if (context.document?._type !== "podcast") {
-            return true;
+          if (context.document?._type !== 'podcast') {
+            return true
           }
-          return length ? true : "Please specify the length of the podcast";
+          return length ? true : 'Vennligst oppgi lengden på podkasten'
         }),
-      hidden: ({ document }) => {
-        return document?.type !== "podcast";
+      hidden: ({document}) => {
+        return document?.type !== 'podcast'
       },
     },
     {
-      title: "Title",
-      description: "Make it snappy!",
-      name: "title",
-      type: "string",
+      title: 'Ingress',
+      description: 'En kort intro',
+      name: 'description',
+      type: 'descriptionText',
+      group: 'author',
+    },
+    {
+      title: 'Innhold',
+      name: 'content',
+      type: 'portableText',
+      group: 'author',
       validation: (rule) => rule.required(),
     },
     {
-      title: "Slug",
-      description:
-        "The slug is used in the URL. The complete URL will be `/post/{year}/{day}/{slug}`",
-      name: "slug",
-      type: "slug",
-      options: {
-        source: "title",
-      },
-      validation: (rule) => rule.required(),
-    },
-    {
-      name: "canonicalUrl",
-      type: "url",
-      title: "Canonical URL",
-      description:
-        "If the content has been posted elsewhere originally, please specify the original (canonical) url here.",
-    },
-    {
-      title: "Description",
-      description:
-        "This is the excerpt, shown at the top of the page, as well as when shared on social media.",
-      name: "description",
-      type: "descriptionText",
-    },
-    {
-      title: "Authors",
-      description: "Remember to add yourself as an author as well!",
-      name: "authors",
-      type: "array",
-      of: [
-        {
-          type: "reference",
-          to: [{ type: "author" }],
-        },
-      ],
-    },
-    {
-      title: "Cover image",
-      name: "coverImage",
-      type: "image",
+      title: 'Forsidebilde',
+      description: 'Vises øverst på siden og i innleggkortene',
+      name: 'coverImage',
+      type: 'image',
       fields: [
         {
-          title: "Image source",
-          name: "src",
-          type: "string",
+          title: 'Bildekilde',
+          name: 'src',
+          type: 'string',
         },
         {
-          title: "Hide from post",
+          title: 'Skjul fra innlegget',
           description:
-            "Check this if you only want the image to show up on the daily summary page, not in your own post",
-          name: "hideFromPost",
-          type: "boolean",
+            'Kryss av her hvis du kun vil at bildet skal vises på lukesiden, ikke i ditt eget innlegg',
+          name: 'hideFromPost',
+          type: 'boolean',
         },
       ],
+      group: 'author',
     },
     {
-      title: "Available from",
-      name: "availableFrom",
-      description:
-        "The date the post was or will be posted. If you don't know, just let this be as is, and somebody will do this for you :)",
-      type: "date",
-      validation: (rule) => rule.required(),
-      initialValue: `${new Date().getUTCFullYear()}-12-25`,
-    },
-    {
-      title: "Category",
-      name: "tags",
-      description:
-        "Choose a main category for your post. Or add a new one, if you can't find the perfect one",
-      type: "array",
+      title: 'Bidragsytere',
+      description: 'De som har laget innholdet. Husk å legge til deg selv!',
+      name: 'authors',
+      type: 'array',
       of: [
         {
-          type: "reference",
-          to: [{ type: "tag" }],
+          type: 'reference',
+          to: [{type: 'author'}],
         },
       ],
+      group: 'author',
     },
     {
-      title: "Searcahable keywords",
-      name: "keywords",
-      description:
-        "These are keywords people might want to search for to find your article. By default we'll include the title and category.",
-      type: "array",
-      of: [{ type: "string" }],
+      title: 'Kategori',
+      name: 'tags',
+      description: 'Hovedkategori for innlegget',
+      type: 'array',
+      of: [
+        {
+          type: 'reference',
+          to: [{type: 'tag'}],
+        },
+      ],
+      group: 'author',
+    },
+    {
+      title: 'Søkbare nøkkelord',
+      name: 'keywords',
+      description: 'Nøkkelord som hjelper å søke seg fram til innlegget',
+      type: 'array',
+      of: [{type: 'string'}],
       options: {
-        layout: "tags",
+        layout: 'tags',
       },
+      group: 'author',
     },
     {
-      title: "Content",
-      name: "content",
-      type: "portableText",
-      validation: (rule) => rule.required(),
-    },
-    {
-      title: "Related links",
-      name: "relatedLinks",
-      description: "Recommended reading or links from the post",
-      type: "array",
+      title: 'Relevante lenker',
+      name: 'relatedLinks',
+      description: 'Fagstoff som er relevant for innholdet',
+      type: 'array',
       of: [
         {
-          title: "Related link",
-          name: "relatedLink",
-          type: "object",
+          title: 'Relevant lenke',
+          name: 'relatedLink',
+          type: 'object',
           fields: [
             {
-              title: "Title",
-              name: "title",
-              type: "string",
+              title: 'Tittel',
+              name: 'title',
+              type: 'string',
             },
             {
-              title: "Description",
-              name: "description",
-              type: "string",
+              title: 'Beskrivelse',
+              name: 'description',
+              type: 'string',
             },
             {
-              title: "URL",
-              name: "url",
-              type: "url",
+              title: 'Lenke',
+              name: 'url',
+              type: 'url',
             },
           ],
         },
       ],
+      group: 'author',
     },
     {
-      title: "Priority",
-      name: "priority",
+      name: 'canonicalUrl',
+      type: 'url',
+      title: 'Originallenke',
       description:
-        "Defines the ordering of posts in certain lists. Higher number means higher priority",
-      type: "number",
+        'Hvis innholdet har blitt publisert et annet sted først kan du lenke til det her',
+      group: 'author',
+    },
+    {
+      title: 'Språk',
+      name: 'language',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Engelsk', value: 'en-US'},
+          {title: 'Norsk (Bokmål)', value: 'nb-NO'},
+          {title: 'Norsk (Nynorsk)', value: 'nn-NO'},
+        ],
+      },
+      group: 'author',
+      validation: (rule) => rule.required(),
+    },
+    {
+      title: 'Publiseringsdato',
+      name: 'availableFrom',
+      description: 'Når innlegget skal publiseres',
+      type: 'date',
+      group: 'admin',
+      validation: (rule) => rule.required(),
+      initialValue: `${new Date().getUTCFullYear()}-12-25`,
+    },
+    {
+      title: 'Prioritet',
+      name: 'priority',
+      description: 'Hvilken rekkefølge innlegg skal være i. Jo høyere tall jo høyere opp på siden',
+      type: 'number',
       initialValue: 0,
+      group: 'admin',
     },
   ],
   preview: {
     select: {
-      title: "title",
-      tag: "tags.0.name",
-      author: "authors.0.fullName",
-      extraAuthor: "authors.1.fullName",
-      media: "coverImage",
+      title: 'title',
+      tag: 'tags.0.name',
+      author: 'authors.0.fullName',
+      extraAuthor: 'authors.1.fullName',
+      media: 'coverImage',
     },
-    prepare({ title, tag, author, extraAuthor, media }) {
-      const authors = extraAuthor ? `${author}, ${extraAuthor}` : author;
+    prepare({title, tag, author, extraAuthor, media}) {
+      const authors = extraAuthor ? `${author}, ${extraAuthor}` : author
       return {
         title: title,
-        subtitle: `${authors} – ${tag || "No category 🤷"}`,
+        subtitle: `${authors} – ${tag || 'Ingen kategori 🤷'}`,
         media: media,
-      };
+      }
     },
   },
-});
+})
 
-export default post;
+export default post
