@@ -2,15 +2,15 @@ import React from 'react'
 import getYouTubeId from 'get-youtube-id'
 import YouTube from 'react-youtube'
 import { Youtube as YouTubeSanityType } from '../types/sanity.types'
-// import useMediaQuery from '~/hooks/useMediaQuery'
+import useMediaQuery from '~/hooks/useMediaQuery'
 
 type YouTubeProps = {
   youtube: YouTubeSanityType
 }
 
 export const YouTubeBlock = ({ youtube }: YouTubeProps) => {
-  // const isSm = useMediaQuery('(min-width: 640px)')
-  // const height = isSm ? '500px' : '300px'
+  const isSm = useMediaQuery('(min-width: 640px)')
+  const height = isSm ? '500px' : '300px'
 
   if (!youtube || !youtube.url) {
     return null
