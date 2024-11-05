@@ -38,9 +38,6 @@ const config = defineConfig({
           {postId: document._id}
         )
 
-        console.log("JEEPIS")
-        console.log(document._id)
-
         const params = new URLSearchParams()
         params.set('preview', 'true')
         params.set('dataset', dataset)
