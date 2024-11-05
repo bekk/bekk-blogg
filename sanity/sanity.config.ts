@@ -36,6 +36,7 @@ const config = defineConfig({
   },
   auth: {
     redirectOnSingle: true,
+    mode: 'replace',
     providers: [
       {
         name: 'bekk-login',
