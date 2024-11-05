@@ -6,7 +6,7 @@ const post = defineType({
   type: 'document',
   groups: [
     {
-      title: 'Forfatter',
+      title: 'Innhold',
       name: 'author',
     },
     {
