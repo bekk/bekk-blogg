@@ -1,12 +1,11 @@
 import type { LinksFunction } from '@remix-run/node'
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useLocation } from '@remix-run/react'
+import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react'
 
 import styles from '~/styles/main.css?url'
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const location = useLocation()
 
   return (
     <html lang="en">
@@ -16,7 +15,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body data-route={location.pathname}>
+      <body>
       <LiveReload/>
         {children}
         <ScrollRestoration />
