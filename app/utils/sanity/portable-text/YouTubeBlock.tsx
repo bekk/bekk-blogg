@@ -2,7 +2,7 @@ import React from 'react'
 import getYouTubeId from 'get-youtube-id'
 import YouTube from 'react-youtube'
 import { Youtube as YouTubeSanityType } from '../types/sanity.types'
-import useMediaQuery from '~/hooks/useMediaQuery'
+// import useMediaQuery from '~/hooks/useMediaQuery'
 
 type YouTubeProps = {
   youtube: YouTubeSanityType
@@ -20,7 +20,7 @@ export const YouTubeBlock = ({ youtube }: YouTubeProps) => {
 
   return (
     <div>
-      <YouTube videoId={id as string} opts={{ width: '100%', height: '100%' }} />
+      <YouTube videoId={id as string} opts={{ width: '100%', height }} />
     </div>
   )
 }
