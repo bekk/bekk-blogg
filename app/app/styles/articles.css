@@ -1,5 +1,5 @@
 
-:root{
+:root {
     --santa-red: theme(textColor.santa-red);
     --christmas-tree-green: theme(textColor.christmas-tree-green);
     --postcard-beige: theme(backgroundColor.postcard-beige);
@@ -13,7 +13,7 @@ body {
 
 /* articles.css */
 .article-container {
-    @apply bg-postcard-beige relative min-h-screen p-10 md:p-20;
+    @apply bg-postcard-beige relative min-h-screen p-8 md:p-20;
 }
 
 .article-container::before {
