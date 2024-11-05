@@ -25,6 +25,8 @@
         padding: 5rem;
         max-width: theme('screens.2xl');
         margin: auto;
+        overflow-wrap: break-word;
+        word-break: break-word;
     }
 }
 
