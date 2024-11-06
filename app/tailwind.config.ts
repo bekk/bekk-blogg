@@ -48,9 +48,7 @@ export default {
       },
       borderWidth: {
         DEFAULT: '1px',
-        '10': '10px',
         '14': '14px',
-        '20': '20px',
       },
       borderRadius: {
         lg: 'var(--radius)',
