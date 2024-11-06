@@ -46,6 +46,12 @@ export default {
         xl: '1280px',
         '2xl': '1536px',
       },
+      borderWidth: {
+        DEFAULT: '1px',
+        '10': '10px',
+        '14': '14px',
+        '20': '20px',
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',

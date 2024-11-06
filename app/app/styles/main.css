@@ -21,8 +21,11 @@
     }
 }
 
+/*
+p-4 sm:p-12 border-8 sm:border-[14px]
+ */
 .striped-frame {
-    @apply bg-postcard-beige p-12 border-8 border-solid;
+    @apply bg-postcard-beige p-4 md:p-12 border-solid border-8 md:border-14 ;
     border-image: repeating-linear-gradient(
             -45deg,
             #F7F3EE,
