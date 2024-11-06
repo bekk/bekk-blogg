@@ -7,8 +7,9 @@
 
 
 body {
-    @apply bg-postcard-beige
-    p-0
+    @apply bg-postcard-beige;
+    max-width: theme('screens.2xl');
+    padding: 0;
 }
 
 /* articles.css */
