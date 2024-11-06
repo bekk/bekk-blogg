@@ -20,7 +20,7 @@ export default function Index() {
   const post = useLoaderData<Post>()
 
   return (
-    <div className="striped-frame max-w-screen-2xl m-auto">
+    <div className="bg-postcard-beige p-7 sm:p-12 z-[1] relative max-w-screen-2xl m-auto bg-[url('../assets/striped-bg.svg')] before:content-[''] before:absolute before:left-0 before:top-0 before:bottom-0 before:right-0 before:bg-postcard-beige before:m-2 before:z-[-1] sm:before:m-3">
       <h1>{post.title}</h1>
       {post?.content && <PortableText value={post.content} components={components} />}
     </div>
