@@ -21,17 +21,23 @@
     }
 }
 
+/*
+p-4 sm:p-12 border-8 sm:border-[14px]
+ */
 .striped-frame {
-    @apply bg-postcard-beige p-12 border-8 border-solid;
+    @apply bg-postcard-beige p-4 md:p-12 border-solid border-8 md:border-14 ;
     border-image: repeating-linear-gradient(
             -45deg,
-            #F7F3EE 0px,
+            #F7F3EE,
             #F7F3EE 30px,
-            #D0332E 0px,
-            #D0332E 40px,
-            #F7F3EE 0px,
-            #F7F3EE 70px,
-            #2F7346 0px,
-            #2F7346 80px
+            #D0332E 31px,
+            #D0332E 50px,
+            #F7F3EE 51px,
+            #F7F3EE 90px,
+            #2F7346 91px,
+            #2F7346 110px,
+            #F7F3EE 111px
     ) 12;
 }
+
+
