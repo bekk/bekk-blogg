@@ -6,11 +6,16 @@ type ImageWithMetadataDisplayProps = {
   image: ImageWithMetadata;
 };
 
-export default function ImageWithMetadataBlock({ image }: ImageWithMetadataDisplayProps) {
-  const [imageUrl, setImageUrl] = useState(undefined)
+export default function ImageBlock({image}: ImageWithMetadataDisplayProps) {
+  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined)
 
   // Generate the URL with optional crop/hotspot using urlFor
   useEffect(() => {
+
+    if (!image.asset && image.src) {
+      setImageUrl(image.src)
+      return;
+    }
     fetch('/api/image-url', {
       method: 'POST',
       headers: {
@@ -26,7 +31,7 @@ export default function ImageWithMetadataBlock({ image }: ImageWithMetadataDispl
 
 
   return (
-    <figure style={{ maxWidth: image.maxWidth || '100%' }}>
+    <figure style={{maxWidth: image.maxWidth || '100%'}}>
       <img
         src={imageUrl}
         alt={image.alt || 'Image'}

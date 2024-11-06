@@ -1,7 +1,7 @@
 import {Code, CodePen, CodeSandbox, ImageWithMetadata, Twitter} from "../types/sanity.types";
 
 import {CodeBlock} from "./CodeBlock";
-import ImageWithMetadataBlock from "./ImageWithMetadataBlock";
+import ImageBlock from "./ImageBlock";
 import {CodePenBlock} from "./CodePenBlock";
 import {CodeSandboxBlock} from "./CodeSandboxBlock";
 import TwitterBlock from "./TwitterBlock";
@@ -12,7 +12,7 @@ export const components = {
       <CodeBlock code={props.value}/>
     ),
     imageWithMetadata: (props: { value: ImageWithMetadata }) => (
-      <ImageWithMetadataBlock image={props.value}/>
+      <ImageBlock image={props.value}/>
     ),
     codeSandbox: (props: { value: CodeSandbox }) => (
       <CodeSandboxBlock codeSandbox={props.value}/>
@@ -23,23 +23,23 @@ export const components = {
     youtube: () => (
       <p>FILL IN</p>
     ),
-    twitter: (props: { value: Twitter}) => (
-      <TwitterBlock twitter={props.value} />
+    twitter: (props: { value: Twitter }) => (
+      <TwitterBlock twitter={props.value}/>
     ),
     unfurledUrl: () => (
-      <p>FILL IN</p>
-    ),
-    Image: () => (
       <p>FILL IN</p>
     ),
     iframe: () => (
       <p>FILL IN</p>
     ),
-    image: () => (
-      <p>FILL IN</p>
+    image: (props: { value: ImageWithMetadata }) => (
+      <ImageBlock image={props.value}/>
     ),
     infoBlock: () => (
       <p>FILL IN</p>
+    ),
+    Image: (props: { value: ImageWithMetadata }) => (
+      <ImageBlock image={props.value}/>
     ),
     // __block: <p>FILL IN</p>,
   }
