@@ -16,7 +16,7 @@ export const Article = ({ post }: ArticleProps) => {
       </div>
       <div className="col-start-2 col-end-2 row-start-2 row-end-2">
         {post?.description && (
-          <div className="text-leading-mobile sm:text-leading-desktop mb-10">
+          <div className="text-leading-mobile md:text-leading-desktop mb-10">
             <PortableText value={post.description} components={components} />
           </div>
         )}
