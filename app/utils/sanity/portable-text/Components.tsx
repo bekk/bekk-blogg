@@ -1,9 +1,8 @@
-import {Code, CodePen, CodeSandbox, Iframe, ImageWithMetadata, Twitter, Youtube} from '../types/sanity.types'
+import {Code, CodePen, CodeSandbox, ImageWithMetadata, Twitter, Youtube} from '../types/sanity.types'
 
 import {CodeBlock} from './CodeBlock'
 import {CodePenBlock} from './CodePenBlock'
 import {CodeSandboxBlock} from './CodeSandboxBlock'
-import IFrameBlock from "./IFrameBlock";
 import ImageBlock from './ImageBlock'
 import TwitterBlock from './TwitterBlock'
 import {YouTubeBlock} from './YouTubeBlock'
@@ -17,7 +16,7 @@ export const components = {
     youtube: (props: { value: Youtube }) => <YouTubeBlock youtube={props.value}/>,
     twitter: (props: { value: Twitter }) => <TwitterBlock twitter={props.value}/>,
     unfurledUrl: () => <p>FILL IN</p>,
-    iframe: (props: { value: Iframe }) => <IFrameBlock iframe={props.value}/>,
+    iframe: (props: { value: ImageWithMetadata }) => <ImageBlock image={props.value}/>,
     image: (props: { value: ImageWithMetadata }) => <ImageBlock image={props.value}/>,
     infoBlock: () => <p>FILL IN</p>,
     Image: (props: { value: ImageWithMetadata }) => <ImageBlock image={props.value}/>,
