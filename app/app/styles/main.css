@@ -25,13 +25,13 @@
     @apply bg-postcard-beige p-12 border-8 border-solid;
     border-image: repeating-linear-gradient(
             -45deg,
-            #f5f5dc 0px,
-            #f5f5dc 30px,
-            #ff0000 0px,
-            #ff0000 40px,
-            #f5f5dc 0px,
-            #f5f5dc 70px,
-            #006400 0px,
-            #006400 80px
+            #F7F3EE 0px,
+            #F7F3EE 30px,
+            #D0332E 0px,
+            #D0332E 40px,
+            #F7F3EE 0px,
+            #F7F3EE 70px,
+            #2F7346 0px,
+            #2F7346 80px
     ) 12;
 }
