@@ -1,10 +1,11 @@
-import { Code, CodePen, CodeSandbox, ImageWithMetadata, Twitter, Youtube } from '../types/sanity.types'
+import { Code, CodePen, CodeSandbox, ImageWithMetadata, Twitter, UnfurledUrl, Youtube } from '../types/sanity.types'
 
 import { CodeBlock } from './CodeBlock'
-import ImageBlock from './ImageBlock'
 import { CodePenBlock } from './CodePenBlock'
 import { CodeSandboxBlock } from './CodeSandboxBlock'
+import ImageBlock from './ImageBlock'
 import TwitterBlock from './TwitterBlock'
+import { UnfurledUrlBlock } from './UnfurledUrlBlock'
 import { YouTubeBlock } from './YouTubeBlock'
 
 export const components = {
@@ -15,7 +16,7 @@ export const components = {
     codePen: (props: { value: CodePen }) => <CodePenBlock codePen={props.value} />,
     youtube: (props: { value: Youtube }) => <YouTubeBlock youtube={props.value} />,
     twitter: (props: { value: Twitter }) => <TwitterBlock twitter={props.value} />,
-    unfurledUrl: () => <p>FILL IN</p>,
+    unfurledUrl: (props: { value: UnfurledUrl }) => <UnfurledUrlBlock unfurledUrl={props.value} />,
     iframe: () => <p>FILL IN</p>,
     image: (props: { value: ImageWithMetadata }) => <ImageBlock image={props.value} />,
     infoBlock: () => <p>FILL IN</p>,

@@ -128,6 +128,7 @@ const post = defineType({
       description: 'De som har laget innholdet. Husk å legge til deg selv!',
       name: 'authors',
       type: 'array',
+      validation: (rule) => rule.required(),
       of: [
         {
           type: 'reference',
