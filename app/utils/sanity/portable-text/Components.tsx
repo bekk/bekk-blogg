@@ -1,12 +1,12 @@
 import { Code, CodePen, CodeSandbox, ImageWithMetadata, Twitter, UnfurledUrl, Youtube } from '../types/sanity.types'
 
 import { CodeBlock } from './CodeBlock'
-import ImageBlock from './ImageBlock'
 import { CodePenBlock } from './CodePenBlock'
 import { CodeSandboxBlock } from './CodeSandboxBlock'
+import ImageBlock from './ImageBlock'
 import TwitterBlock from './TwitterBlock'
-import { YouTubeBlock } from './YouTubeBlock'
 import { UnfurledUrlBlock } from './UnfurledUrlBlock'
+import { YouTubeBlock } from './YouTubeBlock'
 
 export const components = {
   types: {

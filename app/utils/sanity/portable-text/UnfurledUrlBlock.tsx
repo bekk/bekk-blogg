@@ -1,6 +1,8 @@
 import { PreviewLink } from '@opengraphninja/react'
-import '@opengraphninja/react/styles.css'
+
 import { UnfurledUrl } from '../types/sanity.types'
+
+import '@opengraphninja/react/styles.css'
 
 type UnfurledUrlBlockProps = {
   unfurledUrl: UnfurledUrl

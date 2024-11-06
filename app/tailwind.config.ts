@@ -5,11 +5,11 @@ export default {
   content: ['./app/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
-      backgroundColor:{
+      backgroundColor: {
         'envelope-beige': '#E0C190',
         'postcard-beige': '#F7F3EE',
       },
-      textColor:{
+      textColor: {
         'base': '#000000',
         'reindeer-brown': '#714319',
         'santa-red': '#D0332E',
