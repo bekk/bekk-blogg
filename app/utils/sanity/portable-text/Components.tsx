@@ -5,6 +5,7 @@ import ImageBlock from './ImageBlock'
 import { CodePenBlock } from './CodePenBlock'
 import { CodeSandboxBlock } from './CodeSandboxBlock'
 import TwitterBlock from './TwitterBlock'
+import { YouTubeBlock } from './YouTubeBlock'
 
 export const components = {
   types: {
