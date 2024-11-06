@@ -19,13 +19,19 @@
     p {
         @apply text-body-mobile md:text-body-desktop
     }
-
-    body {
-        @apply bg-envelope-beige;
-        padding: 5rem;
-        margin: auto;
-        overflow-wrap: break-word;
-        word-break: break-word;
-    }
 }
 
+.striped-frame {
+    @apply bg-postcard-beige p-12 border-8 border-solid;
+    border-image: repeating-linear-gradient(
+            -45deg,
+            #F7F3EE 0px,
+            #F7F3EE 30px,
+            #D0332E 0px,
+            #D0332E 40px,
+            #F7F3EE 0px,
+            #F7F3EE 70px,
+            #2F7346 0px,
+            #2F7346 80px
+    ) 12;
+}
