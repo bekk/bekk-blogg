@@ -4,7 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 @layer base {
-  html {
+  body {
     font-family: 'GT-America-Standard-Regular', system-ui, sans-serif;
   }
   h1 {
