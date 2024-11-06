@@ -1,9 +1,10 @@
-import {Code, CodePen, CodeSandbox, ImageWithMetadata} from "../types/sanity.types";
+import {Code, CodePen, CodeSandbox, ImageWithMetadata, Twitter} from "../types/sanity.types";
 
 import {CodeBlock} from "./CodeBlock";
 import ImageWithMetadataBlock from "./ImageWithMetadataBlock";
 import {CodePenBlock} from "./CodePenBlock";
 import {CodeSandboxBlock} from "./CodeSandboxBlock";
+import TwitterBlock from "./TwitterBlock";
 
 export const components = {
   types: {
@@ -22,8 +23,8 @@ export const components = {
     youtube: () => (
       <p>FILL IN</p>
     ),
-    twitter: () => (
-      <p>FILL IN</p>
+    twitter: (props: { value: Twitter}) => (
+      <TwitterBlock twitter={props.value} />
     ),
     unfurledUrl: () => (
       <p>FILL IN</p>
