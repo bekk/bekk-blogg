@@ -1,25 +1,26 @@
-import { Code, CodePen, CodeSandbox, ImageWithMetadata, Twitter, Youtube } from '../types/sanity.types'
+import {Code, CodePen, CodeSandbox, Iframe, ImageWithMetadata, Twitter, Youtube} from '../types/sanity.types'
 
-import { CodeBlock } from './CodeBlock'
+import {CodeBlock} from './CodeBlock'
+import {CodePenBlock} from './CodePenBlock'
+import {CodeSandboxBlock} from './CodeSandboxBlock'
+import IFrameBlock from "./IFrameBlock";
 import ImageBlock from './ImageBlock'
-import { CodePenBlock } from './CodePenBlock'
-import { CodeSandboxBlock } from './CodeSandboxBlock'
 import TwitterBlock from './TwitterBlock'
-import { YouTubeBlock } from './YouTubeBlock'
+import {YouTubeBlock} from './YouTubeBlock'
 
 export const components = {
   types: {
-    code: (props: { value: Code }) => <CodeBlock code={props.value} />,
-    imageWithMetadata: (props: { value: ImageWithMetadata }) => <ImageBlock image={props.value} />,
-    codeSandbox: (props: { value: CodeSandbox }) => <CodeSandboxBlock codeSandbox={props.value} />,
-    codePen: (props: { value: CodePen }) => <CodePenBlock codePen={props.value} />,
-    youtube: (props: { value: Youtube }) => <YouTubeBlock youtube={props.value} />,
-    twitter: (props: { value: Twitter }) => <TwitterBlock twitter={props.value} />,
+    code: (props: { value: Code }) => <CodeBlock code={props.value}/>,
+    imageWithMetadata: (props: { value: ImageWithMetadata }) => <ImageBlock image={props.value}/>,
+    codeSandbox: (props: { value: CodeSandbox }) => <CodeSandboxBlock codeSandbox={props.value}/>,
+    codePen: (props: { value: CodePen }) => <CodePenBlock codePen={props.value}/>,
+    youtube: (props: { value: Youtube }) => <YouTubeBlock youtube={props.value}/>,
+    twitter: (props: { value: Twitter }) => <TwitterBlock twitter={props.value}/>,
     unfurledUrl: () => <p>FILL IN</p>,
-    iframe: () => <p>FILL IN</p>,
-    image: (props: { value: ImageWithMetadata }) => <ImageBlock image={props.value} />,
+    iframe: (props: { value: Iframe }) => <IFrameBlock iframe={props.value}/>,
+    image: (props: { value: ImageWithMetadata }) => <ImageBlock image={props.value}/>,
     infoBlock: () => <p>FILL IN</p>,
-    Image: (props: { value: ImageWithMetadata }) => <ImageBlock image={props.value} />,
+    Image: (props: { value: ImageWithMetadata }) => <ImageBlock image={props.value}/>,
 
     // __block: <p>FILL IN</p>,
   },
