@@ -10,7 +10,7 @@ export default {
         'postcard-beige': '#F7F3EE',
       },
       textColor: {
-        'base': '#000000',
+        base: '#000000',
         'reindeer-brown': '#714319',
         'santa-red': '#D0332E',
         'christmas-tree-green': '#2F7346',
@@ -23,7 +23,7 @@ export default {
         'gt-standard-italic': ['GT-America-Standard-Regular-Italic', 'Arial', 'sans-serif'],
         'gt-light': ['GT-America-Standard-Light', 'Arial', 'sans-serif'],
         'gt-light-italic': ['GT-America-Standard-Light-Italic', 'Arial', 'sans-serif'],
-        'delicious': ['Delicious Handrawn', 'cursive'],
+        delicious: ['Delicious Handrawn', 'cursive'],
       },
       fontSize: {
         'display-desktop': '56px',
