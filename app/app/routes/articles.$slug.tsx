@@ -1,13 +1,9 @@
-import { PortableText } from '@portabletext/react'
 import type { MetaFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
-
-import { components } from '../../utils/sanity/portable-text/Components'
 import { POST_BY_SLUG } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
 import { Post } from '../../utils/sanity/types/sanity.types'
 import { Article } from '~/features/article/Article'
-import { Stamp } from '~/styles/Stamp'
 
 export const meta: MetaFunction = () => {
   return [{ title: 'Post' }, { name: 'description', content: 'Welcome to Remix!' }]
