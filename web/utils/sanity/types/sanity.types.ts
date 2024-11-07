@@ -277,13 +277,7 @@ export type Post = {
   slug?: Slug
   canonicalUrl?: string
   description?: DescriptionText
-  authors?: Array<{
-    _ref: string
-    _type: 'reference'
-    _weak?: boolean
-    _key: string
-    [internalGroqTypeReferenceTo]?: 'author'
-  }>
+  authors: Author[]
   coverImage?: {
     asset?: {
       _ref: string
@@ -298,13 +292,7 @@ export type Post = {
     _type: 'image'
   }
   availableFrom?: string
-  tags?: Array<{
-    _ref: string
-    _type: 'reference'
-    _weak?: boolean
-    _key: string
-    [internalGroqTypeReferenceTo]?: 'tag'
-  }>
+  tags?: Tag[]
   keywords?: Array<string>
   content?: PortableText
   relatedLinks?: Array<{
