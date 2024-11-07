@@ -1,10 +1,10 @@
-import {CodeSandbox} from "../types/sanity.types";
+import {CodeSandbox} from "../../utils/sanity/types/sanity.types";
 
 type CodeSandboxProps = {
   codeSandbox: CodeSandbox;
 };
 
-export const CodeSandboxBlock = ({ codeSandbox }: CodeSandboxProps) => {
+export const CodeSandboxBlock = ({codeSandbox}: CodeSandboxProps) => {
   if (!codeSandbox?.url) {
     return null;
   }

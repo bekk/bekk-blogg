@@ -1,5 +1,5 @@
-import { PortableText } from '@portabletext/react'
-import { components } from 'utils/sanity/portable-text/Components'
+import {PortableText} from '@portabletext/react'
+import {components} from "~/portable-text/Components";
 import { Post } from 'utils/sanity/types/sanity.types'
 import { PostStamp } from '~/features/article/PostStamp'
 
