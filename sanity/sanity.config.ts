@@ -1,10 +1,10 @@
 import {visionTool} from '@sanity/vision'
-import {media} from "sanity-plugin-media";
-import {codeInput} from "@sanity/code-input";
-import {structureTool} from "sanity/structure";
-import {defineConfig, SchemaTypeDefinition} from "sanity";
+import {media} from 'sanity-plugin-media'
+import {codeInput} from '@sanity/code-input'
+import {structureTool} from 'sanity/structure'
+import {defineConfig, SchemaTypeDefinition} from 'sanity'
 import schemas from './schemas/schema'
-import {frontendUrl} from "./src/environment";
+import {frontendUrl} from './src/environment'
 
 // Define the auth provider type
 interface AuthProvider {
@@ -23,7 +23,7 @@ const config = defineConfig({
   name: 'default',
   title: 'sanity',
   projectId: 'ah2n1vfr',
-  dataset: 'bekk-blogg',
+  dataset: process.env.SANITY_STUDIO_DATASET ?? 'bekk-blogg',
 
   document: {
     // prev is the result from previous plugins and thus can be composed
@@ -33,10 +33,9 @@ const config = defineConfig({
       const client = getClient({apiVersion: process.env.SANITY_STUDIO_API_VERSION ?? '2021-03-25'})
 
       if (document._type === 'post') {
-        const slug = await client.fetch(
-          `*[_type == 'post' && _id == $postId][0].slug.current`,
-          {postId: document._id}
-        )
+        const slug = await client.fetch(`*[_type == 'post' && _id == $postId][0].slug.current`, {
+          postId: document._id,
+        })
 
         const params = new URLSearchParams()
         params.set('preview', 'true')
@@ -49,12 +48,7 @@ const config = defineConfig({
     },
   },
 
-  plugins: [
-    structureTool(),
-    visionTool(),
-    media(),
-    codeInput(),
-  ],
+  plugins: [structureTool(), visionTool(), media(), codeInput()],
   schema: {
     types: schemaTypes,
   },
