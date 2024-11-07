@@ -50,6 +50,9 @@ export default {
         DEFAULT: '1px',
         '14': '14px',
       },
+      height: {
+        '21.4': '85.6px',
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',

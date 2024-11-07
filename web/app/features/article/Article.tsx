@@ -1,7 +1,8 @@
-import { PortableText } from '@portabletext/react'
-import { formatDate } from 'utils/date'
+import {PortableText} from '@portabletext/react'
+import {components} from "~/portable-text/Components";
 import { Post } from 'utils/sanity/types/sanity.types'
-import { components } from '~/portable-text/Components'
+import { PostStamp } from '~/features/article/PostStamp'
+import { formatDate } from 'utils/date'
 
 type ArticleProps = {
   post: Post
@@ -10,7 +11,9 @@ type ArticleProps = {
 export const Article = ({ post }: ArticleProps) => {
   return (
     <div className="md:grid sm:grid-cols-[1fr_2fr] md:grid-rows-[auto_auto] md:gap-x-24 md:gap-y-6 p-6 md:p-20">
-      <div className="col-start-2 col-end-2 row-start-1 row-end-1 md:text-right">poststamp</div>
+      <div className="col-start-2 col-end-2 row-start-1 row-end-1 md:text-right flex justify-end">
+        <PostStamp />
+      </div>
       <div className="col-start-1 col-span-2 row-start-1 row-end-1 hidden">breadcrumbs</div>
       <div className="col-start-1 col-end-1 row-start-2 row-end-2 meta mb-8">
         <h1 className="font-delicious mb-8">{post.title}</h1>
