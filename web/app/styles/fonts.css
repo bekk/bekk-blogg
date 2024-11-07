@@ -5,7 +5,7 @@
 @layer base {
     @font-face {
         font-family: 'GT-America-Expanded-Medium';
-        src: url('/assets/fonts/GT-America-Expanded-Medium.woff2') format('woff2');
+        src: url('/fonts/GT-America-Expanded-Medium.woff2') format('woff2');
         font-feature-settings: 'ss01' on,
         'ss05' on;
         font-weight: 500;
@@ -14,7 +14,7 @@
 
     @font-face {
         font-family: 'GT-America-Standard-Medium-Italic';
-        src: url('/assets/fonts/GT-America-Standard-Medium-Italic.woff2') format('woff2');
+        src: url('/fonts/GT-America-Standard-Medium-Italic.woff2') format('woff2');
         font-feature-settings: 'ss01' on,
         'ss05' on;
         font-weight: 500;
@@ -24,7 +24,7 @@
 
     @font-face {
         font-family: 'GT-America-Standard-Medium';
-        src: url('/assets/fonts/GT-America-Standard-Medium.woff2') format('woff2');
+        src: url('/fonts/GT-America-Standard-Medium.woff2') format('woff2');
         font-feature-settings: 'ss01' on,
         'ss05' on;
         font-weight: 500;
@@ -34,7 +34,7 @@
 
     @font-face {
         font-family: 'GT-America-Standard-Regular-Italic';
-        src: url('/assets/fonts/GT-America-Standard-Regular-Italic.woff2') format('woff2');
+        src: url('/fonts/GT-America-Standard-Regular-Italic.woff2') format('woff2');
         font-feature-settings: 'ss01' on,
         'ss05' on;
         font-weight: 400;
@@ -44,7 +44,7 @@
 
     @font-face {
         font-family: 'GT-America-Standard-Regular';
-        src: url('/assets/fonts/GT-America-Standard-Regular.woff2') format('woff2');
+        src: url('/fonts/GT-America-Standard-Regular.woff2') format('woff2');
         font-feature-settings: 'ss01' on,
         'ss05' on;
         font-weight: 400;
@@ -54,7 +54,7 @@
 
     @font-face {
         font-family: 'GT-America-Standard-Light-Italic';
-        src: url('/assets/fonts/GT-America-Standard-Light-Italic.woff2') format('woff2');
+        src: url('/fonts/GT-America-Standard-Light-Italic.woff2') format('woff2');
         font-feature-settings: 'ss01' on,
         'ss05' on;
         font-weight: 300;
@@ -64,7 +64,7 @@
 
     @font-face {
         font-family: 'GT-America-Standard-Light';
-        src: url('/assets/fonts/GT-America-Standard-Light.woff2') format('woff2');
+        src: url('/fonts/GT-America-Standard-Light.woff2') format('woff2');
         font-feature-settings: 'ss01' on,
         'ss05' on;
         font-weight: 300;
@@ -74,7 +74,7 @@
 
     @font-face {
         font-family: 'Delicious Handrawn';
-        src: url('/assets/fonts/DeliciousHandrawn-Regular.ttf') format('truetype');
+        src: url('/fonts/DeliciousHandrawn-Regular.ttf') format('truetype');
         font-weight: normal;
         font-style: normal;
         font-display: swap;
