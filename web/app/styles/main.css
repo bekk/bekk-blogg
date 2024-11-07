@@ -1,38 +1,38 @@
-@import 'fonts.css';
+@import 'fonts.css?.url';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 @layer base {
-  body {
-    font-family: 'GT-America-Standard-Regular', system-ui, sans-serif;
-  }
-  h1 {
-    @apply text-headline-mobile md:text-headline-desktop;
-  }
+    body {
+        font-family: 'GT-America-Standard-Regular', system-ui, sans-serif;
+    }
 
-  h2 {
-    @apply text-leading-mobile md:text-leading-desktop;
-  }
+    h1 {
+        @apply text-headline-mobile md:text-headline-desktop;
+    }
 
-  h3 {
-    @apply text-subtitle-mobile md:text-subtitle-desktop;
-  }
+    h2 {
+        @apply text-leading-mobile md:text-leading-desktop;
+    }
+
+    h3 {
+        @apply text-subtitle-mobile md:text-subtitle-desktop;
+    }
 }
 
 .striped-frame {
-  @apply bg-postcard-beige border-solid border-8 md:border-14;
-  border-image: repeating-linear-gradient(
-      -45deg,
-      #f7f3ee,
-      #f7f3ee 30px,
-      #d0332e 31px,
-      #d0332e 50px,
-      #f7f3ee 51px,
-      #f7f3ee 90px,
-      #2f7346 91px,
-      #2f7346 110px,
-      #f7f3ee 111px
-    )
-    12;
+    @apply bg-postcard-beige border-solid border-8 md:border-14;
+    border-image: repeating-linear-gradient(
+            -45deg,
+            #f7f3ee,
+            #f7f3ee 30px,
+            #d0332e 31px,
+            #d0332e 50px,
+            #f7f3ee 51px,
+            #f7f3ee 90px,
+            #2f7346 91px,
+            #2f7346 110px,
+            #f7f3ee 111px
+    ) 12;
 }
