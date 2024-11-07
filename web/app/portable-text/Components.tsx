@@ -1,3 +1,5 @@
+import React from "react";
+
 import {
   Code,
   CodePen,
@@ -19,8 +21,12 @@ import TwitterBlock from './TwitterBlock'
 import { UnfurledUrlBlock } from './UnfurledUrlBlock'
 import { YouTubeBlock } from './YouTubeBlock'
 
-const withSpacing = (component: any, margin: number = 8) => {
-  return <div className={`my-${margin.toString()}`}>{component}</div>
+const withSpacing = (component: React.ReactNode, margin: number = 2) => {
+  return (
+    <div style={{marginTop: `${margin}rem`, marginBottom: `${margin}rem`}}>
+      {component}
+    </div>
+  )
 }
 
 export const components = {
