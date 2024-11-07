@@ -23,7 +23,6 @@ module.exports = {
 
   // Base config
   extends: ['eslint:recommended'],
-
   overrides: [
     // React
     {
@@ -110,4 +109,6 @@ module.exports = {
       },
     },
   ],
+  // Tailwind
+  extends: ['plugin:tailwindcss/recommended'],
 }
