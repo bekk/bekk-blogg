@@ -1,11 +1,10 @@
-import { PortableText } from '@portabletext/react'
 import type { MetaFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 
-import { components } from '../../utils/sanity/portable-text/Components'
 import { POST_BY_SLUG } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
 import { Post } from '../../utils/sanity/types/sanity.types'
+
 import { Article } from '~/features/article/Article'
 
 export const meta: MetaFunction = () => {
@@ -21,7 +20,7 @@ export default function Index() {
   const post = useLoaderData<Post>()
 
   return (
-    <div className="striped-frame max-w-screen-2xl m-auto">
+    <div className="striped-frame m-auto max-w-screen-2xl">
       <Article post={post} />
     </div>
   )

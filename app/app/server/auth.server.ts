@@ -3,7 +3,7 @@ import { Params } from '@remix-run/react'
 import { Authenticator } from 'remix-auth'
 import { MicrosoftStrategy } from 'remix-auth-microsoft'
 
-import { getClientId, getClientSecret, getApplicationRoot, getScopes, getSessionSecret, getTenantId } from './config.server'
+import { getApplicationRoot, getClientId, getClientSecret, getScopes, getSessionSecret, getTenantId } from './config.server'
 
 import { sessionStorage } from '~/server/session.server'
 

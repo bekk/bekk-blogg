@@ -1,37 +1,38 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from 'react'
 
-import {ImageWithMetadata} from "../types/sanity.types";
+import { ImageWithMetadata } from '../types/sanity.types'
 
 type ImageWithMetadataDisplayProps = {
-  image: ImageWithMetadata;
-};
+  image: ImageWithMetadata
+}
 
-export default function ImageBlock({image}: ImageWithMetadataDisplayProps) {
+export default function ImageBlock({ image }: ImageWithMetadataDisplayProps) {
   const [imageUrl, setImageUrl] = useState<string | undefined>(undefined)
 
   // Generate the URL with optional crop/hotspot using urlFor
   useEffect(() => {
-
     if (!image.asset && image.src) {
       setImageUrl(image.src)
-      return;
+      return
     }
     fetch('/api/image-url', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({asset: image.asset}),
-    }).then((res) => res.json()).then((data) => {
-      setImageUrl(data.imageUrl)
-    }).catch((error) => {
-      console.error('Error:', error);
-    });
-  }, [image.asset]);
-
+      body: JSON.stringify({ asset: image.asset }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setImageUrl(data.imageUrl)
+      })
+      .catch((error) => {
+        console.error('Error:', error)
+      })
+  }, [image.asset, image.src])
 
   return (
-    <figure style={{maxWidth: image.maxWidth || '100%'}}>
+    <figure style={{ maxWidth: image.maxWidth || '100%' }}>
       <img
         src={imageUrl}
         alt={image.alt || 'Image'}
@@ -42,5 +43,5 @@ export default function ImageBlock({image}: ImageWithMetadataDisplayProps) {
       />
       {image.caption && <figcaption>{image.caption}</figcaption>}
     </figure>
-  );
+  )
 }

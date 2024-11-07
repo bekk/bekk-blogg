@@ -1,5 +1,6 @@
-import {Twitter} from "../types/sanity.types";
 import {TwitterTweetEmbed} from "react-twitter-embed";
+
+import {Twitter} from "../types/sanity.types";
 
 const getTweetId = (url?: string) => {
   if (!url) {

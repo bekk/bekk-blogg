@@ -1,6 +1,8 @@
-import { Youtube } from '../types/sanity.types'
-import useMediaQuery from '~/hooks/useMediaQuery'
 import getYouTubeId from 'get-youtube-id'
+
+import { Youtube } from '../types/sanity.types'
+
+import useMediaQuery from '~/hooks/useMediaQuery'
 
 type YouTubeProps = {
   youtube: Youtube

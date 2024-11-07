@@ -8,15 +8,15 @@ type ArticleProps = {
 
 export const Article = ({ post }: ArticleProps) => {
   return (
-    <div className="md:grid sm:grid-cols-[auto_auto] md:grid-rows-[auto_auto] md:gap-20 p-6 md:p-20">
+    <div className="p-6 sm:grid-cols-[auto_auto] md:grid md:grid-rows-[auto_auto] md:gap-20 md:p-20">
       <div className="col-start-2 col-end-2 row-start-1 row-end-1 md:text-right">poststamp</div>
-      <div className="col-start-1 col-span-2 row-start-1 row-end-1 hidden">breadcrumbs</div>
-      <div className="col-start-1 col-end-1 row-start-2 row-end-2 meta mb-8">
-        <h1 className="font-delicious mb-4">{post.title}</h1>
+      <div className="col-span-2 col-start-1 row-start-1 row-end-1 hidden">breadcrumbs</div>
+      <div className="col-start-1 col-end-1 row-start-2 row-end-2 mb-8">
+        <h1 className="mb-4 font-delicious">{post.title}</h1>
       </div>
       <div className="col-start-2 col-end-2 row-start-2 row-end-2">
         {post?.description && (
-          <div className="text-leading-mobile md:text-leading-desktop mb-10">
+          <div className="mb-10 text-leading-mobile md:text-leading-desktop">
             <PortableText value={post.description} components={components} />
           </div>
         )}
