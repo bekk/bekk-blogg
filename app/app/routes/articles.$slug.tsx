@@ -6,6 +6,7 @@ import { components } from '../../utils/sanity/portable-text/Components'
 import { POST_BY_SLUG } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
 import { Post } from '../../utils/sanity/types/sanity.types'
+import { Article } from '~/features/article/Article'
 import { Stamp } from '~/styles/Stamp'
 
 export const meta: MetaFunction = () => {
@@ -22,9 +23,7 @@ export default function Index() {
 
   return (
     <div className="striped-frame max-w-screen-2xl m-auto">
-      <h1>{post.title}</h1>
-      <Stamp />
-      {post?.content && <PortableText value={post.content} components={components} />}
+      <Article post={post} />
     </div>
   )
 }
