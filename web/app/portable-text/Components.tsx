@@ -34,7 +34,7 @@ export const components = {
     youtube: (props: { value: Youtube }) => withSpacing(<YouTubeBlock youtube={props.value}/>),
     twitter: (props: { value: Twitter }) => withSpacing(<TwitterBlock twitter={props.value}/>),
     unfurledUrl: (props: { value: UnfurledUrl }) => withSpacing(<UnfurledUrlBlock unfurledUrl={props.value}/>),
-    iframe: () => <p>FILL IN</p>,
+    iframe: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value}/>),
     image: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value}/>),
     infoBlock: () => <p>FILL IN</p>,
     Image: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value}/>),
