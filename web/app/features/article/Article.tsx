@@ -1,8 +1,10 @@
 import {PortableText} from '@portabletext/react'
-import {components} from "~/portable-text/Components";
 import { Post } from 'utils/sanity/types/sanity.types'
+
 import { PostStamp } from '~/features/article/PostStamp'
 import { formatDate } from 'utils/date'
+import { components } from "~/portable-text/Components";
+
 
 type ArticleProps = {
   post: Post
