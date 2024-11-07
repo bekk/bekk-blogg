@@ -4,6 +4,7 @@ import {useLoaderData} from '@remix-run/react'
 import {POST_BY_SLUG} from '../../utils/sanity/queries/postQueries'
 import {loadQuery} from '../../utils/sanity/store'
 import {Post} from '../../utils/sanity/types/sanity.types'
+
 import {Article} from '~/features/article/Article'
 
 export const meta: MetaFunction = () => {

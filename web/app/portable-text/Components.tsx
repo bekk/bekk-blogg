@@ -1,25 +1,29 @@
+import React from "react";
+
 import {
   Code,
   CodePen,
   CodeSandbox,
   ImageWithMetadata,
+  InfoBlock as InfoBlockType,
+  PortableText,
   Twitter,
   UnfurledUrl,
-  Youtube
+  Youtube,
 } from '../../utils/sanity/types/sanity.types'
 
-import {CodeBlock} from './CodeBlock'
-import {CodePenBlock} from './CodePenBlock'
-import {CodeSandboxBlock} from './CodeSandboxBlock'
+import { CodeBlock } from './CodeBlock'
+import { CodePenBlock } from './CodePenBlock'
+import { CodeSandboxBlock } from './CodeSandboxBlock'
 import ImageBlock from './ImageBlock'
+import { InfoBlock } from './InfoBlock'
 import TwitterBlock from './TwitterBlock'
-import {UnfurledUrlBlock} from './UnfurledUrlBlock'
-import {YouTubeBlock} from './YouTubeBlock'
+import { UnfurledUrlBlock } from './UnfurledUrlBlock'
+import { YouTubeBlock } from './YouTubeBlock'
 
-
-const withSpacing = (component: any, margin: number = 8) => {
+const withSpacing = (component: React.ReactNode, margin: number = 2) => {
   return (
-    <div className={`my-${margin.toString()}`}>
+    <div style={{marginTop: `${margin}rem`, marginBottom: `${margin}rem`}}>
       {component}
     </div>
   )
@@ -27,17 +31,17 @@ const withSpacing = (component: any, margin: number = 8) => {
 
 export const components = {
   types: {
-    code: (props: { value: Code }) => withSpacing(<CodeBlock code={props.value}/>),
-    imageWithMetadata: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value}/>),
-    codeSandbox: (props: { value: CodeSandbox }) => withSpacing(<CodeSandboxBlock codeSandbox={props.value}/>),
-    codePen: (props: { value: CodePen }) => withSpacing(<CodePenBlock codePen={props.value}/>),
-    youtube: (props: { value: Youtube }) => withSpacing(<YouTubeBlock youtube={props.value}/>),
-    twitter: (props: { value: Twitter }) => withSpacing(<TwitterBlock twitter={props.value}/>),
-    unfurledUrl: (props: { value: UnfurledUrl }) => withSpacing(<UnfurledUrlBlock unfurledUrl={props.value}/>),
+    code: (props: { value: Code }) => withSpacing(<CodeBlock code={props.value} />),
+    imageWithMetadata: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value} />),
+    codeSandbox: (props: { value: CodeSandbox }) => withSpacing(<CodeSandboxBlock codeSandbox={props.value} />),
+    codePen: (props: { value: CodePen }) => withSpacing(<CodePenBlock codePen={props.value} />),
+    youtube: (props: { value: Youtube }) => withSpacing(<YouTubeBlock youtube={props.value} />),
+    twitter: (props: { value: Twitter }) => withSpacing(<TwitterBlock twitter={props.value} />),
+    unfurledUrl: (props: { value: UnfurledUrl }) => withSpacing(<UnfurledUrlBlock unfurledUrl={props.value} />),
     iframe: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value}/>),
-    image: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value}/>),
-    infoBlock: () => <p>FILL IN</p>,
-    Image: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value}/>),
+    image: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value} />),
+    infoBlock: (props: { value: InfoBlockType }) => <InfoBlock content={props.value.content as PortableText} />,
+    Image: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value} />),
 
     // __block: <p>FILL IN</p>,
   },
