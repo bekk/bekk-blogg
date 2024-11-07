@@ -1,10 +1,10 @@
-import {CodePen} from "../types/sanity.types";
+import {CodePen} from "../../utils/sanity/types/sanity.types";
 
 type CodePenBlockProps = {
   codePen: CodePen
 }
 
-export const CodePenBlock = ({ codePen }: CodePenBlockProps) => {
+export const CodePenBlock = ({codePen}: CodePenBlockProps) => {
   if (!codePen || !codePen.url) {
     return null;
   }
@@ -23,7 +23,7 @@ export const CodePenBlock = ({ codePen }: CodePenBlockProps) => {
   return (
     <iframe
       height="265"
-      style={{ width: "100%" }}
+      style={{width: "100%"}}
       src={`https://codepen.io/${username}/embed/preview/${id}?height=265&theme-id=light&default-tab=css,result`}
       allowTransparency
       allowFullScreen
