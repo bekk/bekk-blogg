@@ -1,4 +1,5 @@
 import React from 'react'
+import type { PortableTextReactComponents } from '@portabletext/react'
 
 import {
   Code,
@@ -25,7 +26,7 @@ const withSpacing = (component: React.ReactNode, margin: number = 2) => {
   return <div style={{ marginTop: `${margin}rem`, marginBottom: `${margin}rem` }}>{component}</div>
 }
 
-export const components = {
+export const components: Partial<PortableTextReactComponents> = {
   types: {
     code: (props: { value: Code }) => withSpacing(<CodeBlock code={props.value} />),
     imageWithMetadata: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value} />),
@@ -40,14 +41,16 @@ export const components = {
     Image: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value} />),
     // __block: <p>FILL IN</p>,
   },
-  list: (props: { value: { listItem: 'number' | 'bullet' }; children: React.ReactNode }) => {
-    return props.value.listItem === 'number' ? (
-      <ol className={'mt-6 list-inside list-decimal'}>{props.children}</ol>
-    ) : (
-      <ul className={'mt-6 list-inside list-disc'}>{props.children}</ul>
-    )
+
+  list: {
+    bullet: ({ children }: { children?: React.ReactNode }) => (
+      <ul className="my-6 list-inside list-disc">{children}</ul>
+    ),
+    number: ({ children }: { children?: React.ReactNode }) => (
+      <ul className="my-6 list-inside list-decimal">{children}</ul>
+    ),
   },
-  listItem: (props: { children: React.ReactNode }) => <li>{props.children}</li>,
+  listItem: ({ children }: { children?: React.ReactNode }) => <li>{children}</li>,
   // marks: {
   //   link: (props: any) => (
   //     <TextLink href={props.mark.href}>{props.children}</TextLink>
