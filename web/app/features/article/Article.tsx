@@ -1,6 +1,8 @@
 import {PortableText} from '@portabletext/react'
 import {Post} from 'utils/sanity/types/sanity.types'
+
 import {components} from "~/portable-text/Components";
+
 
 type ArticleProps = {
   post: Post
