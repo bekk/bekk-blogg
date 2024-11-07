@@ -56,6 +56,7 @@ export default {
         sm: 'calc(var(--radius) - 4px)',
       },
       colors: {
+        'bekk-night': '#1f1f1f',
         foreground: 'hsl(var(--foreground))',
         card: {
           DEFAULT: 'hsl(var(--card))',
