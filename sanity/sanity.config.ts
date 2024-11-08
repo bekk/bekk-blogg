@@ -45,8 +45,8 @@ const config = defineConfig({
     types: schemaTypes,
   },
   auth: createAuthStore({
-    projectId: process.env.SANITY_PROJECT_ID ?? 'ah2n1vfr',
-    dataset: process.env.SANITY_DATASET ?? 'bekk-blogg',
+    projectId: process.env.SANITY_STUDIO_PROJECT_ID ?? '',
+    dataset: process.env.SANITY_STUDIO_DATASET ?? '',
     mode: 'replace',
     providers: [
       {
