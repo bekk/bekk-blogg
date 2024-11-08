@@ -1,9 +1,9 @@
-import {PortableText} from '@portabletext/react'
+import { PortableText } from '@portabletext/react'
+import { formatDate } from 'utils/date'
 import { Post } from 'utils/sanity/types/sanity.types'
 
 import { PostStamp } from '~/features/article/PostStamp'
-import { formatDate } from 'utils/date'
-import { components } from "~/portable-text/Components";
+import { components } from '~/portable-text/Components'
 
 
 type ArticleProps = {
@@ -19,9 +19,11 @@ export const Article = ({ post }: ArticleProps) => {
       <div className="col-start-1 col-span-2 row-start-1 row-end-1 hidden">breadcrumbs</div>
       <div className="col-start-1 col-end-1 row-start-2 row-end-2 meta mb-8">
         <h1 className="font-delicious mb-8">{post.title}</h1>
-        <div className="text-body-mobile md:text-body-desktop border-b border-bekk-night pb-1 mb-8">
-          {post.tags && post.tags.map((tag) => tag.name).join(', ')}
-        </div>
+        {post.tags && (
+          <div className="text-body-mobile md:text-body-desktop border-b border-bekk-night pb-1 mb-8">
+            {post.tags && post.tags.map((tag) => tag.name).join(', ')}
+          </div>
+        )}
         <div className="text-body-mobile md:text-body-desktop border-b border-bekk-night pb-1 mb-8">
           {post.authors && `Fra ${post.authors.map((author) => author.fullName).join(', ')}`}
         </div>
@@ -44,3 +46,4 @@ export const Article = ({ post }: ArticleProps) => {
     </div>
   )
 }
+
