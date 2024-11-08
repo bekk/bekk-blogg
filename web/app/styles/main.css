@@ -5,6 +5,7 @@
 @tailwind utilities;
 @layer base {
     body {
+        @apply text-body-mobile md:text-body-desktop;
         font-family: 'GT-America-Standard-Regular', system-ui, sans-serif;
     }
 
