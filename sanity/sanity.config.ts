@@ -47,11 +47,12 @@ const config = defineConfig({
   auth: createAuthStore({
     projectId: process.env.SANITY_PROJECT_ID ?? 'ah2n1vfr',
     dataset: process.env.SANITY_DATASET ?? 'bekk-blogg',
-    redirectOnSingle: false,
+    mode: 'replace',
     providers: [
       {
         name: 'saml',
-        title: 'SAML',
+        logo: 'https://www.bekk.no/favicon.ico',
+        title: 'Bekk Login',
         url: 'https://api.sanity.io/v2021-10-01/auth/saml/login/46187778',
       },
     ],
