@@ -37,17 +37,29 @@ export const components: Partial<PortableTextReactComponents> = {
     unfurledUrl: (props: { value: UnfurledUrl }) => withSpacing(<UnfurledUrlBlock unfurledUrl={props.value} />),
     iframe: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value} />),
     image: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value} />),
-    infoBlock: (props: { value: InfoBlockType }) => <InfoBlock content={props.value.content as PortableText} />,
+    infoBlock: (props: { value: InfoBlockType }) =>
+      withSpacing(<InfoBlock content={props.value.content as PortableText} />),
     Image: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value} />),
-    // __block: <p>FILL IN</p>,
   },
-
+  block: {
+    h1: ({ children }: { children?: React.ReactNode }) => <h1 className="mt-4 mb-2">{children}</h1>,
+    h2: ({ children }: { children?: React.ReactNode }) => <h2 className="mt-4 mb-2">{children}</h2>,
+    h3: ({ children }: { children?: React.ReactNode }) => <h3 className="mt-4 mb-2">{children}</h3>,
+    h4: ({ children }: { children?: React.ReactNode }) => <h4 className="mt-4 mb-2">{children}</h4>,
+    normal: ({ children }: { children?: React.ReactNode }) => {
+      const arrayChildren = React.Children.toArray(children)
+      if (!arrayChildren.length || arrayChildren.join('') === '') {
+        return null
+      }
+      return <p className="mb-4">{children}</p>
+    },
+  },
   list: {
     bullet: ({ children }: { children?: React.ReactNode }) => (
-      <ul className="my-6 list-inside list-disc">{children}</ul>
+      <ul className="mb-4 list-inside list-disc">{children}</ul>
     ),
     number: ({ children }: { children?: React.ReactNode }) => (
-      <ul className="my-6 list-inside list-decimal">{children}</ul>
+      <ul className="mb-4 list-inside list-decimal">{children}</ul>
     ),
   },
   listItem: ({ children }: { children?: React.ReactNode }) => <li>{children}</li>,
