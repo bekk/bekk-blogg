@@ -35,7 +35,7 @@ export const components: Partial<PortableTextReactComponents> = {
     youtube: (props: { value: Youtube }) => withSpacing(<YouTubeBlock youtube={props.value} />),
     twitter: (props: { value: Twitter }) => withSpacing(<TwitterBlock twitter={props.value} />),
     unfurledUrl: (props: { value: UnfurledUrl }) => withSpacing(<UnfurledUrlBlock unfurledUrl={props.value} />),
-    iframe: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value}/>),
+    iframe: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value} />),
     image: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value} />),
     infoBlock: (props: { value: InfoBlockType }) => <InfoBlock content={props.value.content as PortableText} />,
     Image: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value} />),
