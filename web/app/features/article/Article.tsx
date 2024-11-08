@@ -1,9 +1,9 @@
-import {PortableText} from '@portabletext/react'
+import { PortableText } from '@portabletext/react'
+import { formatDate } from 'utils/date'
 import { Post } from 'utils/sanity/types/sanity.types'
 
 import { PostStamp } from '~/features/article/PostStamp'
-import { formatDate } from 'utils/date'
-import { components } from "~/portable-text/Components";
+import { components } from '~/portable-text/Components'
 
 
 type ArticleProps = {
@@ -19,15 +19,16 @@ export const Article = ({ post }: ArticleProps) => {
       <div className="col-start-1 col-span-2 row-start-1 row-end-1 hidden">breadcrumbs</div>
       <div className="col-start-1 col-end-1 row-start-2 row-end-2 meta mb-8">
         <h1 className="font-delicious mb-8">{post.title}</h1>
-        <div className="text-body-mobile md:text-body-desktop border-b border-bekk-night pb-1 mb-8">
-          {post.tags && post.tags.map((tag) => tag.name).join(', ')}
-        </div>
-        <div className="text-body-mobile md:text-body-desktop border-b border-bekk-night pb-1 mb-8">
-          {post.authors && `Fra ${post.authors.map((author) => author.fullName).join(', ')}`}
-        </div>
-        <div className="text-body-mobile md:text-body-desktop border-b border-bekk-night pb-1">
-          {post.availableFrom && formatDate(post.availableFrom)}
-        </div>
+        {post.tags && (
+          <>
+            {post.tags && post.tags.map((tag) => tag.name).join(', ')}
+            <HLine />
+          </>
+        )}
+        {post.authors && `Fra ${post.authors.map((author) => author.fullName).join(', ')}`}
+        <HLine />
+        {post.availableFrom && formatDate(post.availableFrom)}
+        <HLine />
       </div>
       <div className="col-start-2 col-end-2 row-start-2 row-end-2">
         {post?.description && (
@@ -36,11 +37,13 @@ export const Article = ({ post }: ArticleProps) => {
           </div>
         )}
         {post?.content && (
-          <div className="text-body-mobile md:text-body-desktop">
-            <PortableText value={post.content} components={components} />
-          </div>
+          <PortableText value={post.content} components={components} />
         )}
       </div>
     </div>
   )
+}
+
+export const HLine = () => {
+  return <div className="border-b border-bekk-night pb-1 mb-8"></div>
 }
