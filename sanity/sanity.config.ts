@@ -1,18 +1,10 @@
-import {visionTool} from '@sanity/vision'
-import {media} from 'sanity-plugin-media'
-import {codeInput} from '@sanity/code-input'
-import {structureTool} from 'sanity/structure'
-import {defineConfig, SchemaTypeDefinition} from 'sanity'
+import { visionTool } from '@sanity/vision'
+import { media } from 'sanity-plugin-media'
+import { codeInput } from '@sanity/code-input'
+import { structureTool } from 'sanity/structure'
+import { createAuthStore, defineConfig, SchemaTypeDefinition } from 'sanity'
 import schemas from './schemas/schema'
-import {frontendUrl} from './src/environment'
 
-// Define the auth provider type
-interface AuthProvider {
-  name: string
-  title: string
-  url: string
-  logo: string
-}
 
 // Define your schema types explicitly
 const schemaTypes = schemas as SchemaTypeDefinition[]
@@ -29,8 +21,8 @@ const config = defineConfig({
     // prev is the result from previous plugins and thus can be composed
     productionUrl: async (prev, context) => {
       // context includes the client and other details
-      const {getClient, dataset, document} = context
-      const client = getClient({apiVersion: process.env.SANITY_STUDIO_API_VERSION ?? '2021-03-25'})
+      const { getClient, dataset, document } = context
+      const client = getClient({ apiVersion: process.env.SANITY_STUDIO_API_VERSION ?? '2021-03-25' })
 
       if (document._type === 'post') {
         const slug = await client.fetch(`*[_type == 'post' && _id == $postId][0].slug.current`, {
@@ -52,18 +44,18 @@ const config = defineConfig({
   schema: {
     types: schemaTypes,
   },
-  auth: {
-    redirectOnSingle: true,
-    mode: 'replace',
+  auth: createAuthStore({
+    projectId: process.env.SANITY_PROJECT_ID ?? 'ah2n1vfr',
+    dataset: process.env.SANITY_DATASET ?? 'bekk-blogg',
+    redirectOnSingle: false,
     providers: [
       {
-        name: 'bekk-login',
-        title: 'Logg inn med Bekk',
-        url: `${frontendUrl}/microsoft/auth`,
-        logo: 'static/logo.svg',
-      } as AuthProvider,
+        name: 'saml',
+        title: 'SAML',
+        url: 'https://api.sanity.io/v2021-10-01/auth/saml/login/46187778',
+      },
     ],
-  },
+  }),
 })
 
 export default config
