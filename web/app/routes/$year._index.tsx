@@ -21,7 +21,9 @@ export default function YearRoute() {
           const date = i + 1
           const formattedDate = (i + 1).toString().padStart(2, '0')
           return (
-            <Link to={`/${data.year}/${formattedDate}`} key={i}>Luke {date}</Link>
+            <Link to={`/${data.year}/${formattedDate}`} key={i}>
+              Luke {date}
+            </Link>
           )
         })}
       </div>

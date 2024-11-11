@@ -8,7 +8,9 @@ export default function Index() {
   const data = useLoaderData<{ year: string; date: string }>()
   return (
     <div>
-      <h1>Luke: {data.date} i {data.year}</h1>
+      <h1>
+        Luke: {data.date} i {data.year}
+      </h1>
     </div>
   )
 }
