@@ -1,4 +1,4 @@
-import { Outlet, useLoaderData } from '@remix-run/react'
+import { useLoaderData } from '@remix-run/react'
 
 export async function loader({ params }: { params: { year: string } }) {
   const year = parseInt(params.year)
@@ -14,8 +14,8 @@ export async function loader({ params }: { params: { year: string } }) {
 export default function YearRoute() {
   const data = useLoaderData<{ year: string }>()
   return (
-    <div>Velkommen til {data.year}
-      <Outlet />
+    <div>
+      <h1>{data.year}</h1>
     </div>
   )
 }
