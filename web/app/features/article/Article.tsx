@@ -5,45 +5,41 @@ import { Post } from 'utils/sanity/types/sanity.types'
 import { PostStamp } from '~/features/article/PostStamp'
 import { components } from '~/portable-text/Components'
 
-
 type ArticleProps = {
   post: Post
 }
 
 export const Article = ({ post }: ArticleProps) => {
   return (
-    <div className="md:grid sm:grid-cols-[1fr_2fr] md:grid-rows-[auto_auto] md:gap-x-24 md:gap-y-6 p-6 md:p-20">
-      <div className="col-start-2 col-end-2 row-start-1 row-end-1 md:text-right flex justify-end">
+    <div className="p-6 sm:grid-cols-[1fr_2fr] md:grid md:grid-rows-[auto_auto] md:gap-x-24 md:gap-y-6 md:p-20">
+      <div className="col-start-2 col-end-2 row-start-1 row-end-1 flex justify-end md:text-right">
         <PostStamp />
       </div>
-      <div className="col-start-1 col-span-2 row-start-1 row-end-1 hidden">breadcrumbs</div>
-      <div className="col-start-1 col-end-1 row-start-2 row-end-2 meta mb-8">
-        <h1 className="font-delicious mb-8">{post.title}</h1>
-        {post.tags && (
-          <>
-            {post.tags && post.tags.map((tag) => tag.name).join(', ')}
-            <HLine />
-          </>
-        )}
-        {post.authors && `Fra ${post.authors.map((author) => author.fullName).join(', ')}`}
-        <HLine />
-        {post.availableFrom && formatDate(post.availableFrom)}
-        <HLine />
+      <div className="col-span-2 col-start-1 row-start-1 row-end-1 hidden">breadcrumbs</div>
+      <div className="meta col-start-1 col-end-1 row-start-2 row-end-2 mb-8">
+        <h1 className="mb-8 font-delicious">{post.title}</h1>
+        <div className="mb-8 border-b border-bekk-night pb-1 text-body-mobile md:text-body-desktop">
+          {post.tags && post.tags.map((tag) => tag.name).join(', ')}
+        </div>
+        <div className="mb-8 border-b border-bekk-night pb-1 text-body-mobile md:text-body-desktop">
+          {post.authors && `Fra ${post.authors.map((author) => author.fullName).join(', ')}`}
+        </div>
+        <div className="border-b border-bekk-night pb-1 text-body-mobile md:text-body-desktop">
+          {post.availableFrom && formatDate(post.availableFrom)}
+        </div>
       </div>
       <div className="col-start-2 col-end-2 row-start-2 row-end-2">
         {post?.description && (
-          <div className="text-leading-mobile md:text-leading-desktop mb-10">
+          <div className="mb-10 text-leading-mobile md:text-leading-desktop">
             <PortableText value={post.description} components={components} />
           </div>
         )}
         {post?.content && (
-          <PortableText value={post.content} components={components} />
+          <div className="text-body-mobile md:text-body-desktop">
+            <PortableText value={post.content} components={components} />
+          </div>
         )}
       </div>
     </div>
   )
-}
-
-export const HLine = () => {
-  return <div className="border-b border-bekk-night pb-1 mb-8"></div>
 }

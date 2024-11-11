@@ -6,7 +6,7 @@ import type { GetPublicKeyOrSecret, JwtPayload } from 'jsonwebtoken'
 import jwt from 'jsonwebtoken'
 import jwksClient from 'jwks-rsa'
 
-import {sanityConfig} from "../../utils/sanity/config";
+import { sanityConfig } from '../../utils/sanity/config'
 import { authClient, writeClient } from '../../utils/sanity/sanity.server'
 
 import { authenticator } from '~/server/auth.server'
@@ -117,7 +117,7 @@ async function getSanityUser() {
     // This endpoint returns an empty object if we're logged in.
     // We're going to check for that and return null if it's empty.
     return body?.id ? body : null
-  } catch (error) {
+  } catch (_error) {
     return null
   }
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 // Define the hook with 'query' parameter typed as a string
 const useMediaQuery = (query: string): boolean => {

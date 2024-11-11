@@ -21,8 +21,10 @@ module.exports = {
   },
   ignorePatterns: ['!**/.server', '!**/.client'],
 
-  // Base config
-  extends: ['eslint:recommended'],
+  extends: ['eslint:recommended', 'plugin:tailwindcss/recommended'],
+  rules: {
+    'tailwindcss/no-custom-classname': 'off',
+  },
 
   overrides: [
     // React
@@ -57,6 +59,7 @@ module.exports = {
       rules: {
         'simple-import-sort/exports': 'error',
         '@typescript-eslint/no-unused-vars': 'off',
+        'no-unused-vars': 'off',
         'unused-imports/no-unused-imports': 'error',
         'unused-imports/no-unused-vars': [
           'warn',
@@ -65,6 +68,7 @@ module.exports = {
             varsIgnorePattern: '^_',
             args: 'after-used',
             argsIgnorePattern: '^_',
+            caughtErrorsIgnorePattern: '^_',
           },
         ],
         'simple-import-sort/imports': [
