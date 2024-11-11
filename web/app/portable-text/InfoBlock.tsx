@@ -5,7 +5,7 @@ import { components } from './Components'
 
 export const InfoBlock = ({ content }: { content: SanityPortableTextType }) => {
   return (
-    <div className="px-4 pt-4 pb-1 bg-envelope-beige rounded">
+    <div className="rounded bg-envelope-beige px-4 pb-1 pt-4">
       <PortableText value={content} components={components} />
     </div>
   )
