@@ -5,7 +5,7 @@ export async function loader({ params }: { params: { year: string } }) {
   const currentYear = new Date().getFullYear()
 
   //TODO: finne ut av når første bekk-christmas posten kommer fra
-  if (isNaN(year) || year > currentYear || year < 2015) {
+  if (isNaN(year) || year > currentYear || year < 2017) {
     throw new Response('Invalid year', { status: 404 })
   }
   return { year: params.year }
