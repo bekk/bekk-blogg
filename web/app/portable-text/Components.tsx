@@ -1,5 +1,6 @@
 import React from 'react'
-import type { PortableTextReactComponents } from '@portabletext/react'
+import type { PortableTextMarkComponentProps, PortableTextReactComponents } from '@portabletext/react'
+import { PortableTextLink } from '@portabletext/types'
 
 import {
   Code,
@@ -22,6 +23,8 @@ import TwitterBlock from './TwitterBlock'
 import { UnfurledUrlBlock } from './UnfurledUrlBlock'
 import { YouTubeBlock } from './YouTubeBlock'
 
+import { TextLink } from '~/components/TextLink'
+
 const withSpacing = (component: React.ReactNode, margin: number = 2) => {
   return <div style={{ marginTop: `${margin}rem`, marginBottom: `${margin}rem` }}>{component}</div>
 }
@@ -42,10 +45,10 @@ export const components: Partial<PortableTextReactComponents> = {
     Image: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value} />),
   },
   block: {
-    h1: ({ children }: { children?: React.ReactNode }) => <h1 className="mt-4 mb-2">{children}</h1>,
-    h2: ({ children }: { children?: React.ReactNode }) => <h2 className="mt-4 mb-2">{children}</h2>,
-    h3: ({ children }: { children?: React.ReactNode }) => <h3 className="mt-4 mb-2">{children}</h3>,
-    h4: ({ children }: { children?: React.ReactNode }) => <h4 className="mt-4 mb-2">{children}</h4>,
+    h1: ({ children }: { children?: React.ReactNode }) => <h1 className="mb-2 mt-4">{children}</h1>,
+    h2: ({ children }: { children?: React.ReactNode }) => <h2 className="mb-2 mt-4">{children}</h2>,
+    h3: ({ children }: { children?: React.ReactNode }) => <h3 className="mb-2 mt-4">{children}</h3>,
+    h4: ({ children }: { children?: React.ReactNode }) => <h4 className="mb-2 mt-4">{children}</h4>,
     normal: ({ children }: { children?: React.ReactNode }) => {
       const arrayChildren = React.Children.toArray(children)
       if (!arrayChildren.length || arrayChildren.join('') === '') {
@@ -63,10 +66,9 @@ export const components: Partial<PortableTextReactComponents> = {
     ),
   },
   listItem: ({ children }: { children?: React.ReactNode }) => <li>{children}</li>,
-  // marks: {
-  //   link: (props: any) => (
-  //     <TextLink href={props.mark.href}>{props.children}</TextLink>
-  //   ),
-  //   code: Code,
-  // },
+  marks: {
+    link: (props: PortableTextMarkComponentProps<PortableTextLink>) => {
+      return <TextLink href={props.value?.href}>{props.children}</TextLink>
+    },
+  },
 }
