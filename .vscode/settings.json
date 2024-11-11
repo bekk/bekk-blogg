@@ -1,6 +1,9 @@
 {
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "always"
-    }
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always"
+  },
+  "eslint.options": {
+    "overrideConfigFile": "./web/.eslintrc.cjs"
+  }
 }
