@@ -15,7 +15,6 @@ type PostsByDate = {
 
 export async function loader({ params }: { params: { year: string; date: string } }) {
   const formatDate = params.year + '-' + '12' + '-' + params.date
-  console.log('REQUEST POSTS FROM ', formatDate)
   try {
     const { data: posts } = await loadQuery<Post[]>(POSTS_BY_YEAR_AND_DATE, { date: formatDate })
     if (!posts || posts.length === 0) {
@@ -36,12 +35,9 @@ export async function loader({ params }: { params: { year: string; date: string 
 
 export default function Index() {
   const data = useLoaderData<PostsByDate>()
-  console.log(data.posts)
   return (
     <div className="flex flex-col items-center gap-8 pt-8 md:gap-12 md:pt-12">
-      <h1 className="font-delicious text-reindeer-brown">
-        {data.date}. desember
-      </h1>
+      <h1 className="font-delicious text-reindeer-brown">{data.date}. desember</h1>
       <div className="flex flex-col items-center gap-8 md:gap-12">
         {data.posts.map((post) => (
           <Letter key={post._id} post={post} />
