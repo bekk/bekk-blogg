@@ -52,7 +52,7 @@ export const components: Partial<PortableTextReactComponents> = {
     normal: ({ children }: { children?: React.ReactNode }) => {
       const arrayChildren = React.Children.toArray(children)
       if (!arrayChildren.length || arrayChildren.join('') === '') {
-        return null
+        return <br />
       }
       return <p className="mb-4">{children}</p>
     },
@@ -70,5 +70,6 @@ export const components: Partial<PortableTextReactComponents> = {
     link: (props: PortableTextMarkComponentProps<PortableTextLink>) => {
       return <TextLink href={props.value?.href}>{props.children}</TextLink>
     },
+    code: (props: PortableTextMarkComponentProps) => <code className="bg-light-gray p-1">{props.children}</code>,
   },
 }
