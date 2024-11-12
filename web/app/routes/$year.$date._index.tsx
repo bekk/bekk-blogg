@@ -36,11 +36,15 @@ export async function loader({ params }: { params: { year: string; date: string 
 export default function Index() {
   const data = useLoaderData<PostsByDate>()
   return (
-    <div className="flex flex-col items-center gap-8 pt-8 md:gap-12 md:pt-12">
+    <div className="flex flex-col items-center gap-8 pt-8 max-sm:mb-8 md:my-12 md:gap-12">
       <h1 className="font-delicious text-reindeer-brown">{data.date}. desember</h1>
       <div className="flex flex-col gap-8 md:gap-12">
         {data.posts.map((post) => (
-          <Link className="flex justify-center" to={`/${data.year}/${data.date}/${post.slug?.current}`} key={post._id}>
+          <Link
+            className="mx-4 flex justify-center"
+            to={`/${data.year}/${data.date}/${post.slug?.current}`}
+            key={post._id}
+          >
             <Letter key={post._id} post={post} />
           </Link>
         ))}
