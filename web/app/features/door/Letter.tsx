@@ -5,7 +5,7 @@ type LetterProps = {
 }
 export const Letter = ({ post }: LetterProps) => {
   return (
-    <div className="striped-frame w-10/12 p-3 md:p-8">
+    <div className="striped-frame p-3 md:p-8">
       <h2 className="font-delicious">{post.title}</h2>
       <div className="mb-8 border-b border-bekk-night pb-1" />
       {post.tags && post.tags.map((tag) => tag.name).join(', ')}
