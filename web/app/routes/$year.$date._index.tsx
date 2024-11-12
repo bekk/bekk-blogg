@@ -40,11 +40,11 @@ export default function Index() {
       <h1 className="font-delicious text-reindeer-brown">{data.date}. desember</h1>
       <div className="flex flex-col items-center gap-8 md:gap-12">
         {data.posts.map((post) => (
-          <Link className='w-full' to={`/${data.year}/${data.date}/${post.slug?.current}`} key={post._id}>
+          <Link className="w-full" to={`/${data.year}/${data.date}/${post.slug?.current}`} key={post._id}>
             <Letter key={post._id} post={post} />
-          </Link>)
-        )}
+          </Link>
+        ))}
       </div>
-    </div >
+    </div>
   )
 }
