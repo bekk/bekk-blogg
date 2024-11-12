@@ -38,9 +38,9 @@ export default function Index() {
   return (
     <div className="flex flex-col items-center gap-8 pt-8 md:gap-12 md:pt-12">
       <h1 className="font-delicious text-reindeer-brown">{data.date}. desember</h1>
-      <div className="flex flex-col items-center gap-8 md:gap-12">
+      <div className="flex flex-col gap-8 md:gap-12">
         {data.posts.map((post) => (
-          <Link className="w-full" to={`/${data.year}/${data.date}/${post.slug?.current}`} key={post._id}>
+          <Link className="flex justify-center" to={`/${data.year}/${data.date}/${post.slug?.current}`} key={post._id}>
             <Letter key={post._id} post={post} />
           </Link>
         ))}
