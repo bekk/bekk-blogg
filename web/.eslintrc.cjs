@@ -24,6 +24,12 @@ module.exports = {
   extends: ['eslint:recommended', 'plugin:tailwindcss/recommended'],
   rules: {
     'tailwindcss/no-custom-classname': 'off',
+    'tailwindcss/classnames-order': 'warn',
+  },
+  settings: {
+    tailwindcss: {
+      config: './tailwind.config.ts',
+    },
   },
 
   overrides: [
@@ -59,7 +65,6 @@ module.exports = {
       rules: {
         'simple-import-sort/exports': 'error',
         '@typescript-eslint/no-unused-vars': 'off',
-        'no-unused-vars': 'off',
         'unused-imports/no-unused-imports': 'error',
         'unused-imports/no-unused-vars': [
           'warn',
@@ -104,14 +109,6 @@ module.exports = {
         },
       },
       extends: ['plugin:@typescript-eslint/recommended', 'plugin:import/typescript'],
-    },
-
-    // Node
-    {
-      files: ['.eslintrc.cjs'],
-      env: {
-        node: true,
-      },
     },
   ],
 }

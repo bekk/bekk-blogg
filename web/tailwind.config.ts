@@ -10,6 +10,7 @@ export default {
       backgroundColor: {
         'envelope-beige': '#E0C190',
         'postcard-beige': '#F7F3EE',
+        'light-gray': '#e3e3e3',
       },
       textColor: {
         base: '#000000',

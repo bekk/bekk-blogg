@@ -4,6 +4,7 @@ import { Post } from 'utils/sanity/types/sanity.types'
 
 import { PostStamp } from '~/features/article/PostStamp'
 import { components } from '~/portable-text/Components'
+import ImageBlock from '~/portable-text/ImageBlock'
 
 type ArticleProps = {
   post: Post
@@ -33,6 +34,9 @@ export const Article = ({ post }: ArticleProps) => {
           <div className="mb-10 text-leading-mobile md:text-leading-desktop">
             <PortableText value={post.description} components={components} />
           </div>
+        )}
+        {post.coverImage && !post.coverImage.hideFromPost && (
+          <ImageBlock image={{ ...post.coverImage, _type: 'imageWithMetadata' }} />
         )}
         {post?.content && (
           <div className="md:max-w-lg lg:max-w-xl xl:max-w-4xl">

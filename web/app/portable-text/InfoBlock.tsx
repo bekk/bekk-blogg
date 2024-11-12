@@ -1,11 +1,11 @@
 import { PortableText } from '@portabletext/react'
-import { PortableText as SanityPortableTextType } from 'utils/sanity/types/sanity.types'
+import { PortableText as PortableTextType } from 'utils/sanity/types/sanity.types'
 
 import { components } from './Components'
 
-export const InfoBlock = ({ content }: { content: SanityPortableTextType }) => {
+export const InfoBlock = ({ content }: { content: PortableTextType }) => {
   return (
-    <div className="px-4 pt-4 pb-1 bg-envelope-beige rounded">
+    <div className="rounded bg-envelope-beige px-4 pb-1 pt-4">
       <PortableText value={content} components={components} />
     </div>
   )
