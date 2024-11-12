@@ -25,7 +25,7 @@ export const Letter = ({ post }: LetterProps) => {
           {post.authors && `Fra: ${post.authors.map((author) => author.fullName).join(', ')}`}
           <div className="mb-7 border-b border-bekk-night pb-1 max-sm:mb-3" />
         </div>
-        <div className="col-start-2 row-start-1 row-end-3 hidden border-b border-r-2 border-bekk-night sm:block" />
+        <div className="col-start-2 row-start-1 row-end-3 hidden border-r border-bekk-night sm:block" />
 
         <div className="col-start-3 col-end-3 row-start-2 row-end-3 sm:ml-7">
           <div className="flex justify-end max-sm:ml-1 sm:mb-9">
