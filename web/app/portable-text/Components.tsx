@@ -1,5 +1,6 @@
 import React from 'react'
-import type { PortableTextReactComponents } from '@portabletext/react'
+import type { PortableTextMarkComponentProps, PortableTextReactComponents } from '@portabletext/react'
+import { PortableTextLink } from '@portabletext/types'
 
 import {
   Code,
@@ -21,6 +22,8 @@ import { InfoBlock } from './InfoBlock'
 import TwitterBlock from './TwitterBlock'
 import { UnfurledUrlBlock } from './UnfurledUrlBlock'
 import { YouTubeBlock } from './YouTubeBlock'
+
+import { TextLink } from '~/components/TextLink'
 
 const withSpacing = (component: React.ReactNode, margin: number = 2) => {
   return <div style={{ marginTop: `${margin}rem`, marginBottom: `${margin}rem` }}>{component}</div>
@@ -49,7 +52,7 @@ export const components: Partial<PortableTextReactComponents> = {
     normal: ({ children }: { children?: React.ReactNode }) => {
       const arrayChildren = React.Children.toArray(children)
       if (!arrayChildren.length || arrayChildren.join('') === '') {
-        return null
+        return <br />
       }
       return <p className="mb-4">{children}</p>
     },
@@ -63,10 +66,10 @@ export const components: Partial<PortableTextReactComponents> = {
     ),
   },
   listItem: ({ children }: { children?: React.ReactNode }) => <li>{children}</li>,
-  // marks: {
-  //   link: (props: any) => (
-  //     <TextLink href={props.mark.href}>{props.children}</TextLink>
-  //   ),
-  //   code: Code,
-  // },
+  marks: {
+    link: (props: PortableTextMarkComponentProps<PortableTextLink>) => {
+      return <TextLink href={props.value?.href}>{props.children}</TextLink>
+    },
+    code: (props: PortableTextMarkComponentProps) => <code className="bg-light-gray p-1">{props.children}</code>,
+  },
 }

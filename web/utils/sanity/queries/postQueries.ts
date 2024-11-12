@@ -57,3 +57,4 @@ const POST_PROJECTION = groq`{
   },
     }`
 export const POST_BY_SLUG = groq`*[_type == "post" && slug.current == $slug][0]${POST_PROJECTION}`
+export const POSTS_BY_YEAR_AND_DATE = groq`*[_type == "post" && availableFrom == $date]${POST_PROJECTION}`
