@@ -26,7 +26,7 @@ export const Article = ({ post }: ArticleProps) => {
             {post.tags.map((tag) => tag.name).join(', ')}
           </div>
         )}
-        {(post.type === 'article' || post.type === 'podcast') && (
+        {((post.type === 'article' && post.content) || post.type === 'podcast') && (
           <div className="mb-8 border-b border-bekk-night pb-1 text-body-mobile md:text-body-desktop">
             {post.type === 'podcast' && post.podcastLength ? `${post.podcastLength} min` : readingTime(post.content)}
           </div>
