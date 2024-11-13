@@ -7,8 +7,9 @@ import { Post } from '../../utils/sanity/types/sanity.types'
 
 import { Article } from '~/features/article/Article'
 
-export const meta: MetaFunction = () => {
-  return [{ title: 'Post' }, { name: 'description', content: 'Welcome to Remix!' }]
+export const meta: MetaFunction = ({ data }) => {
+  const post = data as Post
+  return [{ title: post?.title || 'Innlegg' }, { name: 'description', content: post.description }]
 }
 
 export async function loader({ params }: { params: { slug: string } }) {
