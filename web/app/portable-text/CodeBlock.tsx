@@ -10,5 +10,9 @@ export const CodeBlock = ({ code }: CodeBlockProps) => {
   if (!code?.code) {
     return <p>Hmmm, ingen kode her!</p>
   }
-  return <SyntaxHighlighter language={code.language ?? 'text'}>{code.code}</SyntaxHighlighter>
+  return (
+    <div className="text-sm">
+      <SyntaxHighlighter language={code.language ?? 'text'}>{code.code}</SyntaxHighlighter>
+    </div>
+  )
 }
