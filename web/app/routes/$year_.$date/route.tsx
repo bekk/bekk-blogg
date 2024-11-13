@@ -1,9 +1,9 @@
 import { json } from '@remix-run/node'
 import { Link, useLoaderData } from '@remix-run/react'
 
-import { POSTS_BY_YEAR_AND_DATE } from '../../utils/sanity/queries/postQueries'
-import { loadQuery } from '../../utils/sanity/store'
-import { Post } from '../../utils/sanity/types/sanity.types'
+import { POSTS_BY_YEAR_AND_DATE } from '../../../utils/sanity/queries/postQueries'
+import { loadQuery } from '../../../utils/sanity/store'
+import { Post } from '../../../utils/sanity/types/sanity.types'
 
 import { Letter } from '~/features/door/Letter'
 
@@ -31,6 +31,25 @@ export async function loader({ params }: { params: { year: string; date: string 
     console.error('Error loading posts:', error)
     throw new Response('Error loading posts', { status: 500 })
   }
+}
+
+/*
+export const handle = ({ params: { year, date } }: { params: { year: string; date: string } }) => ({
+  breadcrumb: () => ({
+    title: '📯 Postkontoret',
+    crumbs: [
+      { href: `/${year}`, title: year },
+      { href: `/${year}/${date}`, title: `${date}. desember` },
+    ],
+  }),
+})
+
+ */
+
+export const handle = {
+  breadcrumb: ({ params }: { params: { year: string; date: string } }) => {
+    return <Link to={`/${params.year}/${params.date}`}>📬 {params.date}. desember</Link>
+  },
 }
 
 export default function Index() {
