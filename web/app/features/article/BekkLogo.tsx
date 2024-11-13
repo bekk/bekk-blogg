@@ -3,7 +3,6 @@ interface BekkLogoProps {
   fillColor?: string
 }
 
-//'#F8F8F8'
 export const BekkLogo = ({ className, fillColor = 'fill-white' }: BekkLogoProps) => {
   return (
     <svg
