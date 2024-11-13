@@ -1,5 +1,5 @@
 /**
- * This is intended to be a basic starting point for linting in your app.
+rting point for linting in your app.
  * It relies on recommended configs out of the box for simplicity, but you can
  * and should modify this configuration to best suit your team's needs.
  */
@@ -21,16 +21,7 @@ module.exports = {
   },
   ignorePatterns: ['!**/.server', '!**/.client'],
 
-  extends: ['eslint:recommended', 'plugin:tailwindcss/recommended'],
-  rules: {
-    'tailwindcss/no-custom-classname': 'off',
-    'tailwindcss/classnames-order': 'warn',
-  },
-  settings: {
-    tailwindcss: {
-      config: './tailwind.config.ts',
-    },
-  },
+  extends: ['eslint:recommended'],
 
   overrides: [
     // React
