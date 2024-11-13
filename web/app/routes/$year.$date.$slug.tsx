@@ -9,7 +9,7 @@ import { Post } from '../../utils/sanity/types/sanity.types'
 import { Article } from '~/features/article/Article'
 
 export const meta: MetaFunction = ({ data }) => {
-  const post = data as Post
+  const post = data as Post & { imageUrl?: string }
   const availableFrom = post.availableFrom ? new Date(post.availableFrom) : undefined
 
   const meta = [
@@ -28,9 +28,9 @@ export const meta: MetaFunction = ({ data }) => {
     { name: 'twitter:site', content: '@livetibekk' },
   ]
 
-  if (post.coverImage) {
-    meta.push({ property: 'og:image', content: urlFor(post.coverImage).width(1200).format('webp').url() })
-    meta.push({ name: 'twitter:image', content: urlFor(post.coverImage).width(1200).format('webp').url() })
+  if (post.imageUrl) {
+    meta.push({ property: 'og:image', content: post.imageUrl })
+    meta.push({ name: 'twitter:image', content: post.imageUrl })
   }
 
   if (availableFrom) {
@@ -53,7 +53,10 @@ export const headers: HeadersFunction = () => ({
 
 export async function loader({ params }: { params: { slug: string } }) {
   const { data: post } = await loadQuery<Post>(POST_BY_SLUG, { slug: params.slug })
-  return post
+
+  const imageUrl = post.coverImage ? urlFor(post.coverImage).width(1200).format('webp').url() : undefined
+
+  return { ...post, imageUrl }
 }
 
 export default function Index() {
