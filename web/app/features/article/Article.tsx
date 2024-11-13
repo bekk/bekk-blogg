@@ -1,11 +1,11 @@
 import { PortableText } from '@portabletext/react'
 import { formatDate } from 'utils/date'
+import { readingTime } from 'utils/readTime'
 import { Post } from 'utils/sanity/types/sanity.types'
 
 import { PostStamp } from '~/features/article/PostStamp'
 import { components } from '~/portable-text/Components'
 import ImageBlock from '~/portable-text/ImageBlock'
-import readingTime from 'reading-time'
 
 type ArticleProps = {
   post: Post
@@ -27,7 +27,7 @@ export const Article = ({ post }: ArticleProps) => {
         )}
         {post.content && (
           <div className="mb-8 border-b border-bekk-night pb-1 text-body-mobile md:text-body-desktop">
-            {readingTime(post.content.toString() || '').text.replace('read', '')}
+            {readingTime(post.content)}
           </div>
         )}
         <div className="mb-8 border-b border-bekk-night pb-1 text-body-mobile md:text-body-desktop">

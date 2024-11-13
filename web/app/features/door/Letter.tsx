@@ -1,7 +1,7 @@
 import { Post } from '../../../utils/sanity/types/sanity.types'
 import { PortableText } from '@portabletext/react'
+import { readingTime } from 'utils/readTime'
 import { PostStamp } from '~/features/article/PostStamp'
-import readingTime from 'reading-time'
 
 type LetterProps = {
   post: Post
@@ -20,7 +20,7 @@ export const Letter = ({ post }: LetterProps) => {
               <div className="mb-7 border-b border-bekk-night pb-1 max-sm:mb-3" />
             </>
           )}
-          {readingTime(post.content?.toString() || '').text.replace('read', '')}
+          {readingTime(post.content)}
           <div className="mb-7 border-b border-bekk-night pb-1 max-sm:mb-3" />
           {post.authors && `Fra: ${post.authors.map((author) => author.fullName).join(', ')}`}
           <div className="mb-7 border-b border-bekk-night pb-1 max-sm:mb-3" />
