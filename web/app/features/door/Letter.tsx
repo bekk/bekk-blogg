@@ -1,6 +1,8 @@
-import { Post } from '../../../utils/sanity/types/sanity.types'
 import { PortableText } from '@portabletext/react'
 import { readingTime } from 'utils/readTime'
+
+import { Post } from '../../../utils/sanity/types/sanity.types'
+
 import { PostStamp } from '~/features/article/PostStamp'
 
 type LetterProps = {
