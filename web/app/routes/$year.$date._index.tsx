@@ -1,4 +1,4 @@
-import { json } from '@remix-run/node'
+import { json, MetaFunction } from '@remix-run/node'
 import { Link, useLoaderData } from '@remix-run/react'
 
 import { POSTS_BY_YEAR_AND_DATE } from '../../utils/sanity/queries/postQueries'
@@ -11,6 +11,19 @@ type PostsByDate = {
   posts: Post[]
   year: string
   date: string
+}
+
+export const meta: MetaFunction = ({ data }) => {
+  const postsByDate = data as PostsByDate
+  return [
+    { title: `Innlegg fra ${postsByDate.date}. desember ${postsByDate.year}` },
+    {
+      name: 'description',
+      content: `Se ${
+        postsByDate.posts.length > 1 ? `alle ${postsByDate.posts.length} innlegg` : `innholdet`
+      } fra Bekk på dag ${postsByDate.date} i julesesongen ${postsByDate.year}`,
+    },
+  ]
 }
 
 export async function loader({ params }: { params: { year: string; date: string } }) {
