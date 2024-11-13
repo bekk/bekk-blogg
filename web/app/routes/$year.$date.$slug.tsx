@@ -1,4 +1,4 @@
-import type { MetaFunction } from '@remix-run/node'
+import type { HeadersFunction, MetaFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { urlFor } from 'utils/sanity/sanity.server'
 
@@ -46,6 +46,10 @@ export const meta: MetaFunction = ({ data }) => {
 
   return meta
 }
+
+export const headers: HeadersFunction = () => ({
+  'Cache-Control': 'max-age=60, stale-while-revalidate=86400',
+})
 
 export async function loader({ params }: { params: { slug: string } }) {
   const { data: post } = await loadQuery<Post>(POST_BY_SLUG, { slug: params.slug })
