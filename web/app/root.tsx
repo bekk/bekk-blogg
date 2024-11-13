@@ -1,19 +1,15 @@
 import React from 'react'
 import type { LinksFunction } from '@remix-run/node'
-import { Link, Links, Meta, Outlet, Scripts, ScrollRestoration, useMatches } from '@remix-run/react'
+import { Link, Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react'
 
 import { BekkLogo } from '~/features/article/BekkLogo'
+import { useBreadcrumbs } from '~/hooks/useBreadcrumbs'
 import styles from '~/styles/main.css?url'
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
-type Handle = {
-  breadCrumb: string
-}
-
 export function Layout({ children }: { children: React.ReactNode }) {
-  const matches = useMatches()
-  console.log('matches', matches)
+  const breadcrumbs = useBreadcrumbs()
 
   return (
     <html lang="en">
@@ -30,12 +26,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <BekkLogo fillColor={'fill-black'} />
           </Link>
         </header>
-        <ol className="px-4">
-          {matches
-            .filter((match) => (match.handle as Handle) && match.handle.breadcrumb)
-            .map((match, index) => (
-              <li key={index}>{match.handle.breadcrumb(match)}</li>
-            ))}
+
+        <ol className="flex px-4">
+          {breadcrumbs.map((breadcrumb, index) => (
+            <li key={index} className="flex">
+              <Link to={breadcrumb.href} key={index}>
+                {breadcrumb.title}
+              </Link>
+              <p className="px-2">/</p>
+            </li>
+          ))}
         </ol>
         <Scripts />
         {children}

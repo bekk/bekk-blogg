@@ -21,6 +21,7 @@ export const handle = {
     return <Link to={`/${params.year}/${params.date}/${params.slug}`}>💌 {params.slug}</Link>
   },
 }
+
 export default function Index() {
   const post = useLoaderData<Post>()
 

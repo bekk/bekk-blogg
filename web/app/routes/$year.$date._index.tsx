@@ -1,9 +1,9 @@
 import { json } from '@remix-run/node'
 import { Link, useLoaderData } from '@remix-run/react'
 
-import { POSTS_BY_YEAR_AND_DATE } from '../../../utils/sanity/queries/postQueries'
-import { loadQuery } from '../../../utils/sanity/store'
-import { Post } from '../../../utils/sanity/types/sanity.types'
+import { POSTS_BY_YEAR_AND_DATE } from '../../utils/sanity/queries/postQueries'
+import { loadQuery } from '../../utils/sanity/store'
+import { Post } from '../../utils/sanity/types/sanity.types'
 
 import { Letter } from '~/features/door/Letter'
 
