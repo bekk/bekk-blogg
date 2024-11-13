@@ -41,7 +41,7 @@ export default function ImageBlock({ image }: ImageWithMetadataDisplayProps) {
           objectFit: 'cover',
         }}
       />
-      {image.caption && <figcaption>{image.caption}</figcaption>}
+      {image.caption && <figcaption className="pt-3 text-gray-500 max-sm:text-sm">{image.caption}</figcaption>}
     </figure>
   )
 }
