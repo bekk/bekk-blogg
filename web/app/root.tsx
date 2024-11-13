@@ -17,7 +17,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <title>bekk.christmas</title>
       </head>
       <body className="m-auto break-words bg-envelope-beige">
-        <header className={'flex justify-end px-10 pb-7 pt-8'}>
+        <header className={'flex justify-end p-4 md:px-10 md:pb-7 md:pt-8'}>
           <Link to={'/'}>
             <BekkLogo fillColor={'fill-black'} />
           </Link>
