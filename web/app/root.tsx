@@ -1,5 +1,5 @@
 import type { LinksFunction } from '@remix-run/node'
-import { Link, Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react'
+import { Link, Links, Meta, Outlet, Scripts, ScrollRestoration, useMatches } from '@remix-run/react'
 
 import { BekkLogo } from '~/features/article/BekkLogo'
 import styles from '~/styles/main.css?url'
@@ -7,8 +7,13 @@ import styles from '~/styles/main.css?url'
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const matches = useMatches()
+  type PotentialLanguageType = { language: string } | undefined
+  const postData = matches.find((match) => (match.data as PotentialLanguageType)?.language)
+    ?.data as PotentialLanguageType
+
   return (
-    <html lang="en">
+    <html lang={postData?.language ?? 'nb-NO'}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
