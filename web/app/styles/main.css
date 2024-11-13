@@ -20,6 +20,10 @@
   h3 {
     @apply text-subtitle-mobile md:text-subtitle-desktop;
   }
+
+  strong {
+    font-family: 'GT-America-Standard-Medium';
+  }
 }
 
 .striped-frame {
