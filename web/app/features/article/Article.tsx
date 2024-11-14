@@ -5,6 +5,7 @@ import { Post } from 'utils/sanity/types/sanity.types'
 
 import { components } from '~/portable-text/Components'
 import ImageBlock from '~/portable-text/ImageBlock'
+import PodcastBlock from '~/portable-text/PodcastBlock'
 
 type ArticleProps = {
   post: Post
@@ -21,9 +22,9 @@ export const Article = ({ post }: ArticleProps) => {
             {post.tags.map((tag) => tag.name).join(', ')}
           </div>
         )}
-        {post.content && (
+        {((post.type === 'article' && post.content) || post.type === 'podcast') && (
           <div className="mb-8 border-b border-bekk-night pb-1 text-body-mobile md:text-body-desktop">
-            {readingTime(post.content)}
+            {post.type === 'podcast' && post.podcastLength ? `${post.podcastLength} min` : readingTime(post.content)}
           </div>
         )}
         <div className="mb-8 border-b border-bekk-night pb-1 text-body-mobile md:text-body-desktop">
@@ -39,8 +40,13 @@ export const Article = ({ post }: ArticleProps) => {
             <PortableText value={post.description} components={components} />
           </div>
         )}
+        {post.type === 'podcast' && post.embedUrl && (
+          <PodcastBlock podcast={{ src: post.embedUrl, title: post.title ?? 'podcast' }} />
+        )}
         {post.coverImage && !post.coverImage.hideFromPost && (
-          <ImageBlock image={{ ...post.coverImage, _type: 'imageWithMetadata' }} />
+          <div className="mb-7">
+            <ImageBlock image={{ ...post.coverImage, _type: 'imageWithMetadata' }} />
+          </div>
         )}
         {post?.content && (
           <div className="md:max-w-lg lg:max-w-xl xl:max-w-4xl">

@@ -20,6 +20,10 @@
   h3 {
     @apply text-subtitle-mobile md:text-subtitle-desktop;
   }
+
+  strong {
+    font-family: 'GT-America-Standard-Regular', system-ui, sans-serif;
+  }
 }
 
 .striped-frame {
@@ -37,4 +41,8 @@
       #f7f3ee 111px
     )
     12;
+}
+
+.codeBlockColorOverride span {
+  background-color: #e9e9e9 !important;
 }
