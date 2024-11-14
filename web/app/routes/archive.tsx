@@ -11,7 +11,6 @@ export default function ArchivePage() {
   const startYear = 2015
   const availableYears = []
 
-  // Generate the available years from currentYear to startYear
   for (let i = currentYear - 1; i >= startYear; i--) {
     availableYears.push(i)
   }
