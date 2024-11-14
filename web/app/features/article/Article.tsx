@@ -48,7 +48,9 @@ export const Article = ({ post }: ArticleProps) => {
           <PodcastBlock podcast={{ src: post.embedUrl, title: post.title ?? 'podcast' }} />
         )}
         {post.coverImage && !post.coverImage.hideFromPost && (
-          <ImageBlock image={{ ...post.coverImage, _type: 'imageWithMetadata' }} />
+          <div className="mb-7">
+            <ImageBlock image={{ ...post.coverImage, _type: 'imageWithMetadata' }} />
+          </div>
         )}
         {post?.content && (
           <div className="md:max-w-lg lg:max-w-xl xl:max-w-4xl">
