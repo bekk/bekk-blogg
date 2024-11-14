@@ -1,8 +1,8 @@
-import {visionTool} from '@sanity/vision'
-import {media} from 'sanity-plugin-media'
 import {codeInput} from '@sanity/code-input'
-import {structureTool} from 'sanity/structure'
+import {visionTool} from '@sanity/vision'
 import {createAuthStore, defineConfig, SchemaTypeDefinition} from 'sanity'
+import {media} from 'sanity-plugin-media'
+import {structureTool} from 'sanity/structure'
 import schemas from './schemas/schema'
 
 // Define your schema types explicitly
@@ -31,8 +31,12 @@ const config = defineConfig({
           },
         )
 
-        const slug = post.slug.current
-        const availableFrom = new Date(post.availableFrom)
+        if (!post) {
+          return '/'
+        }
+
+        const slug = post?.slug?.current
+        const availableFrom = new Date(post?.availableFrom ?? '')
 
         const params = new URLSearchParams()
         params.set('preview', 'true')
