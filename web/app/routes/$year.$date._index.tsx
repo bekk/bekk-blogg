@@ -33,25 +33,6 @@ export async function loader({ params }: { params: { year: string; date: string 
   }
 }
 
-/*
-export const handle = ({ params: { year, date } }: { params: { year: string; date: string } }) => ({
-  breadcrumb: () => ({
-    title: '📯 Postkontoret',
-    crumbs: [
-      { href: `/${year}`, title: year },
-      { href: `/${year}/${date}`, title: `${date}. desember` },
-    ],
-  }),
-})
-
- */
-
-export const handle = {
-  breadcrumb: ({ params }: { params: { year: string; date: string } }) => {
-    return <Link to={`/${params.year}/${params.date}`}>📬 {params.date}. desember</Link>
-  },
-}
-
 export default function Index() {
   const data = useLoaderData<PostsByDate>()
   return (

@@ -11,10 +11,6 @@ export async function loader({ params }: { params: { year: string } }) {
   return { year: params.year }
 }
 
-export const handle = {
-  breadcrumb: ({ params }: { params: { year: string } }) => <Link to={`/${params.year}`}>📯 Postkontoret</Link>,
-}
-
 export default function YearRoute() {
   const data = useLoaderData<{ year: string }>()
   return (
