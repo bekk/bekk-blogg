@@ -20,11 +20,20 @@ export function useBreadcrumbs(): Breadcrumb[] {
 
   Object.keys(currRoute.params).map((key) => {
     accumulatedPath += `/${currRoute.params[key]}`
-    const title = currRoute.params[key]
+
+    let title = ''
+
+    if (key === 'year') {
+      title = '📯 Postkontoret'
+    } else if (key === 'date') {
+      title = `📬 ${currRoute.params.date}. des`
+    } else if (key === 'slug' && currRoute.data) {
+      title = `💌 ${(currRoute.data as { title?: string })?.title ?? '💌 Innlegg'}`
+    }
 
     breadcrumbs.push({
       href: accumulatedPath,
-      title: `${title}`,
+      title: title,
     })
   })
   return breadcrumbs
