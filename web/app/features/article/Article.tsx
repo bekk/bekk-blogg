@@ -20,7 +20,7 @@ export const Article = ({ post }: ArticleProps) => {
       </div>
       <div className="col-span-2 col-start-1 row-start-1 row-end-1 hidden">breadcrumbs</div>
       <div className="meta col-start-1 col-end-1 row-start-2 row-end-2 mb-8">
-        <h1 className="mb-8 font-delicious">{post.title}</h1>
+        <h1 className="mb-8 font-delicious text-display-mobile md:text-display-desktop">{post.title}</h1>
         {post.tags && (
           <div className="mb-8 border-b border-bekk-night pb-1 text-body-mobile md:text-body-desktop">
             {post.tags.map((tag) => tag.name).join(', ')}
