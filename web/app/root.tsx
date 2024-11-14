@@ -1,8 +1,9 @@
-import { json, Link, Links, Meta, Outlet, Scripts, ScrollRestoration, useMatches } from '@remix-run/react'
 import type { LinksFunction, LoaderFunction } from '@remix-run/node'
+import { json, Link, Links, Meta, Outlet, Scripts, ScrollRestoration, useMatches } from '@remix-run/react'
 import { generateSecurityHeaders } from 'utils/security'
 
 import { BekkLogo } from '~/features/article/BekkLogo'
+import { Page404 } from '~/routes/404'
 import styles from '~/styles/main.css?url'
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
@@ -13,6 +14,22 @@ export const loader: LoaderFunction = async () => {
     {
       headers: generateSecurityHeaders(),
     }
+  )
+}
+
+export function ErrorBoundary() {
+  return (
+    <html lang={'nb-NO'}>
+      <head>
+        <title>Oh no!</title>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <Page404 />
+        <Scripts />
+      </body>
+    </html>
   )
 }
 
