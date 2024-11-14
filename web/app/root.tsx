@@ -1,33 +1,11 @@
-import type { LinksFunction } from '@remix-run/node'
+import { LinksFunction } from '@remix-run/node'
 import { Link, Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react'
 
 import { BekkLogo } from '~/features/article/BekkLogo'
 import styles from '~/styles/main.css?url'
+import { fontLinks } from 'utils/fonts'
 
-export const links: LinksFunction = () => [
-  { rel: 'stylesheet', href: styles },
-  {
-    rel: 'preload',
-    href: '/fonts/GT-America-Standard-Regular.woff2',
-    as: 'font',
-    type: 'font/woff2',
-    crossOrigin: 'anonymous',
-  },
-  {
-    rel: 'preload',
-    href: '/fonts/GT-America-Standard-Medium.woff2',
-    as: 'font',
-    type: 'font/woff2',
-    crossOrigin: 'anonymous',
-  },
-  {
-    rel: 'preload',
-    href: '/fonts/GT-America-Expanded-Medium.woff2',
-    as: 'font',
-    type: 'font/woff2',
-    crossOrigin: 'anonymous',
-  },
-]
+export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }, ...fontLinks()]
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
