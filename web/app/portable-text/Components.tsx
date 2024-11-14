@@ -45,16 +45,16 @@ export const components: Partial<PortableTextReactComponents> = {
     Image: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value} />),
   },
   block: {
-    h1: ({ children }: { children?: React.ReactNode }) => <h1 className="mb-4 mt-6">{children}</h1>,
-    h2: ({ children }: { children?: React.ReactNode }) => <h2 className="mb-4 mt-6">{children}</h2>,
-    h3: ({ children }: { children?: React.ReactNode }) => <h3 className="mb-4 mt-6 ">{children}</h3>,
-    h4: ({ children }: { children?: React.ReactNode }) => <h4 className="mb-4 mt-6">{children}</h4>,
+    h1: ({ children }: { children?: React.ReactNode }) => <h1 className="mb-6 mt-12">{children}</h1>,
+    h2: ({ children }: { children?: React.ReactNode }) => <h2 className="mb-6 mt-12">{children}</h2>,
+    h3: ({ children }: { children?: React.ReactNode }) => <h3 className="mb-6 mt-10 ">{children}</h3>,
+    h4: ({ children }: { children?: React.ReactNode }) => <h4 className="mb-6 mt-10">{children}</h4>,
     normal: ({ children }: { children?: React.ReactNode }) => {
       const arrayChildren = React.Children.toArray(children)
       if (!arrayChildren.length || arrayChildren.join('') === '') {
         return <br />
       }
-      return <p className="mb-4 mt-4 leading-8">{children}</p>
+      return <p className="mb-4 mt-6">{children}</p>
     },
   },
   list: {

@@ -53,7 +53,7 @@ export const Article = ({ post }: ArticleProps) => {
           </div>
         )}
         {post?.content && (
-          <div className="md:max-w-lg lg:max-w-xl xl:max-w-4xl">
+          <div className="md:max-w-lg lg:max-w-xl xl:max-w-4xl leading-8">
             <PortableText value={post.content} components={components} />
           </div>
         )}
