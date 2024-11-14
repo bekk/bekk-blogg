@@ -41,7 +41,11 @@ export default function ImageBlock({ image }: ImageWithMetadataDisplayProps) {
           objectFit: 'cover',
         }}
       />
-      {image.caption && <figcaption>{image.caption}</figcaption>}
+
+      <figcaption className="pt-3 text-gray-500 max-sm:text-sm">
+        {(image.caption ? image.caption : '') +
+          (image.src && !image.caption?.includes(image.src) ? ` ${image.caption ? '|' : ''} Kilde: ${image.src}` : '')}
+      </figcaption>
     </figure>
   )
 }

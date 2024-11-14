@@ -27,6 +27,7 @@
     "@types/react-syntax-highlighter": "^15.5.13",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "csp-header": "^5.2.1",
     "get-youtube-id": "^1.0.1",
     "groq": "^3.62.3",
     "isbot": "^4.1.0",
