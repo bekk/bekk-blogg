@@ -39,7 +39,11 @@ export const Header = ({ isInArticle = false }: HeaderProps) => {
       </div>
       <div className="shrink-0 px-4">
         <Link to="/">
-          {isInArticle ? <PostStamp /> : <BekkLogo className="h-21.4 w-16 md:h-[107px]" fillColor="fill-black" />}
+          {isInArticle ? (
+            <PostStamp />
+          ) : (
+            <BekkLogo className="h-21.4 w-10 md:h-[107px] md:w-16" fillColor="fill-black" />
+          )}
         </Link>
       </div>
     </div>
