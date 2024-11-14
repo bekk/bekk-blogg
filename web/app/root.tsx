@@ -1,10 +1,20 @@
-import type { LinksFunction } from '@remix-run/node'
-import { Link, Links, Meta, Outlet, Scripts, ScrollRestoration, useMatches } from '@remix-run/react'
+import { json, Link, Links, Meta, Outlet, Scripts, ScrollRestoration, useMatches } from '@remix-run/react'
+import type { LinksFunction, LoaderFunction } from '@remix-run/node'
+import { generateSecurityHeaders } from 'utils/security'
 
 import { BekkLogo } from '~/features/article/BekkLogo'
 import styles from '~/styles/main.css?url'
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
+
+export const loader: LoaderFunction = async () => {
+  return json(
+    {},
+    {
+      headers: generateSecurityHeaders(),
+    }
+  )
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const matches = useMatches()

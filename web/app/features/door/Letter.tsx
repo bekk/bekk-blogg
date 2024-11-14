@@ -22,7 +22,7 @@ export const Letter = ({ post }: LetterProps) => {
               <div className="mb-7 border-b border-bekk-night pb-1 max-sm:mb-3" />
             </>
           )}
-          {readingTime(post.content)}
+          {post.type === 'podcast' && post.podcastLength ? `${post.podcastLength} min` : readingTime(post.content)}
           <div className="mb-7 border-b border-bekk-night pb-1 max-sm:mb-3" />
           {post.authors && `Fra: ${post.authors.map((author) => author.fullName).join(', ')}`}
           <div className="mb-7 border-b border-bekk-night pb-1 max-sm:mb-3" />
