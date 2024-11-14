@@ -10,7 +10,7 @@ export const CodeBlock = ({ code }: CodeBlockProps) => {
     return <p>Hmmm, ingen kode her!</p>
   }
   return (
-    <div className="codeBlockColorOverride">
+    <div className="codeBlockColorOverride text-sm">
       <SyntaxHighlighter customStyle={{ backgroundColor: '#E9E9E9' }} language={code.language ?? 'text'}>
         {code.code}
       </SyntaxHighlighter>
