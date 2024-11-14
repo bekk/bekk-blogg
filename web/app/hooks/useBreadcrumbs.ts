@@ -8,19 +8,17 @@ export type Breadcrumb = {
 export function useBreadcrumbs(): Breadcrumb[] {
   const matches = useMatches().filter((match) => match.id !== 'root')
   const currRoute = matches[matches.length - 1]
-  console.log('currRoute', currRoute)
 
   let accumulatedPath = ''
   const breadcrumbs = Object.keys(currRoute.params).map((key) => {
     accumulatedPath += `/${currRoute.params[key]}`
+    const title = currRoute.params[key]
+
     return {
       href: accumulatedPath,
-      title: `${currRoute.params[key]}`,
+      title: `${title}`,
     }
   })
-
-  console.log('============= BREADCRUMBS =============')
-  console.log(breadcrumbs)
 
   return breadcrumbs
 }

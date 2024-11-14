@@ -18,7 +18,7 @@ export const handle = {
 export default function YearRoute() {
   const data = useLoaderData<{ year: string }>()
   return (
-    <div className="p-4">
+    <div className="px-4">
       <h1>{data.year}</h1>
       <div className="flex flex-col gap-3">
         {Array.from({ length: 24 }, (_, i) => {
