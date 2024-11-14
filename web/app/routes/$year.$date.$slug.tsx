@@ -6,8 +6,6 @@ import { loadQuery } from '../../utils/sanity/store'
 import { Post } from '../../utils/sanity/types/sanity.types'
 
 import { Article } from '~/features/article/Article'
-import { PostStamp } from '~/features/article/PostStamp'
-import { Header } from '~/features/navigation/Header'
 
 export const meta: MetaFunction = () => {
   return [{ title: 'Post' }, { name: 'description', content: 'Welcome to Remix!' }]
@@ -27,13 +25,11 @@ export const handle = {
 export default function Index() {
   const post = useLoaderData<Post>()
 
-  return (
-    <div className="striped-frame m-auto max-w-screen-2xl">
-      <div className="flex items-end justify-between p-0">
+  return <Article post={post} />
+}
+/*
+<div className="flex items-end justify-between p-0">
         <Header isInArticle={true} />
         <PostStamp />
       </div>
-      <Article post={post} />
-    </div>
-  )
-}
+ */

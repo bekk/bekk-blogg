@@ -20,12 +20,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
         <title>bekk.christmas</title>
       </head>
-      <body className="m-auto break-words bg-envelope-beige">
-        <header>{!isInArticle && <Header />}</header>
-        <Scripts />
-        {children}
-        <ScrollRestoration />
-        <Scripts />
+      <body className={`m-auto max-w-screen-2xl break-words bg-envelope-beige`}>
+        <div className={`${isInArticle && 'striped-frame'}`}>
+          <header className={`${isInArticle && 'relative'}`}>
+            <Header isInArticle={isInArticle} />
+          </header>
+          <Scripts />
+          {children}
+          <ScrollRestoration />
+          <Scripts />
+        </div>
       </body>
     </html>
   )

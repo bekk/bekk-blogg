@@ -1,6 +1,7 @@
 import { Link } from '@remix-run/react'
 
 import { BekkLogo } from '~/features/article/BekkLogo'
+import { PostStamp } from '~/features/article/PostStamp'
 import { useBreadcrumbs } from '~/hooks/useBreadcrumbs'
 
 type HeaderProps = {
@@ -8,17 +9,10 @@ type HeaderProps = {
 }
 export const Header = ({ isInArticle = false }: HeaderProps) => {
   const breadcrumbs = useBreadcrumbs()
-  //const styling = `${isInArticle ? '' : ' md:pt-8'}`
+
   return (
-    <div className={`md:px-10 md:pt-8`}>
-      {!isInArticle && (
-        <div className="flex justify-end p-4">
-          <Link to={'/'}>
-            <BekkLogo fillColor={'fill-black'} />
-          </Link>
-        </div>
-      )}
-      <div className="flex justify-start">
+    <div className={`flex items-end justify-between ${isInArticle ? 'md:px-6 md:pt-5' : 'md:px-10 md:pt-8'} `}>
+      <div>
         <ol className="flex px-4">
           {breadcrumbs.map((breadcrumb, index) => (
             <li key={index} className="flex">
@@ -29,6 +23,11 @@ export const Header = ({ isInArticle = false }: HeaderProps) => {
             </li>
           ))}
         </ol>
+      </div>
+      <div className={'px-4'}>
+        <Link to={'/'}>
+          {isInArticle ? <PostStamp /> : <BekkLogo className={'md:h-[107px]'} fillColor={'fill-black'} />}
+        </Link>
       </div>
     </div>
   )

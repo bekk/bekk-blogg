@@ -13,7 +13,12 @@ export const PostStamp = () => {
 
 const StampSvg = () => {
   return (
-    <svg width="64 md:80" height="85.6 md:107" viewBox="0 0 160 214" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      className="h-21.4 w-[64px] md:h-[107px] md:w-[80px]"
+      viewBox="0 0 160 214"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <g clipPath="url(#clip0_35_1034)">
         <path
           fillRule="evenodd"
