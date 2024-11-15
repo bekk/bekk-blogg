@@ -34,10 +34,10 @@ const CountdownRenderer: CountdownRendererFn = ({
   } else {
     return (
       <div className="flex justify-center">
-        <NumberWithLabel number={days} label="Days" />
-        <NumberWithLabel number={hours} label="Hours" />
-        <NumberWithLabel number={minutes} label="Minutes" />
-        <NumberWithLabel number={seconds} label="Seconds" />
+        <NumberWithLabel number={days} label="Dager" />
+        <NumberWithLabel number={hours} label="Timer" />
+        <NumberWithLabel number={minutes} label="Minutter" />
+        <NumberWithLabel number={seconds} label="Sekunder" />
       </div>
     )
   }
