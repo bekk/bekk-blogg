@@ -1,5 +1,5 @@
-import { json, Link, Links, Meta, Outlet, Scripts, ScrollRestoration, useMatches } from '@remix-run/react'
 import type { LinksFunction, LoaderFunction } from '@remix-run/node'
+import { json, Link, Links, Meta, Outlet, Scripts, ScrollRestoration, useMatches } from '@remix-run/react'
 import { generateSecurityHeaders } from 'utils/security'
 
 import { BekkLogo } from '~/features/article/BekkLogo'
