@@ -8,7 +8,7 @@ export const loader: LoaderFunction = async () => {
 
 export default function ArchivePage() {
   const currentYear = new Date().getFullYear()
-  const startYear = 2015
+  const startYear = 2017
   const availableYears = []
 
   for (let i = currentYear - 1; i >= startYear; i--) {
