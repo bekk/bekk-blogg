@@ -25,8 +25,6 @@ export const CodePenBlock = ({ codePen }: CodePenBlockProps) => {
       style={{ width: '100%' }}
       src={`https://codepen.io/${username}/embed/preview/${id}?height=265&theme-id=light&default-tab=css,result`}
       allowFullScreen
-      // eslint-disable-next-line react/no-unknown-property
-      allowTransparency
     />
   )
 }

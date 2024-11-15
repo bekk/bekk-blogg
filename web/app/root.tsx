@@ -3,6 +3,7 @@ import { json, Links, Meta, Outlet, Scripts, ScrollRestoration, useMatches } fro
 import { generateSecurityHeaders } from 'utils/security'
 
 import { Header } from '~/features/navigation/Header'
+import { Page404 } from '~/routes/404'
 import styles from '~/styles/main.css?url'
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
@@ -13,6 +14,22 @@ export const loader: LoaderFunction = async () => {
     {
       headers: generateSecurityHeaders(),
     }
+  )
+}
+
+export function ErrorBoundary() {
+  return (
+    <html lang={'nb-NO'}>
+      <head>
+        <title>Oh no!</title>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <Page404 />
+        <Scripts />
+      </body>
+    </html>
   )
 }
 
