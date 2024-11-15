@@ -1,8 +1,8 @@
 import type { LinksFunction, LoaderFunction } from '@remix-run/node'
-import { json, Link, Links, Meta, Outlet, Scripts, ScrollRestoration, useMatches } from '@remix-run/react'
+import { json, Links, Meta, Outlet, Scripts, ScrollRestoration, useMatches } from '@remix-run/react'
 import { generateSecurityHeaders } from 'utils/security'
 
-import { BekkLogo } from '~/features/article/BekkLogo'
+import { Header } from '~/features/navigation/Header'
 import { Page404 } from '~/routes/404'
 import styles from '~/styles/main.css?url'
 
@@ -39,6 +39,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const postData = matches.find((match) => (match.data as PotentialLanguageType)?.language)
     ?.data as PotentialLanguageType
 
+  const isInArticle = matches.some((match) => match.params.slug)
+
   return (
     <html lang={postData?.language ?? 'nb-NO'}>
       <head>
@@ -48,16 +50,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
         <title>bekk.christmas</title>
       </head>
-      <body className="m-auto break-words bg-envelope-beige">
-        <header className={'flex justify-end p-4 md:px-10 md:pb-7 md:pt-8'}>
-          <Link to={'/'}>
-            <BekkLogo fillColor={'fill-black'} />
-          </Link>
-        </header>
-        <Scripts />
-        {children}
-        <ScrollRestoration />
-        <Scripts />
+      <body className={`m-auto max-w-screen-2xl break-words bg-envelope-beige`}>
+        <div className={`${isInArticle && 'striped-frame'}`}>
+          <header className={`${isInArticle && 'relative'}`}>
+            <Header isInArticle={isInArticle} />
+          </header>
+          <Scripts />
+          {children}
+          <ScrollRestoration />
+          <Scripts />
+        </div>
       </body>
     </html>
   )

@@ -14,7 +14,7 @@ export const PostStamp = () => {
 const StampSvg = () => {
   return (
     <svg
-      className="w-[64px] md:w-[80px] h-[85.6px] md:h-[107px]"
+      className="h-21.4 w-[64px] md:h-[107px] md:w-[80px]"
       viewBox="0 0 160 214"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

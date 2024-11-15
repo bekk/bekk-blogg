@@ -62,9 +62,5 @@ export async function loader({ params }: { params: { slug: string } }) {
 export default function Index() {
   const post = useLoaderData<Post>()
 
-  return (
-    <div className="striped-frame m-auto max-w-screen-2xl">
-      <Article post={post} />
-    </div>
-  )
+  return <Article post={post} />
 }
