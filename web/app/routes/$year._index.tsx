@@ -51,7 +51,7 @@ export default function YearRoute() {
         <div className="hidden sm:flex self-end">
           <Gift3SVG />
         </div>
-        <div className="grid grid-cols-3 sm:grid-cols-6 px-2 md:px-0">
+        <div className="grid grid-cols-3 sm:grid-cols-6 md:px-0">
           <div className="col-span-3 sm:col-span-6 row-start-1 hidden sm:flex justify-end">
             <GiftsSVG />
           </div>
