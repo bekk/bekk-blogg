@@ -29,6 +29,7 @@ export default {
         delicious: ['Delicious Handrawn', 'cursive'],
       },
       fontSize: {
+        'large-desktop': '96px',
         'display-desktop': '56px',
         'headline-desktop': '48px',
         'leading-desktop': '32px',
