@@ -1,4 +1,5 @@
 import { LinksFunction } from '@remix-run/node'
+
 import styles from '~/styles/main.css?url'
 
 export const fontLinks: LinksFunction = () => [

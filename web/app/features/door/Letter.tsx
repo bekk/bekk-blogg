@@ -7,8 +7,10 @@ import { PostStamp } from '~/features/article/PostStamp'
 
 type LetterProps = {
   post: Post
+  showReadTime?: boolean
 }
-export const Letter = ({ post }: LetterProps) => {
+
+export const Letter = ({ post, showReadTime = true }: LetterProps) => {
   return (
     <div className="striped-frame min-w-full max-sm:p-3 sm:p-7">
       <div className="grid max-w-4xl grid-cols-[1fr_1px_1fr] max-sm:grid-cols-[30fr_1fr]">
@@ -22,8 +24,12 @@ export const Letter = ({ post }: LetterProps) => {
               <div className="mb-7 border-b border-bekk-night pb-1 max-sm:mb-3" />
             </>
           )}
-          {post.type === 'podcast' && post.podcastLength ? `${post.podcastLength} min` : readingTime(post.content)}
-          <div className="mb-7 border-b border-bekk-night pb-1 max-sm:mb-3" />
+          {post.type === 'podcast' && post.podcastLength
+            ? `${post.podcastLength} min`
+            : showReadTime
+              ? readingTime(post.content)
+              : ''}
+          {showReadTime ? <div className="mb-7 border-b border-bekk-night pb-1 max-sm:mb-3" /> : null}
           {post.authors && `Fra: ${post.authors.map((author) => author.fullName).join(', ')}`}
           <div className="mb-7 border-b border-bekk-night pb-1 max-sm:mb-3" />
         </div>
