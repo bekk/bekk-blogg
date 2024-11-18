@@ -83,6 +83,9 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   if (!post) {
     throw new Response('Post not found', { status: 404 })
   }
+  if (!isPreview && post.availableFrom !== formatDate) {
+    throw new Response('Post date and date in url do not match', { status: 404 })
+  }
 
   const imageUrl = post.coverImage ? urlFor(post.coverImage).width(1200).format('webp').url() : undefined
 
