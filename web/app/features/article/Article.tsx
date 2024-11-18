@@ -6,6 +6,7 @@ import { Post } from 'utils/sanity/types/sanity.types'
 import { components } from '~/portable-text/Components'
 import ImageBlock from '~/portable-text/ImageBlock'
 import PodcastBlock from '~/portable-text/PodcastBlock'
+import VimeoBlock from '~/portable-text/VimeoBlock'
 
 type ArticleProps = {
   post: Post
@@ -42,6 +43,9 @@ export const Article = ({ post }: ArticleProps) => {
         )}
         {post.type === 'podcast' && post.embedUrl && (
           <PodcastBlock podcast={{ src: post.embedUrl, title: post.title ?? 'podcast' }} />
+        )}
+        {post.type === 'video' && post.embedUrl && (
+          <VimeoBlock video={{ src: post.embedUrl, title: post.title ?? 'video' }} />
         )}
         {post.coverImage && !post.coverImage.hideFromPost && (
           <div className="mb-7">
