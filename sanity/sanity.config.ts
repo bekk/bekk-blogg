@@ -42,7 +42,7 @@ const config = defineConfig({
         params.set('preview', 'true')
         params.set('dataset', dataset)
 
-        return `${process.env.SANITY_STUDIO_FRONTEND_URL}/${availableFrom.getFullYear()}/${availableFrom.getDay()}/${slug}?${params}`
+        return `${process.env.SANITY_STUDIO_FRONTEND_URL}/${availableFrom.getFullYear()}/${availableFrom.getDate()}/${slug}?${params}`
       }
 
       return prev
