@@ -76,6 +76,11 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const formatDate = year + '-' + '12' + '-' + date.padStart(2, '0')
   const currentDate = new Date()
   const targetDate = new Date(formatDate)
+  const dateNumber = parseInt(date, 10)
+
+  if (isNaN(dateNumber) || dateNumber < 1 || dateNumber > 24) {
+    throw new Response('Date not found', { status: 404 })
+  }
 
   if (!isPreview && currentDate < targetDate) {
     throw new Response('Date not yet available', { status: 425 })
