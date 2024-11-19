@@ -1,5 +1,6 @@
 import { json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
+import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { z } from 'zod'
 
 import { POSTS_BY_YEAR_AND_DATE } from '../../utils/sanity/queries/postQueries'
@@ -51,7 +52,8 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   }
   const { year, date } = parsedParams.data
 
-  const isPreview = new URL(request.url).searchParams.get('preview') === 'true'
+  const { preview } = await loadQueryOptions(request.headers)
+  const isPreview = preview
   const formatDate = year + '-' + '12' + '-' + date
   const currentDate = new Date()
 
