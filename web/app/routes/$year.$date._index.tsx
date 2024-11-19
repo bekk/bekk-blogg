@@ -56,7 +56,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const currentDate = new Date()
 
   const dateNumber = parseInt(date, 10)
-  if (isNaN(dateNumber) || dateNumber < 1 || dateNumber > 24) {
+  if (!isPreview && (isNaN(dateNumber) || dateNumber < 1 || dateNumber > 24)) {
     throw new Response('Date not found', { status: 404 })
   }
 
