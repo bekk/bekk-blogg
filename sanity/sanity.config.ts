@@ -4,6 +4,8 @@ import {createAuthStore, defineConfig, SchemaTypeDefinition} from 'sanity'
 import {media} from 'sanity-plugin-media'
 import {structureTool} from 'sanity/structure'
 import schemas from './schemas/schema'
+import {defaultDocumentNode} from './structure/defaultDocumentNode'
+import {structure} from './structure'
 
 // Define your schema types explicitly
 const schemaTypes = schemas as SchemaTypeDefinition[]
@@ -49,7 +51,7 @@ const config = defineConfig({
     },
   },
 
-  plugins: [structureTool(), visionTool(), media(), codeInput()],
+  plugins: [structureTool({structure, defaultDocumentNode}), visionTool(), media(), codeInput()],
   schema: {
     types: schemaTypes,
   },
