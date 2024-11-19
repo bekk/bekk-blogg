@@ -11,6 +11,7 @@ import {
   useRouteError,
 } from '@remix-run/react'
 import { VisualEditing } from '@sanity/visual-editing/remix'
+import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
 
 import { Header } from '~/features/navigation/Header'
@@ -19,10 +20,11 @@ import styles from '~/styles/main.css?url'
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({ request }) => {
+  const { preview } = await loadQueryOptions(request.headers)
   return json(
     {
-      preview: process.env.NODE_ENV === 'development',
+      isPreview: preview,
       ENV: {
         SANITY_STUDIO_PROJECT_ID: process.env.SANITY_STUDIO_PROJECT_ID,
         SANITY_STUDIO_DATASET: process.env.SANITY_STUDIO_DATASET,
@@ -37,23 +39,10 @@ export const loader: LoaderFunction = async () => {
 }
 
 export function ErrorBoundary() {
-  return (
-    <html lang={'nb-NO'}>
-      <head>
-        <title>Oh no!</title>
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        <Page404 />
-        <Scripts />
-      </body>
-    </html>
-  )
+  return <Page404 />
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const { preview, ENV } = useLoaderData<typeof loader>()
   const matches = useMatches()
   const error = useRouteError()
   type PotentialLanguageType = { language: string } | undefined
@@ -78,12 +67,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </header>
           <Scripts />
           {children}
-          {preview ? <VisualEditing /> : null}
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `window.ENV = ${JSON.stringify(ENV)}`,
-            }}
-          />
           <ScrollRestoration />
           <Scripts />
         </div>
@@ -93,5 +76,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />
+  const { ENV, isPreview } = useLoaderData<typeof loader>()
+  return (
+    <>
+      <Outlet />
+      {isPreview ? <VisualEditing /> : null}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `window.ENV = ${JSON.stringify(ENV)}`,
+        }}
+      />
+    </>
+  )
 }

@@ -2,7 +2,7 @@ import {codeInput} from '@sanity/code-input'
 import {visionTool} from '@sanity/vision'
 import {createAuthStore, defineConfig, SchemaTypeDefinition} from 'sanity'
 import {media} from 'sanity-plugin-media'
-import {presentationTool} from 'sanity/presentation'
+import {defineLocations, presentationTool} from 'sanity/presentation'
 import {structureTool} from 'sanity/structure'
 import schemas from './schemas/schema'
 import {structure} from './structure'
@@ -58,7 +58,42 @@ const config = defineConfig({
     media(),
     codeInput(),
     presentationTool({
-      previewUrl: process.env.SANITY_STUDIO_FRONTEND_URL,
+      previewUrl: {
+        previewMode: {
+          enable: '/resource/preview',
+          shareAccess: true,
+        },
+        origin: process.env.SANITY_STUDIO_FRONTEND_URL,
+      },
+      resolve: {
+        locations: {
+          record: defineLocations({
+            select: {
+              title: 'title',
+              slug: 'slug.current',
+              availableFrom: 'availableFrom',
+            },
+            resolve: (doc) => {
+              // TODO: Add support for authors and categories
+              const availableFrom = new Date(doc?.availableFrom ?? null)
+              const day = availableFrom.getDate()
+              const year = availableFrom.getFullYear()
+              return {
+                locations: [
+                  {
+                    title: doc?.title || 'Untitled',
+                    href: `/${year}/${day}/${doc?.slug}`,
+                  },
+                  {
+                    title: 'Dag',
+                    href: `/${year}/${day}`,
+                  },
+                ],
+              }
+            },
+          }),
+        },
+      },
     }),
   ],
   schema: {

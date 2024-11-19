@@ -1,5 +1,7 @@
 import type { HeadersFunction, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
+import { useQuery } from '@sanity/react-loader'
+import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { urlFor } from 'utils/sanity/sanity.server'
 import { z } from 'zod'
 
@@ -11,25 +13,25 @@ import { Article } from '~/features/article/Article'
 
 export const meta: MetaFunction = ({ data }) => {
   const post = data as Post & { imageUrl?: string }
-  const availableFrom = post.availableFrom ? new Date(post.availableFrom) : undefined
+  const availableFrom = post?.availableFrom ? new Date(post.availableFrom) : undefined
 
   const meta = [
     { title: post?.title || 'Innlegg' },
-    { name: 'description', content: post.description },
+    { name: 'description', content: post?.description },
     { property: 'og:title', content: post?.title || 'Innlegg' },
-    { property: 'og:description', content: post.description },
+    { property: 'og:description', content: post?.description },
     { property: 'og:type', content: 'article' },
     { property: 'og:site_name', content: 'Bekk Christmas' },
-    { property: 'article:published_time', content: post.availableFrom },
-    { property: 'article:modified_time', content: post._updatedAt },
-    { property: 'article:author', content: post.authors.map((author) => author.fullName).join(', ') },
+    { property: 'article:published_time', content: post?.availableFrom },
+    { property: 'article:modified_time', content: post?._updatedAt },
+    { property: 'article:author', content: post?.authors?.map((author) => author.fullName).join(', ') },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: post?.title || 'Innlegg' },
-    { name: 'twitter:description', content: post.description },
+    { name: 'twitter:description', content: post?.description },
     { name: 'twitter:site', content: '@livetibekk' },
   ]
 
-  if (post.imageUrl) {
+  if (post?.imageUrl) {
     meta.push({ property: 'og:image', content: post.imageUrl })
     meta.push({ name: 'twitter:image', content: post.imageUrl })
   }
@@ -65,13 +67,12 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   }
   const { year, date, slug } = parsedParams.data
 
-  const isPreview = new URL(request.url).searchParams.get('preview') === 'true'
+  const { options } = await loadQueryOptions(request.headers)
 
-  const { data: post } = await loadQuery<Post>(
-    POST_BY_SLUG,
-    { slug },
-    { perspective: isPreview ? 'previewDrafts' : 'published' }
-  )
+  const isPreview =
+    new URL(request.url).searchParams.get('preview') === 'true' || options?.perspective === 'previewDrafts'
+
+  const initial = await loadQuery<Post>(POST_BY_SLUG, { slug }, options)
 
   const formatDate = year + '-' + '12' + '-' + date.padStart(2, '0')
   const currentDate = new Date()
@@ -85,20 +86,30 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   if (!isPreview && currentDate < targetDate) {
     throw new Response('Date not yet available', { status: 425 })
   }
-  if (!post) {
+  if (!initial.data) {
     throw new Response('Post not found', { status: 404 })
   }
-  if (!isPreview && post.availableFrom !== formatDate) {
+  if (!isPreview && initial.data.availableFrom !== formatDate) {
     throw new Response('Post date and date in url do not match', { status: 404 })
   }
 
-  const imageUrl = post.coverImage ? urlFor(post.coverImage).width(1200).format('webp').url() : undefined
+  const imageUrl = initial.data.coverImage
+    ? urlFor(initial.data.coverImage).width(1200).format('webp').url()
+    : undefined
 
-  return { ...post, imageUrl }
+  return { initial, query: POST_BY_SLUG, params: parsedParams.data, imageUrl }
 }
 
 export default function Index() {
-  const post = useLoaderData<typeof loader>()
+  const { initial, query, params } = useLoaderData<typeof loader>()
+  const { data } = useQuery<typeof initial.data>(query, params, {
+    // @ts-expect-error There's a TS issue with how initial comes over the wire
+    initial,
+  })
 
-  return <Article post={post} />
+  if (!data) {
+    return null
+  }
+
+  return <Article post={data} />
 }
