@@ -19,7 +19,7 @@ export const RelatedLinkElement = ({ link }: RelatedLinkElementProps) => {
   return (
     <div
       key={link._key}
-      className="flex mt-2 bg-santa-red/25 rounded-xl h-full max-h-24 min-h-24 hover:underline hover:shadow-md transition-shadow group"
+      className="flex mt-2 bg-light-gray rounded-xl h-full max-h-24 min-h-24 hover:underline hover:shadow-md transition-shadow group"
     >
       <Link to={link.url} className="flex w-full">
         <div className="flex flex-grow flex-col justify-center ml-5 w-[125px] no-underline">
