@@ -51,7 +51,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   }
   const { year, date } = parsedParams.data
 
-  const isPreview = new URLSearchParams(request.url).get('preview') === 'true'
+  const isPreview = new URL(request.url).searchParams.get('preview') === 'true'
   const formatDate = year + '-' + '12' + '-' + date
   const currentDate = new Date()
 

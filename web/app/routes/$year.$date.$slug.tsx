@@ -54,7 +54,7 @@ export const headers: HeadersFunction = () => ({
 
 const ParamsSchema = z.object({
   year: z.string().min(4).max(4),
-  date: z.string().min(2).max(2),
+  date: z.string().min(1).max(2),
   slug: z.string().min(1),
 })
 
@@ -64,15 +64,27 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     throw new Response('Invalid params', { status: 400 })
   }
   const { year, date, slug } = parsedParams.data
-  const { data: post } = await loadQuery<Post>(POST_BY_SLUG, { slug })
-  const isPreview = new URLSearchParams(request.url).get('preview') === 'true'
 
-  const formatDate = year + '-' + '12' + '-' + date
+  const isPreview = new URL(request.url).searchParams.get('preview') === 'true'
+
+  const { data: post } = await loadQuery<Post>(
+    POST_BY_SLUG,
+    { slug },
+    { perspective: isPreview ? 'previewDrafts' : 'published' }
+  )
+
+  const formatDate = year + '-' + '12' + '-' + date.padStart(2, '0')
   const currentDate = new Date()
-
   const targetDate = new Date(formatDate)
+
   if (!isPreview && currentDate < targetDate) {
     throw new Response('Date not yet available', { status: 425 })
+  }
+  if (!post) {
+    throw new Response('Post not found', { status: 404 })
+  }
+  if (!isPreview && post.availableFrom !== formatDate) {
+    throw new Response('Post date and date in url do not match', { status: 404 })
   }
 
   const imageUrl = post.coverImage ? urlFor(post.coverImage).width(1200).format('webp').url() : undefined
