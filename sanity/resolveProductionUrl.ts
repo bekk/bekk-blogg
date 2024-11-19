@@ -1,21 +1,18 @@
 import {SanityDocumentLike, Slug} from 'sanity'
 
-const remoteUrl = 'https://bekk.christmas'
-const localUrl = 'http://localhost:3000'
+const remoteUrl = 'https://bekk-blogg.vercel.app'
+const localUrl = 'http://localhost:5173'
 
 export default function resolveProductionUrl(document: SanityDocumentLike) {
   const isLocalhost = window.location.hostname === 'localhost'
   const baseUrl = isLocalhost ? localUrl : remoteUrl
 
-  const previewUrl = new URL(baseUrl)
-  previewUrl.pathname = '/api/preview'
-  previewUrl.searchParams.append('secret', process.env.SANITY_STUDIO_PREVIEW_SECRET ?? '')
-  previewUrl.searchParams.append('url', getUrlForDocument(document))
-
+  const previewUrl = baseUrl + getUrlForDocument(document)
   return previewUrl.toString()
 }
 
 function getUrlForDocument(doc: SanityDocumentLike) {
+  console.log(doc._type)
   switch (doc._type) {
     case 'post':
       return getUrlForPost(doc)
@@ -33,7 +30,7 @@ function getUrlForPost(doc: SanityDocumentLike & {slug?: Slug; availableFrom?: s
   const slug = doc.slug as Slug
   const date = doc.availableFrom as string
   const {day, year} = toDayYear(date)
-  return `/post/${year}/${day}/${slug.current}`
+  return `/${year}/${day}/${slug.current}`
 }
 
 const getUrlForPage = (doc: SanityDocumentLike) => {
