@@ -7,7 +7,7 @@ export default function resolveProductionUrl(document: SanityDocumentLike) {
   const isLocalhost = window.location.hostname === 'localhost'
   const baseUrl = isLocalhost ? localUrl : remoteUrl
 
-  const previewUrl = baseUrl + getUrlForDocument(document)
+  const previewUrl = baseUrl + getUrlForDocument(document) + '?preview=true'
   return previewUrl.toString()
 }
 
