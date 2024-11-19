@@ -1,6 +1,7 @@
-import type { HeadersFunction, MetaFunction } from '@remix-run/node'
+import type { HeadersFunction, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { urlFor } from 'utils/sanity/sanity.server'
+import { z } from 'zod'
 
 import { POST_BY_SLUG } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
@@ -51,8 +52,45 @@ export const headers: HeadersFunction = () => ({
   'Cache-Control': 'max-age=60, stale-while-revalidate=86400',
 })
 
-export async function loader({ params }: { params: { slug: string } }) {
-  const { data: post } = await loadQuery<Post>(POST_BY_SLUG, { slug: params.slug })
+const ParamsSchema = z.object({
+  year: z.string().min(4).max(4),
+  date: z.string().min(1).max(2),
+  slug: z.string().min(1),
+})
+
+export async function loader({ params, request }: LoaderFunctionArgs) {
+  const parsedParams = ParamsSchema.safeParse(params)
+  if (!parsedParams.success) {
+    throw new Response('Invalid params', { status: 400 })
+  }
+  const { year, date, slug } = parsedParams.data
+
+  const isPreview = new URL(request.url).searchParams.get('preview') === 'true'
+
+  const { data: post } = await loadQuery<Post>(
+    POST_BY_SLUG,
+    { slug },
+    { perspective: isPreview ? 'previewDrafts' : 'published' }
+  )
+
+  const formatDate = year + '-' + '12' + '-' + date.padStart(2, '0')
+  const currentDate = new Date()
+  const targetDate = new Date(formatDate)
+  const dateNumber = parseInt(date, 10)
+
+  if (!isPreview && (isNaN(dateNumber) || dateNumber < 1 || dateNumber > 24)) {
+    throw new Response('Date not found', { status: 404 })
+  }
+
+  if (!isPreview && currentDate < targetDate) {
+    throw new Response('Date not yet available', { status: 425 })
+  }
+  if (!post) {
+    throw new Response('Post not found', { status: 404 })
+  }
+  if (!isPreview && post.availableFrom !== formatDate) {
+    throw new Response('Post date and date in url do not match', { status: 404 })
+  }
 
   const imageUrl = post.coverImage ? urlFor(post.coverImage).width(1200).format('webp').url() : undefined
 

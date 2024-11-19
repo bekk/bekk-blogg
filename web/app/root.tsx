@@ -1,5 +1,5 @@
 import type { LinksFunction, LoaderFunction } from '@remix-run/node'
-import { json, Links, Meta, Outlet, Scripts, ScrollRestoration, useMatches } from '@remix-run/react'
+import { json, Links, Meta, Outlet, Scripts, ScrollRestoration, useMatches, useRouteError } from '@remix-run/react'
 import { generateSecurityHeaders } from 'utils/security'
 
 import { Header } from '~/features/navigation/Header'
@@ -35,11 +35,12 @@ export function ErrorBoundary() {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const matches = useMatches()
+  const error = useRouteError()
   type PotentialLanguageType = { language: string } | undefined
   const postData = matches.find((match) => (match.data as PotentialLanguageType)?.language)
     ?.data as PotentialLanguageType
 
-  const isInArticle = matches.some((match) => match.params.slug)
+  const isInArticle = matches.some((match) => match.params.slug) && !error
 
   return (
     <html lang={postData?.language ?? 'nb-NO'}>
@@ -50,8 +51,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
         <title>bekk.christmas</title>
       </head>
-      <body className={`m-auto max-w-screen-2xl break-words bg-envelope-beige`}>
-        <div className={`${isInArticle && 'striped-frame'}`}>
+      <body className={`m-auto min-w-[375px] max-w-screen-2xl break-words bg-envelope-beige`}>
+        <div className={`${isInArticle && 'striped-frame my-4 mx-4 lg:my-10 lg:mx-10'}`}>
           <header className={`${isInArticle && 'relative'}`}>
             <Header isInArticle={isInArticle} />
           </header>

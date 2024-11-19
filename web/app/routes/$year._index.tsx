@@ -1,19 +1,31 @@
-import type { MetaFunction } from '@remix-run/node'
+import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { Link, useLoaderData } from '@remix-run/react'
+import { z } from 'zod'
 
 import { Gift2SVG } from '~/features/calendar/Gift2SVG'
 import { Gift3SVG } from '~/features/calendar/Gift3SVG'
 import { GiftsSVG } from '~/features/calendar/GiftsSVG'
 
-export async function loader({ params }: { params: { year: string } }) {
-  const year = parseInt(params.year)
-  const currentYear = new Date().getFullYear()
+const ParamsSchema = z.object({
+  year: z.string().min(4).max(4),
+})
 
-  //TODO: finne ut av når første bekk-christmas posten kommer fra
-  if (isNaN(year) || year > currentYear || year < 2017) {
+export async function loader({ params }: LoaderFunctionArgs) {
+  const parsedParams = ParamsSchema.safeParse(params)
+  if (!parsedParams.success) {
+    throw new Response('Invalid params', { status: 400 })
+  }
+  const { year } = parsedParams.data
+  const currentYear = new Date().getFullYear()
+  const paramsYearAsNumber = Number.parseInt(year)
+
+  if (isNaN(paramsYearAsNumber) || paramsYearAsNumber < 2017) {
     throw new Response('Invalid year', { status: 404 })
   }
-  return { year: params.year }
+  if (paramsYearAsNumber > currentYear) {
+    throw new Response('Year not yet available', { status: 425 })
+  }
+  return { year }
 }
 
 export const meta: MetaFunction = ({ data }) => {
