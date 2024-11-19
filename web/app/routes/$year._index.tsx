@@ -85,6 +85,12 @@ export default function YearRoute() {
           <Gift2SVG />
         </div>
       </div>
+      <div className={'pt-8 justify-center inline-block'}>
+        Du kan også lese innlegg sorter på{' '}
+        <Link className={'hover:text-reindeer-brown underline'} to={'/tags'}>
+          kategorier
+        </Link>
+      </div>
     </div>
   )
 }
