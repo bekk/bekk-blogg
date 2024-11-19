@@ -65,6 +65,11 @@ export const TeaserPage = () => {
             <Letter post={mockPost} showReadTime={false} />
           </Link>
         </div>
+        <div className="flex justify-center mt-16">
+          <Link to={'/archive'} className="text-xl text-black hover:text-reindeer-brown ">
+            Se tidligere julekalendere
+          </Link>
+        </div>
       </div>
     </main>
   )

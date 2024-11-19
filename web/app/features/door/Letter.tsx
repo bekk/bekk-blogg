@@ -1,5 +1,5 @@
-import { PortableText } from '@portabletext/react'
 import { readingTime } from 'utils/readTime'
+import { toPlainText } from 'utils/sanity/utils'
 
 import { Post } from '../../../utils/sanity/types/sanity.types'
 
@@ -39,7 +39,7 @@ export const Letter = ({ post, showReadTime = true }: LetterProps) => {
           <div className="flex justify-end max-sm:ml-1 sm:mb-9">
             <PostStamp />
           </div>
-          <div className="hidden sm:block">{post.description && <PortableText value={post.description} />}</div>
+          <div className="hidden sm:block">{post.description && toPlainText(post.description)}</div>
         </div>
       </div>
     </div>

@@ -12,7 +12,6 @@ export default function resolveProductionUrl(document: SanityDocumentLike) {
 }
 
 function getUrlForDocument(doc: SanityDocumentLike) {
-  console.log(doc._type)
   switch (doc._type) {
     case 'post':
       return getUrlForPost(doc)

@@ -1,5 +1,6 @@
-import { json, MetaFunction } from '@remix-run/node'
+import { json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { Link, useLoaderData } from '@remix-run/react'
+import { z } from 'zod'
 
 import { POSTS_BY_YEAR_AND_DATE } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
@@ -38,15 +39,34 @@ export const headers = () => ({
   'Cache-Control': 'max-age=60, stale-while-revalidate=86400',
 })
 
-export async function loader({ params }: { params: { year: string; date: string } }) {
-  const formatDate = params.year + '-' + '12' + '-' + params.date
+const ParamsSchema = z.object({
+  year: z.string().min(4).max(4),
+  date: z.string().min(2).max(2),
+})
+
+export async function loader({ params, request }: LoaderFunctionArgs) {
+  const parsedParams = ParamsSchema.safeParse(params)
+  if (!parsedParams.success) {
+    throw new Response('Invalid params', { status: 400 })
+  }
+  const { year, date } = parsedParams.data
+
+  const isPreview = new URL(request.url).searchParams.get('preview') === 'true'
+  const formatDate = year + '-' + '12' + '-' + date
+  const currentDate = new Date()
+
+  const targetDate = new Date(formatDate)
+  if (!isPreview && currentDate < targetDate) {
+    throw new Response('Date not yet available', { status: 425 })
+  }
+
   try {
     const { data: posts } = await loadQuery<Post[]>(POSTS_BY_YEAR_AND_DATE, { date: formatDate })
 
     return json<PostsByDate>({
       posts: posts ?? [],
-      year: params.year,
-      date: params.date,
+      year,
+      date,
     })
   } catch (error) {
     console.error('Error loading posts:', error)
@@ -58,7 +78,7 @@ export default function Index() {
   const data = useLoaderData<PostsByDate>()
 
   return (
-    <div className="flex flex-col items-center gap-8 md:gap-12">
+    <div className="flex flex-col items-center gap-8 mb-4 lg:mb-12 md:gap-12">
       <h1 className="self-start pl-4 font-delicious text-reindeer-brown md:self-center">{data.date}. desember</h1>
       <div className="flex flex-col gap-8 md:gap-12">
         {data.posts.length === 0 && <h2>I denne luka var det helt tomt, gitt!</h2>}
