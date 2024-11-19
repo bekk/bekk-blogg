@@ -50,8 +50,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
         <title>bekk.christmas</title>
       </head>
-      <body className={`m-auto max-w-screen-2xl break-words bg-envelope-beige`}>
-        <div className={`${isInArticle && 'striped-frame'}`}>
+      <body className={`m-auto min-w-[375px] max-w-screen-2xl break-words bg-envelope-beige`}>
+        <div className={`${isInArticle && 'striped-frame my-4 mx-4 lg:my-10 lg:mx-10'}`}>
           <header className={`${isInArticle && 'relative'}`}>
             <Header isInArticle={isInArticle} />
           </header>

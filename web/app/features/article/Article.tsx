@@ -14,7 +14,7 @@ type ArticleProps = {
 
 export const Article = ({ post }: ArticleProps) => {
   return (
-    <div className="px-6 sm:grid-cols-[1fr_2fr] md:grid md:grid-rows-[auto_auto] md:gap-x-24 md:gap-y-6 md:px-20">
+    <div className="px-6 sm:grid-cols-[1fr_2fr] md:grid md:grid-rows-[auto_auto] md:gap-x-12 xl:gap-x-24 md:gap-y-6 md:pl-20">
       <div className="col-span-2 col-start-1 row-start-1 row-end-1 hidden">breadcrumbs</div>
       <div className="meta col-start-1 col-end-1 row-start-2 row-end-2 mb-8">
         <h1 className="mb-8 font-delicious text-display-mobile md:mb-12 md:text-display-desktop">{post.title}</h1>
@@ -53,7 +53,7 @@ export const Article = ({ post }: ArticleProps) => {
           </div>
         )}
         {post?.content && (
-          <div className="md:max-w-lg lg:max-w-xl xl:max-w-4xl leading-8">
+          <div className="md:max-w-md lg:max-w-md xl:max-w-xl leading-8">
             <PortableText value={post.content} components={components} />
           </div>
         )}

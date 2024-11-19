@@ -78,7 +78,7 @@ export default function Index() {
   const data = useLoaderData<PostsByDate>()
 
   return (
-    <div className="flex flex-col items-center gap-8 md:gap-12">
+    <div className="flex flex-col items-center gap-8 mb-4 lg:mb-12 md:gap-12">
       <h1 className="self-start pl-4 font-delicious text-reindeer-brown md:self-center">{data.date}. desember</h1>
       <div className="flex flex-col gap-8 md:gap-12">
         {data.posts.length === 0 && <h2>I denne luka var det helt tomt, gitt!</h2>}
