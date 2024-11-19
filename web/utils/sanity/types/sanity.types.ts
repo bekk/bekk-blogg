@@ -263,6 +263,14 @@ export type Author = {
   >
 }
 
+export type RelatedLink = {
+  title?: string
+  description?: string
+  url?: string
+  _type: 'relatedLink'
+  _key: string
+}
+
 export type Post = {
   _id: string
   _type: 'post'
@@ -295,13 +303,7 @@ export type Post = {
   tags?: Tag[]
   keywords?: Array<string>
   content?: PortableText
-  relatedLinks?: Array<{
-    title?: string
-    description?: string
-    url?: string
-    _type: 'relatedLink'
-    _key: string
-  }>
+  relatedLinks?: RelatedLink[]
   priority?: number
 }
 
