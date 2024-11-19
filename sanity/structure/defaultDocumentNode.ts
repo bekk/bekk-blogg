@@ -1,8 +1,5 @@
-import type {DefaultDocumentNodeResolver} from 'sanity/structure'
 import DocumentsPane from 'sanity-plugin-documents-pane'
-import {Iframe} from 'sanity-plugin-iframe-pane'
-import {SanityDocument} from 'sanity'
-import resolveProductionUrl from '../resolveProductionUrl'
+import type {DefaultDocumentNodeResolver} from 'sanity/structure'
 
 export const defaultDocumentNode: DefaultDocumentNodeResolver = (S, {schemaType}) => {
   switch (schemaType) {
@@ -16,17 +13,7 @@ export const defaultDocumentNode: DefaultDocumentNodeResolver = (S, {schemaType}
             params: {id: `_id`},
             options: {perspective: 'previewDrafts'},
           })
-          .title('Relaterte innlegg'),
-      ])
-    case 'post':
-      return S.document().views([
-        S.view.form(),
-        S.view
-          .component(Iframe)
-          .options({
-            url: (doc: SanityDocument) => resolveProductionUrl(doc),
-          })
-          .title('Preview'),
+          .title('Innlegg av denne forfatteren'),
       ])
     case 'tag':
       return S.document().views([
