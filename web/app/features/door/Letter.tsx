@@ -37,8 +37,8 @@ export const Letter = ({ post, showReadTime = true }: LetterProps) => {
         </div>
         <div className="col-start-2 row-start-1 row-end-3 hidden border-r border-bekk-night sm:block" />
         <div className="col-start-3 col-end-3 row-start-2 row-end-3 sm:ml-7">
-          <div className="flex justify-end max-sm:ml-1 sm:mb-9">
-            <PostStamp size={'h-16,05 w-12 md:h-[107px] md:w-[80px]'} />
+          <div className="flex justify-end ml-1 sm:mb-9">
+            <PostStamp size={'h-16,05 w-12 sm:h-21,4 sm:w-16 sm:h-[107px] sm:w-[80px]'} />
           </div>
           <div className="hidden sm:text-lg sm:block">{post.description && toPlainText(post.description)}</div>
         </div>
