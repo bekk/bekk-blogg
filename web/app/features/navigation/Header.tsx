@@ -15,9 +15,9 @@ export const Header = ({ isInArticle = false }: HeaderProps) => {
 
   return (
     <div
-      className={`grid grid-cols-1 gap-4 md:grid-cols-[8fr_1fr] pb-8 md:pb-14 ${isInArticle ? 'pt-6 px-6 md:px-20 md:pt-5' : 'pt-4 px-4 md:px-10 md:pt-8'}`}
+      className={`grid grid-cols-1 md:grid-cols-[8fr_1fr] pb-8 md:pb-14 ${isInArticle ? 'pt-6 px-6 md:pl-20 md:pt-5' : 'pt-4 px-4 md:px-10 md:pt-8'}`}
     >
-      <div className={`justify-self-end md:col-start-2 ${error ? 'ml-auto' : ''}`}>
+      <div className={`justify-self-end pb-4 md:pb-0 md:col-start-2 ${error ? 'ml-auto' : ''}`}>
         <Link to="/">
           {isInArticle ? (
             <div>
