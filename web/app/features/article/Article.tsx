@@ -35,7 +35,7 @@ export const Article = ({ post }: ArticleProps) => {
           {post.availableFrom && formatDate(post.availableFrom)}
         </div>
       </div>
-      <div className="col-start-2 col-end-2 row-start-2 row-end-2">
+      <div className="col-start-2 col-end-2 row-start-2 row-end-2 max-md:max-w-screen-xl max-lg:max-w-lg max-xl:max-w-xl">
         {post?.description && (
           <div className="mb-10 text-leading-mobile md:text-leading-desktop">
             <PortableText value={post.description} components={components} />

@@ -151,6 +151,12 @@ export type ImageWithMetadata = {
     _type: 'reference'
     _weak?: boolean
     [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    metadata: {
+      dimensions: {
+        height: string
+        width: string
+      }
+    }
   }
   hotspot?: SanityImageHotspot
   crop?: SanityImageCrop
@@ -284,6 +290,12 @@ export type Post = {
       _type: 'reference'
       _weak?: boolean
       [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+      metadata: {
+        dimensions: {
+          height: string
+          width: string
+        }
+      }
     }
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
