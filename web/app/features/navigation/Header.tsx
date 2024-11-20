@@ -15,7 +15,7 @@ export const Header = ({ isInArticle = false }: HeaderProps) => {
 
   return (
     <div
-      className={`flex items-end justify-between pb-8 md:pb-14 ${isInArticle ? 'pt-6 px-2 md:px-16 md:pt-5' : 'pt-4 md:px-10 md:pt-8'}`}
+      className={`flex items-end justify-between pb-8 md:pb-14 ${isInArticle ? 'pt-6 px-2 md:px-16 md:pt-5' : 'pt-4 xl:px-10 md:pt-8'}`}
     >
       {!error && (
         <div className="min-w-0 flex-1">

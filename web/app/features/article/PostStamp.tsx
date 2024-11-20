@@ -1,9 +1,13 @@
 import { BekkLogo } from '~/features/article/BekkLogo'
 
-export const PostStamp = () => {
+type PostStampProps = {
+  size?: string
+}
+
+export const PostStamp = ({ size }: PostStampProps) => {
   return (
-    <div className="relative h-21.4 w-16 md:h-[107px] md:w-[80px]">
-      <StampSvg />
+    <div className={`relative ${size ? size : 'h-21.4 w-16 md:h-[107px] md:w-[80px]'}`}>
+      <StampSvg size={size} />
       <div className="absolute inset-0 flex items-center justify-center">
         <BekkLogo className="size-1/2" />
       </div>
@@ -11,10 +15,10 @@ export const PostStamp = () => {
   )
 }
 
-const StampSvg = () => {
+const StampSvg = ({ size }: PostStampProps) => {
   return (
     <svg
-      className="h-21.4 w-[64px] md:h-[107px] md:w-[80px]"
+      className={`${size ? size : 'h-21.4 w-16 md:h-[107px] md:w-[80px]'}`}
       viewBox="0 0 160 214"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
