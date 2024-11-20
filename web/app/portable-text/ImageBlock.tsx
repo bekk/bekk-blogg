@@ -39,6 +39,7 @@ export default function ImageBlock({ image }: ImageWithMetadataDisplayProps) {
         style={{
           width: '100%',
           objectFit: 'cover',
+          borderRadius: '20px',
         }}
       />
 

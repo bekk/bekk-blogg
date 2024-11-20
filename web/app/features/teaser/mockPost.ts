@@ -10,7 +10,7 @@ const authorTeaserPage: Author = {
 }
 const tagTeaserPage: Tag = {
   _id: '',
-  name: 'Til: Dere',
+  name: 'Til deg',
   _type: 'tag',
   _createdAt: '',
   _updatedAt: '',

@@ -70,6 +70,8 @@ export const components: Partial<PortableTextReactComponents> = {
     link: (props: PortableTextMarkComponentProps<PortableTextLink>) => {
       return <TextLink href={props.value?.href}>{props.children}</TextLink>
     },
-    code: (props: PortableTextMarkComponentProps) => <code className="bg-light-gray p-1">{props.children}</code>,
+    code: (props: PortableTextMarkComponentProps) => (
+      <code className="bg-light-gray text-base p-1">{props.children}</code>
+    ),
   },
 }

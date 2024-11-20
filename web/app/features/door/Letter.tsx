@@ -31,7 +31,7 @@ export const Letter = ({ post, showReadTime = true }: LetterProps) => {
                 ? readingTime(post.content)
                 : ''}
             {showReadTime ? <div className="sm:mb-7 border-b border-bekk-night pb-1 mb-3" /> : null}
-            {post.authors && `Fra: ${post.authors.map((author) => author.fullName).join(', ')}`}
+            {post.authors && `Fra ${post.authors.map((author) => author.fullName).join(', ')}`}
             <div className="sm:mb-7 border-b border-bekk-night pb-1 mb-3" />
           </div>
         </div>
