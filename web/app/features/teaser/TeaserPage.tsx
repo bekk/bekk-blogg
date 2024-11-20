@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import Countdown, { CountdownRendererFn } from 'react-countdown'
 import { Link } from '@remix-run/react'
 
-import { Letter } from '../door/Letter'
-
 import { mockPost } from './mockPost'
+
+import { Letter } from '~/features/letters/Letter'
 
 const useClientSideOnly = () => {
   const [isClientSide, setIsClientSide] = useState(false)

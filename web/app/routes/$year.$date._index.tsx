@@ -1,12 +1,12 @@
 import { json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
-import { Link, useLoaderData } from '@remix-run/react'
+import { useLoaderData } from '@remix-run/react'
 import { z } from 'zod'
 
 import { POSTS_BY_YEAR_AND_DATE } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
 import { Post } from '../../utils/sanity/types/sanity.types'
 
-import { Letter } from '~/features/door/Letter'
+import { LetterDisplayer } from '~/features/letters/LetterDisplayer'
 
 type PostsByDate = {
   posts: Post[]
@@ -87,22 +87,11 @@ export default function Index() {
   }
 
   return (
-    <div className="flex flex-col items-center gap-8 mb-4 lg:mb-12 md:gap-12">
-      <h1 className="self-start pl-4 font-delicious text-4xl md:text-5xl text-reindeer-brown sm:self-center">
+    <div className="flex flex-col">
+      <h1 className="self-start pl-4 md:pl-0 pb-4 md:pb-10 font-delicious text-4xl md:text-5xl text-reindeer-brown sm:self-center">
         {date}. desember
       </h1>
-      <div className="flex flex-col max-sm:w-full gap-8 md:gap-12">
-        {data.posts.length === 0 && <h2>I denne luka var det helt tomt, gitt!</h2>}
-        {data.posts.map((post) => (
-          <Link
-            className="mx-4 flex justify-center"
-            to={`/${data.year}/${data.date}/${post.slug?.current}`}
-            key={post._id}
-          >
-            <Letter key={post._id} post={post} />
-          </Link>
-        ))}
-      </div>
+      <LetterDisplayer posts={data.posts} error={'I denne luka var det helt tomt, gitt!'} />
     </div>
   )
 }
