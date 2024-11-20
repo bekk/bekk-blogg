@@ -42,7 +42,7 @@ export default function ImageBlock({ image }: ImageWithMetadataDisplayProps) {
         }}
       />
 
-      <figcaption className="pt-3 text-gray-500 max-sm:text-sm">
+      <figcaption className="pt-1.5 md:pt-3 text-gray-500 text-xs md:text-sm">
         {(image.caption ? image.caption : '') +
           (image.src && !image.caption?.includes(image.src) ? ` ${image.caption ? '|' : ''} Kilde: ${image.src}` : '')}
       </figcaption>
