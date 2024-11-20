@@ -32,7 +32,7 @@ export default function Posts() {
 
         {posts.map((post, i) => {
           const year = post.availableFrom?.split('-')[0]
-          const date = post.availableFrom?.split('-')[1]
+          const date = post.availableFrom?.split('-')[2]
           const slug = post.slug?.current
 
           return (
