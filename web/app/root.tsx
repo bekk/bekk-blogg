@@ -52,7 +52,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <title>bekk.christmas</title>
       </head>
       <body className={`m-auto min-w-[375px] max-w-screen-2xl break-words bg-envelope-beige`}>
-        <div className={`${isInArticle && 'striped-frame my-4 mx-4 lg:my-10 lg:mx-10'}`}>
+        <div className={`${isInArticle && 'striped-frame md:my-8 md:mx-8 '}`}>
           <header className={`${isInArticle && 'relative'}`}>
             <Header isInArticle={isInArticle} />
           </header>
