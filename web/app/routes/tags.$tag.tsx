@@ -25,7 +25,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 export default function Posts() {
   const { posts, tag } = useLoaderData<typeof loader>()
   return (
-    <div className="px-4 md:px-20">
+    <div className="flex flex-col items-center gap-8 mb-4 lg:mb-12 md:gap-12">
       <h1 className="font-delicious pb-4  md:pb-8 md:text-center">{tag.name}</h1>
       <div className="flex flex-col gap-8 md:gap-12">
         {posts.length === 0 && <p>Ingen innlegg i denne kategorien</p>}
