@@ -11,22 +11,23 @@ export function useBreadcrumbs(): Breadcrumb[] {
   const breadcrumbs: Breadcrumb[] = []
   let accumulatedPath = ''
 
-  if (currRoute.pathname !== '/') {
-    breadcrumbs.push({
-      href: '/',
-      title: 'Hjem',
-    })
-  }
-
   Object.keys(currRoute.params).map((key) => {
     accumulatedPath += `/${currRoute.params[key]}`
 
     let title = ''
 
     if (key === 'year') {
-      title = '📯 Postkontoret'
+      if (currRoute.params.year && new Date(new Date().setFullYear(parseInt(currRoute.params.year))) < new Date()) {
+        title = `📯 ${currRoute.params.year}`
+      } else {
+        title = '📯 Postkontoret'
+      }
     } else if (key === 'date') {
-      title = `📬 ${currRoute.params.date}. des`
+      let date = currRoute.params.date
+      if (date && parseInt(date) < 10) {
+        date = date.replace('0', '')
+      }
+      title = `📬 ${date}. des`
     } else if (key === 'slug' && currRoute.data) {
       title = `💌 ${(currRoute.data as { title?: string })?.title ?? '💌 Innlegg'}`
     }

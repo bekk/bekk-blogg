@@ -63,27 +63,38 @@ export default function YearRoute() {
         <div className="hidden sm:flex self-end">
           <Gift3SVG />
         </div>
-        <div className="grid grid-cols-3 sm:grid-cols-6 md:px-0">
-          <div className="col-span-3 sm:col-span-6 row-start-1 hidden sm:flex justify-end">
-            <GiftsSVG />
+
+        <div className="max-sm:w-full max-sm:px-4">
+          <div className="grid grid-cols-3 sm:grid-cols-6 md:px-0">
+            <div className="col-span-3 sm:col-span-6 row-start-1 hidden sm:flex justify-end">
+              <GiftsSVG />
+            </div>
+            {Array.from({ length: 24 }, (_, i) => {
+              const date = i + 1
+              const formattedDate = (i + 1).toString().padStart(2, '0')
+              return (
+                <Link
+                  to={`/${data.year}/${formattedDate}`}
+                  key={date}
+                  className="md:text-mega-size text-display-desktop font-delicious border aspect-square flex md:p-8 justify-center items-center "
+                >
+                  {date}
+                </Link>
+              )
+            })}
           </div>
-          {Array.from({ length: 24 }, (_, i) => {
-            const date = i + 1
-            const formattedDate = (i + 1).toString().padStart(2, '0')
-            return (
-              <Link
-                to={`/${data.year}/${formattedDate}`}
-                key={date}
-                className="md:text-mega-size text-display-desktop font-delicious border aspect-square flex md:p-8 justify-center items-center "
-              >
-                {date}
-              </Link>
-            )
-          })}
         </div>
         <div className="hidden sm:flex self-end">
           <Gift2SVG />
         </div>
+      </div>
+      <div className={'pt-8 flex justify-center '}>
+        <p>
+          Du kan også lese innlegg sorter på{' '}
+          <a className={'hover:text-reindeer-brown underline'} href={'/tags'}>
+            kategorier
+          </a>
+        </p>
       </div>
     </div>
   )
