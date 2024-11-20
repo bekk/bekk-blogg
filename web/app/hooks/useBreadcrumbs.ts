@@ -12,7 +12,7 @@ export function useBreadcrumbs(): Breadcrumb[] {
   let accumulatedPath = ''
 
   Object.keys(currRoute.params).map((key) => {
-    accumulatedPath += `${currRoute.params[key]}`
+    accumulatedPath += `/${currRoute.params[key]}`
 
     let title = ''
 
