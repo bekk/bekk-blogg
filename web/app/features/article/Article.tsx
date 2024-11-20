@@ -17,29 +17,29 @@ export const Article = ({ post }: ArticleProps) => {
     <div className="px-6 sm:grid-cols-[1fr_2fr] md:grid md:grid-rows-[auto_auto] md:gap-x-12 xl:gap-x-24 md:gap-y-6 md:pl-20 pb-8 md:pb-16">
       <div className="col-span-2 col-start-1 row-start-1 row-end-1 hidden">breadcrumbs</div>
       <div className="meta col-start-1 col-end-1 row-start-2 row-end-2 mb-8">
-        <h1 className="mb-8 font-delicious text-display-mobile md:mb-12 md:text-display-desktop">{post.title}</h1>
+        <h1 className="mb-8 font-delicious md:mb-12">{post.title}</h1>
         {post.tags && (
-          <div className="mb-8 border-b border-bekk-night pb-1 text-body-mobile md:text-body-desktop">
+          <div>
             {post.tags.map((tag) => tag.name).join(', ')}
+            <Border />
           </div>
         )}
         {((post.type === 'article' && post.content) || post.type === 'podcast') && (
-          <div className="mb-8 border-b border-bekk-night pb-1 text-body-mobile md:text-body-desktop">
+          <div>
             {post.type === 'podcast' && post.podcastLength ? `${post.podcastLength} min` : readingTime(post.content)}
+            <Border />
           </div>
         )}
-        <div className="mb-8 border-b border-bekk-night pb-1 text-body-mobile md:text-body-desktop">
-          {post.authors && `Fra ${post.authors.map((author) => author.fullName).join(', ')}`}
-        </div>
-        <div className="border-b border-bekk-night pb-1 text-body-mobile md:text-body-desktop">
-          {post.availableFrom && formatDate(post.availableFrom)}
-        </div>
+        {post.authors && `Fra ${post.authors.map((author) => author.fullName).join(', ')}`}
+        <Border />
+        {post.availableFrom && formatDate(post.availableFrom)}
+        <Border />
       </div>
       <div className="col-start-2 col-end-2 row-start-2 row-end-2 max-md:max-w-screen-xl max-lg:max-w-lg max-xl:max-w-xl">
         {post?.description && (
-          <div className="mb-10 text-leading-mobile md:text-leading-desktop">
+          <h3 className="mb-10">
             <PortableText value={post.description} components={components} />
-          </div>
+          </h3>
         )}
         {post.type === 'podcast' && post.embedUrl && (
           <PodcastBlock podcast={{ src: post.embedUrl, title: post.title ?? 'podcast' }} />
@@ -61,3 +61,5 @@ export const Article = ({ post }: ArticleProps) => {
     </div>
   )
 }
+
+export const Border = () => <div className="mb-8 border-b border-bekk-night pb-1" />

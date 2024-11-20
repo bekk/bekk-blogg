@@ -6,6 +6,12 @@ const tag = defineType({
   type: 'document',
   fields: [
     {
+      title: 'Navn',
+      name: 'name',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    },
+    {
       title: 'Slug',
       name: 'slug',
       type: 'string',
@@ -13,12 +19,6 @@ const tag = defineType({
       options: {
         source: 'name',
       },
-    },
-    {
-      title: 'Navn',
-      name: 'name',
-      type: 'string',
-      validation: (rule) => rule.required(),
     },
     {
       title: 'Synonymer',
