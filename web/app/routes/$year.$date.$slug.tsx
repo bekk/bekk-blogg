@@ -67,10 +67,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   }
   const { year, date, slug } = parsedParams.data
 
-  const { options } = await loadQueryOptions(request.headers)
-
-  const isPreview =
-    new URL(request.url).searchParams.get('preview') === 'true' || options?.perspective === 'previewDrafts'
+  const { options, preview } = await loadQueryOptions(request.headers)
 
   const initial = await loadQuery<Post>(POST_BY_SLUG, { slug }, options)
 
@@ -79,17 +76,17 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const targetDate = new Date(formatDate)
   const dateNumber = parseInt(date, 10)
 
-  if (!isPreview && (isNaN(dateNumber) || dateNumber < 1 || dateNumber > 24)) {
+  if (!preview && (isNaN(dateNumber) || dateNumber < 1 || dateNumber > 24)) {
     throw new Response('Date not found', { status: 404 })
   }
 
-  if (!isPreview && currentDate < targetDate) {
+  if (!preview && currentDate < targetDate) {
     throw new Response('Date not yet available', { status: 425 })
   }
   if (!initial.data) {
     throw new Response('Post not found', { status: 404 })
   }
-  if (!isPreview && initial.data.availableFrom !== formatDate) {
+  if (!preview && initial.data.availableFrom !== formatDate) {
     throw new Response('Post date and date in url do not match', { status: 404 })
   }
 
