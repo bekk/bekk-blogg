@@ -31,8 +31,15 @@ export default function ImageBlock({ image }: ImageWithMetadataDisplayProps) {
       })
   }, [image.asset, image.src])
 
+  let aspectRatio = ''
+  if (image.asset !== undefined && image.asset.metadata) {
+    aspectRatio = (
+      parseInt(image.asset.metadata.dimensions.width) / parseInt(image.asset.metadata.dimensions.height)
+    ).toString()
+  }
+
   return (
-    <figure style={{ maxWidth: image.maxWidth || '100%' }}>
+    <figure style={{ maxWidth: image.maxWidth || '100%', aspectRatio: aspectRatio }}>
       <img
         src={imageUrl}
         alt={image.alt || 'Image'}
@@ -40,6 +47,7 @@ export default function ImageBlock({ image }: ImageWithMetadataDisplayProps) {
           width: '100%',
           objectFit: 'cover',
           borderRadius: '20px',
+          aspectRatio: aspectRatio,
         }}
       />
 

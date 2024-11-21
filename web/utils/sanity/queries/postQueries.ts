@@ -17,7 +17,22 @@ const POST_PROJECTION = groq`{
   description,
   availableFrom,
   keywords,
-  content,
+  content[] {
+    ...,
+    _type == 'imageWithMetadata' => {
+      ...,
+      asset->{
+        _id,
+        url,
+        metadata {
+          dimensions {
+            width,
+            height
+          }
+        }
+      }
+    }
+  },
   priority,
   
   authors[]->{
@@ -37,7 +52,13 @@ const POST_PROJECTION = groq`{
     asset->{
       _id,
       _type,
-      url
+      url,
+      metadata {
+        dimensions {
+          width,
+          height
+        }
+      }
     },
     hotspot,
     crop,
