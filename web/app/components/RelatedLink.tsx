@@ -47,7 +47,7 @@ export const RelatedLinkElement = ({ link }: RelatedLinkElementProps) => {
             />
           )}
         </div>
-        <div className="sm:hidden flex ml-auto items-center mr-4 sm:mr-4 sm:mb-4">
+        <div className="sm:hidden md:flex md:items-center xl:hidden flex ml-auto items-center mr-4 sm:mr-4 sm:mb-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="w-6 h-6 transform transition-transform group-hover:translate-x-2"
