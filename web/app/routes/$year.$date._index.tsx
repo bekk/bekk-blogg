@@ -88,7 +88,7 @@ export default function Index() {
 
   return (
     <div className="flex flex-col">
-      <h1 className="self-start pl-4 md:pl-0 pb-4 md:pb-10 font-delicious text-4xl md:text-5xl text-reindeer-brown sm:self-center">
+      <h1 className="self-start pl-4 md:pl-0 font-delicious text-4xl md:text-5xl text-reindeer-brown sm:self-center">
         {date}. desember
       </h1>
       <LetterDisplayer posts={data.posts} error={'I denne luka var det helt tomt, gitt!'} />
