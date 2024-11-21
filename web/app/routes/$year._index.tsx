@@ -88,6 +88,11 @@ export default function YearRoute() {
           <Gift2SVG />
         </div>
       </div>
+      <div className="flex justify-center mt-16">
+        <Link to={'/archive'} className="text-xl text-black hover:text-reindeer-brown ">
+          Se tidligere julekalendere
+        </Link>
+      </div>
       <div className={'pt-8 flex justify-center '}>
         <p>
           Du kan også lese innlegg sorter på{' '}
