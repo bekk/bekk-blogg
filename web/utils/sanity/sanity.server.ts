@@ -23,4 +23,4 @@ export const readClient = createClient({
 })
 
 const builder = imageUrlBuilder(readClient)
-export const urlFor = (source: SanityImageSource) => builder.image(source).format('webp').quality(80).width(850)
+export const urlFor = (source: SanityImageSource) => builder.image(source).auto('format').quality(80).width(850)
