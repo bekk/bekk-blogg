@@ -15,8 +15,6 @@ import { VisualEditing } from '@sanity/visual-editing/remix'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
 
-import { ExitPreview } from './components/ExitPreview'
-
 import { Header } from '~/features/navigation/Header'
 import { Page404 } from '~/routes/404'
 import styles from '~/styles/main.css?url'
