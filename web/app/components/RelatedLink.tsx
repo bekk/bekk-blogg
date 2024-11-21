@@ -19,7 +19,7 @@ export const RelatedLinkElement = ({ link }: RelatedLinkElementProps) => {
   return (
     <div
       key={link._key}
-      className="flex mt-2 bg-light-gray rounded-xl h-full max-h-24 min-h-24 hover:underline hover:shadow-md transition-shadow group"
+      className="flex mt-4 bg-light-gray rounded-xl h-full max-h-20 min-h-20 sm:max-h-28 sm:min-h-28 hover:underline hover:shadow-md transition-shadow group"
     >
       <Link to={link.url} className="flex w-full">
         <div className="flex flex-grow flex-col justify-center ml-5 w-[125px] no-underline">
@@ -27,9 +27,9 @@ export const RelatedLinkElement = ({ link }: RelatedLinkElementProps) => {
           <p className="line-clamp-1 sm:line-clamp-3 text-sm">
             {link.description ?? previewData.data.description ?? previewData.data.details['ogTitle']}
           </p>
-          <p className="line-clamp-1 sm:line-clamp-2 text-sm">{link.url}</p>
+          {/* <p className="line-clamp-1 sm:line-clamp-2 text-sm">{link.url}</p> */}
         </div>
-        <div className="flex flex-col justify-center items-center ml-2 max-sm:w-[0px] sm:w-[150px] md:w-[0px] xl:w-[150px] sm:ml-14 sm:mr-8 sm:m-2">
+        <div className="flex flex-col justify-center items-center ml-2 max-sm:w-[0px] sm:w-[150px] md:w-[0px] xl:w-[150px] sm:ml-14 sm:mr-4 sm:m-2">
           {previewData.data.image && (
             <img
               src={previewData.data.image ? previewData.data.image.url : `${new URL(link.url)}/favicon.ico`}
@@ -38,7 +38,7 @@ export const RelatedLinkElement = ({ link }: RelatedLinkElementProps) => {
             />
           )}
         </div>
-        <div className="flex ml-auto items-end mr-2 mb-2 sm:mr-4 sm:mb-4">
+        <div className="sm:hidden flex ml-auto items-center mr-4 sm:mr-4 sm:mb-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="w-6 h-6 transform transition-transform group-hover:translate-x-2"
