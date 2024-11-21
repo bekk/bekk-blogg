@@ -98,7 +98,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 }
 
 export default function Index() {
-  const post = useLoaderData<Post>()
+  const post = useLoaderData<typeof loader>()
 
   return <Article post={post} />
 }
