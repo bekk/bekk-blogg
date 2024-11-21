@@ -3,6 +3,8 @@ import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readTime'
 import { Post } from 'utils/sanity/types/sanity.types'
 
+import { RelatedLinks } from './RelatedLinks'
+
 import { components } from '~/portable-text/Components'
 import ImageBlock from '~/portable-text/ImageBlock'
 import PodcastBlock from '~/portable-text/PodcastBlock'
@@ -55,6 +57,11 @@ export const Article = ({ post }: ArticleProps) => {
         {post?.content && (
           <div className="leading-8">
             <PortableText value={post.content} components={components} />
+          </div>
+        )}
+        {post.relatedLinks && (
+          <div className="md:max-w-lg lg:max-w-xl xl:max-w-4xl leading-8">
+            <RelatedLinks links={post.relatedLinks} />
           </div>
         )}
       </div>
