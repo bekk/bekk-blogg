@@ -2,7 +2,7 @@ import {codeInput} from '@sanity/code-input'
 import {visionTool} from '@sanity/vision'
 import {createAuthStore, defineConfig, SchemaTypeDefinition} from 'sanity'
 import {media} from 'sanity-plugin-media'
-import {defineLocations, presentationTool} from 'sanity/presentation'
+import {defineDocuments, defineLocations, presentationTool} from 'sanity/presentation'
 import {structureTool} from 'sanity/structure'
 import schemas from './schemas/schema'
 import {structure} from './structure'
@@ -25,6 +25,7 @@ const config = defineConfig({
     media(),
     codeInput(),
     presentationTool({
+      devMode: process.env.NODE_ENV !== 'production',
       previewUrl: {
         previewMode: {
           enable: '/resource/preview',
@@ -33,15 +34,26 @@ const config = defineConfig({
         origin: process.env.SANITY_STUDIO_FRONTEND_URL,
       },
       resolve: {
+        mainDocuments: defineDocuments([
+          {
+            route: '/:year/:day/:slug',
+            resolve: (ctx) => ({
+              filter: '_type == "post" && slug.current == $slug',
+              params: {
+                slug: ctx.params.slug,
+              },
+            }),
+          },
+        ]),
         locations: {
-          record: defineLocations({
+          // TODO: Add support for authors and categories
+          post: defineLocations({
             select: {
               title: 'title',
               slug: 'slug.current',
               availableFrom: 'availableFrom',
             },
             resolve: (doc) => {
-              // TODO: Add support for authors and categories
               const availableFrom = new Date(doc?.availableFrom ?? null)
               const day = availableFrom.getDate()
               const year = availableFrom.getFullYear()
