@@ -11,8 +11,11 @@ import {
   useRouteError,
 } from '@remix-run/react'
 import { VisualEditing } from '@sanity/visual-editing/remix'
+import { lazy, Suspense } from 'react'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
+
+import { ExitPreview } from './components/ExitPreview'
 
 import { Header } from '~/features/navigation/Header'
 import { Page404 } from '~/routes/404'
@@ -75,12 +78,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
   )
 }
 
+const ExitPreview = lazy(() =>
+  import('./components/ExitPreview').then((module) => ({
+    default: module.ExitPreview,
+  }))
+)
+
 export default function App() {
   const { ENV, isPreview } = useLoaderData<typeof loader>()
   return (
     <>
       <Outlet />
-      {isPreview ? <VisualEditing /> : null}
+      {isPreview ? (
+        <Suspense fallback={null}>
+          <VisualEditing />
+          <ExitPreview />
+        </Suspense>
+      ) : null}
       <script
         dangerouslySetInnerHTML={{
           __html: `window.ENV = ${JSON.stringify(ENV)}`,
