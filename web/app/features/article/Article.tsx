@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { PortableText } from '@portabletext/react'
+import { Link } from '@remix-run/react'
 import { Loader, Pause, Play } from 'lucide-react'
 import { trackEvent } from 'utils/analytics'
 import { formatDate } from 'utils/date'
@@ -89,7 +90,19 @@ export const Article = ({ post }: ArticleProps) => {
             <Border />
           </div>
         )}
-        {post.authors && `Fra ${post.authors.map((author) => author.fullName).join(', ')}`}
+        {post.authors && (
+          <div>
+            Fra {''}
+            {post.authors.map((author, index) => (
+              <>
+                <Link to={`/author/${author.slug?.current}`} key={author._id}>
+                  {author.fullName}
+                </Link>
+                {index !== post.authors.length - 1 && ', '}
+              </>
+            ))}
+          </div>
+        )}
         <Border />
         {post.availableFrom && formatDate(post.availableFrom)}
         <Border />
