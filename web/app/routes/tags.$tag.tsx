@@ -25,8 +25,8 @@ export async function loader({ params }: LoaderFunctionArgs) {
 export default function Posts() {
   const { posts, tag } = useLoaderData<typeof loader>()
   return (
-    <div className="flex flex-col items-center gap-8 mb-4 lg:mb-12 md:gap-12">
-      <h1 className="font-delicious pb-4 md:pb-8 md:text-center">{tag.name}</h1>
+    <div className="flex flex-col items-center lg:mb-12">
+      <h1 className="font-delicious md:text-center">{tag.name}</h1>
       <LetterDisplayer posts={posts} error={`Ingen innlegg funnet for ${tag.name}`} />
     </div>
   )

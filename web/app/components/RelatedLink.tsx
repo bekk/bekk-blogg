@@ -9,7 +9,14 @@ type RelatedLinkElementProps = {
 export const RelatedLinkElement = ({ link }: RelatedLinkElementProps) => {
   const previewData = usePreviewData(link.url)
   if (previewData.status !== 'success') {
-    return <p>Loading…</p>
+    return (
+      <div
+        key={link._key}
+        className="flex items-center pl-4 mt-4 bg-light-gray rounded-xl h-full max-h-20 min-h-20 sm:max-h-28 sm:min-h-28 hover:underline hover:shadow-md transition-shadow group"
+      >
+        <p>Loading…</p>
+      </div>
+    )
   }
 
   if (!link.url) {
@@ -23,8 +30,10 @@ export const RelatedLinkElement = ({ link }: RelatedLinkElementProps) => {
     >
       <Link to={link.url} className="flex w-full">
         <div className="flex flex-grow flex-col justify-center ml-5 w-[125px] no-underline">
-          <h3 className="line-clamp-2 sm:line-clamp-3 text-base sm:text-xl">{link.title ?? previewData.data.title}</h3>
-          <p className="line-clamp-1 sm:line-clamp-3 text-sm">
+          <h3 className="line-clamp-2 sm:line-clamp-2 text-base mb-1 sm:text-xl">
+            {link.title ?? previewData.data.title}
+          </h3>
+          <p className="line-clamp-1 sm:line-clamp-2 text-sm">
             {link.description ?? previewData.data.description ?? previewData.data.details['ogTitle']}
           </p>
           {/* <p className="line-clamp-1 sm:line-clamp-2 text-sm">{link.url}</p> */}
@@ -38,7 +47,7 @@ export const RelatedLinkElement = ({ link }: RelatedLinkElementProps) => {
             />
           )}
         </div>
-        <div className="sm:hidden flex ml-auto items-center mr-4 sm:mr-4 sm:mb-4">
+        <div className="sm:hidden md:flex md:items-center xl:hidden flex ml-auto items-center mr-4 sm:mr-4 sm:mb-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="w-6 h-6 transform transition-transform group-hover:translate-x-2"

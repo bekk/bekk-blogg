@@ -57,7 +57,9 @@ export default function YearRoute() {
   const data = useLoaderData<{ year: string }>()
   return (
     <div className="p-4">
-      <h1 className="text-reindeer-brown font-delicious text-center pb-8 md:pb-0">24 dager med brev - {data.year}</h1>
+      <h1 className="text-reindeer-brown font-delicious text-center text-4xl sm:text-6xl pb-8 sm:pb-0">
+        24 dager med brev - {data.year}
+      </h1>
 
       <div className="flex justify-center">
         <div className="hidden sm:flex self-end">

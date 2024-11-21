@@ -15,9 +15,7 @@ export const Letter = ({ post, showReadTime = true }: LetterProps) => {
     <div className="striped-frame min-w-full py-6 px-6 sm:p-7">
       <div className="grid max-w-4xl sm:grid-cols-[1fr_1px_1fr] grid-cols-[30fr_1fr]">
         <div className="meta col-start-1 col-end-1 row-start-2 row-end-2 sm:mr-7">
-          <div className="mb-3 sm:mb-20">
-            <h2 className="font-delicious">{post.title}</h2>
-          </div>
+          <h2 className="font-delicious sm:mb-20">{post.title}</h2>
           <div className="text-sm sm:text-lg">
             {post.tags && (
               <>
