@@ -31,6 +31,6 @@ const schema: SchemaTypeDefinition[] = [
   twitter,
   youtube,
   unfurledUrl,
-]
+] as const
 
 export default schema
