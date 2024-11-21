@@ -1,6 +1,5 @@
 import { readingTime } from 'utils/readTime'
 import { toPlainText } from 'utils/sanity/utils'
-import { truncateText } from 'utils/truncateText'
 
 import { Post } from '../../../utils/sanity/types/sanity.types'
 import { PostStamp } from '../article/PostStamp'
@@ -11,7 +10,6 @@ type LetterProps = {
 }
 
 export const Letter = ({ post, showReadTime = true }: LetterProps) => {
-  const MAX_DESCRIPTION_LENGTH = 250
   return (
     <div className="striped-frame min-w-full py-6 px-6 sm:p-7">
       <div className="grid  max-w-4xl sm:grid-cols-[1fr_1px_1fr] grid-cols-[30fr_1fr]">
@@ -39,7 +37,7 @@ export const Letter = ({ post, showReadTime = true }: LetterProps) => {
           <div className="sm:mb-7 border-b border-bekk-night pb-1 mb-3" />
         </div>
         <div className="hidden sm:text-lg sm:block col-start-3 col-end-3 row-start-3 row-end-3 sm:ml-7">
-          {post.description && truncateText(toPlainText(post.description), MAX_DESCRIPTION_LENGTH)}{' '}
+          <p className="line-clamp-6"> {post.description && toPlainText(post.description)} </p>
         </div>
       </div>
     </div>
