@@ -2,6 +2,7 @@ import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { Link, useLoaderData } from '@remix-run/react'
 import { z } from 'zod'
 
+import { LinkToArchive } from '~/components/LinkToArchive'
 import { Gift2SVG } from '~/features/calendar/Gift2SVG'
 import { Gift3SVG } from '~/features/calendar/Gift3SVG'
 import { GiftsSVG } from '~/features/calendar/GiftsSVG'
@@ -88,11 +89,7 @@ export default function YearRoute() {
           <Gift2SVG />
         </div>
       </div>
-      <div className="flex justify-center mt-16">
-        <Link to={'/archive'} className="text-xl text-black hover:text-reindeer-brown ">
-          Se tidligere julekalendere
-        </Link>
-      </div>
+      <LinkToArchive />
       <div className={'pt-8 flex justify-center '}>
         <p>
           Du kan også lese innlegg sorter på{' '}

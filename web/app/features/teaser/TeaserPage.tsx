@@ -4,6 +4,7 @@ import { Link } from '@remix-run/react'
 
 import { mockPost } from './mockPost'
 
+import { LinkToArchive } from '~/components/LinkToArchive'
 import { Letter } from '~/features/letters/Letter'
 
 const useClientSideOnly = () => {
@@ -65,11 +66,7 @@ export const TeaserPage = () => {
             <Letter post={mockPost} showReadTime={false} />
           </Link>
         </div>
-        <div className="flex justify-center mt-16">
-          <Link to={'/archive'} className="text-xl text-black hover:text-reindeer-brown ">
-            Se tidligere julekalendere
-          </Link>
-        </div>
+        <LinkToArchive />
       </div>
     </main>
   )
