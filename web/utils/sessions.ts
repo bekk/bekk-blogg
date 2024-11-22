@@ -10,8 +10,8 @@ const { getSession, commitSession, destroySession } = createCookieSessionStorage
   cookie: {
     name: PREVIEW_SESSION_NAME,
     secrets: [process.env.SANITY_SESSION_SECRET],
-    sameSite: 'none',
-    secure: true,
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    secure: process.env.NODE_ENV === 'production',
   },
 })
 
