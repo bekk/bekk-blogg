@@ -59,10 +59,12 @@ export const components: Partial<PortableTextReactComponents> = {
   },
   list: {
     bullet: ({ children }: { children?: React.ReactNode }) => (
-      <ul className="mb-4 list-inside list-disc">{children}</ul>
+      <ul className="mb-4 list-inside list-disc [&>li>ul]:ml-6 [&>li>ol]:ml-6">{children}</ul>
     ),
     number: ({ children }: { children?: React.ReactNode }) => (
-      <ul className="mb-4 list-inside list-decimal">{children}</ul>
+      <ol className="mb-4 list-inside list-decimal [&>li>ul]:ml-6 [&>li>ol]:ml-6 [&>li>ol]:list-[lower-alpha]">
+        {children}
+      </ol>
     ),
   },
   listItem: ({ children }: { children?: React.ReactNode }) => <li>{children}</li>,
