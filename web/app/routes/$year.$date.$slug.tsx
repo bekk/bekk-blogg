@@ -14,12 +14,13 @@ import { Article } from '~/features/article/Article'
 export const meta: MetaFunction = ({ data }) => {
   const post = data as Post & { imageUrl?: string }
   const availableFrom = post?.availableFrom ? new Date(post.availableFrom) : undefined
+  const description = post?.previewText ?? post?.description
 
   const meta = [
     { title: post?.title || 'Innlegg' },
-    { name: 'description', content: post?.description },
+    { name: 'description', content: description },
     { property: 'og:title', content: post?.title || 'Innlegg' },
-    { property: 'og:description', content: post?.description },
+    { property: 'og:description', content: description },
     { property: 'og:type', content: 'article' },
     { property: 'og:site_name', content: 'Bekk Christmas' },
     { property: 'article:published_time', content: post?.availableFrom },
@@ -27,7 +28,7 @@ export const meta: MetaFunction = ({ data }) => {
     { property: 'article:author', content: post?.authors?.map((author) => author.fullName).join(', ') },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: post?.title || 'Innlegg' },
-    { name: 'twitter:description', content: post?.description },
+    { name: 'twitter:description', content: description },
     { name: 'twitter:site', content: '@livetibekk' },
   ]
 
