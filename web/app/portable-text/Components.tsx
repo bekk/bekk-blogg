@@ -1,6 +1,6 @@
+import React from 'react'
 import type { PortableTextMarkComponentProps, PortableTextReactComponents } from '@portabletext/react'
 import { PortableTextLink } from '@portabletext/types'
-import React from 'react'
 
 import {
   Code,
