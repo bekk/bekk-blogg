@@ -2,12 +2,12 @@ import type { HeadersFunction, LoaderFunctionArgs, MetaFunction } from '@remix-r
 import { useLoaderData } from '@remix-run/react'
 import { useQuery } from '@sanity/react-loader'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
-import { urlFor } from 'utils/sanity/sanity.server'
 import { z } from 'zod'
 
 import { POST_BY_SLUG } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
 import { Post } from '../../utils/sanity/types/sanity.types'
+import { urlFor } from '../../utils/sanity/utils'
 
 import { Article } from '~/features/article/Article'
 
