@@ -6,10 +6,14 @@ type ImageWithMetadataDisplayProps = {
 }
 
 export default function ImageBlock({ image }: ImageWithMetadataDisplayProps) {
-  const imageUrl = image?.asset ? urlFor(image.asset).auto('format').width(1700).quality(80).url() : image.src
+  const imageUrl = image?.asset ? urlFor(image.asset).width(1700).quality(80).url() : image.src
+
+  const aspectRatio = image?.asset?.metadata
+    ? (parseInt(image.asset.metadata.dimensions.width) / parseInt(image.asset.metadata.dimensions.height)).toString()
+    : ''
 
   return (
-    <figure style={{ maxWidth: image.maxWidth || '100%' }}>
+    <figure style={{ maxWidth: image.maxWidth || '100%', aspectRatio: aspectRatio }}>
       <img
         src={imageUrl}
         alt={image.alt || 'Image'}
@@ -17,6 +21,7 @@ export default function ImageBlock({ image }: ImageWithMetadataDisplayProps) {
           width: '100%',
           objectFit: 'cover',
           borderRadius: '20px',
+          aspectRatio: aspectRatio,
         }}
       />
 
