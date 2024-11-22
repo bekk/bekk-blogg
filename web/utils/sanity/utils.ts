@@ -3,6 +3,9 @@
  * Borrowed from https://www.sanity.io/docs/presenting-block-text#ac67a867dd69
  */
 /* eslint-disable  @typescript-eslint/no-explicit-any */
+import imageUrlBuilder from '@sanity/image-url'
+import { SanityImageSource } from '@sanity/image-url/lib/types/types'
+
 export function toPlainText(blocks: any[] = []) {
   if (!blocks || !blocks.length) {
     return ''
@@ -25,3 +28,14 @@ export function toPlainText(blocks: any[] = []) {
       .join('\n\n')
   )
 }
+
+const projectId =
+  typeof process === 'undefined' ? window?.ENV?.SANITY_STUDIO_PROJECT_ID : process.env.SANITY_STUDIO_PROJECT_ID
+const dataset = typeof process === 'undefined' ? window?.ENV?.SANITY_STUDIO_DATASET : process.env.SANITY_STUDIO_DATASET
+
+const builder = imageUrlBuilder({
+  projectId: projectId ?? '',
+  dataset: dataset ?? '',
+})
+
+export const urlFor = (source: SanityImageSource) => builder.image(source).auto('format')

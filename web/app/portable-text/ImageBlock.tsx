@@ -1,42 +1,16 @@
-import { useEffect, useState } from 'react'
-
 import { ImageWithMetadata } from '../../utils/sanity/types/sanity.types'
+import { urlFor } from '../../utils/sanity/utils'
 
 type ImageWithMetadataDisplayProps = {
   image: ImageWithMetadata
 }
 
 export default function ImageBlock({ image }: ImageWithMetadataDisplayProps) {
-  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined)
+  const imageUrl = image?.asset ? urlFor(image.asset).width(1700).quality(80).url() : image.src
 
-  // Generate the URL with optional crop/hotspot using urlFor
-  useEffect(() => {
-    if (!image.asset && image.src) {
-      setImageUrl(image.src)
-      return
-    }
-    fetch('/api/image-url', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ asset: image.asset }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setImageUrl(data.imageUrl)
-      })
-      .catch((error) => {
-        console.error('Error:', error)
-      })
-  }, [image.asset, image.src])
-
-  let aspectRatio = ''
-  if (image.asset !== undefined && image.asset.metadata) {
-    aspectRatio = (
-      parseInt(image.asset.metadata.dimensions.width) / parseInt(image.asset.metadata.dimensions.height)
-    ).toString()
-  }
+  const aspectRatio = image?.asset?.metadata
+    ? (parseInt(image.asset.metadata.dimensions.width) / parseInt(image.asset.metadata.dimensions.height)).toString()
+    : ''
 
   return (
     <figure style={{ maxWidth: image.maxWidth || '100%', aspectRatio: aspectRatio }}>
