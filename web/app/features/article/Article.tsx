@@ -37,11 +37,11 @@ export const Article = ({ post }: ArticleProps) => {
         <Border />
       </div>
       <div className="col-start-2 col-end-2 row-start-2 row-end-2 max-md:max-w-screen-xl max-lg:max-w-lg max-xl:max-w-xl">
-        {post?.description && (
-          <h3>
+        {post?.description ? (
+          <div className="text-2xl">
             <PortableText value={post.description} components={components} />
-          </h3>
-        )}
+          </div>
+        ) : null}
         {post.type === 'podcast' && post.embedUrl && (
           <PodcastBlock podcast={{ src: post.embedUrl, title: post.title ?? 'podcast' }} />
         )}

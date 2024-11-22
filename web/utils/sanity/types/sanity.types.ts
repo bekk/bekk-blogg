@@ -291,6 +291,7 @@ export type Post = {
   slug?: Slug
   canonicalUrl?: string
   description?: DescriptionText
+  previewText?: string
   authors: Author[]
   coverImage?: {
     asset?: {

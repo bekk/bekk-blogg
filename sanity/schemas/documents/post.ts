@@ -96,6 +96,14 @@ const post = defineType({
       group: 'author',
     },
     {
+      title: 'Preview-tekst',
+      description: 'Tekst som vises i dagsoppsummeringen og på sosiale medier',
+      name: 'previewText',
+      type: 'text',
+      group: 'author',
+      validation: (rule) => rule.max(155),
+    },
+    {
       title: 'Innhold',
       name: 'content',
       type: 'portableText',
