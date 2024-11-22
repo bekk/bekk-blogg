@@ -46,3 +46,24 @@
 .codeBlockColorOverride span {
   background-color: #e9e9e9 !important;
 }
+
+.loader {
+  animation: spin 2s linear infinite;
+  transform-origin: center; /* Rotates around the center of the SVG */
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e0c190; /* Full-page white background */
+  z-index: 50; /* On top of other content */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
