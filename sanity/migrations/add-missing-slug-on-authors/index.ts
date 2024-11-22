@@ -2,8 +2,7 @@ import { at, defineMigration, patch, setIfMissing } from 'sanity/migrate'
 import slugify from 'slugify'
 
 /**
- * this migration will set `Default title` on all documents that are missing a title
- * and make `true` the default value for the `enabled` field
+ * this migration will set `slug` on all authors that are missing a slug
  */
 export default defineMigration({
   title: 'Add missing slug on authors',
