@@ -1,5 +1,7 @@
 import { useMatches } from '@remix-run/react'
 
+import { Post } from '../../utils/sanity/types/sanity.types'
+
 export type Breadcrumb = {
   href: string
   title: string
@@ -29,7 +31,8 @@ export function useBreadcrumbs(): Breadcrumb[] {
       }
       title = `📬 ${date}. des`
     } else if (key === 'slug' && currRoute.data) {
-      title = `💌 ${(currRoute.data as { title?: string })?.title ?? ' Innlegg'}`
+      const postTitle = (currRoute.data as { initial: { data: Post } }).initial.data?.title
+      title = `💌 ${postTitle ?? ' Innlegg'}`
     }
 
     breadcrumbs.push({
