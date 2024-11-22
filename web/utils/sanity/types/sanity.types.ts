@@ -148,6 +148,9 @@ export type PortableText = Array<
   | ({
       _key: string
     } & UnfurledUrl)
+  | ({
+      _key: string
+    } & Quote)
 >
 
 export type ImageWithMetadata = {
@@ -614,6 +617,12 @@ export type POST_BY_SLUGResult = {
       }
     | {
         _key: string
+        _type: 'quote'
+        content?: string
+        author?: string
+      }
+    | {
+        _key: string
         _type: 'twitter'
         url?: string
       }
@@ -681,6 +690,13 @@ export type POST_BY_SLUGResult = {
     _type: 'relatedLink'
     _key: string
   }> | null
+} | null
+// Variable: ARTICLE_CONTENT_BY_ID
+// Query: *[_type == "post" && type == "article" && _id == $id][0] { title, description, "content": pt::text(content)}
+export type ARTICLE_CONTENT_BY_IDResult = {
+  title: string | null
+  description: DescriptionText | null
+  content: string
 } | null
 // Variable: POSTS_BY_YEAR_AND_DATE
 // Query: *[_type == "post" && availableFrom == $date]{     _id,  _type,  _createdAt,  _updatedAt,  _rev,  type,  language,  embedUrl,  podcastLength,  title,  slug,  canonicalUrl,  description,  previewText,  availableFrom,  keywords,  content[] {    ...,    _type == 'imageWithMetadata' => {      ...,      asset->{        _id,        url,        metadata {          dimensions {            aspectRatio,            width,            height          }        }      }    }  },  priority,    authors[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    fullName,    slug,    companyName,    profilePicture,    socialMediaLinks  },    coverImage {    asset->{      _id,      _type,      url,      metadata {        dimensions {          aspectRatio,          width,          height        }      }    },    hotspot,    crop,    src,    alt,    hideFromPost  },  tags[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    slug,    name,    synonyms  },  relatedLinks    }
@@ -786,6 +802,12 @@ export type POSTS_BY_YEAR_AND_DATEResult = Array<{
           _type: 'block'
           _key: string
         }>
+      }
+    | {
+        _key: string
+        _type: 'quote'
+        content?: string
+        author?: string
       }
     | {
         _key: string
@@ -988,6 +1010,12 @@ export type POSTS_BY_TAGSResult = Array<{
       }
     | {
         _key: string
+        _type: 'quote'
+        content?: string
+        author?: string
+      }
+    | {
+        _key: string
         _type: 'twitter'
         url?: string
       }
@@ -1064,6 +1092,7 @@ declare module '@sanity/client' {
     '*[_type == "post"]': ALL_POSTSResult
     "{\n     _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  title,\n  slug,\n  canonicalUrl,\n  description,\n  previewText,\n  availableFrom,\n  keywords,\n  content[] {\n    ...,\n    _type == 'imageWithMetadata' => {\n      ...,\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions {\n            aspectRatio,\n            width,\n            height\n          }\n        }\n      }\n    }\n  },\n  priority,\n  \n  authors[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    fullName,\n    slug,\n    companyName,\n    profilePicture,\n    socialMediaLinks\n  },\n  \n  coverImage {\n    asset->{\n      _id,\n      _type,\n      url,\n      metadata {\n        dimensions {\n          aspectRatio,\n          width,\n          height\n        }\n      }\n    },\n    hotspot,\n    crop,\n    src,\n    alt,\n    hideFromPost\n  },\n\n  tags[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    slug,\n    name,\n    synonyms\n  },\n  relatedLinks\n    }": POST_PROJECTIONResult
     '*[_type == "post" && slug.current == $slug][0]{\n     _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  title,\n  slug,\n  canonicalUrl,\n  description,\n  previewText,\n  availableFrom,\n  keywords,\n  content[] {\n    ...,\n    _type == \'imageWithMetadata\' => {\n      ...,\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions {\n            aspectRatio,\n            width,\n            height\n          }\n        }\n      }\n    }\n  },\n  priority,\n  \n  authors[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    fullName,\n    slug,\n    companyName,\n    profilePicture,\n    socialMediaLinks\n  },\n  \n  coverImage {\n    asset->{\n      _id,\n      _type,\n      url,\n      metadata {\n        dimensions {\n          aspectRatio,\n          width,\n          height\n        }\n      }\n    },\n    hotspot,\n    crop,\n    src,\n    alt,\n    hideFromPost\n  },\n\n  tags[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    slug,\n    name,\n    synonyms\n  },\n  relatedLinks\n    }': POST_BY_SLUGResult
+    '*[_type == "post" && type == "article" && _id == $id][0] { title, description, "content": pt::text(content)}': ARTICLE_CONTENT_BY_IDResult
     '*[_type == "post" && availableFrom == $date]{\n     _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  title,\n  slug,\n  canonicalUrl,\n  description,\n  previewText,\n  availableFrom,\n  keywords,\n  content[] {\n    ...,\n    _type == \'imageWithMetadata\' => {\n      ...,\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions {\n            aspectRatio,\n            width,\n            height\n          }\n        }\n      }\n    }\n  },\n  priority,\n  \n  authors[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    fullName,\n    slug,\n    companyName,\n    profilePicture,\n    socialMediaLinks\n  },\n  \n  coverImage {\n    asset->{\n      _id,\n      _type,\n      url,\n      metadata {\n        dimensions {\n          aspectRatio,\n          width,\n          height\n        }\n      }\n    },\n    hotspot,\n    crop,\n    src,\n    alt,\n    hideFromPost\n  },\n\n  tags[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    slug,\n    name,\n    synonyms\n  },\n  relatedLinks\n    }': POSTS_BY_YEAR_AND_DATEResult
     '*[_type == "tag"] | order(name asc)': ALL_CATEGORIESResult
     '*[_type == "tag" && slug == $slug][0]': TAG_BY_SLUGResult

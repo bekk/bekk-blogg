@@ -83,6 +83,9 @@ const POST_PROJECTION = groq`{
   relatedLinks
     }`
 export const POST_BY_SLUG = defineQuery(`*[_type == "post" && slug.current == $slug][0]${POST_PROJECTION}`)
+export const ARTICLE_CONTENT_BY_ID = defineQuery(
+  `*[_type == "post" && type == "article" && _id == $id][0] { title, "description": pt::text(description), "content": pt::text(content)}`
+)
 export const POSTS_BY_YEAR_AND_DATE = defineQuery(`*[_type == "post" && availableFrom == $date]${POST_PROJECTION}`)
 export const ALL_CATEGORIES = defineQuery(`*[_type == "tag"] | order(name asc)`)
 export const TAG_BY_SLUG = defineQuery(`*[_type == "tag" && slug == $slug][0]`)
