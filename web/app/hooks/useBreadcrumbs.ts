@@ -29,7 +29,7 @@ export function useBreadcrumbs(): Breadcrumb[] {
       }
       title = `📬 ${date}. des`
     } else if (key === 'slug' && currRoute.data) {
-      title = `💌 ${(currRoute.data as { title?: string })?.title ?? '💌 Innlegg'}`
+      title = `💌 ${(currRoute.data as { title?: string })?.title ?? ' Innlegg'}`
     }
 
     breadcrumbs.push({
