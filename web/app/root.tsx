@@ -57,9 +57,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>bekk.christmas</title>
         <Meta />
         <Links />
-        <title>bekk.christmas</title>
+        <script defer data-domain="bekk.christmas" src="https://plausible.io/js/plausible.js" />
       </head>
       <body className={`m-auto min-w-[375px] max-w-screen-2xl break-words bg-envelope-beige`}>
         <div className={`${isInArticle && 'striped-frame md:my-8 md:mx-8 '}`}>
