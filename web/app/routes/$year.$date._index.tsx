@@ -1,22 +1,18 @@
 import { json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
+import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'
 import { z } from 'zod'
 
 import { POSTS_BY_YEAR_AND_DATE } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
-import { Post } from '../../utils/sanity/types/sanity.types'
 
 import { LetterDisplayer } from '~/features/letters/LetterDisplayer'
 
-type PostsByDate = {
-  posts: Post[]
-  year: string
-  date: string
-}
-
-export const meta: MetaFunction = ({ data }) => {
-  const postsByDate = data as PostsByDate
+export const meta: MetaFunction<typeof loader> = ({ data: postsByDate }) => {
+  if (!postsByDate) {
+    return []
+  }
   const title = `Innlegg fra ${postsByDate.date}. desember ${postsByDate.year}`
   const description = `Se ${
     postsByDate.posts.length > 1 ? `alle ${postsByDate.posts.length} innlegg` : `innholdet`
@@ -67,9 +63,9 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   }
 
   try {
-    const { data: posts } = await loadQuery<Post[]>(POSTS_BY_YEAR_AND_DATE, { date: formatDate })
+    const { data: posts } = await loadQuery<POSTS_BY_YEAR_AND_DATEResult>(POSTS_BY_YEAR_AND_DATE, { date: formatDate })
 
-    return json<PostsByDate>({
+    return json({
       posts: posts ?? [],
       year,
       date,
@@ -81,18 +77,14 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 }
 
 export default function Index() {
-  const data = useLoaderData<PostsByDate>()
-  let date = data.date
-  if (parseInt(data.date) < 10) {
-    date = data.date.replace('0', '')
-  }
+  const { date, posts } = useLoaderData<typeof loader>()
 
   return (
     <div className="flex flex-col">
       <h1 className="self-start pl-4 md:pl-0 font-delicious text-4xl md:text-5xl text-reindeer-brown sm:self-center">
-        {date}. desember
+        {parseInt(date) < 10 ? date.replace('0', '') : date}. desember
       </h1>
-      <LetterDisplayer posts={data.posts} error={'I denne luka var det helt tomt, gitt!'} />
+      <LetterDisplayer posts={posts} error={'I denne luka var det helt tomt, gitt!'} />
     </div>
   )
 }

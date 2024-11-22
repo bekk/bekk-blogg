@@ -1,6 +1,6 @@
-import React from 'react'
 import type { PortableTextMarkComponentProps, PortableTextReactComponents } from '@portabletext/react'
 import { PortableTextLink } from '@portabletext/types'
+import React from 'react'
 
 import {
   Code,
@@ -9,6 +9,7 @@ import {
   ImageWithMetadata,
   InfoBlock as InfoBlockType,
   PortableText,
+  Quote,
   Twitter,
   UnfurledUrl,
   Youtube,
@@ -19,6 +20,7 @@ import { CodePenBlock } from './CodePenBlock'
 import { CodeSandboxBlock } from './CodeSandboxBlock'
 import ImageBlock from './ImageBlock'
 import { InfoBlock } from './InfoBlock'
+import { QuoteBlock } from './Quote'
 import TwitterBlock from './TwitterBlock'
 import { UnfurledUrlBlock } from './UnfurledUrlBlock'
 import { YouTubeBlock } from './YouTubeBlock'
@@ -38,11 +40,12 @@ export const components: Partial<PortableTextReactComponents> = {
     youtube: (props: { value: Youtube }) => withSpacing(<YouTubeBlock youtube={props.value} />),
     twitter: (props: { value: Twitter }) => withSpacing(<TwitterBlock twitter={props.value} />),
     unfurledUrl: (props: { value: UnfurledUrl }) => withSpacing(<UnfurledUrlBlock unfurledUrl={props.value} />),
-    iframe: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value} />),
+    iframe: () => null, // TODO: Implement iframe
     image: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value} />),
     infoBlock: (props: { value: InfoBlockType }) =>
       withSpacing(<InfoBlock content={props.value.content as PortableText} />),
-    Image: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value} />),
+    quote: (props: { value: Quote }) =>
+      withSpacing(<QuoteBlock quote={props.value.content} author={props.value.author} />),
   },
   block: {
     h1: ({ children }: { children?: React.ReactNode }) => <h1 className="mb-6 mt-12">{children}</h1>,

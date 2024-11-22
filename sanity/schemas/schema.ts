@@ -9,6 +9,7 @@ import iframe from './objects/iframe'
 import imageWithMetadata from './objects/imageWithMetadata'
 import infoBlock from './objects/infoBlock'
 import portableText from './objects/portableText'
+import quote from './objects/quote'
 import socialMediaLink from './objects/socialMediaLink'
 import twitter from './objects/twitter'
 import unfurledUrl from './objects/unfurledUrl'
@@ -31,6 +32,7 @@ const schema: SchemaTypeDefinition[] = [
   twitter,
   youtube,
   unfurledUrl,
+  quote,
 ] as const
 
 export default schema

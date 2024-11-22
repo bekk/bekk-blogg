@@ -1,7 +1,6 @@
-import { PortableText } from './sanity/types/sanity.types'
 import { toPlainText } from './sanity/utils'
 
-export const readingTime = (post: PortableText | undefined) => {
+export const readingTime = (post: unknown[] | undefined) => {
   const averageWPM = 150
   const text = toPlainText(post)
   const regex = /[A-Za-z']+/gm

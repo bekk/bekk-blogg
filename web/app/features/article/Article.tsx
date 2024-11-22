@@ -1,33 +1,41 @@
 import { PortableText } from '@portabletext/react'
 import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readTime'
-import { Post } from 'utils/sanity/types/sanity.types'
+import { POST_BY_SLUGResult } from 'utils/sanity/types/sanity.types'
+import { urlFor } from 'utils/sanity/utils'
 
 import { RelatedLinks } from './RelatedLinks'
 
 import { components } from '~/portable-text/Components'
-import ImageBlock from '~/portable-text/ImageBlock'
 import PodcastBlock from '~/portable-text/PodcastBlock'
 import VimeoBlock from '~/portable-text/VimeoBlock'
 
 type ArticleProps = {
-  post: Post
+  post: POST_BY_SLUGResult
 }
 
 export const Article = ({ post }: ArticleProps) => {
+  if (!post) {
+    return null
+  }
   return (
     <div className="px-6 sm:grid-cols-[1fr_2fr] md:grid md:grid-rows-[auto_auto] md:gap-x-12 xl:gap-x-24 md:gap-y-6 md:pl-20 pb-8 md:pb-16">
       <div className="meta col-start-1 col-end-1 row-start-2 row-end-2 mb-8">
         <h1 className="font-delicious">{post.title}</h1>
         {post.tags && (
           <div>
-            {post.tags.map((tag) => tag.name).join(', ')}
+            {post.tags
+              .map((tag) => tag.name)
+              .filter(Boolean)
+              .join(', ')}
             <Border />
           </div>
         )}
         {((post.type === 'article' && post.content) || post.type === 'podcast') && (
           <div>
-            {post.type === 'podcast' && post.podcastLength ? `${post.podcastLength} min` : readingTime(post.content)}
+            {post.type === 'podcast' && post.podcastLength
+              ? `${post.podcastLength} min`
+              : readingTime(post.content ?? [])}
             <Border />
           </div>
         )}
@@ -50,7 +58,20 @@ export const Article = ({ post }: ArticleProps) => {
         )}
         {post.coverImage && !post.coverImage.hideFromPost && (
           <div className="mb-7">
-            <ImageBlock image={{ ...post.coverImage, _type: 'imageWithMetadata' }} />
+            <img
+              src={
+                post.coverImage.asset
+                  ? urlFor(post.coverImage.asset._id).width(1700).quality(80).url()
+                  : (post.coverImage.src ?? '')
+              }
+              alt={post.coverImage.alt || ''}
+              style={{
+                width: '100%',
+                objectFit: 'cover',
+                borderRadius: '20px',
+                aspectRatio: post.coverImage.asset?.metadata?.dimensions?.aspectRatio ?? undefined,
+              }}
+            />
           </div>
         )}
         {post?.content && (

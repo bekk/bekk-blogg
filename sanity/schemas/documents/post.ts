@@ -117,6 +117,12 @@ const post = defineType({
       type: 'image',
       fields: [
         {
+          name: 'alt',
+          type: 'string',
+          title: 'Alternativ tekst',
+          description: 'Viktig for SEO og tilgjengelighet.',
+        },
+        {
           title: 'Bildekilde',
           name: 'src',
           type: 'string',

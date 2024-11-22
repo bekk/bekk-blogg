@@ -1,4 +1,4 @@
-import groq from 'groq'
+import groq, { defineQuery } from 'groq'
 
 export const ALL_POSTS = groq`*[_type == "post"]`
 const POST_PROJECTION = groq`{
@@ -15,6 +15,7 @@ const POST_PROJECTION = groq`{
   slug,
   canonicalUrl,
   description,
+  previewText,
   availableFrom,
   keywords,
   content[] {
@@ -26,6 +27,7 @@ const POST_PROJECTION = groq`{
         url,
         metadata {
           dimensions {
+            aspectRatio,
             width,
             height
           }
@@ -55,6 +57,7 @@ const POST_PROJECTION = groq`{
       url,
       metadata {
         dimensions {
+          aspectRatio,
           width,
           height
         }
@@ -63,6 +66,7 @@ const POST_PROJECTION = groq`{
     hotspot,
     crop,
     src,
+    alt,
     hideFromPost
   },
 
@@ -78,9 +82,8 @@ const POST_PROJECTION = groq`{
   },
   relatedLinks
     }`
-export const POST_BY_SLUG = groq`*[_type == "post" && slug.current == $slug][0]${POST_PROJECTION}`
-export const POSTS_BY_YEAR_AND_DATE = groq`*[_type == "post" && availableFrom == $date]${POST_PROJECTION}`
-export const ALL_CATEGORIES = groq`*[_type == "tag"] | order(name asc)`
-export const TAG_BY_SLUG = groq`*[_type == "tag" && slug == $slug][0]`
-export const POSTS_BY_TAGS = groq`*[_type == "post" && $t in tags[]->.slug]${POST_PROJECTION}
-`
+export const POST_BY_SLUG = defineQuery(`*[_type == "post" && slug.current == $slug][0]${POST_PROJECTION}`)
+export const POSTS_BY_YEAR_AND_DATE = defineQuery(`*[_type == "post" && availableFrom == $date]${POST_PROJECTION}`)
+export const ALL_CATEGORIES = defineQuery(`*[_type == "tag"] | order(name asc)`)
+export const TAG_BY_SLUG = defineQuery(`*[_type == "tag" && slug == $slug][0]`)
+export const POSTS_BY_TAGS = defineQuery(`*[_type == "post" && $t in tags[]->.slug]${POST_PROJECTION}`)
