@@ -68,6 +68,12 @@ export type Geopoint = {
   alt?: number
 }
 
+export type Quote = {
+  _type: 'quote'
+  content?: string
+  author?: string
+}
+
 export type UnfurledUrl = {
   _type: 'unfurledUrl'
   url?: string
@@ -91,7 +97,7 @@ export type PortableText = Array<
         _type: 'span'
         _key: string
       }>
-      style?: 'normal' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+      style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
       listItem?: 'bullet' | 'number'
       markDefs?: Array<{
         href?: string
@@ -151,12 +157,6 @@ export type ImageWithMetadata = {
     _type: 'reference'
     _weak?: boolean
     [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
-    metadata: {
-      dimensions: {
-        height: string
-        width: string
-      }
-    }
   }
   hotspot?: SanityImageHotspot
   crop?: SanityImageCrop
@@ -229,26 +229,14 @@ export type SocialMediaLink = {
   url?: string
 }
 
-export type Page = {
-  _id: string
-  _type: 'page'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  title?: string
-  slug?: Slug
-  description?: DescriptionText
-  content?: PortableText
-}
-
 export type Tag = {
   _id: string
   _type: 'tag'
   _createdAt: string
   _updatedAt: string
   _rev: string
-  slug?: string
   name?: string
+  slug?: string
   synonyms?: Array<string>
 }
 
@@ -269,14 +257,6 @@ export type Author = {
   >
 }
 
-export type RelatedLink = {
-  title?: string
-  description?: string
-  url?: string
-  _type: 'relatedLink'
-  _key: string
-}
-
 export type Post = {
   _id: string
   _type: 'post'
@@ -284,39 +264,52 @@ export type Post = {
   _updatedAt: string
   _rev: string
   type?: 'article' | 'video' | 'podcast'
-  language?: 'en-US' | 'nb-NO' | 'nn-NO'
-  embedUrl?: string
-  podcastLength?: number
   title?: string
   slug?: Slug
-  canonicalUrl?: string
+  embedUrl?: string
+  podcastLength?: number
   description?: DescriptionText
   previewText?: string
-  authors: Author[]
+  content?: PortableText
   coverImage?: {
     asset?: {
       _ref: string
       _type: 'reference'
       _weak?: boolean
       [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
-      metadata: {
-        dimensions: {
-          height: string
-          width: string
-        }
-      }
     }
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
+    alt?: string
     src?: string
     hideFromPost?: boolean
     _type: 'image'
   }
-  availableFrom?: string
-  tags?: Tag[]
+  authors?: Array<{
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    _key: string
+    [internalGroqTypeReferenceTo]?: 'author'
+  }>
+  tags?: Array<{
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    _key: string
+    [internalGroqTypeReferenceTo]?: 'tag'
+  }>
   keywords?: Array<string>
-  content?: PortableText
-  relatedLinks?: RelatedLink[]
+  relatedLinks?: Array<{
+    title?: string
+    description?: string
+    url?: string
+    _type: 'relatedLink'
+    _key: string
+  }>
+  canonicalUrl?: string
+  language?: 'en-US' | 'nb-NO' | 'nn-NO'
+  availableFrom?: string
   priority?: number
 }
 
@@ -406,6 +399,7 @@ export type AllSanitySchemaTypes =
   | SanityImageDimensions
   | SanityFileAsset
   | Geopoint
+  | Quote
   | UnfurledUrl
   | Youtube
   | Twitter
@@ -417,7 +411,6 @@ export type AllSanitySchemaTypes =
   | InfoBlock
   | Iframe
   | SocialMediaLink
-  | Page
   | Tag
   | Author
   | Post
@@ -430,3 +423,650 @@ export type AllSanitySchemaTypes =
   | MediaTag
   | Slug
 export declare const internalGroqTypeReferenceTo: unique symbol
+// Source: ../web/utils/sanity/queries/postQueries.ts
+// Variable: ALL_POSTS
+// Query: *[_type == "post"]
+export type ALL_POSTSResult = Array<{
+  _id: string
+  _type: 'post'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  type?: 'article' | 'podcast' | 'video'
+  title?: string
+  slug?: Slug
+  embedUrl?: string
+  podcastLength?: number
+  description?: DescriptionText
+  previewText?: string
+  content?: PortableText
+  coverImage?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    src?: string
+    hideFromPost?: boolean
+    _type: 'image'
+  }
+  authors?: Array<{
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    _key: string
+    [internalGroqTypeReferenceTo]?: 'author'
+  }>
+  tags?: Array<{
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    _key: string
+    [internalGroqTypeReferenceTo]?: 'tag'
+  }>
+  keywords?: Array<string>
+  relatedLinks?: Array<{
+    title?: string
+    description?: string
+    url?: string
+    _type: 'relatedLink'
+    _key: string
+  }>
+  canonicalUrl?: string
+  language?: 'en-US' | 'nb-NO' | 'nn-NO'
+  availableFrom?: string
+  priority?: number
+}>
+// Variable: POST_PROJECTION
+// Query: {     _id,  _type,  _createdAt,  _updatedAt,  _rev,  type,  language,  embedUrl,  podcastLength,  title,  slug,  canonicalUrl,  description,  previewText,  availableFrom,  keywords,  content[] {    ...,    _type == 'imageWithMetadata' => {      ...,      asset->{        _id,        url,        metadata {          dimensions {            aspectRatio,            width,            height          }        }      }    }  },  priority,    authors[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    fullName,    slug,    companyName,    profilePicture,    socialMediaLinks  },    coverImage {    asset->{      _id,      _type,      url,      metadata {        dimensions {          aspectRatio,          width,          height        }      }    },    hotspot,    crop,    src,    alt,    hideFromPost  },  tags[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    slug,    name,    synonyms  },  relatedLinks    }
+export type POST_PROJECTIONResult = {
+  _id: never
+  _type: never
+  _createdAt: never
+  _updatedAt: never
+  _rev: never
+  type: never
+  language: never
+  embedUrl: never
+  podcastLength: never
+  title: never
+  slug: never
+  canonicalUrl: never
+  description: never
+  previewText: never
+  availableFrom: never
+  keywords: never
+  content: never
+  priority: never
+  authors: never
+  coverImage: never
+  tags: never
+  relatedLinks: never
+}
+// Variable: POST_BY_SLUG
+// Query: *[_type == "post" && slug.current == $slug][0]{     _id,  _type,  _createdAt,  _updatedAt,  _rev,  type,  language,  embedUrl,  podcastLength,  title,  slug,  canonicalUrl,  description,  previewText,  availableFrom,  keywords,  content[] {    ...,    _type == 'imageWithMetadata' => {      ...,      asset->{        _id,        url,        metadata {          dimensions {            aspectRatio,            width,            height          }        }      }    }  },  priority,    authors[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    fullName,    slug,    companyName,    profilePicture,    socialMediaLinks  },    coverImage {    asset->{      _id,      _type,      url,      metadata {        dimensions {          aspectRatio,          width,          height        }      }    },    hotspot,    crop,    src,    alt,    hideFromPost  },  tags[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    slug,    name,    synonyms  },  relatedLinks    }
+export type POST_BY_SLUGResult = {
+  _id: string
+  _type: 'post'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  type: 'article' | 'podcast' | 'video' | null
+  language: 'en-US' | 'nb-NO' | 'nn-NO' | null
+  embedUrl: string | null
+  podcastLength: number | null
+  title: string | null
+  slug: Slug | null
+  canonicalUrl: string | null
+  description: DescriptionText | null
+  previewText: string | null
+  availableFrom: string | null
+  keywords: Array<string> | null
+  content: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>
+          text?: string
+          _type: 'span'
+          _key: string
+        }>
+        style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+        listItem?: 'bullet' | 'number'
+        markDefs?: Array<{
+          href?: string
+          _type: 'link'
+          _key: string
+        }>
+        level?: number
+        _type: 'block'
+        _key: string
+      }
+    | {
+        _key: string
+        _type: 'code'
+        language?: string
+        filename?: string
+        code?: string
+        highlightedLines?: Array<number>
+      }
+    | {
+        _key: string
+        _type: 'codePen'
+        url?: string
+      }
+    | {
+        _key: string
+        _type: 'codeSandbox'
+        url?: string
+      }
+    | {
+        _key: string
+        _type: 'iframe'
+        src?: string
+        height?: number
+      }
+    | {
+        asset: {
+          _id: string
+          url: string | null
+          metadata: {
+            dimensions: {
+              aspectRatio: number | null
+              width: number | null
+              height: number | null
+            } | null
+          } | null
+        } | null
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        src?: string
+        caption?: string
+        maxWidth?: number
+        alt?: string
+        _type: 'imageWithMetadata'
+        _key: string
+      }
+    | {
+        _key: string
+        _type: 'infoBlock'
+        content?: Array<{
+          children?: Array<{
+            marks?: Array<string>
+            text?: string
+            _type: 'span'
+            _key: string
+          }>
+          style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+          listItem?: 'bullet' | 'number'
+          markDefs?: Array<{
+            href?: string
+            _type: 'link'
+            _key: string
+          }>
+          level?: number
+          _type: 'block'
+          _key: string
+        }>
+      }
+    | {
+        _key: string
+        _type: 'twitter'
+        url?: string
+      }
+    | {
+        _key: string
+        _type: 'unfurledUrl'
+        url?: string
+      }
+    | {
+        _key: string
+        _type: 'youtube'
+        url?: string
+      }
+  > | null
+  priority: number | null
+  authors: Array<{
+    _id: string
+    _type: 'author'
+    _createdAt: string
+    _updatedAt: string
+    _rev: string
+    fullName: string | null
+    slug: Slug | null
+    companyName: string | null
+    profilePicture: string | null
+    socialMediaLinks: Array<
+      {
+        _key: string
+      } & SocialMediaLink
+    > | null
+  }> | null
+  coverImage: {
+    asset: {
+      _id: string
+      _type: 'sanity.imageAsset'
+      url: string | null
+      metadata: {
+        dimensions: {
+          aspectRatio: number | null
+          width: number | null
+          height: number | null
+        } | null
+      } | null
+    } | null
+    hotspot: SanityImageHotspot | null
+    crop: SanityImageCrop | null
+    src: string | null
+    alt: string | null
+    hideFromPost: boolean | null
+  } | null
+  tags: Array<{
+    _id: string
+    _type: 'tag'
+    _createdAt: string
+    _updatedAt: string
+    _rev: string
+    slug: string | null
+    name: string | null
+    synonyms: Array<string> | null
+  }> | null
+  relatedLinks: Array<{
+    title?: string
+    description?: string
+    url?: string
+    _type: 'relatedLink'
+    _key: string
+  }> | null
+} | null
+// Variable: POSTS_BY_YEAR_AND_DATE
+// Query: *[_type == "post" && availableFrom == $date]{     _id,  _type,  _createdAt,  _updatedAt,  _rev,  type,  language,  embedUrl,  podcastLength,  title,  slug,  canonicalUrl,  description,  previewText,  availableFrom,  keywords,  content[] {    ...,    _type == 'imageWithMetadata' => {      ...,      asset->{        _id,        url,        metadata {          dimensions {            aspectRatio,            width,            height          }        }      }    }  },  priority,    authors[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    fullName,    slug,    companyName,    profilePicture,    socialMediaLinks  },    coverImage {    asset->{      _id,      _type,      url,      metadata {        dimensions {          aspectRatio,          width,          height        }      }    },    hotspot,    crop,    src,    alt,    hideFromPost  },  tags[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    slug,    name,    synonyms  },  relatedLinks    }
+export type POSTS_BY_YEAR_AND_DATEResult = Array<{
+  _id: string
+  _type: 'post'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  type: 'article' | 'podcast' | 'video' | null
+  language: 'en-US' | 'nb-NO' | 'nn-NO' | null
+  embedUrl: string | null
+  podcastLength: number | null
+  title: string | null
+  slug: Slug | null
+  canonicalUrl: string | null
+  description: DescriptionText | null
+  previewText: string | null
+  availableFrom: string | null
+  keywords: Array<string> | null
+  content: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>
+          text?: string
+          _type: 'span'
+          _key: string
+        }>
+        style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+        listItem?: 'bullet' | 'number'
+        markDefs?: Array<{
+          href?: string
+          _type: 'link'
+          _key: string
+        }>
+        level?: number
+        _type: 'block'
+        _key: string
+      }
+    | {
+        _key: string
+        _type: 'code'
+        language?: string
+        filename?: string
+        code?: string
+        highlightedLines?: Array<number>
+      }
+    | {
+        _key: string
+        _type: 'codePen'
+        url?: string
+      }
+    | {
+        _key: string
+        _type: 'codeSandbox'
+        url?: string
+      }
+    | {
+        _key: string
+        _type: 'iframe'
+        src?: string
+        height?: number
+      }
+    | {
+        asset: {
+          _id: string
+          url: string | null
+          metadata: {
+            dimensions: {
+              aspectRatio: number | null
+              width: number | null
+              height: number | null
+            } | null
+          } | null
+        } | null
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        src?: string
+        caption?: string
+        maxWidth?: number
+        alt?: string
+        _type: 'imageWithMetadata'
+        _key: string
+      }
+    | {
+        _key: string
+        _type: 'infoBlock'
+        content?: Array<{
+          children?: Array<{
+            marks?: Array<string>
+            text?: string
+            _type: 'span'
+            _key: string
+          }>
+          style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+          listItem?: 'bullet' | 'number'
+          markDefs?: Array<{
+            href?: string
+            _type: 'link'
+            _key: string
+          }>
+          level?: number
+          _type: 'block'
+          _key: string
+        }>
+      }
+    | {
+        _key: string
+        _type: 'twitter'
+        url?: string
+      }
+    | {
+        _key: string
+        _type: 'unfurledUrl'
+        url?: string
+      }
+    | {
+        _key: string
+        _type: 'youtube'
+        url?: string
+      }
+  > | null
+  priority: number | null
+  authors: Array<{
+    _id: string
+    _type: 'author'
+    _createdAt: string
+    _updatedAt: string
+    _rev: string
+    fullName: string | null
+    slug: Slug | null
+    companyName: string | null
+    profilePicture: string | null
+    socialMediaLinks: Array<
+      {
+        _key: string
+      } & SocialMediaLink
+    > | null
+  }> | null
+  coverImage: {
+    asset: {
+      _id: string
+      _type: 'sanity.imageAsset'
+      url: string | null
+      metadata: {
+        dimensions: {
+          aspectRatio: number | null
+          width: number | null
+          height: number | null
+        } | null
+      } | null
+    } | null
+    hotspot: SanityImageHotspot | null
+    crop: SanityImageCrop | null
+    src: string | null
+    alt: string | null
+    hideFromPost: boolean | null
+  } | null
+  tags: Array<{
+    _id: string
+    _type: 'tag'
+    _createdAt: string
+    _updatedAt: string
+    _rev: string
+    slug: string | null
+    name: string | null
+    synonyms: Array<string> | null
+  }> | null
+  relatedLinks: Array<{
+    title?: string
+    description?: string
+    url?: string
+    _type: 'relatedLink'
+    _key: string
+  }> | null
+}>
+// Variable: ALL_CATEGORIES
+// Query: *[_type == "tag"] | order(name asc)
+export type ALL_CATEGORIESResult = Array<{
+  _id: string
+  _type: 'tag'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  name?: string
+  slug?: string
+  synonyms?: Array<string>
+}>
+// Variable: TAG_BY_SLUG
+// Query: *[_type == "tag" && slug == $slug][0]
+export type TAG_BY_SLUGResult = {
+  _id: string
+  _type: 'tag'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  name?: string
+  slug?: string
+  synonyms?: Array<string>
+} | null
+// Variable: POSTS_BY_TAGS
+// Query: *[_type == "post" && $t in tags[]->.slug]{     _id,  _type,  _createdAt,  _updatedAt,  _rev,  type,  language,  embedUrl,  podcastLength,  title,  slug,  canonicalUrl,  description,  previewText,  availableFrom,  keywords,  content[] {    ...,    _type == 'imageWithMetadata' => {      ...,      asset->{        _id,        url,        metadata {          dimensions {            aspectRatio,            width,            height          }        }      }    }  },  priority,    authors[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    fullName,    slug,    companyName,    profilePicture,    socialMediaLinks  },    coverImage {    asset->{      _id,      _type,      url,      metadata {        dimensions {          aspectRatio,          width,          height        }      }    },    hotspot,    crop,    src,    alt,    hideFromPost  },  tags[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    slug,    name,    synonyms  },  relatedLinks    }
+export type POSTS_BY_TAGSResult = Array<{
+  _id: string
+  _type: 'post'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  type: 'article' | 'podcast' | 'video' | null
+  language: 'en-US' | 'nb-NO' | 'nn-NO' | null
+  embedUrl: string | null
+  podcastLength: number | null
+  title: string | null
+  slug: Slug | null
+  canonicalUrl: string | null
+  description: DescriptionText | null
+  previewText: string | null
+  availableFrom: string | null
+  keywords: Array<string> | null
+  content: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>
+          text?: string
+          _type: 'span'
+          _key: string
+        }>
+        style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+        listItem?: 'bullet' | 'number'
+        markDefs?: Array<{
+          href?: string
+          _type: 'link'
+          _key: string
+        }>
+        level?: number
+        _type: 'block'
+        _key: string
+      }
+    | {
+        _key: string
+        _type: 'code'
+        language?: string
+        filename?: string
+        code?: string
+        highlightedLines?: Array<number>
+      }
+    | {
+        _key: string
+        _type: 'codePen'
+        url?: string
+      }
+    | {
+        _key: string
+        _type: 'codeSandbox'
+        url?: string
+      }
+    | {
+        _key: string
+        _type: 'iframe'
+        src?: string
+        height?: number
+      }
+    | {
+        asset: {
+          _id: string
+          url: string | null
+          metadata: {
+            dimensions: {
+              aspectRatio: number | null
+              width: number | null
+              height: number | null
+            } | null
+          } | null
+        } | null
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        src?: string
+        caption?: string
+        maxWidth?: number
+        alt?: string
+        _type: 'imageWithMetadata'
+        _key: string
+      }
+    | {
+        _key: string
+        _type: 'infoBlock'
+        content?: Array<{
+          children?: Array<{
+            marks?: Array<string>
+            text?: string
+            _type: 'span'
+            _key: string
+          }>
+          style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+          listItem?: 'bullet' | 'number'
+          markDefs?: Array<{
+            href?: string
+            _type: 'link'
+            _key: string
+          }>
+          level?: number
+          _type: 'block'
+          _key: string
+        }>
+      }
+    | {
+        _key: string
+        _type: 'twitter'
+        url?: string
+      }
+    | {
+        _key: string
+        _type: 'unfurledUrl'
+        url?: string
+      }
+    | {
+        _key: string
+        _type: 'youtube'
+        url?: string
+      }
+  > | null
+  priority: number | null
+  authors: Array<{
+    _id: string
+    _type: 'author'
+    _createdAt: string
+    _updatedAt: string
+    _rev: string
+    fullName: string | null
+    slug: Slug | null
+    companyName: string | null
+    profilePicture: string | null
+    socialMediaLinks: Array<
+      {
+        _key: string
+      } & SocialMediaLink
+    > | null
+  }> | null
+  coverImage: {
+    asset: {
+      _id: string
+      _type: 'sanity.imageAsset'
+      url: string | null
+      metadata: {
+        dimensions: {
+          aspectRatio: number | null
+          width: number | null
+          height: number | null
+        } | null
+      } | null
+    } | null
+    hotspot: SanityImageHotspot | null
+    crop: SanityImageCrop | null
+    src: string | null
+    alt: string | null
+    hideFromPost: boolean | null
+  } | null
+  tags: Array<{
+    _id: string
+    _type: 'tag'
+    _createdAt: string
+    _updatedAt: string
+    _rev: string
+    slug: string | null
+    name: string | null
+    synonyms: Array<string> | null
+  }> | null
+  relatedLinks: Array<{
+    title?: string
+    description?: string
+    url?: string
+    _type: 'relatedLink'
+    _key: string
+  }> | null
+}>
+
+// Query TypeMap
+import '@sanity/client'
+declare module '@sanity/client' {
+  interface SanityQueries {
+    '*[_type == "post"]': ALL_POSTSResult
+    "{\n     _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  title,\n  slug,\n  canonicalUrl,\n  description,\n  previewText,\n  availableFrom,\n  keywords,\n  content[] {\n    ...,\n    _type == 'imageWithMetadata' => {\n      ...,\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions {\n            aspectRatio,\n            width,\n            height\n          }\n        }\n      }\n    }\n  },\n  priority,\n  \n  authors[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    fullName,\n    slug,\n    companyName,\n    profilePicture,\n    socialMediaLinks\n  },\n  \n  coverImage {\n    asset->{\n      _id,\n      _type,\n      url,\n      metadata {\n        dimensions {\n          aspectRatio,\n          width,\n          height\n        }\n      }\n    },\n    hotspot,\n    crop,\n    src,\n    alt,\n    hideFromPost\n  },\n\n  tags[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    slug,\n    name,\n    synonyms\n  },\n  relatedLinks\n    }": POST_PROJECTIONResult
+    '*[_type == "post" && slug.current == $slug][0]{\n     _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  title,\n  slug,\n  canonicalUrl,\n  description,\n  previewText,\n  availableFrom,\n  keywords,\n  content[] {\n    ...,\n    _type == \'imageWithMetadata\' => {\n      ...,\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions {\n            aspectRatio,\n            width,\n            height\n          }\n        }\n      }\n    }\n  },\n  priority,\n  \n  authors[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    fullName,\n    slug,\n    companyName,\n    profilePicture,\n    socialMediaLinks\n  },\n  \n  coverImage {\n    asset->{\n      _id,\n      _type,\n      url,\n      metadata {\n        dimensions {\n          aspectRatio,\n          width,\n          height\n        }\n      }\n    },\n    hotspot,\n    crop,\n    src,\n    alt,\n    hideFromPost\n  },\n\n  tags[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    slug,\n    name,\n    synonyms\n  },\n  relatedLinks\n    }': POST_BY_SLUGResult
+    '*[_type == "post" && availableFrom == $date]{\n     _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  title,\n  slug,\n  canonicalUrl,\n  description,\n  previewText,\n  availableFrom,\n  keywords,\n  content[] {\n    ...,\n    _type == \'imageWithMetadata\' => {\n      ...,\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions {\n            aspectRatio,\n            width,\n            height\n          }\n        }\n      }\n    }\n  },\n  priority,\n  \n  authors[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    fullName,\n    slug,\n    companyName,\n    profilePicture,\n    socialMediaLinks\n  },\n  \n  coverImage {\n    asset->{\n      _id,\n      _type,\n      url,\n      metadata {\n        dimensions {\n          aspectRatio,\n          width,\n          height\n        }\n      }\n    },\n    hotspot,\n    crop,\n    src,\n    alt,\n    hideFromPost\n  },\n\n  tags[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    slug,\n    name,\n    synonyms\n  },\n  relatedLinks\n    }': POSTS_BY_YEAR_AND_DATEResult
+    '*[_type == "tag"] | order(name asc)': ALL_CATEGORIESResult
+    '*[_type == "tag" && slug == $slug][0]': TAG_BY_SLUGResult
+    '*[_type == "post" && $t in tags[]->.slug]{\n     _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  title,\n  slug,\n  canonicalUrl,\n  description,\n  previewText,\n  availableFrom,\n  keywords,\n  content[] {\n    ...,\n    _type == \'imageWithMetadata\' => {\n      ...,\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions {\n            aspectRatio,\n            width,\n            height\n          }\n        }\n      }\n    }\n  },\n  priority,\n  \n  authors[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    fullName,\n    slug,\n    companyName,\n    profilePicture,\n    socialMediaLinks\n  },\n  \n  coverImage {\n    asset->{\n      _id,\n      _type,\n      url,\n      metadata {\n        dimensions {\n          aspectRatio,\n          width,\n          height\n        }\n      }\n    },\n    hotspot,\n    crop,\n    src,\n    alt,\n    hideFromPost\n  },\n\n  tags[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    slug,\n    name,\n    synonyms\n  },\n  relatedLinks\n    }': POSTS_BY_TAGSResult
+  }
+}

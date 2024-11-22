@@ -10,7 +10,7 @@
     "build": "sanity build -y",
     "deploy": "sanity deploy",
     "deploy-graphql": "sanity graphql deploy",
-    "typegen": "sanity schema extract && sanity typegen generate && mv sanity.types.ts ../web/utils/sanity/types/sanity.types.ts"
+    "typegen": "sanity schema extract && sanity typegen generate"
   },
   "keywords": [
     "sanity"

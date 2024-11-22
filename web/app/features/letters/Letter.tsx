@@ -1,15 +1,18 @@
 import { readingTime } from 'utils/readTime'
 import { toPlainText } from 'utils/sanity/utils'
 
-import { Post } from '../../../utils/sanity/types/sanity.types'
+import { POST_BY_SLUGResult } from '../../../utils/sanity/types/sanity.types'
 import { PostStamp } from '../article/PostStamp'
 
 type LetterProps = {
-  post: Post
+  post: POST_BY_SLUGResult
   showReadTime?: boolean
 }
 
 export const Letter = ({ post, showReadTime = true }: LetterProps) => {
+  if (!post) {
+    return null
+  }
   return (
     <div className="striped-frame min-w-full py-6 px-6 sm:p-7">
       <div className="grid  max-w-4xl sm:grid-cols-[1fr_1px_1fr] grid-cols-[30fr_1fr]">
@@ -29,7 +32,7 @@ export const Letter = ({ post, showReadTime = true }: LetterProps) => {
           )}
           {post.type === 'podcast' && post.podcastLength
             ? `${post.podcastLength} min`
-            : showReadTime
+            : showReadTime && post.content
               ? readingTime(post.content)
               : ''}
           {showReadTime ? <div className="sm:mb-7 border-b border-bekk-night pb-1 mb-3" /> : null}

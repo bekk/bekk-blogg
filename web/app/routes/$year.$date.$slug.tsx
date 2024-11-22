@@ -6,35 +6,40 @@ import { z } from 'zod'
 
 import { POST_BY_SLUG } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
-import { Post } from '../../utils/sanity/types/sanity.types'
+import { POST_BY_SLUGResult } from '../../utils/sanity/types/sanity.types'
 import { urlFor } from '../../utils/sanity/utils'
 
 import { Article } from '~/features/article/Article'
 
-export const meta: MetaFunction = ({ data }) => {
-  const post = data as Post & { imageUrl?: string }
-  const availableFrom = post?.availableFrom ? new Date(post.availableFrom) : undefined
-  const description = post?.previewText ?? post?.description
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  const post = data?.initial.data
+
+  if (!post) {
+    return []
+  }
+
+  const availableFrom = post.availableFrom ? new Date(post.availableFrom) : undefined
+  const description = post.previewText ?? post.description
 
   const meta = [
-    { title: post?.title || 'Innlegg' },
+    { title: post.title || 'Innlegg' },
     { name: 'description', content: description },
-    { property: 'og:title', content: post?.title || 'Innlegg' },
+    { property: 'og:title', content: post.title || 'Innlegg' },
     { property: 'og:description', content: description },
     { property: 'og:type', content: 'article' },
     { property: 'og:site_name', content: 'Bekk Christmas' },
-    { property: 'article:published_time', content: post?.availableFrom },
-    { property: 'article:modified_time', content: post?._updatedAt },
-    { property: 'article:author', content: post?.authors?.map((author) => author.fullName).join(', ') },
+    { property: 'article:published_time', content: post.availableFrom },
+    { property: 'article:modified_time', content: post._updatedAt },
+    { property: 'article:author', content: post.authors?.map((author) => author.fullName).join(', ') },
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: post?.title || 'Innlegg' },
+    { name: 'twitter:title', content: post.title || 'Innlegg' },
     { name: 'twitter:description', content: description },
     { name: 'twitter:site', content: '@livetibekk' },
   ]
 
-  if (post?.imageUrl) {
-    meta.push({ property: 'og:image', content: post.imageUrl })
-    meta.push({ name: 'twitter:image', content: post.imageUrl })
+  if (post.coverImage) {
+    meta.push({ property: 'og:image', content: urlFor(post.coverImage).width(1200).format('webp').url() })
+    meta.push({ name: 'twitter:image', content: urlFor(post.coverImage).width(1200).format('webp').url() })
   }
 
   if (availableFrom) {
@@ -70,7 +75,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 
   const { options, preview } = await loadQueryOptions(request.headers)
 
-  const initial = await loadQuery<Post>(POST_BY_SLUG, { slug }, options)
+  const initial = await loadQuery<POST_BY_SLUGResult>(POST_BY_SLUG, { slug }, options)
 
   const formatDate = year + '-' + '12' + '-' + date.padStart(2, '0')
   const currentDate = new Date()
