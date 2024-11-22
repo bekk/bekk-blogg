@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react'
-
 import { ImageWithMetadata } from '../../utils/sanity/types/sanity.types'
 import { urlFor } from '../../utils/sanity/utils'
 
@@ -8,14 +6,7 @@ type ImageWithMetadataDisplayProps = {
 }
 
 export default function ImageBlock({ image }: ImageWithMetadataDisplayProps) {
-  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined)
-  useEffect(() => {
-    if (image?.asset) {
-      setImageUrl(urlFor(image.asset).url())
-    } else {
-      setImageUrl(image?.src)
-    }
-  }, [image])
+  const imageUrl = image?.asset ? urlFor(image.asset).auto('format').width(1700).quality(80).url() : image.src
 
   return (
     <figure style={{ maxWidth: image.maxWidth || '100%' }}>
