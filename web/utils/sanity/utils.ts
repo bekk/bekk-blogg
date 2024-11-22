@@ -29,12 +29,13 @@ export function toPlainText(blocks: any[] = []) {
   )
 }
 
-const projectId = typeof process === 'undefined' ? window?.ENV?.SANITY_STUDIO_PROJECT_ID : process.env.SANITY_PROJECT_ID
-const dataset = typeof process === 'undefined' ? window?.ENV?.SANITY_STUDIO_DATASET : process.env.SANITY_DATASET
+const projectId =
+  typeof process === 'undefined' ? window?.ENV?.SANITY_STUDIO_PROJECT_ID : process.env.SANITY_STUDIO_PROJECT_ID
+const dataset = typeof process === 'undefined' ? window?.ENV?.SANITY_STUDIO_DATASET : process.env.SANITY_STUDIO_DATASET
 
 const builder = imageUrlBuilder({
   projectId: projectId ?? '',
   dataset: dataset ?? '',
 })
 
-export const urlFor = (source: SanityImageSource) => builder.image(source).auto('format').quality(80).width(850)
+export const urlFor = (source: SanityImageSource) => builder.image(source).auto('format')
