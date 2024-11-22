@@ -2,10 +2,11 @@ import {codeInput} from '@sanity/code-input'
 import {visionTool} from '@sanity/vision'
 import {createAuthStore, defineConfig, SchemaTypeDefinition} from 'sanity'
 import {media} from 'sanity-plugin-media'
+import {defineDocuments, defineLocations, presentationTool} from 'sanity/presentation'
 import {structureTool} from 'sanity/structure'
 import schemas from './schemas/schema'
-import {defaultDocumentNode} from './structure/defaultDocumentNode'
 import {structure} from './structure'
+import {defaultDocumentNode} from './structure/defaultDocumentNode'
 
 // Define your schema types explicitly
 const schemaTypes = schemas as SchemaTypeDefinition[]
@@ -18,40 +19,62 @@ const config = defineConfig({
   projectId: 'ah2n1vfr',
   dataset: process.env.SANITY_STUDIO_DATASET ?? 'bekk-blogg',
 
-  document: {
-    // prev is the result from previous plugins and thus can be composed
-    productionUrl: async (prev, context) => {
-      // context includes the client and other details
-      const {getClient, dataset, document} = context
-      const client = getClient({apiVersion: process.env.SANITY_STUDIO_API_VERSION ?? '2021-03-25'})
-
-      if (document._type === 'post') {
-        const post = await client.fetch<{slug: {current: string}; availableFrom: 'string'}>(
-          `*[_type == 'post' && _id == $postId][0]`,
+  plugins: [
+    structureTool({structure, defaultDocumentNode}),
+    visionTool(),
+    media(),
+    codeInput(),
+    presentationTool({
+      devMode: process.env.NODE_ENV !== 'production',
+      previewUrl: {
+        previewMode: {
+          enable: '/resource/preview',
+          shareAccess: true,
+        },
+        origin: process.env.SANITY_STUDIO_FRONTEND_URL,
+      },
+      resolve: {
+        mainDocuments: defineDocuments([
           {
-            postId: document._id,
+            route: '/:year/:day/:slug',
+            resolve: (ctx) => ({
+              filter: '_type == "post" && slug.current == $slug',
+              params: {
+                slug: ctx.params.slug,
+              },
+            }),
           },
-        )
-
-        if (!post) {
-          return '/'
-        }
-
-        const slug = post?.slug?.current
-        const availableFrom = new Date(post?.availableFrom ?? '')
-
-        const params = new URLSearchParams()
-        params.set('preview', 'true')
-        params.set('dataset', dataset)
-
-        return `${process.env.SANITY_STUDIO_FRONTEND_URL}/${availableFrom.getFullYear()}/${availableFrom.getDate()}/${slug}?${params}`
-      }
-
-      return prev
-    },
-  },
-
-  plugins: [structureTool({structure, defaultDocumentNode}), visionTool(), media(), codeInput()],
+        ]),
+        locations: {
+          // TODO: Add support for authors and categories
+          post: defineLocations({
+            select: {
+              title: 'title',
+              slug: 'slug.current',
+              availableFrom: 'availableFrom',
+            },
+            resolve: (doc) => {
+              const availableFrom = new Date(doc?.availableFrom ?? null)
+              const day = availableFrom.getDate()
+              const year = availableFrom.getFullYear()
+              return {
+                locations: [
+                  {
+                    title: doc?.title || 'Untitled',
+                    href: `/${year}/${day}/${doc?.slug}`,
+                  },
+                  {
+                    title: 'Dag',
+                    href: `/${year}/${day}`,
+                  },
+                ],
+              }
+            },
+          }),
+        },
+      },
+    }),
+  ],
   schema: {
     types: schemaTypes,
   },

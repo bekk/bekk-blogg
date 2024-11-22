@@ -1,5 +1,6 @@
 import { json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
+import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { z } from 'zod'
 
 import { POSTS_BY_YEAR_AND_DATE } from '../../utils/sanity/queries/postQueries'
@@ -51,17 +52,17 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   }
   const { year, date } = parsedParams.data
 
-  const isPreview = new URL(request.url).searchParams.get('preview') === 'true'
+  const { preview } = await loadQueryOptions(request.headers)
   const formatDate = year + '-' + '12' + '-' + date
   const currentDate = new Date()
 
   const dateNumber = parseInt(date, 10)
-  if (!isPreview && (isNaN(dateNumber) || dateNumber < 1 || dateNumber > 24)) {
+  if (!preview && (isNaN(dateNumber) || dateNumber < 1 || dateNumber > 24)) {
     throw new Response('Date not found', { status: 404 })
   }
 
   const targetDate = new Date(formatDate)
-  if (!isPreview && currentDate < targetDate) {
+  if (!preview && currentDate < targetDate) {
     throw new Response('Date not yet available', { status: 425 })
   }
 

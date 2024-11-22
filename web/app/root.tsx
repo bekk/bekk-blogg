@@ -1,5 +1,18 @@
+import { lazy, Suspense } from 'react'
 import type { LinksFunction, LoaderFunction } from '@remix-run/node'
-import { json, Links, Meta, Outlet, Scripts, ScrollRestoration, useMatches, useRouteError } from '@remix-run/react'
+import {
+  json,
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  useLoaderData,
+  useMatches,
+  useRouteError,
+} from '@remix-run/react'
+import { VisualEditing } from '@sanity/visual-editing/remix'
+import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
 
 import { Header } from '~/features/navigation/Header'
@@ -8,9 +21,18 @@ import styles from '~/styles/main.css?url'
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({ request }) => {
+  const { preview } = await loadQueryOptions(request.headers)
   return json(
-    {},
+    {
+      isPreview: preview,
+      ENV: {
+        SANITY_STUDIO_PROJECT_ID: process.env.SANITY_STUDIO_PROJECT_ID,
+        SANITY_STUDIO_DATASET: process.env.SANITY_STUDIO_DATASET,
+        SANITY_STUDIO_URL: process.env.SANITY_STUDIO_URL,
+        SANITY_STUDIO_API_VERSION: process.env.SANITY_API_VERSION,
+      },
+    },
     {
       headers: generateSecurityHeaders(),
     }
@@ -18,19 +40,7 @@ export const loader: LoaderFunction = async () => {
 }
 
 export function ErrorBoundary() {
-  return (
-    <html lang={'nb-NO'}>
-      <head>
-        <title>Oh no!</title>
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        <Page404 />
-        <Scripts />
-      </body>
-    </html>
-  )
+  return <Page404 />
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -66,6 +76,28 @@ export function Layout({ children }: { children: React.ReactNode }) {
   )
 }
 
+const ExitPreview = lazy(() =>
+  import('./components/ExitPreview').then((module) => ({
+    default: module.ExitPreview,
+  }))
+)
+
 export default function App() {
-  return <Outlet />
+  const { ENV, isPreview } = useLoaderData<typeof loader>()
+  return (
+    <>
+      <Outlet />
+      {isPreview ? (
+        <Suspense fallback={null}>
+          <VisualEditing />
+          <ExitPreview />
+        </Suspense>
+      ) : null}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `window.ENV = ${JSON.stringify(ENV)}`,
+        }}
+      />
+    </>
+  )
 }
