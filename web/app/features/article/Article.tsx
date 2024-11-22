@@ -1,4 +1,5 @@
 import { PortableText } from '@portabletext/react'
+import { trackEvent } from 'utils/analytics'
 import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readTime'
 import { POST_BY_SLUGResult } from 'utils/sanity/types/sanity.types'
@@ -76,7 +77,8 @@ export const Article = ({ post }: ArticleProps) => {
           // eslint-disable-next-line jsx-a11y/media-has-caption
           <audio
             controls
-            className="w-full mb-6 h-12 [&::-webkit-media-controls-panel]:bg-bekk-gray [&::-webkit-media-controls-panel]:hover:bg-bekk-gray-light [&::-webkit-media-controls-current-time-display]:text-bekk-night [&::-webkit-media-controls-time-remaining-display]:text-bekk-night rounded-lg"
+            className="w-full mb-6 h-12"
+            onPlay={() => trackEvent('article_audio_played', { slug: post.slug?.current ?? 'unknown' })}
           >
             <source src={`/api/tts?id=${post._id}`} type="audio/mpeg" />
           </audio>
