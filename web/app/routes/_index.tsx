@@ -15,6 +15,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   if (preview || isLive) {
     return redirect('/2024')
   }
+  return null
 }
 
 export default function Index() {
