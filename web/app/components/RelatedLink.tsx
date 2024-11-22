@@ -1,9 +1,9 @@
 import { usePreviewData } from '@opengraphninja/react'
 import { Link } from '@remix-run/react'
-import { RelatedLink } from 'utils/sanity/types/sanity.types'
+import { POST_BY_SLUGResult } from 'utils/sanity/types/sanity.types'
 
 type RelatedLinkElementProps = {
-  link: RelatedLink
+  link: NonNullable<NonNullable<POST_BY_SLUGResult>['relatedLinks']>[number]
 }
 
 export const RelatedLinkElement = ({ link }: RelatedLinkElementProps) => {
@@ -14,14 +14,16 @@ export const RelatedLinkElement = ({ link }: RelatedLinkElementProps) => {
         key={link._key}
         className="flex items-center pl-4 mt-4 bg-light-gray rounded-xl h-full max-h-20 min-h-20 sm:max-h-28 sm:min-h-28 hover:underline hover:shadow-md transition-shadow group"
       >
-        <p>Loading…</p>
+        <p>Laster…</p>
       </div>
     )
   }
 
   if (!link.url) {
-    return <p>Ups, her må det ha skjedd en feil. </p>
+    return null
   }
+
+  const url = new URL(link.url)
 
   return (
     <div
@@ -41,9 +43,9 @@ export const RelatedLinkElement = ({ link }: RelatedLinkElementProps) => {
         <div className="flex flex-col justify-center items-center ml-2 max-sm:w-[0px] sm:w-[150px] md:w-[0px] xl:w-[150px] sm:ml-14 sm:mr-4 sm:m-2">
           {previewData.data.image && (
             <img
-              src={previewData.data.image ? previewData.data.image.url : `${new URL(link.url)}/favicon.ico`}
-              alt={previewData.data.image ? previewData.data.image.alt : `${new URL(link.url)}/favicon.ico`}
-              className="rounded-xl"
+              src={previewData.data.image ? previewData.data.image.url : `${url.origin}/favicon.ico`}
+              alt={previewData.data.image ? previewData.data.image.alt : ''}
+              className="rounded-xl overflow-hidden"
             />
           )}
         </div>
