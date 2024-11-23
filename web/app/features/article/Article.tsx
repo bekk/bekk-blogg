@@ -47,7 +47,9 @@ const AudioPlayer = ({ src, slug }: { src: string; slug: string }) => {
           <Play className="w-6 h-6 ml-1" />
         )}
       </button>
-      <p className="text-md text-bekk-night">{isPlaying ? 'Leser høyt for deg…' : 'Høytlesning'}</p>
+      <p className="text-md text-bekk-night">
+        {isLoading ? 'Varmer opp stemmen' : isPlaying ? 'Leser høyt for deg…' : 'Høytlesning'}
+      </p>
       {/* eslint-disable-next-line jsx-a11y/media-has-caption*/}
       <audio
         ref={audioRef}
