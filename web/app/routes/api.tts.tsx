@@ -9,6 +9,29 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
 
+function chunkText(text: string, chunkSize: number = 4000): string[] {
+  const chunks: string[] = []
+  let currentChunk = ''
+
+  // Split by sentences to avoid cutting words/sentences
+  const sentences = text.split('. ')
+
+  for (const sentence of sentences) {
+    if ((currentChunk + sentence).length > chunkSize) {
+      chunks.push(currentChunk)
+      currentChunk = sentence
+    } else {
+      currentChunk += (currentChunk ? '. ' : '') + sentence
+    }
+  }
+
+  if (currentChunk) {
+    chunks.push(currentChunk)
+  }
+
+  return chunks
+}
+
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url)
   const id = url.searchParams.get('id')
@@ -31,18 +54,34 @@ export async function loader({ request }: LoaderFunctionArgs) {
     .replace(/[\u200B-\u200D\uFEFF\u0000-\u001F\u007F-\u009F\u2000-\u200F\u2028-\u202F]/g, '')
 
   try {
-    const mp3 = await openai.audio.speech.create({
-      model: 'tts-1',
-      voice: 'shimmer',
-      input: text.slice(0, 4000),
+    const textChunks = chunkText(text)
+
+    // Create a ReadableStream to stream the audio chunks
+    const stream = new ReadableStream({
+      async start(controller) {
+        try {
+          // Process each chunk and send it immediately
+          for (const chunk of textChunks) {
+            const mp3 = await openai.audio.speech.create({
+              model: 'tts-1',
+              voice: 'shimmer',
+              input: chunk,
+            })
+
+            const audioBuffer = await mp3.arrayBuffer()
+            controller.enqueue(new Uint8Array(audioBuffer))
+          }
+          controller.close()
+        } catch (error) {
+          controller.error(error)
+        }
+      },
     })
 
-    const audioStream = await mp3.arrayBuffer()
-
-    return new Response(audioStream, {
+    return new Response(stream, {
       headers: {
         'Content-Type': 'audio/mpeg',
-        'Content-Length': audioStream.byteLength.toString(),
+        'Transfer-Encoding': 'chunked',
         'Accept-Ranges': 'bytes',
         'Cache-Control': 'public, max-age=3600',
         'Content-Disposition': 'inline',
