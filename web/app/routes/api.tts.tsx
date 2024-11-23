@@ -9,7 +9,7 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
 
-function chunkText(text: string, chunkSize: number = 4000): string[] {
+function chunkText(text: string, chunkSize: number = 500): string[] {
   const chunks: string[] = []
   let currentChunk = ''
 
