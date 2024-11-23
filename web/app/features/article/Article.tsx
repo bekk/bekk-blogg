@@ -1,4 +1,6 @@
+import { useRef, useState } from 'react'
 import { PortableText } from '@portabletext/react'
+import { Loader, Pause, Play } from 'lucide-react'
 import { trackEvent } from 'utils/analytics'
 import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readTime'
@@ -13,6 +15,51 @@ import VimeoBlock from '~/portable-text/VimeoBlock'
 
 type ArticleProps = {
   post: POST_BY_SLUGResult
+}
+
+const AudioPlayer = ({ src, slug }: { src: string; slug: string }) => {
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const audioRef = useRef<HTMLAudioElement>(null)
+
+  const togglePlay = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause()
+      } else {
+        audioRef.current.play()
+        trackEvent('article_audio_played', { slug })
+      }
+    }
+  }
+
+  return (
+    <div className="mb-6 flex items-center gap-2">
+      <button
+        onClick={togglePlay}
+        className="w-12 h-12 rounded-full bg-bekk-night text-white flex items-center justify-center hover:bg-opacity-90 transition-colors"
+      >
+        {isLoading ? (
+          <Loader className="w-6 h-6 animate-spin" />
+        ) : isPlaying ? (
+          <Pause className="w-6 h-6" />
+        ) : (
+          <Play className="w-6 h-6 ml-1" />
+        )}
+      </button>
+      <p className="text-md text-bekk-night">Hør på artikkelen</p>
+      {/* eslint-disable-next-line jsx-a11y/media-has-caption*/}
+      <audio
+        ref={audioRef}
+        className="hidden"
+        src={src}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+        onWaiting={() => setIsLoading(true)}
+        onPlaying={() => setIsLoading(false)}
+      />
+    </div>
+  )
 }
 
 export const Article = ({ post }: ArticleProps) => {
@@ -74,14 +121,7 @@ export const Article = ({ post }: ArticleProps) => {
           </div>
         )}
         {post.type === 'article' && (
-          // eslint-disable-next-line jsx-a11y/media-has-caption
-          <audio
-            controls
-            className="w-full mb-6 h-12"
-            onPlay={() => trackEvent('article_audio_played', { slug: post.slug?.current ?? 'unknown' })}
-          >
-            <source src={`/api/tts?id=${post._id}`} type="audio/mpeg" />
-          </audio>
+          <AudioPlayer src={`/api/tts?id=${post._id}`} slug={post.slug?.current ?? 'unknown'} />
         )}
         {post.content && (
           <div className="leading-8">
