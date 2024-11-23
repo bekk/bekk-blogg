@@ -47,7 +47,7 @@ const AudioPlayer = ({ src, slug }: { src: string; slug: string }) => {
           <Play className="w-6 h-6 ml-1" />
         )}
       </button>
-      <p className="text-md text-bekk-night">Hør på artikkelen</p>
+      <p className="text-md text-bekk-night">{isPlaying ? 'Leser høyt for deg…' : 'Høytlesning'}</p>
       {/* eslint-disable-next-line jsx-a11y/media-has-caption*/}
       <audio
         ref={audioRef}
@@ -91,6 +91,9 @@ export const Article = ({ post }: ArticleProps) => {
         <Border />
         {post.availableFrom && formatDate(post.availableFrom)}
         <Border />
+        {post.type === 'article' && (
+          <AudioPlayer src={`/api/tts?id=${post._id}`} slug={post.slug?.current ?? 'unknown'} />
+        )}
       </div>
       <div className="col-start-2 col-end-2 row-start-2 row-end-2 max-md:max-w-screen-xl max-lg:max-w-lg max-xl:max-w-xl">
         {post?.description ? (
@@ -119,9 +122,6 @@ export const Article = ({ post }: ArticleProps) => {
               }}
             />
           </div>
-        )}
-        {post.type === 'article' && (
-          <AudioPlayer src={`/api/tts?id=${post._id}`} slug={post.slug?.current ?? 'unknown'} />
         )}
         {post.content && (
           <div className="leading-8">
