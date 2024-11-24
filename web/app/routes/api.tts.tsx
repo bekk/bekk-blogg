@@ -60,11 +60,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const stream = new ReadableStream({
       async start(controller) {
         try {
+          const voice = await getVoice(post.mainAuthor)
           // Process each chunk and send it immediately
           for (const chunk of textChunks) {
             const mp3 = await openai.audio.speech.create({
               model: 'tts-1',
-              voice: 'shimmer',
+              voice,
               input: chunk,
             })
 
@@ -91,4 +92,24 @@ export async function loader({ request }: LoaderFunctionArgs) {
     console.error('OpenAI TTS error:', error)
     throw new Response('Error generating audio', { status: 500 })
   }
+}
+
+const getVoice = async (name: string | null) => {
+  if (!name) {
+    return 'nova'
+  }
+  const response = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    messages: [
+      {
+        role: 'system',
+        content:
+          'You are a helpful assistant that can determine the gender of a name. Only respond with either "male" or "female".',
+      },
+      { role: 'user', content: `what is the gender of the following name? ${name}` },
+    ],
+  })
+  const gender = response.choices[0].message.content
+  console.log(gender)
+  return gender === 'male' ? 'onyx' : 'nova'
 }
