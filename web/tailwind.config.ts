@@ -47,6 +47,7 @@ export default {
         sm: '640px',
         md: '900px',
         lg: '1024px',
+        '2lg': '1130px',
         xl: '1280px',
         '2xl': '1536px',
       },
