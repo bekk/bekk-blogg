@@ -1,5 +1,6 @@
 import { HeadersFunction, json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { useLoaderData, useNavigation } from '@remix-run/react'
+import { cleanControlCharacters } from 'utils/controlCharacters'
 import { AUTHOR_WITH_POSTS_QUERY } from 'utils/sanity/queries/postQueries'
 import { AUTHOR_WITH_POSTS_QUERYResult } from 'utils/sanity/types/sanity.types'
 
@@ -39,8 +40,9 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  const description = `Utforsk ${data?.pagination.totalPosts} innlegg fra ${data?.author?.fullName} på Bekk Christmas`
-  const title = `Innhold fra ${data?.author?.fullName} | Bekk Christmas`
+  const authorName = cleanControlCharacters(data?.author?.fullName)
+  const title = `Innhold fra ${authorName} | Bekk Christmas`
+  const description = `Utforsk ${data?.pagination.totalPosts} innlegg fra ${authorName} på Bekk Christmas`
   return [
     { title },
     { name: 'description', content: description },
@@ -67,6 +69,14 @@ export default function AuthorPage() {
     return (
       <div className="flex flex-col items-center lg:mb-12">
         <h1 className="font-delicious md:text-center mb-0">Fant ikke den forfatteren</h1>
+      </div>
+    )
+  }
+
+  if (!posts.length) {
+    return (
+      <div className="flex flex-col items-center lg:mb-12">
+        <h1 className="font-delicious md:text-center mb-0">Fant ingen innlegg av {author.fullName}</h1>
       </div>
     )
   }
