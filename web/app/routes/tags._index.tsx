@@ -5,18 +5,16 @@ import { ALL_CATEGORIES } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
 import { Tag } from '../../utils/sanity/types/sanity.types'
 
-import { BekkChristmasHat } from '~/components/BekkChristmasHat'
+import { Spinner } from '~/components/Spinner'
 
 // Route component
 export default function TagsRoute() {
   const data = useLoaderData<typeof loader>() // Safely use the loader's data
-  const isLoading = useNavigation()
+  const state = useNavigation()
   return (
     <>
-      {isLoading.state === 'loading' ? (
-        <div className="loader">
-          <BekkChristmasHat />
-        </div>
+      {state.state === 'loading' ? (
+        <Spinner />
       ) : (
         <div className="p-8">
           <h1 className="md:text-center font-delicious pb-2 md:pb-4">Kategorier</h1>
