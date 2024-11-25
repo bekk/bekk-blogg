@@ -1,7 +1,7 @@
 import { json } from '@remix-run/node' // Ensure to use json here
 import { Link, useLoaderData, useNavigation } from '@remix-run/react'
 
-import { ALL_CATEGORIES } from '../../utils/sanity/queries/postQueries'
+import { ALL_TAGS } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
 import { Tag } from '../../utils/sanity/types/sanity.types'
 
@@ -33,11 +33,10 @@ export default function TagsRoute() {
 
 export async function loader() {
   try {
-    const { data } = await loadQuery<Tag[]>(ALL_CATEGORIES)
-    return json(data) // Wrap the data in a json response
+    const { data } = await loadQuery<Tag[]>(ALL_TAGS)
+    return json(data)
   } catch (error) {
     console.error(error)
-    // Return an error response for the client
     throw new Response('Failed to load categories', { status: 500 })
   }
 }
