@@ -22,7 +22,7 @@ export const PostStamp = ({ size, image }: PostStampProps) => {
 }
 
 const StampSvg = ({ size, imgUrl }: { size?: string; imgUrl?: string }) => {
-  const imageId = btoa(imgUrl ?? '')
+  const imageId = toBase64Unicode(imgUrl ?? '')
 
   return (
     <svg
@@ -51,4 +51,8 @@ const StampSvg = ({ size, imgUrl }: { size?: string; imgUrl?: string }) => {
       </defs>
     </svg>
   )
+}
+const toBase64Unicode = (input: string) => {
+  const utf8Bytes = new TextEncoder().encode(input)
+  return btoa(String.fromCharCode(...utf8Bytes))
 }
