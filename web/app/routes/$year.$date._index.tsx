@@ -7,6 +7,7 @@ import { z } from 'zod'
 import { POSTS_BY_YEAR_AND_DATE } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
 
+import { DayNavigation } from '~/features/article/DayNavigation'
 import { LetterDisplayer } from '~/features/letters/LetterDisplayer'
 
 export const meta: MetaFunction<typeof loader> = ({ data: postsByDate }) => {
@@ -38,7 +39,7 @@ export const headers = () => ({
 
 const ParamsSchema = z.object({
   year: z.string().min(4).max(4),
-  date: z.string().min(2).max(2),
+  date: z.string().min(1).max(2),
 })
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
@@ -49,7 +50,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const { year, date } = parsedParams.data
 
   const { preview } = await loadQueryOptions(request.headers)
-  const formatDate = year + '-' + '12' + '-' + date
+  const formatDate = year + '-' + '12' + '-' + date.padStart(2, '0')
   const currentDate = new Date()
 
   const dateNumber = parseInt(date, 10)
@@ -77,7 +78,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 }
 
 export default function Index() {
-  const { date, posts } = useLoaderData<typeof loader>()
+  const { date, year, posts } = useLoaderData<typeof loader>()
 
   return (
     <div className="flex flex-col">
@@ -85,6 +86,7 @@ export default function Index() {
         {parseInt(date) < 10 ? date.replace('0', '') : date}. desember
       </h1>
       <LetterDisplayer posts={posts} error={'I denne luka var det helt tomt, gitt!'} />
+      <DayNavigation day={Number(date)} year={Number(year)} />
     </div>
   )
 }
