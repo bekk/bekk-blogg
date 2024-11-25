@@ -46,6 +46,7 @@ export function ErrorBoundary() {
 export function Layout({ children }: { children: React.ReactNode }) {
   const matches = useMatches()
   const error = useRouteError()
+
   type PotentialLanguageType = { language: string } | undefined
   const postData = matches.find((match) => (match.data as PotentialLanguageType)?.language)
     ?.data as PotentialLanguageType
