@@ -767,20 +767,8 @@ export type ALL_CATEGORIESResult = Array<{
   slug: string
   synonyms?: Array<string>
 }>
-// Variable: TAG_BY_SLUG
-// Query: *[_type == "tag" && slug == $slug][0]
-export type TAG_BY_SLUGResult = {
-  _id: string
-  _type: 'tag'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  name: string
-  slug: string
-  synonyms?: Array<string>
-} | null
 // Variable: TAG_WITH_POSTS_QUERY
-// Query: {  "posts": *[  _type == "post" &&   $t in tags[]->.slug &&    availableFrom < now()  ] | order(availableFrom desc) {  _id,  title,  slug,  coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  availableFrom,  "tags": tags[]->.name,  "authors": authors[]->.fullName,  "summary": coalesce(previewText, pt::text(description)),  "wordCount": length(string::split(pt::text(content), ' ')),  podcastLength,},  "tag": *[_type == "tag" && slug == $t][0] {    name  }}
+// Query: {  "posts": *[    _type == "post" &&     $t in tags[]->.slug &&    availableFrom < now()  ][$start...$end] | order(availableFrom desc) {  _id,  title,  slug,  coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  availableFrom,  "tags": tags[]->.name,  "authors": authors[]->.fullName,  "summary": coalesce(previewText, pt::text(description)),  "wordCount": length(string::split(pt::text(content), ' ')),  podcastLength,},  "totalCount": count(*[    _type == "post" &&     $t in tags[]->.slug &&    availableFrom < now()  ]),  "tag": *[_type == "tag" && slug == $t][0] {    name,    slug  }}
 export type TAG_WITH_POSTS_QUERYResult = {
   posts: Array<{
     _id: string
@@ -813,12 +801,14 @@ export type TAG_WITH_POSTS_QUERYResult = {
     wordCount: number
     podcastLength: number | null
   }>
+  totalCount: number
   tag: {
     name: string
+    slug: string
   } | null
 }
 // Variable: AUTHOR_WITH_POSTS_QUERY
-// Query: {  "posts": *[    _type == "post" &&     $slug in authors[]->slug.current &&     availableFrom < now()  ] | order(availableFrom desc) {  _id,  title,  slug,  coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  availableFrom,  "tags": tags[]->.name,  "authors": authors[]->.fullName,  "summary": coalesce(previewText, pt::text(description)),  "wordCount": length(string::split(pt::text(content), ' ')),  podcastLength,},  "author": *[_type == "author" && slug.current == $slug][0] {    fullName,  }}
+// Query: {  "posts": *[    _type == "post" &&     $slug in authors[]->slug.current &&     availableFrom < now()  ][$start...$end] | order(availableFrom desc) {  _id,  title,  slug,  coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  availableFrom,  "tags": tags[]->.name,  "authors": authors[]->.fullName,  "summary": coalesce(previewText, pt::text(description)),  "wordCount": length(string::split(pt::text(content), ' ')),  podcastLength,},  "totalCount": count(*[    _type == "post" &&     $slug in authors[]->slug.current &&     availableFrom < now()  ]),  "author": *[_type == "author" && slug.current == $slug][0] {    fullName,    slug  }}
 export type AUTHOR_WITH_POSTS_QUERYResult = {
   posts: Array<{
     _id: string
@@ -851,8 +841,10 @@ export type AUTHOR_WITH_POSTS_QUERYResult = {
     wordCount: number
     podcastLength: number | null
   }>
+  totalCount: number
   author: {
     fullName: string
+    slug: Slug
   } | null
 }
 
@@ -868,8 +860,7 @@ declare module '@sanity/client' {
     '*[_type == "post" && type == "article" && _id == $id][0] { \n  title, \n  "description": pt::text(description), \n  "content": pt::text(content), \n  "mainAuthor": authors[0]->fullName,\n  "preferredVoice": authors[0]->preferredVoice\n  }': ARTICLE_CONTENT_BY_IDResult
     '*[_type == "post" && availableFrom == $date] {\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n}': POSTS_BY_YEAR_AND_DATEResult
     '*[_type == "tag"] | order(name asc)': ALL_CATEGORIESResult
-    '*[_type == "tag" && slug == $slug][0]': TAG_BY_SLUGResult
-    '{\n  "posts": *[\n  _type == "post" && \n  $t in tags[]->.slug &&\n    availableFrom < now()\n  ] | order(availableFrom desc) {\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n},\n  "tag": *[_type == "tag" && slug == $t][0] {\n    name\n  }\n}': TAG_WITH_POSTS_QUERYResult
-    '{\n  "posts": *[\n    _type == "post" && \n    $slug in authors[]->slug.current && \n    availableFrom < now()\n  ] | order(availableFrom desc) {\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n},\n  "author": *[_type == "author" && slug.current == $slug][0] {\n    fullName,\n  }\n}': AUTHOR_WITH_POSTS_QUERYResult
+    '{\n  "posts": *[\n    _type == "post" && \n    $t in tags[]->.slug &&\n    availableFrom < now()\n  ][$start...$end] | order(availableFrom desc) {\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n},\n  "totalCount": count(*[\n    _type == "post" && \n    $t in tags[]->.slug &&\n    availableFrom < now()\n  ]),\n  "tag": *[_type == "tag" && slug == $t][0] {\n    name,\n    slug\n  }\n}': TAG_WITH_POSTS_QUERYResult
+    '{\n  "posts": *[\n    _type == "post" && \n    $slug in authors[]->slug.current && \n    availableFrom < now()\n  ][$start...$end] | order(availableFrom desc) {\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n},\n  "totalCount": count(*[\n    _type == "post" && \n    $slug in authors[]->slug.current && \n    availableFrom < now()\n  ]),\n  "author": *[_type == "author" && slug.current == $slug][0] {\n    fullName,\n    slug\n  }\n}': AUTHOR_WITH_POSTS_QUERYResult
   }
 }
