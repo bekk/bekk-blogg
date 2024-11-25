@@ -81,10 +81,14 @@ export const Article = ({ post }: ArticleProps) => {
         <h1 className="font-delicious">{post.title}</h1>
         {post.tags && (
           <div>
-            {post.tags
-              .map((tag) => tag.name)
-              .filter(Boolean)
-              .join(', ')}
+            {post.tags.map((tag, index) => (
+              <>
+                <Link to={`/tags/${tag.slug}`} key={tag._id} className="hover:text-reindeer-brown underline">
+                  {tag.name}
+                </Link>
+                {index !== (post.tags?.length ?? 0) - 1 && ', '}
+              </>
+            ))}
             <Border />
           </div>
         )}
