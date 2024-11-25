@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import type { LinksFunction, LoaderFunction } from '@remix-run/node'
 import {
   json,
@@ -11,7 +12,6 @@ import {
   useRouteError,
 } from '@remix-run/react'
 import { VisualEditing } from '@sanity/visual-editing/remix'
-import { lazy, Suspense } from 'react'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
 
