@@ -15,7 +15,7 @@ function chunkText(text: string, chunkSize: number = 500): string[] {
   let currentChunk = ''
 
   // Split by sentences to avoid cutting words/sentences
-  const sentences = text.split('. ')
+  const sentences = text.split(/[.!?]+\s/)
 
   for (const sentence of sentences) {
     if ((currentChunk + sentence).length > chunkSize) {
@@ -61,6 +61,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
           const voice = await getVoice({ name: post.mainAuthor, preferredVoice: post.preferredVoice })
           // Process each chunk and send it immediately
           for (const chunk of textChunks) {
+            // Empty chunks are not allowed by OpenAI
+            if (chunk.length < 1) {
+              continue
+            }
             const mp3 = await openai.audio.speech.create({
               model: 'tts-1',
               voice,
