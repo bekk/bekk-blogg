@@ -34,8 +34,8 @@ const projectId =
 const dataset = typeof process === 'undefined' ? window?.ENV?.SANITY_STUDIO_DATASET : process.env.SANITY_STUDIO_DATASET
 
 const builder = imageUrlBuilder({
-  projectId: projectId ?? '',
-  dataset: dataset ?? '',
+  projectId: projectId ?? 'ah2n1vfr',
+  dataset: dataset ?? 'bekk-blogg-prod',
 })
 
 export const urlFor = (source: SanityImageSource) => builder.image(source).auto('format')
