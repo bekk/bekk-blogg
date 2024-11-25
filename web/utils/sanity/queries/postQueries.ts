@@ -93,7 +93,9 @@ export const ARTICLE_CONTENT_BY_ID = defineQuery(
   }`
 )
 export const POSTS_BY_YEAR_AND_DATE = defineQuery(`*[_type == "post" && availableFrom == $date]${POST_PROJECTION}`)
-export const POSTS_BY_TAGS = defineQuery(`*[_type == "post" && $t in tags[]->.slug]${POST_PROJECTION}`)
+export const POSTS_BY_TAGS = defineQuery(
+  `*[_type == "post" && $t in tags[]->.slug && (availableFrom == null || availableFrom <= now())]${POST_PROJECTION}`
+)
 export const POSTS_BY_AUTHOR = defineQuery(`*[_type == "post" && $slug in authors[]->slug.current]${POST_PROJECTION}`)
 
 export const ALL_TAGS = defineQuery(`*[_type == "tag"] | order(name asc)`)
