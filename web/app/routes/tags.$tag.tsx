@@ -1,12 +1,12 @@
 import { json, LoaderFunctionArgs } from '@remix-run/node'
 import { useLoaderData, useNavigation } from '@remix-run/react'
 
-import { POSTS_BY_TAGS, TAG_BY_SLUG } from '../../utils/sanity/queries/postQueries'
+import { TAG_WITH_POSTS_QUERY } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
-import { Post, Tag } from '../../utils/sanity/types/sanity.types'
+import { TAG_WITH_POSTS_QUERYResult } from '../../utils/sanity/types/sanity.types'
 
 import { Spinner } from '~/components/Spinner'
-import { LetterDisplayer } from '~/features/letters/LetterDisplayer'
+import { PostPreviewList } from '~/features/post-preview/PostPreview'
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { tag } = params
@@ -14,27 +14,24 @@ export async function loader({ params }: LoaderFunctionArgs) {
     throw new Response('Missing tag', { status: 404 })
   }
 
-  // Fetch posts and tag data in parallel
-  const [postsData, tagData] = await Promise.all([
-    loadQuery<Post[]>(POSTS_BY_TAGS, { t: tag }),
-    loadQuery<Tag>(TAG_BY_SLUG, { slug: tag }),
-  ])
+  const response = await loadQuery<TAG_WITH_POSTS_QUERYResult>(TAG_WITH_POSTS_QUERY, { t: tag })
 
-  return json({ posts: postsData.data, tag: tagData.data })
+  return json(response.data)
 }
 
 export default function Posts() {
   const { posts, tag } = useLoaderData<typeof loader>()
-  const state = useNavigation()
+  const navigation = useNavigation()
 
   return (
     <>
-      {state.state === 'loading' ? (
+      {navigation.state === 'loading' ? (
         <Spinner />
       ) : (
         <div className="flex flex-col items-center lg:mb-12">
-          <h1 className="font-delicious md:text-center">{tag.name}</h1>
-          <LetterDisplayer posts={posts} error={`Ingen innlegg funnet for ${tag.name}`} />
+          <h1 className="font-delicious md:text-center mb-0">Innhold om {tag?.name}</h1>
+          <p className="mb-4">Totalt {posts?.length} innlegg</p>
+          <PostPreviewList posts={posts} />
         </div>
       )}
     </>

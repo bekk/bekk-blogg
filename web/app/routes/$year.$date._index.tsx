@@ -8,7 +8,7 @@ import { POSTS_BY_YEAR_AND_DATE } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
 
 import { DayNavigation } from '~/features/article/DayNavigation'
-import { LetterDisplayer } from '~/features/letters/LetterDisplayer'
+import { PostPreviewList } from '~/features/post-preview/PostPreview'
 
 export const meta: MetaFunction<typeof loader> = ({ data: postsByDate }) => {
   if (!postsByDate) {
@@ -85,7 +85,7 @@ export default function Index() {
       <h1 className="self-start pl-4 md:pl-0 font-delicious text-4xl md:text-5xl text-reindeer-brown sm:self-center">
         {parseInt(date) < 10 ? date.replace('0', '') : date}. desember
       </h1>
-      <LetterDisplayer posts={posts} error={'I denne luka var det helt tomt, gitt!'} />
+      <PostPreviewList posts={posts} />
       <DayNavigation day={Number(date)} year={Number(year)} />
     </div>
   )

@@ -2,10 +2,9 @@ import { useEffect, useState } from 'react'
 import Countdown, { CountdownRendererFn } from 'react-countdown'
 import { Link } from '@remix-run/react'
 
-import { mockPost } from './mockPost'
+import { PostPreview } from '../post-preview/PostPreview'
 
 import { LinkToArchive } from '~/components/LinkToArchive'
-import { Letter } from '~/features/letters/Letter'
 
 const useClientSideOnly = () => {
   const [isClientSide, setIsClientSide] = useState(false)
@@ -31,7 +30,7 @@ const CountdownRenderer: CountdownRendererFn = ({
   completed,
 }: CountdownRendererFnProps) => {
   if (completed) {
-    return <h1>It is happening!</h1>
+    return <h1>Nå skjer det!</h1>
   } else {
     return (
       <div className="flex justify-center">
@@ -63,7 +62,17 @@ export const TeaserPage = () => {
         )}
         <div className="mt-16">
           <Link to={`/${new Date() > new Date(new Date().setFullYear(2024, 12, 1)) ? '2024' : '2023'}`}>
-            <Letter post={mockPost} showReadTime={false} />
+            <PostPreview
+              title="Bekk.christmas"
+              authors={['Bekk']}
+              summary="24 dager med feiring av fagmiljøet og delingskulturen vår"
+              _id="123"
+              slug={null}
+              coverImage={null}
+              tags={['Til deg']}
+              wordCount={null}
+              podcastLength={null}
+            />
           </Link>
         </div>
         <LinkToArchive />
