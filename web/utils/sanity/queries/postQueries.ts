@@ -96,3 +96,9 @@ export const POSTS_BY_YEAR_AND_DATE = defineQuery(`*[_type == "post" && availabl
 export const ALL_CATEGORIES = defineQuery(`*[_type == "tag"] | order(name asc)`)
 export const TAG_BY_SLUG = defineQuery(`*[_type == "tag" && slug == $slug][0]`)
 export const POSTS_BY_TAGS = defineQuery(`*[_type == "post" && $t in tags[]->.slug]${POST_PROJECTION}`)
+export const AUTHOR_BY_SLUG = defineQuery(`*[_type == "author" && slug.current == $slug][0]`)
+export const POSTS_BY_AUTHOR = defineQuery(`*[_type == "post" && $slug in authors[]->slug.current]${POST_PROJECTION}`)
+export const AUTHOR_WITH_POSTS_QUERY = defineQuery(`{
+  "posts": ${POSTS_BY_AUTHOR},
+  "author": ${AUTHOR_BY_SLUG}
+}`)
