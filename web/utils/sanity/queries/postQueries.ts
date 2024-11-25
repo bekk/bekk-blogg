@@ -105,15 +105,20 @@ export const POSTS_BY_YEAR_AND_DATE = defineQuery(
   `*[_type == "post" && availableFrom == $date] ${POST_PREVIEW_PROJECTION}`
 )
 export const ALL_CATEGORIES = defineQuery(`*[_type == "tag"] | order(name asc)`)
-export const TAG_BY_SLUG = defineQuery(`*[_type == "tag" && slug == $slug][0]`)
 export const TAG_WITH_POSTS_QUERY = defineQuery(`{
   "posts": *[
-  _type == "post" && 
-  $t in tags[]->.slug &&
+    _type == "post" && 
+    $t in tags[]->.slug &&
     availableFrom < now()
-  ] | order(availableFrom desc) ${POST_PREVIEW_PROJECTION},
+  ][$start...$end] | order(availableFrom desc) ${POST_PREVIEW_PROJECTION},
+  "totalCount": count(*[
+    _type == "post" && 
+    $t in tags[]->.slug &&
+    availableFrom < now()
+  ]),
   "tag": *[_type == "tag" && slug == $t][0] {
-    name
+    name,
+    slug
   }
 }`)
 
@@ -122,8 +127,14 @@ export const AUTHOR_WITH_POSTS_QUERY = defineQuery(`{
     _type == "post" && 
     $slug in authors[]->slug.current && 
     availableFrom < now()
-  ] | order(availableFrom desc) ${POST_PREVIEW_PROJECTION},
+  ][$start...$end] | order(availableFrom desc) ${POST_PREVIEW_PROJECTION},
+  "totalCount": count(*[
+    _type == "post" && 
+    $slug in authors[]->slug.current && 
+    availableFrom < now()
+  ]),
   "author": *[_type == "author" && slug.current == $slug][0] {
     fullName,
+    slug
   }
 }`)
