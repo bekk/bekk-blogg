@@ -2,16 +2,11 @@ import getYouTubeId from 'get-youtube-id'
 
 import { Youtube } from '../../utils/sanity/types/sanity.types'
 
-import useMediaQuery from '~/hooks/useMediaQuery'
-
 type YouTubeProps = {
   youtube: Youtube
 }
 
 export const YouTubeBlock = ({ youtube }: YouTubeProps) => {
-  const isSm = useMediaQuery('(min-width: 640px)')
-  const height = isSm ? '500px' : '300px'
-
   if (!youtube || !youtube.url) {
     return null
   }
