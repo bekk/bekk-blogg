@@ -1,4 +1,4 @@
-type CustomEvent = 'placeholder'
+type CustomEvent = 'article_audio_played'
 
 export const trackEvent = (eventName: CustomEvent, options?: Record<string, string | number>) => {
   // Check if DNT is enabled (returns true if user has requested not to be tracked)

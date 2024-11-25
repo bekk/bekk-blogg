@@ -820,6 +820,21 @@
               "type": "inline",
               "name": "unfurledUrl"
             }
+          },
+          {
+            "type": "object",
+            "attributes": {
+              "_key": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "rest": {
+              "type": "inline",
+              "name": "quote"
+            }
           }
         ]
       }
@@ -1547,6 +1562,31 @@
         "type": "objectAttribute",
         "value": {
           "type": "string"
+        },
+        "optional": true
+      },
+      "preferredVoice": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "union",
+          "of": [
+            {
+              "type": "string",
+              "value": "onyx"
+            },
+            {
+              "type": "string",
+              "value": "nova"
+            },
+            {
+              "type": "string",
+              "value": "shimmer"
+            },
+            {
+              "type": "string",
+              "value": "none"
+            }
+          ]
         },
         "optional": true
       },
