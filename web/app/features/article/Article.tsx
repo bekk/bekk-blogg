@@ -65,10 +65,8 @@ export const Article = ({ post }: ArticleProps) => {
                   : (post.coverImage.src ?? '')
               }
               alt={post.coverImage.alt || ''}
+              className="w-full rounded-2xl object-cover max-w-full"
               style={{
-                width: '100%',
-                objectFit: 'cover',
-                borderRadius: '20px',
                 aspectRatio: post.coverImage.asset?.metadata?.dimensions?.aspectRatio ?? undefined,
               }}
             />

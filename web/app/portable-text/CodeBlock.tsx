@@ -7,13 +7,15 @@ interface CodeBlockProps {
 }
 export const CodeBlock = ({ code }: CodeBlockProps) => {
   if (!code?.code) {
-    return <p>Hmmm, ingen kode her!</p>
+    return null
   }
   return (
-    <div className="codeBlockColorOverride text-sm">
-      <SyntaxHighlighter customStyle={{ backgroundColor: '#E9E9E9' }} language={code.language ?? 'text'}>
-        {code.code}
-      </SyntaxHighlighter>
+    <div className="codeBlockColorOverride text-sm max-w-[800px] overflow-hidden rounded-md">
+      <div className="overflow-x-auto bg-gray-50">
+        <SyntaxHighlighter customStyle={{ backgroundColor: 'transparent' }} language={code.language ?? 'text'}>
+          {code.code}
+        </SyntaxHighlighter>
+      </div>
     </div>
   )
 }
