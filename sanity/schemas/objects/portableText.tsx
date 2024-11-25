@@ -1,3 +1,4 @@
+import {BsQuote} from 'react-icons/bs'
 import {
   FiCodepen,
   FiCodesandbox,
@@ -95,6 +96,7 @@ const portableText = defineType({
     {type: 'iframe', icon: FiSquare},
     {type: 'infoBlock', icon: FiInfo},
     {type: 'unfurledUrl', icon: FiLink2},
+    {type: 'quote', icon: BsQuote},
   ],
 })
 

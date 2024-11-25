@@ -1,20 +1,26 @@
-import { Author, DescriptionText, Post, Tag } from 'utils/sanity/types/sanity.types'
+import { DescriptionText, POST_BY_SLUGResult } from 'utils/sanity/types/sanity.types'
 
-const authorTeaserPage: Author = {
+const authorTeaserPage: NonNullable<NonNullable<POST_BY_SLUGResult>['authors']>[0] = {
   _id: '',
   fullName: 'Bekk',
   _type: 'author',
-  _createdAt: '',
-  _updatedAt: '',
+  _createdAt: '2023-12-01',
+  _updatedAt: '2023-12-01',
   _rev: '',
+  slug: null,
+  companyName: null,
+  profilePicture: null,
+  socialMediaLinks: null,
 }
-const tagTeaserPage: Tag = {
-  _id: '',
+const tagTeaserPage: NonNullable<NonNullable<POST_BY_SLUGResult>['tags']>[0] = {
+  _id: 'mock-tag-id',
   name: 'Til deg',
   _type: 'tag',
   _createdAt: '',
   _updatedAt: '',
   _rev: '',
+  synonyms: [],
+  slug: null,
 }
 
 const descriptionText: DescriptionText = [
@@ -31,14 +37,27 @@ const descriptionText: DescriptionText = [
   },
 ]
 
-export const mockPost: Post = {
-  _id: '',
+export const mockPost: POST_BY_SLUGResult = {
+  _id: 'mock-post-id',
   _type: 'post',
   _createdAt: '',
   _updatedAt: '',
-  _rev: '',
+  _rev: 'mock-rev-3',
   title: 'bekk.christmas',
+  slug: null,
   authors: [authorTeaserPage],
   tags: [tagTeaserPage],
   description: descriptionText,
+  type: null,
+  language: null,
+  embedUrl: null,
+  podcastLength: null,
+  availableFrom: null,
+  keywords: null,
+  relatedLinks: null,
+  canonicalUrl: null,
+  previewText: null,
+  priority: null,
+  coverImage: null,
+  content: null,
 }
