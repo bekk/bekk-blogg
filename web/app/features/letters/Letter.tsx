@@ -22,7 +22,7 @@ export const Letter = ({ post, showReadTime = true }: LetterProps) => {
         <div className="col-start-2 row-start-1 row-end-4 hidden border-r border-bekk-night sm:block" />
         <div className="flex justify-end ml-1 sm:mb-9 col-start-3 col-end-3 row-start-2 row-end-3 sm:ml-7">
           <PostStamp
-            image={post.coverImage ? { ...post.coverImage, _type: 'imageWithMetadata' } : undefined}
+            image={post.coverImage ? post.coverImage : null}
             size={'h-16,05 w-12 sm:h-21,4 sm:w-16 sm:h-[107px] sm:w-[80px]'}
           />
         </div>
@@ -42,15 +42,14 @@ export const Letter = ({ post, showReadTime = true }: LetterProps) => {
           {post.authors && `Fra ${post.authors.map((author) => author.fullName).join(', ')}`}
           <div className="sm:mb-7 border-b border-bekk-night pb-1 mb-3" />
         </div>
-        {post.previewText ||
-          (post.description && (
-            <div className="hidden sm:text-lg sm:block col-start-3 col-end-3 row-start-3 row-end-3 sm:ml-7">
-              <p className="line-clamp-6">
-                {' '}
-                {post.previewText ? post.previewText : post.description ? toPlainText(post.description) : null}{' '}
-              </p>
-            </div>
-          ))}
+        {(post.previewText || post.description) && (
+          <div className="hidden sm:text-lg sm:block col-start-3 col-end-3 row-start-3 row-end-3 sm:ml-7">
+            <p className="line-clamp-6">
+              {' '}
+              {post.previewText ? post.previewText : post.description ? toPlainText(post.description) : null}{' '}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   )
