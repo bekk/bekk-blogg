@@ -1,4 +1,4 @@
-import { json, LoaderFunctionArgs } from '@remix-run/node'
+import { HeadersFunction, json, LoaderFunctionArgs } from '@remix-run/node'
 import { useLoaderData, useNavigation } from '@remix-run/react'
 import { AUTHOR_WITH_POSTS_QUERY } from 'utils/sanity/queries/postQueries'
 import { AUTHOR_WITH_POSTS_QUERYResult } from 'utils/sanity/types/sanity.types'
@@ -37,6 +37,10 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     },
   })
 }
+
+export const headers: HeadersFunction = () => ({
+  'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=3600',
+})
 
 export default function AuthorPage() {
   const { author, posts, pagination } = useLoaderData<typeof loader>()
