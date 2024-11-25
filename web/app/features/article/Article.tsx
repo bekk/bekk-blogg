@@ -95,7 +95,11 @@ export const Article = ({ post }: ArticleProps) => {
             Fra {''}
             {post.authors.map((author, index) => (
               <>
-                <Link to={`/author/${author.slug?.current}`} key={author._id}>
+                <Link
+                  to={`/author/${author.slug?.current}`}
+                  key={author._id}
+                  className="hover:text-reindeer-brown underline"
+                >
                   {author.fullName}
                 </Link>
                 {index !== post.authors.length - 1 && ', '}
