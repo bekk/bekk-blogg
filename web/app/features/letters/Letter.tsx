@@ -42,15 +42,14 @@ export const Letter = ({ post, showReadTime = true }: LetterProps) => {
           {post.authors && `Fra ${post.authors.map((author) => author.fullName).join(', ')}`}
           <div className="sm:mb-7 border-b border-bekk-night pb-1 mb-3" />
         </div>
-        {post.previewText ||
-          (post.description && (
-            <div className="hidden sm:text-lg sm:block col-start-3 col-end-3 row-start-3 row-end-3 sm:ml-7">
-              <p className="line-clamp-6">
-                {' '}
-                {post.previewText ? post.previewText : post.description ? toPlainText(post.description) : null}{' '}
-              </p>
-            </div>
-          ))}
+        {(post.previewText || post.description) && (
+          <div className="hidden sm:text-lg sm:block col-start-3 col-end-3 row-start-3 row-end-3 sm:ml-7">
+            <p className="line-clamp-6">
+              {' '}
+              {post.previewText ? post.previewText : post.description ? toPlainText(post.description) : null}{' '}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   )
