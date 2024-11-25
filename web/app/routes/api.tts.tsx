@@ -81,11 +81,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     return new Response(stream, {
       headers: {
+        Connection: 'keep-alive',
         'Content-Type': 'audio/mpeg',
         'Transfer-Encoding': 'chunked',
         'Accept-Ranges': 'bytes',
-        'Cache-Control': 'public, max-age=3600',
+        'Cache-Control': 'no-cache, no-store, no-transform',
         'Content-Disposition': 'inline',
+        'X-Content-Type-Options': 'nosniff',
       },
     })
   } catch (error) {
@@ -104,7 +106,7 @@ const getVoice = async ({ name, preferredVoice }: GetVoiceArgs) => {
   }
   // Hvis brukeren har valgt en stemme, returner den
   if (preferredVoice && ['onyx', 'nova', 'shimmer'].includes(preferredVoice)) {
-    return preferredVoice
+    return preferredVoice as 'onyx' | 'nova' | 'shimmer'
   }
   // Hvis brukeren ikke har valgt en stemme, bestemmer vi stemmen ut fra navnet
   const response = await openai.chat.completions.create({
