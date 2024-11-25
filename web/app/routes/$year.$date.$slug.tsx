@@ -57,7 +57,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 }
 
 export const headers: HeadersFunction = () => ({
-  'Cache-Control': 'max-age=60, stale-while-revalidate=86400',
+  'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=3600',
 })
 
 const ParamsSchema = z.object({
