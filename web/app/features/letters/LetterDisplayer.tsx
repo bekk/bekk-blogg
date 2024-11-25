@@ -1,4 +1,5 @@
 import { Link } from '@remix-run/react'
+import { motion } from 'framer-motion'
 
 import { POST_BY_SLUGResult } from '../../../utils/sanity/types/sanity.types'
 
@@ -19,9 +20,34 @@ export const LetterDisplayer = ({ posts, error }: LetterDisplayerProps) => {
             return null
           }
           return (
-            <Link className="mx-4 flex justify-center" to={postUrl(post)} key={post._id}>
-              <Letter key={post._id} post={post} />
-            </Link>
+            <motion.div
+              key={post._id}
+              className="mx-4 flex justify-center"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={{
+                hidden: { opacity: 0, y: 50, scale: 0.9 },
+                visible: { opacity: 1, y: 0, scale: 1 },
+              }}
+              transition={{
+                duration: 0.6,
+                ease: 'easeOut',
+              }}
+              whileHover={{
+                scale: 1.05,
+                rotate: -1,
+                transition: {
+                  type: 'spring',
+                  stiffness: 300,
+                  damping: 20,
+                },
+              }}
+            >
+              <Link className="mx-4 flex justify-center" to={postUrl(post)} key={post._id}>
+                <Letter key={post._id} post={post} />
+              </Link>
+            </motion.div>
           )
         })}
       </div>
