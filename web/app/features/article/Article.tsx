@@ -21,9 +21,16 @@ type ArticleProps = {
 const AudioPlayer = ({ src, slug }: { src: string; slug: string }) => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [isInitialized, setIsInitialized] = useState(false)
   const audioRef = useRef<HTMLAudioElement>(null)
 
   const togglePlay = () => {
+    if (!isInitialized && audioRef.current) {
+      // Initialize audio source on first play
+      audioRef.current.src = src
+      setIsInitialized(true)
+    }
+
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause()
@@ -55,7 +62,6 @@ const AudioPlayer = ({ src, slug }: { src: string; slug: string }) => {
       <audio
         ref={audioRef}
         className="hidden"
-        src={src}
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
         onWaiting={() => setIsLoading(true)}
