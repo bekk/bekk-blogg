@@ -102,7 +102,7 @@ export const Article = ({ post }: ArticleProps) => {
                 >
                   {author.fullName}
                 </Link>
-                {index !== post.authors.length - 1 && ', '}
+                {index !== (post.authors?.length ?? 0) - 1 && ', '}
               </>
             ))}
           </div>
