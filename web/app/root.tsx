@@ -1,4 +1,3 @@
-import { lazy, Suspense } from 'react'
 import type { LinksFunction, LoaderFunction } from '@remix-run/node'
 import {
   json,
@@ -12,6 +11,7 @@ import {
   useRouteError,
 } from '@remix-run/react'
 import { VisualEditing } from '@sanity/visual-editing/remix'
+import { lazy, Suspense } from 'react'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
 
@@ -60,7 +60,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>bekk.christmas</title>
         <Meta />
         <Links />
         <script defer data-domain="bekk.christmas" src="https://plausible.io/js/plausible.js" />
