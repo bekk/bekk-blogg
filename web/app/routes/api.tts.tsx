@@ -60,7 +60,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const stream = new ReadableStream({
       async start(controller) {
         try {
-          const voice = await getVoice(post.mainAuthor)
+          const voice = await getVoice({ name: post.mainAuthor, preferredVoice: post.preferredVoice })
           // Process each chunk and send it immediately
           for (const chunk of textChunks) {
             const mp3 = await openai.audio.speech.create({
@@ -94,10 +94,19 @@ export async function loader({ request }: LoaderFunctionArgs) {
   }
 }
 
-const getVoice = async (name: string | null) => {
+type GetVoiceArgs = {
+  name: string | null
+  preferredVoice?: 'onyx' | 'nova' | 'none' | 'shimmer' | null
+}
+const getVoice = async ({ name, preferredVoice }: GetVoiceArgs) => {
   if (!name) {
-    return 'nova'
+    return 'nova' // Burde ikke skje, men i tilfeller der man ikke har fyllt ut navn enda, vil man bruke denne stemmen
   }
+  // Hvis brukeren har valgt en stemme, returner den
+  if (preferredVoice && ['onyx', 'nova', 'shimmer'].includes(preferredVoice)) {
+    return preferredVoice
+  }
+  // Hvis brukeren ikke har valgt en stemme, bestemmer vi stemmen ut fra navnet
   const response = await openai.chat.completions.create({
     model: 'gpt-4o-mini',
     messages: [
@@ -110,6 +119,5 @@ const getVoice = async (name: string | null) => {
     ],
   })
   const gender = response.choices[0].message.content
-  console.log(gender)
   return gender === 'male' ? 'onyx' : 'nova'
 }

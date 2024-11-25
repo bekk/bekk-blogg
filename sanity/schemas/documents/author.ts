@@ -32,6 +32,21 @@ const author = defineType({
       type: 'string',
     },
     {
+      title: 'Foretrukket stemme',
+      name: 'preferredVoice',
+      type: 'string',
+      description: 'Hvilken stemme vil du at artiklene dine skal leses opp med?',
+      options: {
+        list: [
+          {title: 'Herrestemme', value: 'onyx'},
+          {title: 'Kvinnestemme', value: 'nova'},
+          {title: 'Nøytral stemme', value: 'shimmer'},
+          {title: 'Ingen preferanse', value: 'none'},
+        ],
+      },
+      initialValue: 'nova',
+    },
+    {
       title: 'Lenker til sosiale medier',
       name: 'socialMediaLinks',
       type: 'array',

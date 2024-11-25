@@ -88,7 +88,8 @@ export const ARTICLE_CONTENT_BY_ID = defineQuery(
   title, 
   "description": pt::text(description), 
   "content": pt::text(content), 
-  "mainAuthor": authors[0]->fullName
+  "mainAuthor": authors[0]->fullName,
+  "preferredVoice": authors[0]->preferredVoice
   }`
 )
 export const POSTS_BY_YEAR_AND_DATE = defineQuery(`*[_type == "post" && availableFrom == $date]${POST_PROJECTION}`)

@@ -1565,6 +1565,31 @@
         },
         "optional": true
       },
+      "preferredVoice": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "union",
+          "of": [
+            {
+              "type": "string",
+              "value": "onyx"
+            },
+            {
+              "type": "string",
+              "value": "nova"
+            },
+            {
+              "type": "string",
+              "value": "shimmer"
+            },
+            {
+              "type": "string",
+              "value": "none"
+            }
+          ]
+        },
+        "optional": true
+      },
       "socialMediaLinks": {
         "type": "objectAttribute",
         "value": {
