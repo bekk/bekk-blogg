@@ -1,11 +1,16 @@
 import { json, LoaderFunctionArgs } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
+import { AUTHOR_WITH_POSTS_QUERY } from 'utils/sanity/queries/postQueries'
+import { Author, Post } from 'utils/sanity/types/sanity.types'
 
-import { AUTHOR_BY_SLUG, POSTS_BY_AUTHOR } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
-import { Author, Post } from '../../utils/sanity/types/sanity.types'
 
 import { LetterDisplayer } from '~/features/letters/LetterDisplayer'
+
+export type AuthorWithPosts = {
+  posts: Post[]
+  author: Author
+}
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { name } = params
@@ -13,21 +18,17 @@ export async function loader({ params }: LoaderFunctionArgs) {
     throw new Response('Missing author', { status: 404 })
   }
 
-  // Fetch posts and author data in parallel
-  const [postsData, authorData] = await Promise.all([
-    loadQuery<Post[]>(POSTS_BY_AUTHOR, { slug: name }),
-    loadQuery<Author>(AUTHOR_BY_SLUG, { slug: name }),
-  ])
+  const data = await loadQuery<AuthorWithPosts>(AUTHOR_WITH_POSTS_QUERY, { slug: name })
 
-  return json({ posts: postsData.data, author: authorData.data })
+  return json(data)
 }
 
 export default function AuthorPage() {
-  const { posts, author } = useLoaderData<typeof loader>()
+  const { data } = useLoaderData<typeof loader>()
   return (
     <div className="flex flex-col items-center gap-8 mb-4 lg:mb-12 md:gap-12">
-      <h1 className="font-delicious pb-4 md:pb-8 md:text-center">{author.fullName}</h1>
-      <LetterDisplayer posts={posts} error={`Ingen innlegg funnet for ${author.fullName}`} />
+      <h1 className="font-delicious pb-4 md:pb-8 md:text-center">{data.author.fullName}</h1>
+      <LetterDisplayer posts={data.posts} error={`Ingen innlegg funnet for ${data.author.fullName}`} />
     </div>
   )
 }
