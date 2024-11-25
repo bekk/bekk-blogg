@@ -1,15 +1,24 @@
-import { ImageWithMetadata } from 'utils/sanity/types/sanity.types'
+import { SanityAsset } from '@sanity/image-url/lib/types/types'
+import { POST_BY_SLUGResult } from 'utils/sanity/types/sanity.types'
 import { urlFor } from 'utils/sanity/utils'
 
 import { BekkLogo } from '~/features/article/BekkLogo'
 
 type PostStampProps = {
   size?: string
-  image?: ImageWithMetadata
+  image?: NonNullable<POST_BY_SLUGResult>['coverImage'] | null
 }
 
 export const PostStamp = ({ size, image }: PostStampProps) => {
-  const imageUrl = image?.asset ? urlFor(image.asset).height(450).quality(50).url() : image?.src
+  if (!image) {
+    return null
+  }
+  const imageUrl = image.asset
+    ? urlFor(image.asset as SanityAsset)
+        .height(450)
+        .quality(50)
+        .url()
+    : image.src
 
   return (
     <div className={`relative ${size ? size : 'h-21.4 w-16 md:h-[107px] md:w-[80px]'}`}>
@@ -21,7 +30,7 @@ export const PostStamp = ({ size, image }: PostStampProps) => {
   )
 }
 
-const StampSvg = ({ size, imgUrl }: { size?: string; imgUrl?: string }) => {
+const StampSvg = ({ size, imgUrl }: { size?: string; imgUrl?: string | null }) => {
   const imageId = toBase64Unicode(imgUrl ?? '')
 
   return (
