@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import type { LinksFunction, LoaderFunction } from '@remix-run/node'
+import type { HeadersFunction, LinksFunction, LoaderFunction } from '@remix-run/node'
 import {
   json,
   Links,
@@ -25,25 +25,24 @@ export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
 export const loader: LoaderFunction = async ({ request }) => {
   const { preview } = await loadQueryOptions(request.headers)
-  return json(
-    {
-      isPreview: preview,
-      ENV: {
-        SANITY_STUDIO_PROJECT_ID: process.env.SANITY_STUDIO_PROJECT_ID,
-        SANITY_STUDIO_DATASET: process.env.SANITY_STUDIO_DATASET,
-        SANITY_STUDIO_URL: process.env.SANITY_STUDIO_URL,
-        SANITY_STUDIO_API_VERSION: process.env.SANITY_API_VERSION,
-      },
+  return json({
+    isPreview: preview,
+    ENV: {
+      SANITY_STUDIO_PROJECT_ID: process.env.SANITY_STUDIO_PROJECT_ID,
+      SANITY_STUDIO_DATASET: process.env.SANITY_STUDIO_DATASET,
+      SANITY_STUDIO_URL: process.env.SANITY_STUDIO_URL,
+      SANITY_STUDIO_API_VERSION: process.env.SANITY_API_VERSION,
     },
-    {
-      headers: generateSecurityHeaders(),
-    }
-  )
+  })
 }
 
 export function ErrorBoundary() {
   return <Page404 />
 }
+
+export const headers: HeadersFunction = () => ({
+  ...generateSecurityHeaders(),
+})
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const matches = useMatches()
