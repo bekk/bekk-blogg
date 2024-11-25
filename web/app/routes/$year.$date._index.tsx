@@ -14,10 +14,10 @@ export const meta: MetaFunction<typeof loader> = ({ data: postsByDate }) => {
   if (!postsByDate) {
     return []
   }
-  const title = `Innlegg fra ${postsByDate.date}. desember ${postsByDate.year}`
+  const title = `Innlegg fra ${Number(postsByDate.date)}. desember ${postsByDate.year}`
   const description = `Se ${
-    postsByDate.posts.length > 1 ? `alle ${postsByDate.posts.length} innlegg` : `innholdet`
-  } fra Bekk på dag ${postsByDate.date} i julesesongen ${postsByDate.year}`
+    postsByDate.posts.length > 1 ? `${postsByDate.posts.length} innlegg` : `innholdet`
+  } fra Bekk på dag ${Number(postsByDate.date)} i julesesongen ${postsByDate.year}`
 
   return [
     { title },

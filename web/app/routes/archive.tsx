@@ -1,10 +1,4 @@
-import { json, LoaderFunction } from '@remix-run/node'
 import { Link } from '@remix-run/react'
-
-// Define the loader to fetch and return data
-export const loader: LoaderFunction = async () => {
-  return json({ ok: true })
-}
 
 export default function ArchivePage() {
   const currentYear = new Date().getFullYear()
@@ -19,15 +13,13 @@ export default function ArchivePage() {
     <div className={'flex flex-col p-10 gap-8'}>
       <h1 className="font-delicious">Arkiv</h1>
       <div className="flex flex-col gap-8">
-        {availableYears.map((year) => {
-          return (
-            <div key={year} className="flex">
-              <Link to={`/${year}`} className="">
-                <h3 className="hover:text-reindeer-brown">💌 Julekalender {year}</h3>
-              </Link>
-            </div>
-          )
-        })}
+        {availableYears.map((year) => (
+          <div key={year} className="flex">
+            <Link to={`/${year}`} className="">
+              <h3 className="hover:text-reindeer-brown">💌 Julekalender {year}</h3>
+            </Link>
+          </div>
+        ))}
       </div>
     </div>
   )

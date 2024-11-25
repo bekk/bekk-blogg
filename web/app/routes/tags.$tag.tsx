@@ -1,4 +1,4 @@
-import { HeadersFunction, json, LoaderFunctionArgs } from '@remix-run/node'
+import { HeadersFunction, json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { useLoaderData, useNavigation } from '@remix-run/react'
 
 import { TAG_WITH_POSTS_QUERY } from '../../utils/sanity/queries/postQueries'
@@ -36,6 +36,23 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       totalPosts: response.data.totalCount || 0,
     },
   })
+}
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  const description = `Utforsk ${data?.pagination.totalPosts} innlegg om ${data?.tag?.name} på Bekk Christmas`
+  const title = `Innhold om ${data?.tag?.name} | Bekk Christmas`
+  return [
+    { title },
+    { name: 'description', content: description },
+    { property: 'og:title', content: title },
+    { property: 'og:description', content: description },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: 'Bekk Christmas' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: title },
+    { name: 'twitter:description', content: description },
+    { name: 'twitter:site', content: '@livetibekk' },
+  ]
 }
 
 export const headers: HeadersFunction = () => ({
