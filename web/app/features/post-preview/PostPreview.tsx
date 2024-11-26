@@ -1,5 +1,6 @@
 import { Link } from '@remix-run/react'
 import { motion } from 'framer-motion'
+import { readingTime } from 'utils/readingTime'
 import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'
 
 import { PostStamp } from '../article/PostStamp'
@@ -31,7 +32,7 @@ export const PostPreview = ({
   podcastLength,
   link,
 }: PostPreviewProps) => {
-  const showReadTime = wordCount !== null && podcastLength === null
+  const showReadingTime = wordCount !== null && podcastLength === null
   const content = (
     <motion.div
       className="striped-frame py-6 px-6 sm:p-7"
@@ -71,7 +72,7 @@ export const PostPreview = ({
               <div className="sm:mb-7 border-b border-bekk-night pb-1 mb-3" />
             </>
           )}
-          {showReadTime && (
+          {showReadingTime && (
             <>
               {podcastLength ? `${podcastLength} min` : wordCount ? readingTime(wordCount) : null}
               <div className="sm:mb-7 border-b border-bekk-night pb-1 mb-3" />
@@ -96,11 +97,6 @@ export const PostPreview = ({
     )
   }
   return <div className="w-full max-w-4xl mx-auto px-2 md:px-0">{content}</div>
-}
-
-// TODO: Refactor out to somewhere else
-const readingTime = (wordCount: number) => {
-  return `${Math.ceil(wordCount / 250)} min`
 }
 
 export type PostPreviewListProps = {

@@ -50,6 +50,7 @@ const POST_PROJECTION = groq`{
   previewText,
   availableFrom,
   keywords,
+  "wordCount": length(string::split(pt::text(content), ' ')),
   content[] {
     ...,
     _type == 'imageWithMetadata' => {
