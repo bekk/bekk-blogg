@@ -18,7 +18,7 @@ export const Header = ({ isInArticle = false }: HeaderProps) => {
       className={`grid grid-cols-1 md:grid-cols-[8fr_1fr] pb-8 md:pb-14 ${isInArticle ? 'pt-6 px-6 md:pl-10 xl:pl-20 md:pt-5' : 'pt-4 px-4 md:px-10 md:pt-8'}`}
     >
       <div className={`justify-self-end pb-4 md:pb-0 md:col-start-2 ${error ? 'ml-auto' : ''}`}>
-        <Link to="/">
+        <Link to="post/2024">
           {isInArticle ? (
             <div>
               <PostStamp />
@@ -42,7 +42,7 @@ export const Header = ({ isInArticle = false }: HeaderProps) => {
                   className={`flex min-w-0 items-center whitespace-nowrap ${isLast ? 'shrink' : 'shrink-0'}`}
                 >
                   <Link
-                    to={breadcrumb.href}
+                    to={`post${breadcrumb.href}`}
                     className={`${isInArticle ? 'text-black' : 'text-reindeer-brown'} ${isLast ? 'truncate' : ''}`}
                   >
                     {breadcrumb.title}

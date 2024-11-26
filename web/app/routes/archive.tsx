@@ -15,7 +15,7 @@ export default function ArchivePage() {
       <div className="flex flex-col gap-8">
         {availableYears.map((year) => (
           <div key={year} className="flex">
-            <Link to={`/${year}`} className="">
+            <Link to={`/post/${year}`} className="">
               <h3 className="hover:text-reindeer-brown">💌 Julekalender {year}</h3>
             </Link>
           </div>
