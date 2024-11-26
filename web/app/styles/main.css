@@ -120,3 +120,38 @@
     transform: rotate(360deg);
   }
 }
+
+.bg-wood-and-cloth {
+  background-image: url('/images/bg_wood.svg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+@media screen and (min-width: 1024px) {
+  .link-to-archive-gift {
+    position: relative;
+    height: 218px;
+
+    &:before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      width: 384px;
+      height: 308px;
+      left: 118px;
+      top: -90px;
+      background-image: url('/images/bg_gift.svg');
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+  }
+}
+
+.ribbon {
+  width: auto;
+  height: 100%;
+  padding: 8px 8px 8px 16px;
+  background-color: #fff; /* Background color */
+  clip-path: polygon(15px 0, 100% 0, 100% 100%, 15px 100%, 0 calc(100% - 15px), 0 15px);
+}
