@@ -847,6 +847,19 @@ export type AUTHOR_WITH_POSTS_QUERYResult = {
     slug: Slug
   } | null
 }
+// Variable: RSS_FEED_QUERY
+// Query: *[  _type == "post" &&   availableFrom < now()][0...250] | order(availableFrom desc) {  _id,  title,  slug,  language,  "description": coalesce(previewText, pt::text(description)),  availableFrom,  "authors": authors[]->.fullName,  type,  "content": pt::text(content)}
+export type RSS_FEED_QUERYResult = Array<{
+  _id: string
+  title: string
+  slug: Slug
+  language: 'en-US' | 'nb-NO' | 'nn-NO'
+  description: string
+  availableFrom: string
+  authors: Array<string>
+  type: 'article' | 'podcast' | 'video'
+  content: string
+}>
 
 // Query TypeMap
 import '@sanity/client'
@@ -862,5 +875,6 @@ declare module '@sanity/client' {
     '*[_type == "tag"] | order(name asc)': ALL_CATEGORIESResult
     '{\n  "posts": *[\n    _type == "post" && \n    $t in tags[]->.slug &&\n    availableFrom < now()\n  ][$start...$end] | order(availableFrom desc) {\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n},\n  "totalCount": count(*[\n    _type == "post" && \n    $t in tags[]->.slug &&\n    availableFrom < now()\n  ]),\n  "tag": *[_type == "tag" && slug == $t][0] {\n    name,\n    slug\n  }\n}': TAG_WITH_POSTS_QUERYResult
     '{\n  "posts": *[\n    _type == "post" && \n    $slug in authors[]->slug.current && \n    availableFrom < now()\n  ][$start...$end] | order(availableFrom desc) {\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n},\n  "totalCount": count(*[\n    _type == "post" && \n    $slug in authors[]->slug.current && \n    availableFrom < now()\n  ]),\n  "author": *[_type == "author" && slug.current == $slug][0] {\n    fullName,\n    slug\n  }\n}': AUTHOR_WITH_POSTS_QUERYResult
+    '*[\n  _type == "post" && \n  availableFrom < now()\n][0...250] | order(availableFrom desc) {\n  _id,\n  title,\n  slug,\n  language,\n  "description": coalesce(previewText, pt::text(description)),\n  availableFrom,\n  "authors": authors[]->.fullName,\n  type,\n  "content": pt::text(content)\n}': RSS_FEED_QUERYResult
   }
 }
