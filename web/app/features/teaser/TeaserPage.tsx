@@ -56,7 +56,7 @@ export const TeaserPage = () => {
     <main id="content" className="flex flex-col items-center justify-center h-screen pb-96 px-4 min-w-[320px]">
       <div className="w-full items-center sm:max-w-4xl">
         {isClientSide && (
-          <div className="font-delicious text-2xl sm:text-5xl">
+          <div className="font-delicious text-2xl text-white sm:text-5xl">
             <Countdown date={`${new Date().getFullYear()}/12/01`} renderer={CountdownRenderer} />
           </div>
         )}
