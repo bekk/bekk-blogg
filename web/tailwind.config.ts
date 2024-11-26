@@ -15,6 +15,7 @@ export default {
       textColor: {
         base: '#000000',
         'reindeer-brown': '#714319',
+        'postcard-beige': '#F7F3EE',
         'santa-red': '#D0332E',
         'christmas-tree-green': '#2F7346',
       },
