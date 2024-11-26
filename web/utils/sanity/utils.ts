@@ -6,7 +6,7 @@
 import imageUrlBuilder from '@sanity/image-url'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 
-export function toPlainText(blocks: any[] = []) {
+export function toPlainText(blocks: any[] | null = []) {
   if (!blocks || !blocks.length) {
     return ''
   }

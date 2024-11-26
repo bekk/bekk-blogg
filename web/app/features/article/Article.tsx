@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { Fragment, useRef, useState } from 'react'
 import { PortableText } from '@portabletext/react'
 import { Link } from '@remix-run/react'
 import { Loader, Pause, Play } from 'lucide-react'
@@ -21,9 +21,16 @@ type ArticleProps = {
 const AudioPlayer = ({ src, slug }: { src: string; slug: string }) => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [isInitialized, setIsInitialized] = useState(false)
   const audioRef = useRef<HTMLAudioElement>(null)
 
   const togglePlay = () => {
+    if (!isInitialized && audioRef.current) {
+      // Initialize audio source on first play
+      audioRef.current.src = src
+      setIsInitialized(true)
+    }
+
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause()
@@ -55,7 +62,6 @@ const AudioPlayer = ({ src, slug }: { src: string; slug: string }) => {
       <audio
         ref={audioRef}
         className="hidden"
-        src={src}
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
         onWaiting={() => setIsLoading(true)}
@@ -75,10 +81,14 @@ export const Article = ({ post }: ArticleProps) => {
         <h1 className="sm:mb-4 text-3xl sm:text-4xl font-delicious">{post.title}</h1>
         {post.tags && (
           <div>
-            {post.tags
-              .map((tag) => tag.name)
-              .filter(Boolean)
-              .join(', ')}
+            {post.tags.map((tag, index) => (
+              <Fragment key={tag._id}>
+                <Link to={`/tags/${tag.slug}`} className="hover:text-reindeer-brown underline">
+                  {tag.name}
+                </Link>
+                {index !== (post.tags?.length ?? 0) - 1 && ', '}
+              </Fragment>
+            ))}
             <Border />
           </div>
         )}
@@ -94,16 +104,12 @@ export const Article = ({ post }: ArticleProps) => {
           <div>
             Fra {''}
             {post.authors.map((author, index) => (
-              <>
-                <Link
-                  to={`/author/${author.slug?.current}`}
-                  key={author._id}
-                  className="hover:text-reindeer-brown underline"
-                >
+              <Fragment key={author._id}>
+                <Link to={`/author/${author.slug?.current}`} className="hover:text-reindeer-brown underline">
                   {author.fullName}
                 </Link>
-                {index !== (post.authors?.length ?? 0) - 1 && ', '}
-              </>
+                {index !== post.authors.length - 1 && ', '}
+              </Fragment>
             ))}
           </div>
         )}

@@ -2,16 +2,11 @@ import getYouTubeId from 'get-youtube-id'
 
 import { Youtube } from '../../utils/sanity/types/sanity.types'
 
-import useMediaQuery from '~/hooks/useMediaQuery'
-
 type YouTubeProps = {
   youtube: Youtube
 }
 
 export const YouTubeBlock = ({ youtube }: YouTubeProps) => {
-  const isSm = useMediaQuery('(min-width: 640px)')
-  const height = isSm ? '500px' : '300px'
-
   if (!youtube || !youtube.url) {
     return null
   }
@@ -19,10 +14,9 @@ export const YouTubeBlock = ({ youtube }: YouTubeProps) => {
   const id = getYouTubeId(youtube.url)
 
   return (
-    <div>
+    <div className="aspect-video w-full">
       <iframe
-        width="100%"
-        height={height}
+        className="h-full w-full"
         src={`https://www.youtube.com/embed/${id}`}
         title="YouTube video player"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

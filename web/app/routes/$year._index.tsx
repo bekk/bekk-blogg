@@ -1,5 +1,6 @@
 import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { Link, useLoaderData } from '@remix-run/react'
+import { motion } from 'framer-motion'
 import { z } from 'zod'
 
 import { LinkToArchive } from '~/components/LinkToArchive'
@@ -64,13 +65,46 @@ export default function YearRoute() {
 
       <div className="flex justify-center">
         <div className="hidden sm:flex self-end">
-          <Gift3SVG />
+          <motion.div
+            whileHover={{
+              y: -12,
+              rotate: -5,
+            }}
+            whileTap={{
+              scale: 0.85,
+              rotate: 10,
+            }}
+            transition={{
+              type: 'spring',
+              stiffness: 300,
+              damping: 20,
+            }}
+          >
+            <Gift3SVG />
+          </motion.div>
         </div>
 
         <div className="max-sm:w-full max-sm:px-4">
           <div className="grid grid-cols-3 sm:grid-cols-6 md:px-0">
             <div className="col-span-3 sm:col-span-6 row-start-1 hidden sm:flex justify-end">
-              <GiftsSVG />
+              <motion.div
+                whileHover={{
+                  scale: 1.1,
+                  rotate: [0, -2, 2, 0],
+                  y: -6,
+                }}
+                whileTap={{
+                  scale: 0.9,
+                  rotate: -8,
+                }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 220,
+                  damping: 15,
+                }}
+              >
+                <GiftsSVG />
+              </motion.div>
             </div>
             {Array.from({ length: 24 }, (_, i) => {
               const date = i + 1
@@ -88,7 +122,24 @@ export default function YearRoute() {
           </div>
         </div>
         <div className="hidden sm:flex self-end">
-          <Gift2SVG />
+          <motion.div
+            whileHover={{
+              scale: 1.15,
+              rotate: [0, 8, -8, 0],
+              y: -8,
+            }}
+            whileTap={{
+              scale: 0.9,
+              rotate: -10,
+            }}
+            transition={{
+              type: 'spring',
+              stiffness: 250,
+              damping: 15,
+            }}
+          >
+            <Gift2SVG />
+          </motion.div>
         </div>
       </div>
       <LinkToArchive />

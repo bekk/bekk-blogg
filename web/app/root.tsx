@@ -15,6 +15,8 @@ import { VisualEditing } from '@sanity/visual-editing/remix'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
 
+import { ArticleBackgroundSVG } from './features/article/ArticleBackgroundSVG'
+
 import { Header } from '~/features/navigation/Header'
 import { Page404 } from '~/routes/404'
 import styles from '~/styles/main.css?url'
@@ -58,12 +60,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>bekk.christmas</title>
         <Meta />
         <Links />
         <script defer data-domain="bekk.christmas" src="https://plausible.io/js/plausible.js" />
       </head>
       <body className={`m-auto min-w-[375px] max-w-screen-2xl break-words bg-envelope-beige`}>
+        {isInArticle && (
+          <div className="fixed inset-0 -z-10">
+            <ArticleBackgroundSVG />
+          </div>
+        )}
         <div className={`${isInArticle && 'striped-frame md:my-8 md:mx-8 '}`}>
           <header className={`${isInArticle && 'relative'}`}>
             <Header isInArticle={isInArticle} />

@@ -1,6 +1,8 @@
-import { POST_BY_SLUGResult } from 'utils/sanity/types/sanity.types'
-
-export function postUrl(post: NonNullable<POST_BY_SLUGResult>) {
+type PostUrlArgs = {
+  availableFrom?: string
+  slug: { current?: string | null } | null
+}
+export function postUrl(post: PostUrlArgs) {
   const year = post.availableFrom?.split('-')[0]
   const date = post.availableFrom?.split('-')[2]
   const slug = post.slug?.current

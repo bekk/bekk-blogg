@@ -4,7 +4,14 @@ import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { TeaserPage } from '~/features/teaser/TeaserPage'
 
 export const meta: MetaFunction = () => {
-  return [{ title: 'bekk.christmas' }, { name: 'description', content: 'Welcome to Remix!' }]
+  return [
+    { title: 'bekk.christmas' },
+    {
+      name: 'description',
+      content:
+        'Bekk Christmas er en julekalender med innhold om teknologi, design, strategi og produktutvikling fra Bekk',
+    },
+  ]
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
