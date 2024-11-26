@@ -97,7 +97,7 @@ export default function AuthorPage() {
             )}
           </div>
           <PostPreviewList posts={posts} />
-          <Pagination {...pagination} baseUrl={`/author/${author.slug?.current}`} />
+          <Pagination {...pagination} baseUrl={`/forfatter/${author.slug?.current}`} />
         </div>
       )}
     </>

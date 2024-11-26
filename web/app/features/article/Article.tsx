@@ -105,7 +105,7 @@ export const Article = ({ post }: ArticleProps) => {
             Fra {''}
             {post.authors.map((author, index) => (
               <Fragment key={author._id}>
-                <Link to={`/author/${author.slug?.current}`} className="hover:text-reindeer-brown underline">
+                <Link to={`/forfatter/${author.slug?.current}`} className="hover:text-reindeer-brown underline">
                   {author.fullName}
                 </Link>
                 {index !== post.authors.length - 1 && ', '}
