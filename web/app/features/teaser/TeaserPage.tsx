@@ -61,7 +61,7 @@ export const TeaserPage = () => {
           </div>
         )}
         <div className="mt-16">
-          <Link to={`/${new Date() > new Date(new Date().setFullYear(2024, 12, 1)) ? '2024' : '2023'}`}>
+          <Link to={`post/${new Date() > new Date(new Date().setFullYear(2024, 12, 1)) ? '2024' : '2023'}`}>
             <PostPreview
               title="Bekk.christmas"
               authors={['Bekk']}
