@@ -30,8 +30,8 @@ export const PostPreview = ({
 }: PostPreviewProps) => {
   const showReadTime = wordCount !== null && podcastLength === null
   return (
-    <div className="striped-frame min-w-full py-6 px-6 sm:p-7">
-      <div className="grid  max-w-4xl sm:grid-cols-[1fr_1px_1fr] grid-cols-[30fr_1fr]">
+    <div className="striped-frame py-6 px-6 sm:p-7 max-w-4xl">
+      <div className="grid sm:grid-cols-[1fr_1px_1fr] grid-cols-[30fr_1fr] w-full">
         <div className="col-start-1 col-end-1 row-start-2 row-end-2 sm:mr-7">
           {title && <h2 className="font-delicious sm:mb-20">{title}</h2>}
         </div>

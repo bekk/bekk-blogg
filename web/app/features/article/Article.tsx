@@ -1,7 +1,7 @@
-import { useRef, useState } from 'react'
 import { PortableText } from '@portabletext/react'
 import { Link } from '@remix-run/react'
 import { Loader, Pause, Play } from 'lucide-react'
+import { Fragment, useRef, useState } from 'react'
 import { trackEvent } from 'utils/analytics'
 import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readTime'
@@ -82,12 +82,12 @@ export const Article = ({ post }: ArticleProps) => {
         {post.tags && (
           <div>
             {post.tags.map((tag, index) => (
-              <>
-                <Link to={`/tags/${tag.slug}`} key={tag._id} className="hover:text-reindeer-brown underline">
+              <Fragment key={tag._id}>
+                <Link to={`/tags/${tag.slug}`} className="hover:text-reindeer-brown underline">
                   {tag.name}
                 </Link>
                 {index !== (post.tags?.length ?? 0) - 1 && ', '}
-              </>
+              </Fragment>
             ))}
             <Border />
           </div>
@@ -104,16 +104,12 @@ export const Article = ({ post }: ArticleProps) => {
           <div>
             Fra {''}
             {post.authors.map((author, index) => (
-              <>
-                <Link
-                  to={`/author/${author.slug?.current}`}
-                  key={author._id}
-                  className="hover:text-reindeer-brown underline"
-                >
+              <Fragment key={author._id}>
+                <Link to={`/author/${author.slug?.current}`} className="hover:text-reindeer-brown underline">
                   {author.fullName}
                 </Link>
-                {index !== (post.authors?.length ?? 0) - 1 && ', '}
-              </>
+                {index !== post.authors.length - 1 && ', '}
+              </Fragment>
             ))}
           </div>
         )}

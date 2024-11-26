@@ -60,7 +60,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>bekk.christmas</title>
         <Meta />
         <Links />
         <script defer data-domain="bekk.christmas" src="https://plausible.io/js/plausible.js" />

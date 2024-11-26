@@ -1,13 +1,14 @@
 import type { HeadersFunction, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { useQuery } from '@sanity/react-loader'
+import { cleanControlCharacters } from 'utils/controlCharacters'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { z } from 'zod'
 
 import { POST_BY_SLUG } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
 import { POST_BY_SLUGResult } from '../../utils/sanity/types/sanity.types'
-import { urlFor } from '../../utils/sanity/utils'
+import { toPlainText, urlFor } from '../../utils/sanity/utils'
 
 import { Article } from '~/features/article/Article'
 
@@ -19,20 +20,22 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   }
 
   const availableFrom = post.availableFrom ? new Date(post.availableFrom) : undefined
-  const description = post.previewText ?? post.description
+  const title = cleanControlCharacters(post.title ?? 'Innlegg')
+  const description = cleanControlCharacters(post.previewText ?? toPlainText(post.description))
+  const authors = cleanControlCharacters(post.authors?.map((author) => author.fullName).join(', '))
 
   const meta = [
-    { title: post.title || 'Innlegg' },
+    { title: `${title} | Bekk Christmas` },
     { name: 'description', content: description },
-    { property: 'og:title', content: post.title || 'Innlegg' },
+    { property: 'og:title', content: title },
     { property: 'og:description', content: description },
     { property: 'og:type', content: 'article' },
     { property: 'og:site_name', content: 'Bekk Christmas' },
     { property: 'article:published_time', content: post.availableFrom },
     { property: 'article:modified_time', content: post._updatedAt },
-    { property: 'article:author', content: post.authors?.map((author) => author.fullName).join(', ') },
+    { property: 'article:author', content: authors },
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: post.title || 'Innlegg' },
+    { name: 'twitter:title', content: title },
     { name: 'twitter:description', content: description },
     { name: 'twitter:site', content: '@livetibekk' },
   ]
