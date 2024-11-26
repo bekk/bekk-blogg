@@ -1,13 +1,40 @@
-import { json } from '@remix-run/node' // Ensure to use json here
+import { json, MetaFunction } from '@remix-run/node' // Ensure to use json here
 import { Link, useLoaderData, useNavigation } from '@remix-run/react'
 
-import { ALL_TAGS } from '../../utils/sanity/queries/postQueries'
+import { ALL_CATEGORIES } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
 import { Tag } from '../../utils/sanity/types/sanity.types'
 
 import { Spinner } from '~/components/Spinner'
 
-// Route component
+export async function loader() {
+  try {
+    const { data } = await loadQuery<Tag[]>(ALL_CATEGORIES)
+    return json(data) // Wrap the data in a json response
+  } catch (error) {
+    console.error(error)
+    // Return an error response for the client
+    throw new Response('Failed to load categories', { status: 500 })
+  }
+}
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  const title = `Innhold fra ${data?.length} kategorier | Bekk Christmas`
+  const description = `Utforsk ${data?.length} kategorier på Bekk Christmas`
+  return [
+    { title },
+    { name: 'description', content: description },
+    { property: 'og:title', content: title },
+    { property: 'og:description', content: description },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: 'Bekk Christmas' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: title },
+    { name: 'twitter:description', content: description },
+    { name: 'twitter:site', content: '@livetibekk' },
+  ]
+}
+
 export default function TagsRoute() {
   const data = useLoaderData<typeof loader>() // Safely use the loader's data
   const state = useNavigation()
@@ -29,14 +56,4 @@ export default function TagsRoute() {
       )}
     </>
   )
-}
-
-export async function loader() {
-  try {
-    const { data } = await loadQuery<Tag[]>(ALL_TAGS)
-    return json(data)
-  } catch (error) {
-    console.error(error)
-    throw new Response('Failed to load categories', { status: 500 })
-  }
 }

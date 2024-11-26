@@ -1,40 +1,93 @@
-import { json, LoaderFunctionArgs } from '@remix-run/node'
+import { HeadersFunction, json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { useLoaderData, useNavigation } from '@remix-run/react'
 
-import { POSTS_BY_TAGS, TAG_BY_SLUG } from '../../utils/sanity/queries/postQueries'
+import { TAG_WITH_POSTS_QUERY } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
-import { Post, Tag } from '../../utils/sanity/types/sanity.types'
+import { TAG_WITH_POSTS_QUERYResult } from '../../utils/sanity/types/sanity.types'
 
 import { Spinner } from '~/components/Spinner'
-import { LetterDisplayer } from '~/features/letters/LetterDisplayer'
+import { Pagination } from '~/features/pagination/Pagination'
+import { PostPreviewList } from '~/features/post-preview/PostPreview'
 
-export async function loader({ params }: LoaderFunctionArgs) {
+export async function loader({ params, request }: LoaderFunctionArgs) {
   const { tag } = params
   if (!tag) {
     throw new Response('Missing tag', { status: 404 })
   }
 
-  // Fetch posts and tag data in parallel
-  const [postsData, tagData] = await Promise.all([
-    loadQuery<Post[]>(POSTS_BY_TAGS, { t: tag }),
-    loadQuery<Tag>(TAG_BY_SLUG, { slug: tag }),
-  ])
+  // Get page from URL search params
+  const url = new URL(request.url)
+  const page = parseInt(url.searchParams.get('page') || '1')
+  const perPage = 15
+  const offset = (page - 1) * perPage
 
-  return json({ posts: postsData.data, tag: tagData.data })
+  const response = await loadQuery<TAG_WITH_POSTS_QUERYResult>(TAG_WITH_POSTS_QUERY, {
+    t: tag,
+    start: offset,
+    end: offset + perPage,
+  })
+
+  return json({
+    posts: response.data.posts || [],
+    tag: response.data.tag,
+    pagination: {
+      currentPage: page,
+      totalPages: Math.ceil((response.data.totalCount || 0) / perPage),
+      totalPosts: response.data.totalCount || 0,
+    },
+  })
 }
 
-export default function Posts() {
-  const { posts, tag } = useLoaderData<typeof loader>()
-  const state = useNavigation()
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  const description = `Utforsk ${data?.pagination.totalPosts} innlegg om ${data?.tag?.name} på Bekk Christmas`
+  const title = `Innhold om ${data?.tag?.name} | Bekk Christmas`
+  return [
+    { title },
+    { name: 'description', content: description },
+    { property: 'og:title', content: title },
+    { property: 'og:description', content: description },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: 'Bekk Christmas' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: title },
+    { name: 'twitter:description', content: description },
+    { name: 'twitter:site', content: '@livetibekk' },
+  ]
+}
+
+export const headers: HeadersFunction = () => ({
+  'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=3600',
+})
+
+export default function Tags() {
+  const { posts, tag, pagination } = useLoaderData<typeof loader>()
+  const navigation = useNavigation()
+
+  if (!tag) {
+    return (
+      <div className="flex flex-col items-center lg:mb-12">
+        <h1 className="font-delicious md:text-center mb-0">Fant ikke den kategorien</h1>
+      </div>
+    )
+  }
 
   return (
     <>
-      {state.state === 'loading' ? (
+      {navigation.state === 'loading' ? (
         <Spinner />
       ) : (
         <div className="flex flex-col items-center lg:mb-12">
-          <h1 className="font-delicious md:text-center">{tag.name}</h1>
-          <LetterDisplayer posts={posts} error={`Ingen innlegg funnet for ${tag.name}`} />
+          <h1 className="font-delicious text-center mb-0">Innhold om {tag?.name}</h1>
+          <div className="mb-4 text-center">
+            <p>Totalt {pagination.totalPosts} innlegg</p>
+            {pagination.totalPages > 1 && (
+              <p className="text-sm">
+                Side {pagination.currentPage} av {pagination.totalPages}
+              </p>
+            )}
+          </div>
+          <PostPreviewList posts={posts} />
+          <Pagination {...pagination} baseUrl={`/tags/${tag.slug}`} />
         </div>
       )}
     </>

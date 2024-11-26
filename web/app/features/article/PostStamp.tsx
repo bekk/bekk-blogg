@@ -10,15 +10,12 @@ type PostStampProps = {
 }
 
 export const PostStamp = ({ size, image }: PostStampProps) => {
-  if (!image) {
-    return null
-  }
-  const imageUrl = image.asset
+  const imageUrl = image?.asset
     ? urlFor(image.asset as SanityAsset)
         .height(450)
         .quality(50)
         .url()
-    : image.src
+    : image?.src
 
   return (
     <div className={`relative ${size ? size : 'h-21.4 w-16 md:h-[107px] md:w-[80px]'}`}>

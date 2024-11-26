@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { Fragment, useRef, useState } from 'react'
 import { PortableText } from '@portabletext/react'
 import { Link } from '@remix-run/react'
 import { Loader, Pause, Play } from 'lucide-react'
@@ -76,15 +76,19 @@ export const Article = ({ post }: ArticleProps) => {
     return null
   }
   return (
-    <div className="px-6 sm:grid-cols-[1fr_2fr] md:grid md:grid-rows-[auto_auto] md:gap-x-12 xl:gap-x-24 md:gap-y-6 md:pl-20 pb-8 md:pb-16">
-      <div className="meta col-start-1 col-end-1 row-start-2 row-end-2 mb-8">
-        <h1 className="font-delicious">{post.title}</h1>
+    <div className="px-6 sm:grid-cols-[1fr_2fr] md:grid md:grid-rows-[auto_auto] md:gap-x-12 xl:gap-x-24 md:gap-y-6 md:pl-10 xl:pl-20 pb-8 md:pb-16">
+      <div className="meta col-start-1 col-end-1 row-start-2 row-end-2 mb-8 md:min-w-[230px] lg:min-w-[240px] 2lg:min-w-[250px]">
+        <h1 className="sm:mb-4 text-3xl sm:text-4xl font-delicious">{post.title}</h1>
         {post.tags && (
           <div>
-            {post.tags
-              .map((tag) => tag.name)
-              .filter(Boolean)
-              .join(', ')}
+            {post.tags.map((tag, index) => (
+              <Fragment key={tag._id}>
+                <Link to={`/tags/${tag.slug}`} className="hover:text-reindeer-brown underline">
+                  {tag.name}
+                </Link>
+                {index !== (post.tags?.length ?? 0) - 1 && ', '}
+              </Fragment>
+            ))}
             <Border />
           </div>
         )}
@@ -100,16 +104,12 @@ export const Article = ({ post }: ArticleProps) => {
           <div>
             Fra {''}
             {post.authors.map((author, index) => (
-              <>
-                <Link
-                  to={`/author/${author.slug?.current}`}
-                  key={author._id}
-                  className="hover:text-reindeer-brown underline"
-                >
+              <Fragment key={author._id}>
+                <Link to={`/author/${author.slug?.current}`} className="hover:text-reindeer-brown underline">
                   {author.fullName}
                 </Link>
-                {index !== (post.authors?.length ?? 0) - 1 && ', '}
-              </>
+                {index !== post.authors.length - 1 && ', '}
+              </Fragment>
             ))}
           </div>
         )}
@@ -120,9 +120,9 @@ export const Article = ({ post }: ArticleProps) => {
           <AudioPlayer src={`/api/tts?id=${post._id}`} slug={post.slug?.current ?? 'unknown'} />
         )}
       </div>
-      <div className="col-start-2 col-end-2 row-start-2 row-end-2 max-md:max-w-screen-xl max-lg:max-w-lg max-xl:max-w-xl">
+      <div className="flex flex-col col-start-2 col-end-2 row-start-2 row-end-2 max-md:max-w-screen-xl max-lg:max-w-[475px] max-2lg:max-w-[550px] 2lg:max-w-[675px] xl:pr-10 xl:max-w-3xl 2xl:max-w-4xl">
         {post?.description ? (
-          <div className="text-2xl">
+          <div className="text-xl">
             <PortableText value={post.description} components={components} />
           </div>
         ) : null}
