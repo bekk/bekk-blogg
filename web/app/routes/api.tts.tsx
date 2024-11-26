@@ -1,5 +1,6 @@
 import { LoaderFunctionArgs } from '@remix-run/node'
 import OpenAI from 'openai'
+import { cleanControlCharacters } from 'utils/controlCharacters'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { ARTICLE_CONTENT_BY_ID } from 'utils/sanity/queries/postQueries'
 import { loadQuery } from 'utils/sanity/store'
@@ -14,7 +15,7 @@ function chunkText(text: string, chunkSize: number = 500): string[] {
   let currentChunk = ''
 
   // Split by sentences to avoid cutting words/sentences
-  const sentences = text.split('. ')
+  const sentences = text.split(/[.!?]+\s/)
 
   for (const sentence of sentences) {
     if ((currentChunk + sentence).length > chunkSize) {
@@ -48,10 +49,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   }
 
   // Convert the portable text content to plain text and remove invisible characters
-  const text = [post.title, post.description, post.content]
-    .join('\n\n')
-    // eslint-disable-next-line no-control-regex
-    .replace(/[\u200B-\u200D\uFEFF\u0000-\u001F\u007F-\u009F\u2000-\u200F\u2028-\u202F]/g, '')
+  const text = cleanControlCharacters([post.title, post.description, post.content].join('\n\n'))
 
   try {
     const textChunks = chunkText(text)
@@ -63,6 +61,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
           const voice = await getVoice({ name: post.mainAuthor, preferredVoice: post.preferredVoice })
           // Process each chunk and send it immediately
           for (const chunk of textChunks) {
+            // Empty chunks are not allowed by OpenAI
+            if (chunk.length < 1) {
+              continue
+            }
             const mp3 = await openai.audio.speech.create({
               model: 'tts-1',
               voice,
