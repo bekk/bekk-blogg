@@ -37,10 +37,7 @@ export const Header = ({ isInArticle = false }: HeaderProps) => {
               const isLast = index === breadcrumbs.length - 1
 
               return (
-                <li
-                  key={index}
-                  className={`flex min-w-0 items-center whitespace-nowrap ${isLast ? 'shrink' : 'shrink-0'}`}
-                >
+                <li key={index} className="flex-none min-w-0 flex items-center whitespace-nowrap">
                   <Link
                     to={`post${breadcrumb.href}`}
                     className={`${isInArticle ? 'text-black' : 'text-reindeer-brown'} ${isLast ? 'truncate' : ''}`}
