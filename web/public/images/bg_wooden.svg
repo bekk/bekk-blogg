@@ -1,6 +1,4 @@
-export const ArticleBackgroundSVG = () => {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1728 3999" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1728 3999" fill="none">
       <g clipPath="url(#a)">
         <path fill="#714319" d="M0 0h1728v3999H0z" />
         <path fill="#E0C190" d="M1728 0H0v3999h1728V0Z" />
@@ -87,5 +85,3 @@ export const ArticleBackgroundSVG = () => {
         </clipPath>
       </defs>
     </svg>
-  )
-}
