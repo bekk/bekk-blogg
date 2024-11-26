@@ -48,7 +48,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (availableFrom) {
     meta.push({
       property: 'og:url',
-      content: `https://bekk.christmas/${availableFrom.getFullYear()}/${availableFrom.getDate().toString().padStart(2, '0')}/${post.slug}`,
+      content: `https://bekk.christmas/post/${availableFrom.getFullYear()}/${availableFrom.getDate().toString().padStart(2, '0')}/${post.slug}`,
     })
   }
 
