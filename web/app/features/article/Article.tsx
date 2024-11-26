@@ -83,7 +83,7 @@ export const Article = ({ post }: ArticleProps) => {
           <div>
             {post.tags.map((tag, index) => (
               <Fragment key={tag._id}>
-                <Link to={`/kategorier/${tag.slug}`} className="hover:text-reindeer-brown underline">
+                <Link to={`/kategori/${tag.slug}`} className="hover:text-reindeer-brown underline">
                   {tag.name}
                 </Link>
                 {index !== (post.tags?.length ?? 0) - 1 && ', '}

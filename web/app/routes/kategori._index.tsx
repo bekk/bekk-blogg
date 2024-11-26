@@ -48,7 +48,7 @@ export default function TagsRoute() {
           <ul className="flex flex-row flex-wrap gap-2 md:gap-4">
             {data.map((category: Tag, index: number) => (
               <li className={'hover:text-reindeer-brown md:text-subtitle-desktop'} key={index}>
-                <Link to={`/kategorier/${category.slug}`}>{category.name}</Link>
+                <Link to={`/kategori/${category.slug}`}>{category.name}</Link>
               </li>
             ))}
           </ul>
