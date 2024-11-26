@@ -58,7 +58,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const bodyClass =
     location.pathname === '/'
       ? `bg-[url('/images/bg_teaser.svg')] bg-no-repeat bg-cover bg-center`
-      : isInArticle
+      : isInArticle // @todo: bytt ut med location.pathname === '/posts' når url er endret
         ? `bg-[url('/images/bg_wooden.svg')] bg-no-repeat bg-cover bg-center`
         : 'bg-envelope-beige'
 
