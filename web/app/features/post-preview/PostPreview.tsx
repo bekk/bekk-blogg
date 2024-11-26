@@ -15,6 +15,7 @@ type PostPreviewType = {
   summary: string | null
   wordCount: number | null
   podcastLength: number | null
+  link?: string
 }
 
 type PostPreviewProps = PostPreviewType
@@ -27,10 +28,11 @@ export const PostPreview = ({
   summary,
   wordCount,
   podcastLength,
+  link,
 }: PostPreviewProps) => {
   const showReadTime = wordCount !== null && podcastLength === null
-  return (
-    <div className="striped-frame py-6 px-6 sm:p-7 max-w-4xl">
+  const content = (
+    <div className="striped-frame py-6 px-6 sm:p-7">
       <div className="grid sm:grid-cols-[1fr_1px_1fr] grid-cols-[30fr_1fr] w-full">
         <div className="col-start-1 col-end-1 row-start-2 row-end-2 sm:mr-7">
           {title && <h2 className="font-delicious sm:mb-20">{title}</h2>}
@@ -63,6 +65,14 @@ export const PostPreview = ({
       </div>
     </div>
   )
+  if (link) {
+    return (
+      <Link to={link} className="w-full max-w-4xl mx-auto px-2 md:px-0">
+        {content}
+      </Link>
+    )
+  }
+  return <div className="w-full max-w-4xl mx-auto px-2 md:px-0">{content}</div>
 }
 
 // TODO: Refactor out to somewhere else
@@ -81,9 +91,7 @@ export const PostPreviewList = ({ posts }: PostPreviewListProps) => {
   return (
     <div className="flex flex-col max-sm:w-full gap-8 md:gap-12">
       {posts.map((post) => (
-        <Link key={post._id} to={postUrl(post)} className="mx-4 flex justify-center">
-          <PostPreview {...post} />
-        </Link>
+        <PostPreview key={post._id} {...post} link={postUrl(post)} />
       ))}
     </div>
   )
