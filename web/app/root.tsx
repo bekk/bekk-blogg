@@ -55,7 +55,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   const isInArticle = matches.some((match) => match.params.slug) && !error
 
-  const bodyClass =
+  const bodyBg =
     location.pathname === '/'
       ? `bg-[url('/images/bg_teaser.svg')] bg-no-repeat bg-cover bg-center`
       : isInArticle // @todo: bytt ut med location.pathname === '/posts' når url er endret
@@ -71,7 +71,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
         <script defer data-domain="bekk.christmas" src="https://plausible.io/js/plausible.js" />
       </head>
-      <body className={`m-auto min-w-[375px] max-w-screen-2xl break-words ${bodyClass}`}>
+      <body className={`m-auto min-w-[375px] max-w-screen-2xl break-words ${bodyBg}`}>
         <div className={`${isInArticle && 'striped-frame md:my-8 md:mx-8 '}`}>
           <header className={`${isInArticle && 'relative'}`}>
             <Header isInArticle={isInArticle} />
