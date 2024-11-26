@@ -2,7 +2,7 @@ type VimeoBlockProps = { src: string; title: string }
 
 export default function VimeoBlock({ video }: { video: VimeoBlockProps }) {
   return (
-    <div style={{ aspectRatio: '16 / 9', width: '100%' }}>
+    <div className="aspect-video w-full">
       <iframe
         src={video.src}
         title={video.title}

@@ -14,7 +14,7 @@ export const YouTubeBlock = ({ youtube }: YouTubeProps) => {
   const id = getYouTubeId(youtube.url)
 
   return (
-    <div style={{ aspectRatio: '16 / 9', width: '100%' }}>
+    <div className="aspect-video w-full">
       <iframe
         className="h-full w-full"
         src={`https://www.youtube.com/embed/${id}`}
