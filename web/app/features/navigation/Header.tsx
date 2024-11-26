@@ -1,4 +1,4 @@
-import { Link, useRouteError } from '@remix-run/react'
+import { Link, useLocation, useRouteError } from '@remix-run/react'
 
 import { PostStamp } from '../article/PostStamp'
 
@@ -12,6 +12,9 @@ type HeaderProps = {
 export const Header = ({ isInArticle = false }: HeaderProps) => {
   const breadcrumbs = useBreadcrumbs()
   const error = useRouteError()
+  const location = useLocation()
+
+  const logoFillColor = location.pathname === '/' ? `fill-white` : 'fill-black'
 
   return (
     <div
@@ -25,7 +28,7 @@ export const Header = ({ isInArticle = false }: HeaderProps) => {
             </div>
           ) : (
             <div>
-              <BekkLogo className="h-21.4 w-10 md:h-[107px] md:w-16" fillColor="fill-black" />
+              <BekkLogo className="h-21.4 w-10 md:h-[107px] md:w-16" fillColor={logoFillColor} />
             </div>
           )}
         </Link>
