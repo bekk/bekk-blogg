@@ -77,7 +77,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <Header isInArticle={isInArticle} />
           </header>
           <Scripts />
-          {children}
+          <main id="content">{children}</main>
           <ScrollRestoration />
           <Scripts />
         </div>

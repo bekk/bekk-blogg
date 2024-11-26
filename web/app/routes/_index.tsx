@@ -26,9 +26,5 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 }
 
 export default function Index() {
-  return (
-    <main id="content">
-      <TeaserPage />
-    </main>
-  )
+  return <TeaserPage />
 }
