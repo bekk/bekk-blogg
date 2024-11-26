@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 import { SanityAsset } from '@sanity/image-url/lib/types/types'
 import { POST_BY_SLUGResult } from 'utils/sanity/types/sanity.types'
-=======
-import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'
->>>>>>> 60491dc (Skriv om queries til å kun hente det de trenger)
 import { urlFor } from 'utils/sanity/utils'
 
 import { BekkLogo } from '~/features/article/BekkLogo'

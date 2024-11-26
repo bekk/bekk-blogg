@@ -1,7 +1,7 @@
+import { Fragment, useRef, useState } from 'react'
 import { PortableText } from '@portabletext/react'
 import { Link } from '@remix-run/react'
 import { Loader, Pause, Play } from 'lucide-react'
-import { Fragment, useRef, useState } from 'react'
 import { trackEvent } from 'utils/analytics'
 import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readTime'
