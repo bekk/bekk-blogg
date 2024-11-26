@@ -146,7 +146,7 @@ export default function YearRoute() {
       <div className={'pt-8 flex justify-center '}>
         <p>
           Du kan også lese innlegg sorter på{' '}
-          <a className={'hover:text-reindeer-brown underline'} href={'/tags'}>
+          <a className={'hover:text-reindeer-brown underline'} href={'/kategorier'}>
             kategorier
           </a>
         </p>

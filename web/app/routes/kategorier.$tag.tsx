@@ -1,19 +1,18 @@
 import { HeadersFunction, json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { useLoaderData, useNavigation } from '@remix-run/react'
-import { cleanControlCharacters } from 'utils/controlCharacters'
-import { AUTHOR_WITH_POSTS_QUERY } from 'utils/sanity/queries/postQueries'
-import { AUTHOR_WITH_POSTS_QUERYResult } from 'utils/sanity/types/sanity.types'
 
+import { TAG_WITH_POSTS_QUERY } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
+import { TAG_WITH_POSTS_QUERYResult } from '../../utils/sanity/types/sanity.types'
 
 import { Spinner } from '~/components/Spinner'
 import { Pagination } from '~/features/pagination/Pagination'
 import { PostPreviewList } from '~/features/post-preview/PostPreview'
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
-  const { name } = params
-  if (!name) {
-    throw new Response('Missing author', { status: 404 })
+  const { tag } = params
+  if (!tag) {
+    throw new Response('Missing tag', { status: 404 })
   }
 
   // Get page from URL search params
@@ -22,15 +21,15 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const perPage = 15
   const offset = (page - 1) * perPage
 
-  const response = await loadQuery<AUTHOR_WITH_POSTS_QUERYResult>(AUTHOR_WITH_POSTS_QUERY, {
-    slug: name,
+  const response = await loadQuery<TAG_WITH_POSTS_QUERYResult>(TAG_WITH_POSTS_QUERY, {
+    t: tag,
     start: offset,
     end: offset + perPage,
   })
 
   return json({
     posts: response.data.posts || [],
-    author: response.data.author,
+    tag: response.data.tag,
     pagination: {
       currentPage: page,
       totalPages: Math.ceil((response.data.totalCount || 0) / perPage),
@@ -40,9 +39,8 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  const authorName = cleanControlCharacters(data?.author?.fullName)
-  const title = `Innhold fra ${authorName} | Bekk Christmas`
-  const description = `Utforsk ${data?.pagination.totalPosts} innlegg fra ${authorName} på Bekk Christmas`
+  const description = `Utforsk ${data?.pagination.totalPosts} innlegg om ${data?.tag?.name} på Bekk Christmas`
+  const title = `Innhold om ${data?.tag?.name} | Bekk Christmas`
   return [
     { title },
     { name: 'description', content: description },
@@ -61,22 +59,14 @@ export const headers: HeadersFunction = () => ({
   'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=3600',
 })
 
-export default function AuthorPage() {
-  const { author, posts, pagination } = useLoaderData<typeof loader>()
+export default function Tags() {
+  const { posts, tag, pagination } = useLoaderData<typeof loader>()
   const navigation = useNavigation()
 
-  if (!author) {
+  if (!tag) {
     return (
       <div className="flex flex-col items-center lg:mb-12">
-        <h1 className="font-delicious md:text-center mb-0">Fant ikke den forfatteren</h1>
-      </div>
-    )
-  }
-
-  if (!posts.length) {
-    return (
-      <div className="flex flex-col items-center lg:mb-12">
-        <h1 className="font-delicious md:text-center mb-0">Fant ingen innlegg av {author.fullName}</h1>
+        <h1 className="font-delicious md:text-center mb-0">Fant ikke den kategorien</h1>
       </div>
     )
   }
@@ -86,8 +76,8 @@ export default function AuthorPage() {
       {navigation.state === 'loading' ? (
         <Spinner />
       ) : (
-        <div className="flex flex-col items-center gap-8 mb-4 lg:mb-12 md:gap-12">
-          <h1 className="font-delicious md:text-center mb-0">Innhold fra {author?.fullName}</h1>
+        <div className="flex flex-col items-center lg:mb-12">
+          <h1 className="font-delicious text-center mb-0">Innhold om {tag?.name}</h1>
           <div className="mb-4 text-center">
             <p>Totalt {pagination.totalPosts} innlegg</p>
             {pagination.totalPages > 1 && (
@@ -97,7 +87,7 @@ export default function AuthorPage() {
             )}
           </div>
           <PostPreviewList posts={posts} />
-          <Pagination {...pagination} baseUrl={`/author/${author.slug?.current}`} />
+          <Pagination {...pagination} baseUrl={`/kategorier/${tag.slug}`} />
         </div>
       )}
     </>
