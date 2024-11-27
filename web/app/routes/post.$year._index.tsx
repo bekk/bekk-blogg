@@ -62,11 +62,11 @@ export default function YearRoute() {
       {/* <h1 className="text-reindeer-brown font-delicious text-center text-4xl sm:text-6xl pb-8 sm:pb-0">
           {data.year}
         </h1> */}
-      <div className="sm:px-4 grid grid-cols-[auto_auto_auto] sm:grid-cols-[1fr_auto_1fr] grid-rows-[79px_auto_auto] sm:grid-rows-[148px_auto_auto] md:grid-rows-[214px_auto_auto] lg:grid-rows-[215px_auto_137px] 2lg:grid-rows-[352px_auto_137px]">
+      <div className="sm:px-4 grid grid-cols-[25px_auto_25px] sm:grid-cols-[50px_auto_50px] 2lg:grid-cols-[auto_auto_auto] grid-rows-[91px_auto_auto] sm:grid-rows-[173px_auto_auto] 2lg:grid-rows-[353px_auto_137px]">
         {/* Tak */}
         <div className="bg-roof row-start-1 row-span-2 col-start-1 col-span-3">tak</div>
         {/* Gave V.S */}
-        <div className="row-start-2 row-span-1 col-start-1 col-span-1 hidden md:flex self-end">
+        <div className="row-start-2 row-span-1 col-start-1 col-span-1 hidden 2lg:flex self-end">
           <motion.div
             whileHover={{
               y: -12,
@@ -99,7 +99,7 @@ export default function YearRoute() {
           </div>
         </div>
         {/* Gave H.S */}
-        <div className="row-start-2 row-span-1 col-start-3 col-span-1 hidden md:flex self-end">
+        <div className="row-start-2 row-span-1 col-start-3 col-span-1 hidden 2lg:flex self-end">
           <motion.div
             whileHover={{
               scale: 1.15,
