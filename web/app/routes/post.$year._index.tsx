@@ -143,7 +143,7 @@ export default function YearRoute() {
         </div>
       </div>
       <LinkToArchive />
-      <div className={'pt-8 flex justify-center '}>
+      <div className={'pt-8 flex justify-center text-center'}>
         <p>
           Du kan også lese innlegg sorter på{' '}
           <Link className={'hover:text-reindeer-brown underline'} to="/kategori">
