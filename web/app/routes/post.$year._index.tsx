@@ -125,7 +125,7 @@ export default function YearRoute() {
                   key={date}
                   className=" flex justify-center items-center border border-reindeer-brown"
                 >
-                  <Door year={data.year} date={date} smallScreen={smallScreen} />
+                  <Door year={Number(data.year)} date={date} smallScreen={smallScreen} />
                 </Link>
               )
             })}
@@ -152,7 +152,7 @@ export default function YearRoute() {
           </div>
         </div>
         <LinkToArchive />
-        <div className={'pt-8 flex justify-center '}>
+        <div className={'pt-8 flex justify-center text-center'}>
           <p>
             Du kan også lese innlegg sorter på{' '}
             <Link className={'hover:text-reindeer-brown underline'} to={'/kategori'}>
