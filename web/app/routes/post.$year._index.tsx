@@ -1,8 +1,9 @@
 import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
+import { Link, useLoaderData } from '@remix-run/react'
 import { motion } from 'framer-motion'
 import { z } from 'zod'
 
+import { BekkLogo } from '~/features/article/BekkLogo'
 import { Door } from '~/features/calendar/Door'
 import { Gift2SVG } from '~/features/calendar/Gift2SVG'
 import { Gift3SVG } from '~/features/calendar/Gift3SVG'
@@ -62,6 +63,9 @@ export default function YearRoute() {
       {/* <h1 className="text-reindeer-brown font-delicious text-center text-4xl sm:text-6xl pb-8 sm:pb-0">
           {data.year}
         </h1> */}
+      <Link to="post/2024" className="absolute top-[20px] md:top-[40px] right-[20px] md:right-[40px]">
+        <BekkLogo className="h-auto w-10 md:auto md:w-16" />
+      </Link>
       <div className="sm:px-4 grid grid-cols-[25px_auto_25px] sm:grid-cols-[50px_auto_50px] 2lg:grid-cols-[auto_auto_auto] grid-rows-[91px_auto_auto] sm:grid-rows-[142px_auto_auto] 2lg:grid-rows-[292px_auto_137px]">
         {/* Tak */}
         <div className="bg-roof row-start-1 row-span-2 col-start-1 col-span-3">tak</div>

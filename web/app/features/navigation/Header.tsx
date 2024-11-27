@@ -15,7 +15,7 @@ export const Header = ({ isOnArticlePage = false }: HeaderProps) => {
 
   return (
     <div
-      className={`grid grid-cols-1 md:grid-cols-[8fr_1fr] pb-4 md:pb-14 ${isOnArticlePage ? 'pt-6 px-6 md:pl-10 xl:pl-20 md:pt-5' : 'px-4 md:px-10 md:pt-8'}`}
+      className={`grid grid-cols-1 md:grid-cols-[8fr_1fr] p-4 md:pb-14 ${isOnArticlePage ? 'pt-6 px-6 md:pl-10 xl:pl-20 md:pt-5' : 'px-4 md:px-10 md:pt-8'}`}
     >
       <div className={`justify-self-end md:col-start-2 ${error ? 'ml-auto' : ''}`}>
         <Link to="post/2024">
@@ -25,7 +25,7 @@ export const Header = ({ isOnArticlePage = false }: HeaderProps) => {
             </div>
           ) : (
             <div>
-              <BekkLogo className="h-21.4 w-10 md:h-[107px] md:w-16" />
+              <BekkLogo className="h-auto w-10 md:auto md:w-16" />
             </div>
           )}
         </Link>
