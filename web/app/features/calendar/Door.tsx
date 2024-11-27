@@ -2,25 +2,35 @@ import { useState } from 'react'
 
 type DoorProps = {
   date: number
+  year: number
   smallScreen: boolean
 }
-export const Door = ({ date, smallScreen }: DoorProps) => {
+export const Door = ({ date, year, smallScreen }: DoorProps) => {
   const [isHovered, setIsHovered] = useState(false)
+
+  const isOpenable = () => {
+    const today = new Date()
+    const doorDate = new Date(year, 11, date)
+    return doorDate <= today
+  }
+
   return (
     <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
       <div className={`relative`}>
-        {isHovered
+        {isHovered && isOpenable()
           ? smallScreen
             ? openDoorSvg(100, 100)
             : openDoorSvg(120, 120)
           : smallScreen
             ? doorSVG(100, 100)
             : doorSVG(120, 120)}
-        {!isHovered && (
-          <div className="absolute inset-0 flex pt-4 justify-center text-ruben-red md:text-leading-desktop font-gt-expanded">
-            {date}
-          </div>
-        )}
+        <div
+          className={`absolute inset-0 flex pt-4 justify-center text-ruben-red md:text-leading-desktop font-gt-expanded ${
+            isHovered && isOpenable() ? 'hidden' : 'block'
+          }`}
+        >
+          {date}
+        </div>
       </div>
     </div>
   )

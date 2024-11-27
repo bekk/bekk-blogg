@@ -125,7 +125,7 @@ export default function YearRoute() {
                   key={date}
                   className=" flex justify-center items-center border border-reindeer-brown"
                 >
-                  <Door date={date} smallScreen={smallScreen} />
+                  <Door year={data.year} date={date} smallScreen={smallScreen} />
                 </Link>
               )
             })}
