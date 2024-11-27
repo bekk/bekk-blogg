@@ -99,6 +99,26 @@
     12;
 }
 
+.bg-table-with-tablecloth {
+  background-image: url('../../public/images/bg_cloth.svg'), url('../../public/images/bg_wood.svg');
+  background-position: top, center;
+  background-size: 100%, cover;
+  background-repeat: no-repeat, no-repeat;
+  min-height: 100vh;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 2500px) {
+  .bg-table-with-tablecloth {
+    background-size:
+      auto 45vh,
+      cover;
+    background-position:
+      top center,
+      center;
+  }
+}
+
 .codeBlockColorOverride span {
   background-color: transparent !important;
 }
@@ -119,13 +139,6 @@
   100% {
     transform: rotate(360deg);
   }
-}
-
-.bg-wood-and-cloth {
-  background-image: url('/images/bg_wood.svg');
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
 }
 
 @media screen and (min-width: 1024px) {
