@@ -1,4 +1,5 @@
 import { MetaFunction } from '@remix-run/node'
+import { Link } from '@remix-run/react'
 
 export const meta: MetaFunction = () => {
   const title = `Fant ikke den siden`
@@ -17,13 +18,18 @@ export const meta: MetaFunction = () => {
   ]
 }
 
-export const Page404 = () => {
+type ErrorPageProps = {
+  title?: string
+  description?: string
+}
+
+export const ErrorPage = ({ title, description }: ErrorPageProps) => {
   return (
-    <div className="flex min-h-screen flex-col items-center p-10 pt-14 gap-6 md:p-40 md:gap-8">
-      <h1>Oi, det ser ut som du har gått deg vill i julekalenderen!</h1>
-      <h2>
-        Denne siden finnes ikke, men fortvil ei - det er mange andre luker å åpne. Kanskje nissen kan hjelpe deg
-        tilbake? 🎅
+    <div className="flex min-h-screen flex-col items-left justify-center pl-4 sm:pl-8 md:pb-64 text-white">
+      <h1 className="text-3xl sm:text-4xl">{title}</h1>
+      <h2 className="text-sm md:text-subtitle-desktop leading-8 w-10/12 lg:w-5/12 xl:w-4/12">
+        {description}
+        <Link to="/post/2024">🌟</Link>
       </h2>
     </div>
   )

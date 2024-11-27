@@ -25,7 +25,7 @@ export const Header = ({ isInArticle = false }: HeaderProps) => {
             </div>
           ) : (
             <div>
-              <BekkLogo className="h-21.4 w-10 md:h-[107px] md:w-16" fillColor="fill-black" />
+              <BekkLogo className="h-21.4 w-10 md:h-[107px] md:w-16" fillColor={error ? 'fill-white' : 'fill-black'} />
             </div>
           )}
         </Link>

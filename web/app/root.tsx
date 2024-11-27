@@ -1,6 +1,8 @@
 import { lazy, Suspense } from 'react'
+import React from 'react'
 import type { LinksFunction, LoaderFunction } from '@remix-run/node'
 import {
+  isRouteErrorResponse,
   json,
   Links,
   Meta,
@@ -17,9 +19,9 @@ import { generateSecurityHeaders } from 'utils/security'
 
 import { ArticleBackgroundSVG } from './features/article/ArticleBackgroundSVG'
 import { JumpToContent } from './features/jump-to-content/JumpToContent'
+import { ErrorPage } from './routes/ErrorPage'
 
 import { Header } from '~/features/navigation/Header'
-import { Page404 } from '~/routes/404'
 import styles from '~/styles/main.css?url'
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
@@ -41,9 +43,50 @@ export const loader: LoaderFunction = async ({ request }) => {
     }
   )
 }
-
 export function ErrorBoundary() {
-  return <Page404 />
+  const error = useRouteError()
+
+  const getErrorContent = () => {
+    let title = ''
+    let message = 'Følg Bekk-stjernen for å komme tilbake til julekalenderen'
+    if (isRouteErrorResponse(error)) {
+      switch (error.status) {
+        case 400:
+          title = 'Ups. Her prøver du å gå til en ugyldig side.'
+          break
+        case 401:
+          title = 'Ups. Preview er ikke tilgjengelig for denne siden.'
+          break
+        case 404:
+          if (error.data === 'Author not found') {
+            title = 'Fant ikke den forfatteren'
+          } else if (error.data === 'No category with this name') {
+            title = 'Denne kategorien finnes ikke'
+          } else {
+            title = 'Denne siden finnes ikke.'
+          }
+          break
+        case 425:
+          title = 'Dette innholdet er ikke tilgjengelig enda. Vær tålmodig og sjekk tilbake om litt!'
+          break
+        default:
+          title = 'Uventet feil'
+          message = 'Her gikk noe galt. Prøv å refresh siden. Eller følg Bekk-stjernen tilbake til julekalenderen.'
+      }
+    } else {
+      title = 'Uventet feil'
+      message = 'Her gikk noe galt. Prøv å refresh siden. Eller følg Bekk-stjernen tilbake til julekalenderen.'
+    }
+
+    return {
+      title: title,
+      message: message,
+    }
+  }
+
+  const { title, message } = getErrorContent()
+
+  return <ErrorPage title={title} description={message} />
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -55,7 +98,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
     ?.data as PotentialLanguageType
 
   const isInArticle = matches.some((match) => match.params.slug) && !error
-
   return (
     <html lang={postData?.language ?? 'nb-NO'}>
       <head>
@@ -66,7 +108,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <link rel="alternate" type="application/rss+xml" title="Bekk Christmas RSS Feed" href="/feed.xml" />
         <script defer data-domain="bekk.christmas" src="https://plausible.io/js/plausible.js" />
       </head>
-      <body className={`m-auto min-w-[375px] max-w-screen-2xl break-words bg-envelope-beige`}>
+      <body className={`${error ? 'error-bg' : 'm-auto min-w-[375px] max-w-screen-2xl break-words bg-envelope-beige'}`}>
         <JumpToContent />
         {isInArticle && (
           <div className="fixed inset-0 -z-10">

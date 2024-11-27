@@ -27,6 +27,10 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     end: offset + perPage,
   })
 
+  if (!response.data || !response.data.tag) {
+    throw new Response('No category with this name', { status: 404 })
+  }
+
   return json({
     posts: response.data.posts || [],
     tag: response.data.tag,
