@@ -54,12 +54,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const postData = matches.find((match) => (match.data as PotentialLanguageType)?.language)
     ?.data as PotentialLanguageType
 
+  const isOnFrontpage = location.pathname === '/'
   const isInArticle = matches.some((match) => match.params.slug) && !error
   const isInDate = matches.some((match) => match.params.year && match.params.date) && !error
+  const isInCalendar = matches.some((match) => match.params.year && !match.params.date) && !error
 
   const bodyBg = () => {
+    if (isOnFrontpage || isInDate) return `bg-wooden-table-with-cloth`
     if (isInArticle) return 'bg-wooden-table'
-    if (location.pathname === '/' || isInDate) return `bg-table-with-tablecloth`
+    if (isInCalendar) return 'bg-brick-wall'
     return 'bg-envelope-beige'
   }
 
@@ -76,9 +79,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body className={`m-auto min-w-[375px] max-w-screen-2xl break-words ${bodyBg()}`}>
         <JumpToContent />
         <div className={`${isInArticle && 'striped-frame md:my-8 md:mx-8 '}`}>
-          <header className={`${isInArticle && 'relative'}`}>
-            <Header isInArticle={isInArticle} />
-          </header>
+          {!isInCalendar && (
+            <header className={`${isInArticle && 'relative'}`}>
+              <Header isInArticle={isInArticle} />
+            </header>
+          )}
+
           <Scripts />
           <main id="content" className="tabindex-[-1]">
             {children}

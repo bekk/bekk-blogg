@@ -44,17 +44,17 @@ export const Door = ({ date, year, smallScreen }: DoorProps) => {
       <Link
         to={isOpenable() ? `/post/${year}/${date.toString().padStart(2, '0')}` : '#'}
         key={date}
-        className=" flex justify-center items-center border border-reindeer-brown"
+        className="flex justify-center items-center border-4 border-reindeer-brown"
       >
         <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
           <div className={`relative`}>
             {isHovered && isOpenable()
               ? smallScreen
                 ? openDoorSvg(100, 100)
-                : openDoorSvg(120, 120)
+                : openDoorSvg(160, 160)
               : smallScreen
                 ? doorSVG(100, 100)
-                : doorSVG(120, 120)}
+                : doorSVG(160, 160)}
             <div
               className={`absolute inset-0 flex pt-2 md:-mt-2 justify-center text-display-mobile text-ruben-red md:text-headline-desktop font-source-serif-bold ${
                 isHovered && isOpenable() ? 'hidden' : 'block'
