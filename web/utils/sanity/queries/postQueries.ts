@@ -139,3 +139,18 @@ export const AUTHOR_WITH_POSTS_QUERY = defineQuery(`{
     slug
   }
 }`)
+
+export const RSS_FEED_QUERY = defineQuery(`*[
+  _type == "post" && 
+  availableFrom < now()
+][0...250] | order(availableFrom desc) {
+  _id,
+  title,
+  slug,
+  language,
+  "description": coalesce(previewText, pt::text(description)),
+  availableFrom,
+  "authors": authors[]->.fullName,
+  type,
+  "content": pt::text(content)
+}`)
