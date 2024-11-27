@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import type { LinksFunction, LoaderFunction } from '@remix-run/node'
 import {
   json,
@@ -11,16 +12,15 @@ import {
   useRouteError,
 } from '@remix-run/react'
 import { VisualEditing } from '@sanity/visual-editing/remix'
-import { lazy, Suspense } from 'react'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
 
 import { ArticleBackgroundSVG } from './features/article/ArticleBackgroundSVG'
+import { JumpToContent } from './features/jump-to-content/JumpToContent'
 
 import { Header } from '~/features/navigation/Header'
 import { Page404 } from '~/routes/404'
 import styles from '~/styles/main.css?url'
-import { JumpToContent } from './features/jump-to-content/JumpToContent'
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
