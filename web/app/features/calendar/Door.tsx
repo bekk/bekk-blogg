@@ -25,7 +25,7 @@ export const Door = ({ date, year, smallScreen }: DoorProps) => {
             ? doorSVG(100, 100)
             : doorSVG(120, 120)}
         <div
-          className={`absolute inset-0 flex pt-4 justify-center text-ruben-red md:text-leading-desktop font-gt-expanded ${
+          className={`absolute inset-0 flex pt-2 md:-mt-2 justify-center text-display-mobile text-ruben-red md:text-headline-desktop font-source-serif-bold ${
             isHovered && isOpenable() ? 'hidden' : 'block'
           }`}
         >
