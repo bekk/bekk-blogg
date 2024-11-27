@@ -52,10 +52,10 @@ export const Door = ({ date, year }: DoorProps) => {
           {isHovered && isOpenable()
             ? smallScreen
               ? openDoorSvg(90, 90)
-              : openDoorSvg(180, 180)
+              : openDoorSvg(140, 140)
             : smallScreen
               ? doorSVG(90, 90)
-              : doorSVG(180, 180)}
+              : doorSVG(140, 140)}
           <div
             className={`absolute top-[7%] right-[0px] left-[0px] m-auto text-center text-display-mobile text-ruben-red md:text-headline-desktop font-source-serif-bold ${
               isHovered && isOpenable() ? 'hidden' : 'block'

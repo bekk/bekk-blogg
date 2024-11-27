@@ -62,7 +62,7 @@ export default function YearRoute() {
       {/* <h1 className="text-reindeer-brown font-delicious text-center text-4xl sm:text-6xl pb-8 sm:pb-0">
           {data.year}
         </h1> */}
-      <div className="sm:px-4 grid grid-cols-[25px_auto_25px] sm:grid-cols-[50px_auto_50px] 2lg:grid-cols-[auto_auto_auto] grid-rows-[91px_auto_auto] sm:grid-rows-[173px_auto_auto] 2lg:grid-rows-[353px_auto_137px]">
+      <div className="sm:px-4 grid grid-cols-[25px_auto_25px] sm:grid-cols-[50px_auto_50px] 2lg:grid-cols-[auto_auto_auto] grid-rows-[91px_auto_auto] sm:grid-rows-[142px_auto_auto] 2lg:grid-rows-[292px_auto_137px]">
         {/* Tak */}
         <div className="bg-roof row-start-1 row-span-2 col-start-1 col-span-3">tak</div>
         {/* Gave V.S */}
