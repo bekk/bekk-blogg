@@ -47,7 +47,7 @@ const StampSvg = ({ size, imgUrl }: { size?: string; imgUrl?: string | null }) =
       </g>
       <defs>
         {imgUrl && (
-          <pattern id={imageId} width="100" height="100">
+          <pattern id={imageId} width="100%" height="100%">
             <image href={imgUrl} height="100%" width="100%" preserveAspectRatio="xMidYMid slice" />
           </pattern>
         )}

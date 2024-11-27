@@ -1,4 +1,6 @@
 import { Link } from '@remix-run/react'
+import { motion } from 'framer-motion'
+import { readingTime } from 'utils/readingTime'
 import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'
 
 import { PostStamp } from '../article/PostStamp'
@@ -30,9 +32,31 @@ export const PostPreview = ({
   podcastLength,
   link,
 }: PostPreviewProps) => {
-  const showReadTime = wordCount !== null && podcastLength === null
+  const showReadingTime = wordCount !== null && podcastLength === null
   const content = (
-    <div className="striped-frame py-6 px-6 sm:p-7">
+    <motion.div
+      className="striped-frame py-6 px-6 sm:p-7"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
+      variants={{
+        hidden: { opacity: 0, y: 50, scale: 0.9 },
+        visible: { opacity: 1, y: 0, scale: 1 },
+      }}
+      transition={{
+        duration: 0.6,
+        ease: 'easeOut',
+      }}
+      whileHover={{
+        scale: 1.05,
+        rotate: -1,
+        transition: {
+          type: 'spring',
+          stiffness: 300,
+          damping: 20,
+        },
+      }}
+    >
       <div className="grid sm:grid-cols-[1fr_1px_1fr] grid-cols-[30fr_1fr] w-full">
         <div className="col-start-1 col-end-1 row-start-2 row-end-2 sm:mr-7">
           {title && <h2 className="font-delicious sm:mb-20">{title}</h2>}
@@ -48,7 +72,7 @@ export const PostPreview = ({
               <div className="sm:mb-7 border-b border-bekk-night pb-1 mb-3" />
             </>
           )}
-          {showReadTime && (
+          {showReadingTime && (
             <>
               {podcastLength ? `${podcastLength} min` : wordCount ? readingTime(wordCount) : null}
               <div className="sm:mb-7 border-b border-bekk-night pb-1 mb-3" />
@@ -63,7 +87,7 @@ export const PostPreview = ({
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   )
   if (link) {
     return (
@@ -73,11 +97,6 @@ export const PostPreview = ({
     )
   }
   return <div className="w-full max-w-4xl mx-auto px-2 md:px-0">{content}</div>
-}
-
-// TODO: Refactor out to somewhere else
-const readingTime = (wordCount: number) => {
-  return `${Math.ceil(wordCount / 250)} min`
 }
 
 export type PostPreviewListProps = {

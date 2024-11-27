@@ -121,7 +121,7 @@ export default function YearRoute() {
               const formattedDate = (i + 1).toString().padStart(2, '0')
               return (
                 <Link
-                  to={`/${data.year}/${formattedDate}`}
+                  to={`/post/${data.year}/${formattedDate}`}
                   key={date}
                   className=" flex justify-center items-center border border-reindeer-brown"
                 >
@@ -155,9 +155,9 @@ export default function YearRoute() {
         <div className={'pt-8 flex justify-center '}>
           <p>
             Du kan også lese innlegg sorter på{' '}
-            <a className={'hover:text-reindeer-brown underline'} href={'/tags'}>
+            <Link className={'hover:text-reindeer-brown underline'} to={'/kategori'}>
               kategorier
-            </a>
+            </Link>
           </p>
         </div>
       </div>

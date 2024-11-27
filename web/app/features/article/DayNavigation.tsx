@@ -6,15 +6,25 @@ type DayNavigationProps = {
 }
 export const DayNavigation = ({ day, year }: DayNavigationProps) => {
   return (
-    <div className="flex justify-center gap-4 my-4 md:my-8">
+    <div className="flex justify-center gap-4 my-8">
       {day > 1 && (
-        <Link to={`/${year}/${day - 1}`} prefetch="intent" className="text-bekk-night hover:underline">
-          &larr; {day - 1}. desember
+        <Link
+          to={`/post/${year}/${day - 1}`}
+          prefetch="intent"
+          className="group text-bekk-night hover:text-reindeer-brown"
+        >
+          <span className="group-hover:-translate-x-1 group-hover:transition-all inline-block ">&larr;</span> {day - 1}.
+          desember
         </Link>
       )}
       {day < 24 && (
-        <Link to={`/${year}/${day + 1}`} prefetch="intent" className="text-bekk-night hover:underline">
-          {day + 1}. desember &rarr;
+        <Link
+          to={`/post/${year}/${day + 1}`}
+          prefetch="intent"
+          className="group text-bekk-night hover:text-reindeer-brown"
+        >
+          {day + 1}. desember{' '}
+          <span className="group-hover:translate-x-1 group-hover:transition-all inline-block">&rarr;</span>
         </Link>
       )}
     </div>
