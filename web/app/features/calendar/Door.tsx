@@ -1,15 +1,26 @@
+import { useState } from 'react'
+
 type DoorProps = {
   date: number
   smallScreen: boolean
 }
 export const Door = ({ date, smallScreen }: DoorProps) => {
+  const [isHovered, setIsHovered] = useState(false)
   return (
-    <div>
+    <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
       <div className={`relative`}>
-        {smallScreen ? doorSVG(100, 100) : doorSVG(120, 120)}
-        <div className="absolute inset-0 flex pt-4 justify-center text-ruben-red md:text-leading-desktop font-gt-expanded">
-          {date}
-        </div>
+        {isHovered
+          ? smallScreen
+            ? openDoorSvg(100, 100)
+            : openDoorSvg(120, 120)
+          : smallScreen
+            ? doorSVG(100, 100)
+            : doorSVG(120, 120)}
+        {!isHovered && (
+          <div className="absolute inset-0 flex pt-4 justify-center text-ruben-red md:text-leading-desktop font-gt-expanded">
+            {date}
+          </div>
+        )}
       </div>
     </div>
   )
@@ -45,5 +56,15 @@ const doorSVG = (height: number, width: number) => (
       d="M83.9594 110.041C83.9594 110.041 86.0927 106.162 90.7507 106.516C90.7507 106.516 91.6203 106.472 91.6608 107.342C91.7014 108.212 90.9623 108.072 90.9623 108.072C90.9623 108.072 87.6232 107.832 85.4463 110.841C85.4463 110.841 84.9101 111.736 84.3159 111.475C83.7217 111.215 83.6956 110.635 83.9565 110.041"
       fill="#FFDF8F"
     />
+  </svg>
+)
+
+const openDoorSvg = (height: number, width: number) => (
+  <svg width={width} height={height} viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M146.956 33.0435H33.043V146.956H146.956V33.0435Z" fill="#542400" />
+    <path d="M146.957 33.0435L180.001 0V180L146.957 146.956V33.0435Z" fill="#6D3611" />
+    <path d="M33.0435 33.0435L0 0V180L33.0435 146.956V33.0435Z" fill="#6D3611" />
+    <path d="M0 180L33.0435 146.957H146.957L180 180H0Z" fill="#934F1C" />
+    <path d="M0 0L33.0435 33.0435H146.957L180 0H0Z" fill="#934F1C" />
   </svg>
 )
