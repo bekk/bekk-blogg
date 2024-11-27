@@ -7,9 +7,6 @@ export default {
   content: ['./app/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
-      backgroundImage: {
-        'wooden-table': "url('/images/bg_wood.svg')",
-      },
       backgroundColor: {
         'envelope-beige': '#E0C190',
         'postcard-beige': '#F7F3EE',

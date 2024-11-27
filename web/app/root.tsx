@@ -15,6 +15,7 @@ import {
 import { VisualEditing } from '@sanity/visual-editing/remix'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
+
 import { JumpToContent } from './features/jump-to-content/JumpToContent'
 
 import { Header } from '~/features/navigation/Header'
@@ -58,7 +59,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const isInDate = matches.some((match) => match.params.year && match.params.date) && !error
 
   const bodyBg = () => {
-    if (isInArticle) return 'bg-wooden-table bg-no-repeat bg-cover bg-center'
+    if (isInArticle) return 'bg-wooden-table'
     if (location.pathname === '/' || isInDate) return `bg-table-with-tablecloth`
     return 'bg-envelope-beige'
   }

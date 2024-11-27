@@ -39,12 +39,14 @@ export const Header = ({ isInArticle = false }: HeaderProps) => {
               return (
                 <li key={index} className="flex-none min-w-0 flex items-center whitespace-nowrap">
                   <Link
-                    to={`post${breadcrumb.href}`}
+                    to={`${breadcrumb.href}`}
                     className={`${isInArticle ? 'text-black' : 'text-postcard-beige'} ${isLast ? 'truncate' : ''}`}
                   >
                     {breadcrumb.title}
                   </Link>
-                  {!isLast && <p className="shrink-0 px-2 text-postcard-beige">/</p>}
+                  {!isLast && (
+                    <p className={`shrink-0 px-2 ${isInArticle ? 'text-black' : 'text-postcard-beige'}`}>/</p>
+                  )}
                 </li>
               )
             })}

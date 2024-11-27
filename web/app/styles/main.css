@@ -107,6 +107,13 @@
   min-height: 100vh;
 }
 
+.bg-wooden-table {
+  background-image: url('/images/bg_wood.svg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
 /* Media query for smaller screens */
 @media (max-width: 2500px) {
   .bg-table-with-tablecloth {
