@@ -53,10 +53,10 @@ const NumberWithLabel = ({ number, label }: { number: number; label: string }) =
 export const TeaserPage = () => {
   const isClientSide = useClientSideOnly()
   return (
-    <main id="content" className="flex flex-col items-center justify-center h-screen pb-96 px-4 min-w-[320px]">
+    <div className="flex flex-col items-center justify-center px-4 h-full pb-96">
       <div className="w-full items-center sm:max-w-4xl">
         {isClientSide && (
-          <div className="font-delicious text-2xl sm:text-5xl">
+          <div className="font-delicious text-2xl text-postcard-beige sm:text-5xl">
             <Countdown date={`${new Date().getFullYear()}/12/01`} renderer={CountdownRenderer} />
           </div>
         )}
@@ -75,8 +75,10 @@ export const TeaserPage = () => {
             />
           </Link>
         </div>
-        <LinkToArchive />
+        <div className="link-to-archive-gift">
+          <LinkToArchive />
+        </div>
       </div>
-    </main>
+    </div>
   )
 }
