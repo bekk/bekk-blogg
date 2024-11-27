@@ -1,0 +1,3 @@
+Contact: mailto:kristofer.selbekk@bekk.no
+Expires: 2025-12-31T22:59:00.000Z
+Preferred-Languages: no,en
