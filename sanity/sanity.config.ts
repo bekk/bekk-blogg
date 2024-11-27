@@ -61,11 +61,11 @@ const config = defineConfig({
                 locations: [
                   {
                     title: doc?.title || 'Untitled',
-                    href: `/${year}/${day}/${doc?.slug}`,
+                    href: `/post/${year}/${day}/${doc?.slug}`,
                   },
                   {
                     title: 'Dag',
-                    href: `/${year}/${day}`,
+                    href: `/post/${year}/${day}`,
                   },
                 ],
               }

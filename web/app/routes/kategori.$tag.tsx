@@ -87,7 +87,7 @@ export default function Tags() {
             )}
           </div>
           <PostPreviewList posts={posts} />
-          <Pagination {...pagination} baseUrl={`/kategorier/${tag.slug}`} />
+          <Pagination {...pagination} baseUrl={`/kategori/${tag.slug}`} />
         </div>
       )}
     </>

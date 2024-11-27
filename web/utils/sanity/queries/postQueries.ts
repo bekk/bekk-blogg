@@ -50,6 +50,7 @@ const POST_PROJECTION = groq`{
   previewText,
   availableFrom,
   keywords,
+  "wordCount": length(string::split(pt::text(content), ' ')),
   content[] {
     ...,
     _type == 'imageWithMetadata' => {
@@ -137,4 +138,19 @@ export const AUTHOR_WITH_POSTS_QUERY = defineQuery(`{
     fullName,
     slug
   }
+}`)
+
+export const RSS_FEED_QUERY = defineQuery(`*[
+  _type == "post" && 
+  availableFrom < now()
+][0...250] | order(availableFrom desc) {
+  _id,
+  title,
+  slug,
+  language,
+  "description": coalesce(previewText, pt::text(description)),
+  availableFrom,
+  "authors": authors[]->.fullName,
+  type,
+  "content": pt::text(content)
 }`)

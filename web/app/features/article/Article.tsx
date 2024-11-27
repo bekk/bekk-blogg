@@ -4,7 +4,7 @@ import { Link } from '@remix-run/react'
 import { Loader, Pause, Play } from 'lucide-react'
 import { trackEvent } from 'utils/analytics'
 import { formatDate } from 'utils/date'
-import { readingTime } from 'utils/readTime'
+import { readingTime } from 'utils/readingTime'
 import { POST_BY_SLUGResult } from 'utils/sanity/types/sanity.types'
 import { urlFor } from 'utils/sanity/utils'
 
@@ -83,7 +83,7 @@ export const Article = ({ post }: ArticleProps) => {
           <div>
             {post.tags.map((tag, index) => (
               <Fragment key={tag._id}>
-                <Link to={`/kategorier/${tag.slug}`} className="hover:text-reindeer-brown underline">
+                <Link to={`/kategori/${tag.slug}`} className="hover:text-reindeer-brown underline">
                   {tag.name}
                 </Link>
                 {index !== (post.tags?.length ?? 0) - 1 && ', '}
@@ -94,9 +94,7 @@ export const Article = ({ post }: ArticleProps) => {
         )}
         {((post.type === 'article' && post.content) || post.type === 'podcast') && (
           <div>
-            {post.type === 'podcast' && post.podcastLength
-              ? `${post.podcastLength} min`
-              : readingTime(post.content ?? [])}
+            {post.type === 'podcast' && post.podcastLength ? `${post.podcastLength} min` : readingTime(post.wordCount)}
             <Border />
           </div>
         )}
