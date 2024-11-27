@@ -118,16 +118,7 @@ export default function YearRoute() {
             </div>
             {Array.from({ length: 24 }, (_, i) => {
               const date = i + 1
-              const formattedDate = (i + 1).toString().padStart(2, '0')
-              return (
-                <Link
-                  to={`/post/${data.year}/${formattedDate}`}
-                  key={date}
-                  className=" flex justify-center items-center border border-reindeer-brown"
-                >
-                  <Door year={Number(data.year)} date={date} smallScreen={smallScreen} />
-                </Link>
-              )
+              return <Door key={date} year={Number(data.year)} date={date} smallScreen={smallScreen} />
             })}
           </div>
           <div className="hidden md:flex self-end">

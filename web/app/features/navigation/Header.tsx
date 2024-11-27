@@ -25,7 +25,7 @@ export const Header = ({ isInArticle = false }: HeaderProps) => {
             </div>
           ) : (
             <div>
-              <BekkLogo className="h-21.4 w-10 md:h-[107px] md:w-16" fillColor={error ? 'fill-white' : 'fill-black'} />
+              <BekkLogo className="h-21.4 w-10 md:h-[107px] md:w-16" />
             </div>
           )}
         </Link>
@@ -40,11 +40,13 @@ export const Header = ({ isInArticle = false }: HeaderProps) => {
                 <li key={index} className="flex-none min-w-0 flex items-center whitespace-nowrap">
                   <Link
                     to={`${breadcrumb.href}`}
-                    className={`${isInArticle ? 'text-black' : 'text-reindeer-brown'} ${isLast ? 'truncate' : ''}`}
+                    className={`${isInArticle ? 'text-black' : 'text-postcard-beige'} ${isLast ? 'truncate' : ''}`}
                   >
                     {breadcrumb.title}
                   </Link>
-                  {!isLast && <p className="shrink-0 px-2 text-reindeer-brown">/</p>}
+                  {!isLast && (
+                    <p className={`shrink-0 px-2 ${isInArticle ? 'text-black' : 'text-postcard-beige'}`}>/</p>
+                  )}
                 </li>
               )
             })}

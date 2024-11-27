@@ -15,6 +15,7 @@ export default {
       textColor: {
         base: '#000000',
         'reindeer-brown': '#714319',
+        'postcard-beige': '#F7F3EE',
         'santa-red': '#D0332E',
         'christmas-tree-green': '#2F7346',
         'ruben-red': '#A01A1A',
@@ -28,6 +29,7 @@ export default {
         'gt-light': ['GT-America-Standard-Light', 'Arial', 'sans-serif'],
         'gt-light-italic': ['GT-America-Standard-Light-Italic', 'Arial', 'sans-serif'],
         delicious: ['Delicious Handrawn', 'cursive'],
+        'source-serif-bold': ['Source Serif Pro Bold'],
       },
       fontSize: {
         'large-desktop': '96px',

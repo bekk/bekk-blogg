@@ -1,6 +1,5 @@
 import { lazy, Suspense } from 'react'
-import React from 'react'
-import type { LinksFunction, LoaderFunction } from '@remix-run/node'
+import type { HeadersFunction, LinksFunction, LoaderFunction } from '@remix-run/node'
 import {
   isRouteErrorResponse,
   json,
@@ -10,6 +9,7 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useLocation,
   useMatches,
   useRouteError,
 } from '@remix-run/react'
@@ -17,7 +17,6 @@ import { VisualEditing } from '@sanity/visual-editing/remix'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
 
-import { ArticleBackgroundSVG } from './features/article/ArticleBackgroundSVG'
 import { JumpToContent } from './features/jump-to-content/JumpToContent'
 import { ErrorPage } from './routes/ErrorPage'
 
@@ -28,21 +27,21 @@ export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
 export const loader: LoaderFunction = async ({ request }) => {
   const { preview } = await loadQueryOptions(request.headers)
-  return json(
-    {
-      isPreview: preview,
-      ENV: {
-        SANITY_STUDIO_PROJECT_ID: process.env.SANITY_STUDIO_PROJECT_ID,
-        SANITY_STUDIO_DATASET: process.env.SANITY_STUDIO_DATASET,
-        SANITY_STUDIO_URL: process.env.SANITY_STUDIO_URL,
-        SANITY_STUDIO_API_VERSION: process.env.SANITY_API_VERSION,
-      },
+  return json({
+    isPreview: preview,
+    ENV: {
+      SANITY_STUDIO_PROJECT_ID: process.env.SANITY_STUDIO_PROJECT_ID,
+      SANITY_STUDIO_DATASET: process.env.SANITY_STUDIO_DATASET,
+      SANITY_STUDIO_URL: process.env.SANITY_STUDIO_URL,
+      SANITY_STUDIO_API_VERSION: process.env.SANITY_API_VERSION,
     },
-    {
-      headers: generateSecurityHeaders(),
-    }
-  )
+  })
 }
+
+export const headers: HeadersFunction = () => ({
+  ...generateSecurityHeaders(),
+})
+
 export function ErrorBoundary() {
   const error = useRouteError()
 
@@ -92,12 +91,21 @@ export function ErrorBoundary() {
 export function Layout({ children }: { children: React.ReactNode }) {
   const matches = useMatches()
   const error = useRouteError()
+  const location = useLocation()
 
   type PotentialLanguageType = { language: string } | undefined
   const postData = matches.find((match) => (match.data as PotentialLanguageType)?.language)
     ?.data as PotentialLanguageType
 
   const isInArticle = matches.some((match) => match.params.slug) && !error
+  const isInDate = matches.some((match) => match.params.year && match.params.date) && !error
+
+  const bodyBg = () => {
+    if (isInArticle) return 'bg-wooden-table'
+    if (location.pathname === '/' || isInDate) return `bg-table-with-tablecloth`
+    return 'bg-envelope-beige'
+  }
+
   return (
     <html lang={postData?.language ?? 'nb-NO'}>
       <head>
@@ -108,19 +116,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <link rel="alternate" type="application/rss+xml" title="Bekk Christmas RSS Feed" href="/feed.xml" />
         <script defer data-domain="bekk.christmas" src="https://plausible.io/js/plausible.js" />
       </head>
-      <body className={`${error ? 'error-bg' : 'm-auto min-w-[375px] max-w-screen-2xl break-words bg-envelope-beige'}`}>
+      <body className={`${error ? 'error-bg' : `m-auto min-w-[375px] max-w-screen-2xl break-words ${bodyBg()}`}`}>
         <JumpToContent />
-        {isInArticle && (
-          <div className="fixed inset-0 -z-10">
-            <ArticleBackgroundSVG />
-          </div>
-        )}
         <div className={`${isInArticle && 'striped-frame md:my-8 md:mx-8 '}`}>
           <header className={`${isInArticle && 'relative'}`}>
             <Header isInArticle={isInArticle} />
           </header>
           <Scripts />
-          {children}
+          <main id="content" className="tabindex-[-1]">
+            {children}
+          </main>
           <ScrollRestoration />
           <Scripts />
         </div>

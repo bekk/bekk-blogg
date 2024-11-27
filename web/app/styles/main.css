@@ -99,6 +99,33 @@
     12;
 }
 
+.bg-table-with-tablecloth {
+  background-image: url('../../public/images/bg_cloth.svg'), url('../../public/images/bg_wood.svg');
+  background-position: top, center;
+  background-size: 100%, cover;
+  background-repeat: no-repeat, no-repeat;
+  min-height: 100vh;
+}
+
+.bg-wooden-table {
+  background-image: url('/images/bg_wood.svg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 2500px) {
+  .bg-table-with-tablecloth {
+    background-size:
+      auto 45vh,
+      cover;
+    background-position:
+      top center,
+      center;
+  }
+}
+
 .codeBlockColorOverride span {
   background-color: transparent !important;
 }
@@ -129,4 +156,31 @@
     url('/images/northern_lights.svg') top left/contain no-repeat,
     url('/images/snow.svg') bottom center/contain no-repeat,
     linear-gradient(to bottom, #040a2f, #003fad);
+}
+@media screen and (min-width: 1024px) {
+  .link-to-archive-gift {
+    position: relative;
+    height: 218px;
+
+    &:before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      width: 384px;
+      height: 308px;
+      left: 118px;
+      top: -90px;
+      background-image: url('/images/bg_gift.svg');
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+  }
+}
+
+.gift-tag {
+  @apply bg-postcard-beige;
+  width: auto;
+  height: 100%;
+  padding: 8px 8px 8px 16px;
+  clip-path: polygon(15px 0, 100% 0, 100% 100%, 15px 100%, 0 calc(100% - 15px), 0 15px);
 }

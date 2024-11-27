@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { Link } from '@remix-run/react'
+import { motion } from 'framer-motion'
 
 type DoorProps = {
   date: number
@@ -7,32 +9,63 @@ type DoorProps = {
 }
 export const Door = ({ date, year, smallScreen }: DoorProps) => {
   const [isHovered, setIsHovered] = useState(false)
+  const [isShaking, setIsShaking] = useState(false)
 
   const isOpenable = () => {
     const today = new Date()
     const doorDate = new Date(year, 11, date)
     return doorDate <= today
   }
+  const shakeAnimation = {
+    shaking: {
+      x: [-3, 3, -3, 3, 0],
+      transition: {
+        duration: 0.5,
+        ease: 'easeInOut',
+      },
+    },
+  }
+
+  const handleClick = () => {
+    if (!isOpenable()) {
+      setIsShaking(true)
+      setTimeout(() => setIsShaking(false), 500)
+    }
+  }
 
   return (
-    <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-      <div className={`relative`}>
-        {isHovered && isOpenable()
-          ? smallScreen
-            ? openDoorSvg(100, 100)
-            : openDoorSvg(120, 120)
-          : smallScreen
-            ? doorSVG(100, 100)
-            : doorSVG(120, 120)}
-        <div
-          className={`absolute inset-0 flex pt-4 justify-center text-ruben-red md:text-leading-desktop font-gt-expanded ${
-            isHovered && isOpenable() ? 'hidden' : 'block'
-          }`}
-        >
-          {date}
+    <motion.div
+      onClick={handleClick}
+      animate={isShaking ? 'shaking' : ''}
+      variants={shakeAnimation}
+      initial={{ x: 0 }}
+      exit={{ x: 0 }}
+    >
+      <Link
+        to={isOpenable() ? `/post/${year}/${date.toString().padStart(2, '0')}` : '#'}
+        key={date}
+        className=" flex justify-center items-center border border-reindeer-brown"
+      >
+        <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+          <div className={`relative`}>
+            {isHovered && isOpenable()
+              ? smallScreen
+                ? openDoorSvg(100, 100)
+                : openDoorSvg(120, 120)
+              : smallScreen
+                ? doorSVG(100, 100)
+                : doorSVG(120, 120)}
+            <div
+              className={`absolute inset-0 flex pt-2 md:-mt-2 justify-center text-display-mobile text-ruben-red md:text-headline-desktop font-source-serif-bold ${
+                isHovered && isOpenable() ? 'hidden' : 'block'
+              }`}
+            >
+              {date}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </Link>
+    </motion.div>
   )
 }
 

@@ -32,4 +32,11 @@ export const fontLinks: LinksFunction = () => [
     type: 'font/ttf',
     crossOrigin: 'anonymous',
   },
+  {
+    rel: 'preload',
+    href: '/fonts/SourceSerifPro-Bold.ttf',
+    as: 'font',
+    type: 'font/ttf',
+    crossOrigin: 'anonymous',
+  },
 ]
