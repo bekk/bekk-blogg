@@ -59,7 +59,7 @@ export const PostPreview = ({
     >
       <div className="grid sm:grid-cols-[1fr_1px_1fr] grid-cols-[30fr_1fr] w-full">
         <div className="col-start-1 col-end-1 row-start-2 row-end-2 sm:mr-7">
-          {title && <h2 className="font-delicious sm:mb-20">{title}</h2>}
+          {title && <h2 className="sm:mb-20">{title}</h2>}
         </div>
         <div className="col-start-2 row-start-1 row-end-4 hidden border-r border-bekk-night sm:block" />
         <div className="flex justify-end ml-1 sm:mb-9 col-start-3 col-end-3 row-start-2 row-end-3 sm:ml-7">

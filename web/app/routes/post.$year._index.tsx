@@ -68,9 +68,7 @@ export default function YearRoute() {
         <CalendarBackgroundSVG smallScreen={smallScreen} />
       </div>
       <div className="p-4">
-        <h1 className="text-reindeer-brown font-delicious text-center text-4xl sm:text-6xl pb-8 sm:pb-0">
-          {data.year}
-        </h1>
+        <h1 className="text-reindeer-brown text-center text-4xl sm:text-6xl pb-8 sm:pb-0">{data.year}</h1>
 
         <div className="flex justify-center">
           <div className="hidden md:flex self-end">

@@ -44,7 +44,7 @@ export default function TagsRoute() {
         <Spinner />
       ) : (
         <div className="p-8">
-          <h1 className="md:text-center font-delicious pb-2 md:pb-4">Kategorier</h1>
+          <h1 className="md:text-center b-2 md:pb-4">Kategorier</h1>
           <ul className="flex flex-row flex-wrap gap-2 md:gap-4">
             {data.map((category: Tag, index: number) => (
               <li className={'hover:text-reindeer-brown md:text-subtitle-desktop'} key={index}>

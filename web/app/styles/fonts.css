@@ -78,12 +78,4 @@
     font-style: normal;
     font-display: swap;
   }
-
-  @font-face {
-    font-family: 'Delicious Handrawn';
-    src: url('/fonts/DeliciousHandrawn-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-  }
 }

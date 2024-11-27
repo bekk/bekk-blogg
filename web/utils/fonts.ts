@@ -25,11 +25,4 @@ export const fontLinks: LinksFunction = () => [
     type: 'font/woff2',
     crossOrigin: 'anonymous',
   },
-  {
-    rel: 'preload',
-    href: '/fonts/DeliciousHandrawn-Regular.ttf',
-    as: 'font',
-    type: 'font/ttf',
-    crossOrigin: 'anonymous',
-  },
 ]

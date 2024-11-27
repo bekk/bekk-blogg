@@ -66,7 +66,7 @@ export default function Tags() {
   if (!tag) {
     return (
       <div className="flex flex-col items-center lg:mb-12">
-        <h1 className="font-delicious md:text-center mb-0">Fant ikke den kategorien</h1>
+        <h1 className="md:text-center mb-0">Fant ikke den kategorien</h1>
       </div>
     )
   }
@@ -77,7 +77,7 @@ export default function Tags() {
         <Spinner />
       ) : (
         <div className="flex flex-col items-center lg:mb-12">
-          <h1 className="font-delicious text-center mb-0">Innhold om {tag?.name}</h1>
+          <h1 className="text-center mb-0">Innhold om {tag?.name}</h1>
           <div className="mb-4 text-center">
             <p>Totalt {pagination.totalPosts} innlegg</p>
             {pagination.totalPages > 1 && (
