@@ -21,6 +21,7 @@ export default {
         'postcard-beige': '#F7F3EE',
         'santa-red': '#D0332E',
         'christmas-tree-green': '#2F7346',
+        'ruben-red': '#A01A1A',
       },
       fontFamily: {
         'gt-expanded': ['GT-America-Expanded-Medium', 'Arial', 'sans-serif'],
@@ -58,6 +59,10 @@ export default {
       borderWidth: {
         DEFAULT: '1px',
         '14': '14px',
+        '30': '30px',
+      },
+      borderColor: {
+        'reindeer-brown': '#714319',
       },
       height: {
         '21.4': '85.6px',

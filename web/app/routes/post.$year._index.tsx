@@ -4,9 +4,12 @@ import { motion } from 'framer-motion'
 import { z } from 'zod'
 
 import { LinkToArchive } from '~/components/LinkToArchive'
+import { CalendarBackgroundSVG } from '~/features/calendar/CalendarBackgroundSVG'
+import { Door } from '~/features/calendar/Door'
 import { Gift2SVG } from '~/features/calendar/Gift2SVG'
 import { Gift3SVG } from '~/features/calendar/Gift3SVG'
 import { GiftsSVG } from '~/features/calendar/GiftsSVG'
+import useMediaQuery from '~/hooks/useMediaQuery'
 
 const ParamsSchema = z.object({
   year: z.string().min(4).max(4),
@@ -57,54 +60,61 @@ export const headers = () => {
 
 export default function YearRoute() {
   const data = useLoaderData<{ year: string }>()
+  const smallScreen = useMediaQuery('(max-width: 640px)')
+
   return (
-    <div className="p-4">
-      <h1 className="text-reindeer-brown font-delicious text-center text-4xl sm:text-6xl pb-8 sm:pb-0">
-        24 dager med brev - {data.year}
-      </h1>
+    <div>
+      <div className="fixed inset-0 -z-10">
+        <CalendarBackgroundSVG smallScreen={smallScreen} />
+      </div>
+      <div className="p-4">
+        <h1 className="text-reindeer-brown font-delicious text-center text-4xl sm:text-6xl pb-8 sm:pb-0">
+          {data.year}
+        </h1>
 
-      <div className="flex justify-center">
-        <div className="hidden sm:flex self-end">
-          <motion.div
-            whileHover={{
-              y: -12,
-              rotate: -5,
-            }}
-            whileTap={{
-              scale: 0.85,
-              rotate: 10,
-            }}
-            transition={{
-              type: 'spring',
-              stiffness: 300,
-              damping: 20,
-            }}
-          >
-            <Gift3SVG />
-          </motion.div>
-        </div>
+        <div className="flex justify-center">
+          <div className="hidden md:flex self-end">
+            <motion.div
+              whileHover={{
+                y: -12,
+                rotate: -5,
+              }}
+              whileTap={{
+                scale: 0.85,
+                rotate: 10,
+              }}
+              transition={{
+                type: 'spring',
+                stiffness: 300,
+                damping: 20,
+              }}
+            >
+              <Gift3SVG />
+            </motion.div>
+          </div>
 
-        <div className="max-sm:w-full max-sm:px-4">
-          <div className="grid grid-cols-3 sm:grid-cols-6 md:px-0">
-            <div className="col-span-3 sm:col-span-6 row-start-1 hidden sm:flex justify-end">
-              <motion.div
-                whileHover={{
-                  scale: 1.1,
-                  rotate: [0, -2, 2, 0],
-                  y: -6,
-                }}
-                whileTap={{
-                  scale: 0.9,
-                  rotate: -8,
-                }}
-                transition={{
-                  type: 'spring',
-                  stiffness: 220,
-                  damping: 15,
-                }}
-              >
-                <GiftsSVG />
-              </motion.div>
+          <div className="grid grid-cols-3 md:grid-cols-6 md:px-0">
+            <div className="col-span-3 md:col-span-6 row-start-1">
+              <div className="hidden md:flex justify-end">
+                <motion.div
+                  whileHover={{
+                    scale: 1.1,
+                    rotate: [0, -2, 2, 0],
+                    y: -6,
+                  }}
+                  whileTap={{
+                    scale: 0.9,
+                    rotate: -8,
+                  }}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 220,
+                    damping: 15,
+                  }}
+                >
+                  <GiftsSVG />
+                </motion.div>
+              </div>
             </div>
             {Array.from({ length: 24 }, (_, i) => {
               const date = i + 1
@@ -113,43 +123,43 @@ export default function YearRoute() {
                 <Link
                   to={`/post/${data.year}/${formattedDate}`}
                   key={date}
-                  className="md:text-mega-size text-display-desktop font-delicious border aspect-square flex md:p-8 justify-center items-center "
+                  className=" flex justify-center items-center border border-reindeer-brown"
                 >
-                  {date}
+                  <Door year={Number(data.year)} date={date} smallScreen={smallScreen} />
                 </Link>
               )
             })}
           </div>
+          <div className="hidden md:flex self-end">
+            <motion.div
+              whileHover={{
+                scale: 1.15,
+                rotate: [0, 8, -8, 0],
+                y: -8,
+              }}
+              whileTap={{
+                scale: 0.9,
+                rotate: -10,
+              }}
+              transition={{
+                type: 'spring',
+                stiffness: 250,
+                damping: 15,
+              }}
+            >
+              <Gift2SVG />
+            </motion.div>
+          </div>
         </div>
-        <div className="hidden sm:flex self-end">
-          <motion.div
-            whileHover={{
-              scale: 1.15,
-              rotate: [0, 8, -8, 0],
-              y: -8,
-            }}
-            whileTap={{
-              scale: 0.9,
-              rotate: -10,
-            }}
-            transition={{
-              type: 'spring',
-              stiffness: 250,
-              damping: 15,
-            }}
-          >
-            <Gift2SVG />
-          </motion.div>
+        <LinkToArchive />
+        <div className={'pt-8 flex justify-center text-center'}>
+          <p>
+            Du kan også lese innlegg sorter på{' '}
+            <Link className={'hover:text-reindeer-brown underline'} to={'/kategori'}>
+              kategorier
+            </Link>
+          </p>
         </div>
-      </div>
-      <LinkToArchive />
-      <div className={'pt-8 flex justify-center '}>
-        <p>
-          Du kan også lese innlegg sorter på{' '}
-          <Link className={'hover:text-reindeer-brown underline'} to="/kategori">
-            kategorier
-          </Link>
-        </p>
       </div>
     </div>
   )

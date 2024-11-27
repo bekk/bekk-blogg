@@ -15,7 +15,6 @@ import {
 import { VisualEditing } from '@sanity/visual-editing/remix'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
-
 import { JumpToContent } from './features/jump-to-content/JumpToContent'
 
 import { Header } from '~/features/navigation/Header'
