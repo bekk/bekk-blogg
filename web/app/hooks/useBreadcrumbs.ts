@@ -46,12 +46,12 @@ export function useBreadcrumbs(): Breadcrumb[] {
         title: title,
       })
     })
-  } else if (currRoute.pathname.includes('/kategorier')) {
+  } else if (currRoute.pathname.includes('/kategori')) {
     breadcrumbs.unshift({
       href: '/post/2024',
       title: '📯 Postkontoret',
     })
-    addBreadcrumb('/kategorier', '📚 Kategorier')
+    addBreadcrumb('/kategori', '📚 Kategorier')
     Object.entries(currRoute.params).forEach(([key, value]) => {
       if (key === 'tag' && value && currRoute.data) {
         const tagName = (currRoute.data as { tag: { name: string } }).tag.name
