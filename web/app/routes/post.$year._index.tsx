@@ -1,9 +1,11 @@
 import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
+import { motion } from 'framer-motion'
 import { z } from 'zod'
 
 import { Door } from '~/features/calendar/Door'
-import useMediaQuery from '~/hooks/useMediaQuery'
+import { Gift2SVG } from '~/features/calendar/Gift2SVG'
+import { Gift3SVG } from '~/features/calendar/Gift3SVG'
 
 const ParamsSchema = z.object({
   year: z.string().min(4).max(4),
@@ -54,18 +56,17 @@ export const headers = () => {
 
 export default function YearRoute() {
   const data = useLoaderData<{ year: string }>()
-  const smallScreen = useMediaQuery('(max-width: 640px)')
 
   return (
-    <>
+    <div className="2lg:h-screen flex justify-center items-center">
       {/* <h1 className="text-reindeer-brown font-delicious text-center text-4xl sm:text-6xl pb-8 sm:pb-0">
           {data.year}
         </h1> */}
-      <div className="h-screen px-4 grid grid-cols-[auto_auto_auto] grid-rows-[240px_auto_137px]">
+      <div className="sm:px-4 grid grid-cols-[auto_auto_auto] sm:grid-cols-[1fr_auto_1fr] grid-rows-[79px_auto_auto] sm:grid-rows-[148px_auto_auto] md:grid-rows-[214px_auto_auto] lg:grid-rows-[215px_auto_137px] 2lg:grid-rows-[352px_auto_137px]">
         {/* Tak */}
-        <div className="bg-roof row-start-1 row-span-1 col-start-1 col-span-3">tak</div>
+        <div className="bg-roof row-start-1 row-span-2 col-start-1 col-span-3">tak</div>
         {/* Gave V.S */}
-        {/* <div className="row-start-2 row-span-1 col-start-1 col-span-1 hidden md:flex self-end">
+        <div className="row-start-2 row-span-1 col-start-1 col-span-1 hidden md:flex self-end">
           <motion.div
             whileHover={{
               y: -12,
@@ -83,22 +84,22 @@ export default function YearRoute() {
           >
             <Gift3SVG />
           </motion.div>
-        </div> */}
+        </div>
         {/* Kalender */}
         <div className="col-start-2 col-span-1 row-start-2 row-span-1">
-          <div className="grid gap-[8px] md:grid-cols-[repeat(6,160px)] md:grid-rows-[repeat(4,160px)] grid-cols-[repeat(3,100px)] grid-rows-[repeat(8,100px)] justify-center border-8 border-reindeer-brown">
+          <div className="grid h-full 2lg:grid-cols-[repeat(6,auto)] 2lg:grid-rows-[repeat(4,auto)] grid-cols-[repeat(3,auto)] grid-rows-[repeat(8,auto)] justify-center border-8 border-reindeer-brown">
             {Array.from({ length: 24 }, (_, i) => {
               const date = i + 1
               return (
                 <div key={date} className="flex justify-center items-center">
-                  <Door year={Number(data.year)} date={date} smallScreen={smallScreen} />
+                  <Door year={Number(data.year)} date={date} />
                 </div>
               )
             })}
           </div>
         </div>
         {/* Gave H.S */}
-        {/* <div className="row-start-2 row-span-1 col-start-3 col-span-1 hidden md:flex self-end">
+        <div className="row-start-2 row-span-1 col-start-3 col-span-1 hidden md:flex self-end">
           <motion.div
             whileHover={{
               scale: 1.15,
@@ -117,9 +118,9 @@ export default function YearRoute() {
           >
             <Gift2SVG />
           </motion.div>
-        </div> */}
+        </div>
         {/* Bunn */}
-        <div className="bg-plank row-start-3 row-span-1 col-start-2 col-span-1border-reindeer-brown">bunn</div>
+        <div className="bg-plank row-start-3 row-span-1 col-start-1 col-span-3 border-reindeer-brown">bunn</div>
       </div>
       {/* <LinkToArchive />
       <div className={'pt-8 flex justify-center text-center'}>
@@ -130,6 +131,6 @@ export default function YearRoute() {
           </Link>
         </p>
       </div> */}
-    </>
+    </div>
   )
 }

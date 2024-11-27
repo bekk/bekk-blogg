@@ -6,20 +6,20 @@ import { BekkLogo } from '~/features/article/BekkLogo'
 import { useBreadcrumbs } from '~/hooks/useBreadcrumbs'
 
 type HeaderProps = {
-  isInArticle?: boolean
+  isOnArticlePage?: boolean
 }
 
-export const Header = ({ isInArticle = false }: HeaderProps) => {
+export const Header = ({ isOnArticlePage = false }: HeaderProps) => {
   const breadcrumbs = useBreadcrumbs()
   const error = useRouteError()
 
   return (
     <div
-      className={`grid grid-cols-1 md:grid-cols-[8fr_1fr] pb-4 md:pb-14 ${isInArticle ? 'pt-6 px-6 md:pl-10 xl:pl-20 md:pt-5' : 'px-4 md:px-10 md:pt-8'}`}
+      className={`grid grid-cols-1 md:grid-cols-[8fr_1fr] pb-4 md:pb-14 ${isOnArticlePage ? 'pt-6 px-6 md:pl-10 xl:pl-20 md:pt-5' : 'px-4 md:px-10 md:pt-8'}`}
     >
       <div className={`justify-self-end md:col-start-2 ${error ? 'ml-auto' : ''}`}>
         <Link to="post/2024">
-          {isInArticle ? (
+          {isOnArticlePage ? (
             <div>
               <PostStamp />
             </div>
@@ -40,12 +40,12 @@ export const Header = ({ isInArticle = false }: HeaderProps) => {
                 <li key={index} className="flex-none min-w-0 flex items-center whitespace-nowrap">
                   <Link
                     to={`${breadcrumb.href}`}
-                    className={`${isInArticle ? 'text-black' : 'text-postcard-beige'} ${isLast ? 'truncate' : ''}`}
+                    className={`${isOnArticlePage ? 'text-black' : 'text-postcard-beige'} ${isLast ? 'truncate' : ''}`}
                   >
                     {breadcrumb.title}
                   </Link>
                   {!isLast && (
-                    <p className={`shrink-0 px-2 ${isInArticle ? 'text-black' : 'text-postcard-beige'}`}>/</p>
+                    <p className={`shrink-0 px-2 ${isOnArticlePage ? 'text-black' : 'text-postcard-beige'}`}>/</p>
                   )}
                 </li>
               )

@@ -2,12 +2,14 @@ import { useState } from 'react'
 import { Link } from '@remix-run/react'
 import { motion } from 'framer-motion'
 
+import useMediaQuery from '~/hooks/useMediaQuery'
+
 type DoorProps = {
   date: number
   year: number
-  smallScreen: boolean
 }
-export const Door = ({ date, year, smallScreen }: DoorProps) => {
+export const Door = ({ date, year }: DoorProps) => {
+  const smallScreen = useMediaQuery('(max-width: 640px)')
   const [isHovered, setIsHovered] = useState(false)
   const [isShaking, setIsShaking] = useState(false)
 
@@ -46,22 +48,20 @@ export const Door = ({ date, year, smallScreen }: DoorProps) => {
         key={date}
         className="flex justify-center items-center border-4 border-reindeer-brown"
       >
-        <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-          <div className={`relative`}>
-            {isHovered && isOpenable()
-              ? smallScreen
-                ? openDoorSvg(100, 100)
-                : openDoorSvg(160, 160)
-              : smallScreen
-                ? doorSVG(100, 100)
-                : doorSVG(160, 160)}
-            <div
-              className={`absolute inset-0 flex pt-2 md:-mt-2 justify-center text-display-mobile text-ruben-red md:text-headline-desktop font-source-serif-bold ${
-                isHovered && isOpenable() ? 'hidden' : 'block'
-              }`}
-            >
-              {date}
-            </div>
+        <div className="relative" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+          {isHovered && isOpenable()
+            ? smallScreen
+              ? openDoorSvg(90, 90)
+              : openDoorSvg(180, 180)
+            : smallScreen
+              ? doorSVG(90, 90)
+              : doorSVG(180, 180)}
+          <div
+            className={`absolute top-[7%] right-[0px] left-[0px] m-auto text-center text-display-mobile text-ruben-red md:text-headline-desktop font-source-serif-bold ${
+              isHovered && isOpenable() ? 'hidden' : 'block'
+            }`}
+          >
+            {date}
           </div>
         </div>
       </Link>

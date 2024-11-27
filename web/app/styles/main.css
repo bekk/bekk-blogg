@@ -150,8 +150,8 @@
 
 .bg-roof {
   background-image: url('/images/roof.svg');
-  background-position: center;
-  background-size: contain;
+  background-position: top center;
+  background-size: 100%;
   background-repeat: no-repeat;
 }
 
