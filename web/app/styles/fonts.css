@@ -86,4 +86,12 @@
     font-style: normal;
     font-display: swap;
   }
+
+  @font-face {
+    font-family: 'Source Serif Pro Bold';
+    src: url('/fonts/SourceSerif4_18pt-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
 }
