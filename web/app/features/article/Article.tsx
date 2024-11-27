@@ -153,7 +153,7 @@ export const Article = ({ post }: ArticleProps) => {
         )}
         {post.relatedLinks && (
           <div className="md:max-w-lg lg:max-w-xl xl:max-w-4xl leading-8">
-            <RelatedLinks links={post.relatedLinks} />
+            <RelatedLinks links={post.relatedLinks} language={post.language} />
           </div>
         )}
       </div>
