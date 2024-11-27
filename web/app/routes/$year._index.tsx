@@ -5,6 +5,7 @@ import { z } from 'zod'
 
 import { LinkToArchive } from '~/components/LinkToArchive'
 import { CalendarBackgroundSVG } from '~/features/calendar/CalendarBackgroundSVG'
+import { Door } from '~/features/calendar/Door'
 import { Gift2SVG } from '~/features/calendar/Gift2SVG'
 import { Gift3SVG } from '~/features/calendar/Gift3SVG'
 import { GiftsSVG } from '~/features/calendar/GiftsSVG'
@@ -68,11 +69,11 @@ export default function YearRoute() {
       </div>
       <div className="p-4">
         <h1 className="text-reindeer-brown font-delicious text-center text-4xl sm:text-6xl pb-8 sm:pb-0">
-          24 dager med brev - {data.year}
+          {data.year}
         </h1>
 
         <div className="flex justify-center">
-          <div className="hidden sm:flex self-end">
+          <div className="hidden md:flex self-end">
             <motion.div
               whileHover={{
                 y: -12,
@@ -92,9 +93,9 @@ export default function YearRoute() {
             </motion.div>
           </div>
 
-          <div className="max-sm:w-full max-sm:px-4">
-            <div className="grid grid-cols-3 sm:grid-cols-6 md:px-0">
-              <div className="col-span-3 sm:col-span-6 row-start-1 hidden sm:flex justify-end">
+          <div className="grid grid-cols-3 md:grid-cols-6 md:px-0">
+            <div className="col-span-3 md:col-span-6 row-start-1">
+              <div className="hidden md:flex justify-end">
                 <motion.div
                   whileHover={{
                     scale: 1.1,
@@ -114,22 +115,22 @@ export default function YearRoute() {
                   <GiftsSVG />
                 </motion.div>
               </div>
-              {Array.from({ length: 24 }, (_, i) => {
-                const date = i + 1
-                const formattedDate = (i + 1).toString().padStart(2, '0')
-                return (
-                  <Link
-                    to={`/${data.year}/${formattedDate}`}
-                    key={date}
-                    className="md:text-mega-size text-display-desktop font-delicious border aspect-square flex md:p-8 justify-center items-center "
-                  >
-                    {date}
-                  </Link>
-                )
-              })}
             </div>
+            {Array.from({ length: 24 }, (_, i) => {
+              const date = i + 1
+              const formattedDate = (i + 1).toString().padStart(2, '0')
+              return (
+                <Link
+                  to={`/${data.year}/${formattedDate}`}
+                  key={date}
+                  className=" flex justify-center items-center border border-reindeer-brown"
+                >
+                  <Door date={date} smallScreen={smallScreen} />
+                </Link>
+              )
+            })}
           </div>
-          <div className="hidden sm:flex self-end">
+          <div className="hidden md:flex self-end">
             <motion.div
               whileHover={{
                 scale: 1.15,
