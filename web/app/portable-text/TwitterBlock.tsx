@@ -20,8 +20,8 @@ export default function TwitterBlock({ twitter }: TwitterBlockProps) {
     return null
   }
   return (
-    <>
+    <div className="h-[550px] w-full overflow-y-auto">
       <TwitterTweetEmbed tweetId={id} />
-    </>
+    </div>
   )
 }
