@@ -82,7 +82,7 @@ export default function Index() {
 
   return (
     <div className="flex flex-col">
-      <h1 className="self-start pl-4 md:pl-0 font-delicious text-4xl md:text-5xl text-reindeer-brown sm:self-center">
+      <h1 className="self-start pl-4 md:pl-0 font-delicious text-4xl md:text-5xl text-postcard-beige sm:self-center">
         {parseInt(date) < 10 ? date.replace('0', '') : date}. desember
       </h1>
       <PostPreviewList posts={posts} />
