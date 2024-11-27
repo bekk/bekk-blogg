@@ -162,9 +162,9 @@
 }
 
 .gift-tag {
+  @apply bg-postcard-beige;
   width: auto;
   height: 100%;
   padding: 8px 8px 8px 16px;
-  background-color: #fff; /* Background color */
   clip-path: polygon(15px 0, 100% 0, 100% 100%, 15px 100%, 0 calc(100% - 15px), 0 15px);
 }
