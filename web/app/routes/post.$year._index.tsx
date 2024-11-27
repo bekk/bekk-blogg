@@ -60,15 +60,16 @@ export default function YearRoute() {
 
   return (
     <div className="2lg:h-screen flex justify-center items-center">
-      {/* <h1 className="text-reindeer-brown font-delicious text-center text-4xl sm:text-6xl pb-8 sm:pb-0">
-          {data.year}
-        </h1> */}
       <Link to="post/2024" className="absolute top-[20px] md:top-[40px] right-[20px] md:right-[40px]">
         <BekkLogo className="h-auto w-10 md:auto md:w-16" />
       </Link>
       <div className="sm:px-4 grid grid-cols-[25px_auto_25px] sm:grid-cols-[50px_auto_50px] 2lg:grid-cols-[auto_auto_auto] grid-rows-[91px_auto_auto] sm:grid-rows-[142px_auto_auto] 2lg:grid-rows-[292px_auto_137px]">
         {/* Tak */}
-        <div className="bg-roof row-start-1 row-span-2 col-start-1 col-span-3">tak</div>
+        <div className="bg-roof row-start-1 row-span-2 col-start-1 col-span-3">
+          <h1 className="text-postcard-beige font-delicious text-center text-4xl sm:text-6xl mt-[40px] sm:mt-[60px] 2lg:mt-[200px]">
+            {data.year}
+          </h1>
+        </div>
         {/* Gave V.S */}
         <div className="row-start-2 row-span-1 col-start-1 col-span-1 hidden 2lg:flex self-end">
           <motion.div
