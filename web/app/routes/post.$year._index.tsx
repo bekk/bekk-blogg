@@ -3,7 +3,7 @@ import { Link, useLoaderData } from '@remix-run/react'
 import { motion } from 'framer-motion'
 import { z } from 'zod'
 
-import { LinkToArchive } from '~/components/LinkToArchive'
+import { DoorSignLink } from '~/components/DoorSignLink'
 import { BekkLogo } from '~/features/article/BekkLogo'
 import { Door } from '~/features/calendar/Door'
 import { Gift2SVG } from '~/features/calendar/Gift2SVG'
@@ -126,16 +126,9 @@ export default function YearRoute() {
           </motion.div>
         </div>
         {/* Bottom */}
-        <div className="bg-plank row-start-3 row-span-1 col-start-1 col-span-3 border-reindeer-brown">
-          <LinkToArchive />
-          <div className="pt-8 flex justify-center text-center">
-            <p>
-              Du kan også lese innlegg sorter på{' '}
-              <Link className="hover:text-reindeer-brown underline" to="/kategori">
-                kategorier
-              </Link>
-            </p>
-          </div>
+        <div className="bg-plank row-start-3 row-span-1 col-start-1 col-span-3 border-reindeer-brown flex justify-center flex-col md:flex-row items-center gap-8 py-6">
+          <DoorSignLink link="/archive">Se andre julekalendere</DoorSignLink>
+          <DoorSignLink link="/kategori">Se kategorier</DoorSignLink>
         </div>
       </div>
     </div>
