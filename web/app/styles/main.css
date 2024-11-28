@@ -1,4 +1,5 @@
 @import 'fonts.css';
+@import 'backgrounds.css';
 
 @tailwind base;
 @tailwind components;
@@ -138,59 +139,6 @@
       background-repeat: no-repeat;
       background-size: contain;
     }
-  }
-}
-
-.bg-plank {
-  background-image: url('/images/plank.svg');
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-.bg-roof {
-  background-image: url('/images/roof.svg');
-  background-position: top center;
-  background-size: 100%;
-  background-repeat: no-repeat;
-}
-
-.bg-wooden-table {
-  background-image: url('/images/bg_wood.svg');
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-.bg-wooden-table-with-cloth {
-  background-image: url('../../public/images/bg_cloth.svg'), url('../../public/images/bg_wood.svg');
-  background-size:
-    auto 45vh,
-    cover;
-  background-position:
-    top center,
-    center;
-  background-repeat: no-repeat, no-repeat;
-  min-height: 100vh;
-}
-
-@media screen and (min-width: 2500px) {
-  .bg-wooden-table-with-cloth {
-    background-position: top, center;
-    background-size: 100%, cover;
-  }
-}
-
-.bg-brick-wall {
-  background-image: url('/images/bg_brick_wall_mobile.svg');
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-@media screen and (min-width: 640px) {
-  .bg-brick-wall {
-    background-image: url('/images/bg_brick_wall_desktop.svg');
   }
 }
 
