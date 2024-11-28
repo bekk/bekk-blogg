@@ -14,7 +14,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     <title>Bekk Christmas</title>
     <description>Bekk Christmas er en julekalender med innhold om teknologi, design, strategi og produktutvikling fra Bekk</description>
     <link>${baseUrl}</link>
-    <atom:link href="${baseUrl}/feed.xml" rel="self" type="application/rss+xml"/>
+    <atom:link href="${baseUrl}/rss.xml" rel="self" type="application/rss+xml"/>
     <language>nb-NO</language>
     ${posts
       .map((post) => {

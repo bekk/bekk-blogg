@@ -121,7 +121,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
-        <link rel="alternate" type="application/rss+xml" title="Bekk Christmas RSS Feed" href="/feed.xml" />
+        <link rel="alternate" type="application/rss+xml" title="Bekk Christmas RSS Feed" href="/rss.xml" />
         <script defer data-domain="bekk.christmas" src="https://plausible.io/js/plausible.js" />
       </head>
       <body className={`break-words m-auto w-full max-w-screen-2xl ${bodyBackground()}`}>
