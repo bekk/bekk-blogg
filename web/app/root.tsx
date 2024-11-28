@@ -108,6 +108,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     if (isOnFrontPage || isOnDatePage) return `bg-wooden-table-with-cloth`
     if (isOnArticlePage) return 'bg-wooden-table'
     if (isOnCalendarPage) return 'bg-brick-wall h-screen'
+    if (error) return 'bg-error'
     return 'bg-envelope-beige'
   }
 
@@ -121,9 +122,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <link rel="alternate" type="application/rss+xml" title="Bekk Christmas RSS Feed" href="/feed.xml" />
         <script defer data-domain="bekk.christmas" src="https://plausible.io/js/plausible.js" />
       </head>
-      {/* <body className={`${error ? 'error-bg' : `m-auto min-w-[375px] max-w-screen-2xl break-words ${bodyBg()}`}`}> */}
-      {/* <body className={`break-words m-auto w-full max-w-screen-2xl ${bodyBackground()}`}> */}
-      <body className={`${error ? 'error-bg' : `break-words m-auto w-full max-w-screen-2xl ${bodyBackground()}`}`}>
+      <body className={`break-words m-auto w-full max-w-screen-2xl ${bodyBackground()}`}>
         <JumpToContent />
         <div className={`${isOnArticlePage && 'striped-frame md:my-8 md:mx-8 '}`}>
           {!isOnCalendarPage && (
