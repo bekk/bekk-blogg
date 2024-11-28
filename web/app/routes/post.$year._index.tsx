@@ -50,12 +50,6 @@ export const meta: MetaFunction = ({ data }) => {
   ]
 }
 
-export const headers = () => {
-  return {
-    'Cache-Control': 'public, max-age=86400, s-maxage=86400',
-  }
-}
-
 export default function YearRoute() {
   const data = useLoaderData<{ year: string }>()
 
