@@ -19,13 +19,13 @@ export const Door = ({ date, year }: DoorProps) => {
   const [isShaking, setIsShaking] = useState(false)
 
   const isOpenable = () => {
-    const today = new Date(2024, 11, 6)
+    const today = new Date()
     const doorDate = new Date(year, 11, date)
     return doorDate <= today
   }
 
   const isToday = () => {
-    const today = new Date(2024, 11, 6)
+    const today = new Date()
     const doorDate = new Date(year, 11, date)
     return doorDate.toDateString() === today.toDateString()
   }
