@@ -1,4 +1,5 @@
 @import 'fonts.css';
+@import 'backgrounds.css';
 
 @tailwind base;
 @tailwind components;
@@ -97,33 +98,6 @@
       #f7f3ee 111px
     )
     12;
-}
-
-.bg-table-with-tablecloth {
-  background-image: url('../../public/images/bg_cloth.svg'), url('../../public/images/bg_wood.svg');
-  background-position: top, center;
-  background-size: 100%, cover;
-  background-repeat: no-repeat, no-repeat;
-  min-height: 100vh;
-}
-
-.bg-wooden-table {
-  background-image: url('/images/bg_wood.svg');
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-/* Media query for smaller screens */
-@media (max-width: 2500px) {
-  .bg-table-with-tablecloth {
-    background-size:
-      auto 45vh,
-      cover;
-    background-position:
-      top center,
-      center;
-  }
 }
 
 .codeBlockColorOverride span {
