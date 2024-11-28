@@ -5,7 +5,7 @@ import { Loader, Pause, Play } from 'lucide-react'
 import { trackEvent } from 'utils/analytics'
 import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readingTime'
-import { POST_BY_SLUGResult } from 'utils/sanity/types/sanity.types'
+import { POST_BY_SLUGResult, SanityImageAsset } from 'utils/sanity/types/sanity.types'
 import { urlFor } from 'utils/sanity/utils'
 
 import { RelatedLinks } from './RelatedLinks'
@@ -135,7 +135,10 @@ export const Article = ({ post }: ArticleProps) => {
             <img
               src={
                 post.coverImage.asset
-                  ? urlFor(post.coverImage.asset._id).width(1700).quality(80).url()
+                  ? urlFor(post.coverImage.asset as unknown as SanityImageAsset)
+                      .width(1700)
+                      .quality(80)
+                      .url()
                   : (post.coverImage.src ?? '')
               }
               alt={post.coverImage.alt || ''}
