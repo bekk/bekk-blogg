@@ -25,8 +25,9 @@ export function generateSecurityHeaders() {
       'child-src': [SELF, '*.youtube.com'],
     },
   })
+
   return {
-    'Content-Security-Policy': process.env.NODE_ENV === 'development' ? csp.replace(/;/g, '; report-only') : csp,
+    [process.env.NODE_ENV === 'development' ? 'Content-Security-Policy-Report-Only' : 'Content-Security-Policy']: csp,
     'X-Frame-Options': 'DENY',
     'X-Content-Type-Options': 'nosniff',
     'Referrer-Policy': 'strict-origin-when-cross-origin',
