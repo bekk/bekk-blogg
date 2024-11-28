@@ -3,6 +3,7 @@ import { Link, useLoaderData } from '@remix-run/react'
 import { motion } from 'framer-motion'
 import { z } from 'zod'
 
+import { LinkToArchive } from '~/components/LinkToArchive'
 import { BekkLogo } from '~/features/article/BekkLogo'
 import { Door } from '~/features/calendar/Door'
 import { Gift2SVG } from '~/features/calendar/Gift2SVG'
@@ -60,17 +61,17 @@ export default function YearRoute() {
 
   return (
     <div className="2lg:h-screen flex justify-center items-center">
-      <Link to="post/2024" className="absolute top-[20px] md:top-[40px] right-[20px] md:right-[40px]">
+      <Link to="/post/2024" className="absolute top-[20px] md:top-[40px] right-[20px] md:right-[40px]">
         <BekkLogo className="h-auto w-10 md:auto md:w-16" />
       </Link>
       <div className="sm:px-4 grid grid-cols-[25px_auto_25px] sm:grid-cols-[50px_auto_50px] 2lg:grid-cols-[auto_auto_auto] grid-rows-[91px_auto_auto] sm:grid-rows-[142px_auto_auto] md:grid-rows-[179px_auto_auto] 2lg:grid-rows-[292px_auto_137px]">
-        {/* Tak */}
+        {/* Roof */}
         <div className="bg-roof row-start-1 row-span-2 col-start-1 col-span-3">
           <h1 className="text-postcard-beige font-delicious text-center text-2xl sm:text-4xl md:text-5xl mt-[45px] sm:mt-[80px] md:mt-[110px] 2lg:mt-[180px]">
             {data.year}
           </h1>
         </div>
-        {/* Gave V.S */}
+        {/* Gift left */}
         <div className="row-start-2 row-span-1 col-start-1 col-span-1 hidden 2lg:flex self-end">
           <motion.div
             whileHover={{
@@ -90,7 +91,7 @@ export default function YearRoute() {
             <Gift3SVG />
           </motion.div>
         </div>
-        {/* Kalender */}
+        {/* Calendar */}
         <div className="col-start-2 col-span-1 row-start-2 row-span-1">
           <div className="grid h-full 2lg:grid-cols-[repeat(6,auto)] 2lg:grid-rows-[repeat(4,auto)] md:grid-cols-[repeat(4,auto)] md:grid-rows-[repeat(6,auto)] grid-cols-[repeat(3,auto)] grid-rows-[repeat(8,auto)] justify-center border-8 border-reindeer-brown">
             {Array.from({ length: 24 }, (_, i) => {
@@ -103,7 +104,7 @@ export default function YearRoute() {
             })}
           </div>
         </div>
-        {/* Gave H.S */}
+        {/* Gift right */}
         <div className="row-start-2 row-span-1 col-start-3 col-span-1 hidden 2lg:flex self-end">
           <motion.div
             whileHover={{
@@ -124,18 +125,19 @@ export default function YearRoute() {
             <Gift2SVG />
           </motion.div>
         </div>
-        {/* Bunn */}
-        <div className="bg-plank row-start-3 row-span-1 col-start-1 col-span-3 border-reindeer-brown">bunn</div>
+        {/* Bottom */}
+        <div className="bg-plank row-start-3 row-span-1 col-start-1 col-span-3 border-reindeer-brown">
+          <LinkToArchive />
+          <div className="pt-8 flex justify-center text-center">
+            <p>
+              Du kan også lese innlegg sorter på{' '}
+              <Link className="hover:text-reindeer-brown underline" to="/kategori">
+                kategorier
+              </Link>
+            </p>
+          </div>
+        </div>
       </div>
-      {/* <LinkToArchive />
-      <div className={'pt-8 flex justify-center text-center'}>
-        <p>
-          Du kan også lese innlegg sorter på{' '}
-          <Link className={'hover:text-reindeer-brown underline'} to={'/kategori'}>
-            kategorier
-          </Link>
-        </p>
-      </div> */}
     </div>
   )
 }
