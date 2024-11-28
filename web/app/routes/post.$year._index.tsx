@@ -66,7 +66,7 @@ export default function YearRoute() {
       <div className="sm:px-4 grid grid-cols-[25px_auto_25px] sm:grid-cols-[50px_auto_50px] 2lg:grid-cols-[auto_auto_auto] grid-rows-[91px_auto_auto] sm:grid-rows-[142px_auto_auto] md:grid-rows-[179px_auto_auto] 2lg:grid-rows-[292px_auto_137px]">
         {/* Tak */}
         <div className="bg-roof row-start-1 row-span-2 col-start-1 col-span-3">
-          <h1 className="text-postcard-beige font-delicious text-center text-4xl sm:text-6xl mt-[40px] sm:mt-[60px] md:mt-[90px] 2lg:mt-[180px]">
+          <h1 className="text-postcard-beige font-delicious text-center text-2xl sm:text-4xl md:text-5xl mt-[45px] sm:mt-[80px] md:mt-[110px] 2lg:mt-[180px]">
             {data.year}
           </h1>
         </div>
