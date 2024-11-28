@@ -64,7 +64,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const bodyBackground = () => {
     if (isOnFrontPage || isOnDatePage) return `bg-wooden-table-with-cloth`
     if (isOnArticlePage) return 'bg-wooden-table'
-    if (isOnCalendarPage) return 'bg-brick-wall'
+    if (isOnCalendarPage) return 'bg-brick-wall h-screen'
     return 'bg-envelope-beige'
   }
 
