@@ -60,11 +60,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const isOnArticlePage = !!slug && !error
   const isOnDatePage = !!date && !slug && !error
   const isOnCalendarPage = !!year && !date && !error
+  const isInArchive = location.pathname === '/archive' && !error
 
   const bodyBackground = () => {
     if (isOnFrontPage || isOnDatePage) return `bg-wooden-table-with-cloth`
     if (isOnArticlePage) return 'bg-wooden-table'
     if (isOnCalendarPage) return 'bg-brick-wall h-screen'
+    if (isInArchive) return 'bg-brick-wall h-screen'
     return 'bg-envelope-beige'
   }
 
