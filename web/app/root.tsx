@@ -19,7 +19,7 @@ import { generateSecurityHeaders } from 'utils/security'
 
 import { JumpToContent } from './features/jump-to-content/JumpToContent'
 
-import { Header } from '~/features/navigation/Header'
+import { Header } from '~/features/header/Header'
 import { Page404 } from '~/routes/404'
 import styles from '~/styles/main.css?url'
 
