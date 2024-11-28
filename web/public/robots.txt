@@ -1,0 +1,21 @@
+# www.robotstxt.org
+
+# Allow all crawlers by default
+User-agent: *
+
+# Allow crawling of all content
+Allow: /
+Allow: /post/
+Allow: /forfatter/
+Allow: /kategori/
+
+# Disallow preview routes and API endpoints
+Disallow: /resource/preview
+Disallow: /api/
+Disallow: /_remix/
+
+# Add sitemap once implemented
+Sitemap: https://bekk.christmas/sitemap.xml
+
+# Crawl-delay to be nice to servers
+Crawl-delay: 1
