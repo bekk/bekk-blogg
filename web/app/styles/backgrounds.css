@@ -15,19 +15,19 @@
 .bg-wooden-table {
   background-image: url('/images/bg_wood.svg');
   background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+  background-size: 100%;
+  background-repeat: repeat;
 }
 
 .bg-wooden-table-with-cloth {
   background-image: url('../../public/images/bg_cloth.svg'), url('../../public/images/bg_wood.svg');
   background-size:
     auto 45vh,
-    cover;
+    100%;
   background-position:
     top center,
     center;
-  background-repeat: no-repeat, no-repeat;
+  background-repeat: no-repeat, repeat;
   min-height: 100vh;
 }
 
