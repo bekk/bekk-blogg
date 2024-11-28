@@ -19,6 +19,8 @@ export default {
         'santa-red': '#D0332E',
         'christmas-tree-green': '#2F7346',
         'ruben-red': '#A01A1A',
+        'light-brown': '#FFEBBF',
+        'dark-brown': '#413009',
       },
       fontFamily: {
         'gt-expanded': ['GT-America-Expanded-Medium', 'Arial', 'sans-serif'],

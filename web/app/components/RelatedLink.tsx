@@ -4,17 +4,25 @@ import { POST_BY_SLUGResult } from 'utils/sanity/types/sanity.types'
 
 type RelatedLinkElementProps = {
   link: NonNullable<NonNullable<POST_BY_SLUGResult>['relatedLinks']>[number]
+  language: NonNullable<POST_BY_SLUGResult>['language']
 }
 
-export const RelatedLinkElement = ({ link }: RelatedLinkElementProps) => {
+export const RelatedLinkElement = ({ link, language }: RelatedLinkElementProps) => {
   const previewData = usePreviewData(link.url)
+
   if (previewData.status !== 'success') {
+    const loadingText = language === 'en-US' ? 'Loading…' : 'Laster…'
+    const errorText =
+      language === 'en-US'
+        ? 'Woops. An error has occured, and we are not able to find the link!'
+        : 'Uffda. En feil har oppstått, og vi klarer ikke å hente lenken!'
+
     return (
       <div
         key={link._key}
         className="flex items-center pl-4 mt-4 bg-light-gray rounded-xl h-full max-h-20 min-h-20 sm:max-h-28 sm:min-h-28 hover:underline hover:shadow-md transition-shadow group"
       >
-        <p>Laster…</p>
+        <p> {previewData.status === 'loading' ? loadingText : errorText} </p>
       </div>
     )
   }
@@ -38,13 +46,12 @@ export const RelatedLinkElement = ({ link }: RelatedLinkElementProps) => {
           <p className="line-clamp-1 sm:line-clamp-2 text-sm">
             {link.description ?? previewData.data.description ?? previewData.data.details['ogTitle']}
           </p>
-          {/* <p className="line-clamp-1 sm:line-clamp-2 text-sm">{link.url}</p> */}
         </div>
         <div className="flex flex-col justify-center items-center ml-2 max-sm:w-[0px] sm:w-[150px] md:w-[0px] xl:w-[150px] sm:ml-14 sm:mr-4 sm:m-2">
           {previewData.data.image && (
             <img
-              src={previewData.data.image ? previewData.data.image.url : `${url.origin}/favicon.ico`}
-              alt={previewData.data.image ? previewData.data.image.alt : ''}
+              src={previewData.data.image.url ?? `${url.origin}/favicon.ico`}
+              alt={''}
               className="rounded-xl overflow-hidden"
             />
           )}
