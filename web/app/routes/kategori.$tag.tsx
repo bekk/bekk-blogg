@@ -81,7 +81,7 @@ export default function Tags() {
         <Spinner />
       ) : (
         <div className="flex flex-col items-center lg:mb-12 md:gap-8 ">
-          <h1 className="text-center mb-0 text-postcard-beige">Innhold om {tag?.name}</h1>
+          <h1 className="text-center md:text-center mb-0 text-postcard-beige">Innhold om {tag?.name}</h1>
           <div className="mb-4 text-center text-postcard-beige">
             <p>Totalt {pagination.totalPosts} innlegg</p>
             {pagination.totalPages > 1 && (
