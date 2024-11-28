@@ -154,3 +154,19 @@ export const RSS_FEED_QUERY = defineQuery(`*[
   type,
   "content": pt::text(content)
 }`)
+
+export const SITEMAP_QUERY = defineQuery(`{
+  "posts": *[_type == "post" && defined(slug.current) && availableFrom < now()] {
+    "slug": slug.current,
+    availableFrom,
+    _updatedAt
+  },
+  "authors": *[_type == "author" && defined(slug.current)] {
+    "slug": slug.current,
+    _updatedAt
+  },
+  "tags": *[_type == "tag" && defined(slug)] {
+    slug,
+    _updatedAt
+  }
+}`)
