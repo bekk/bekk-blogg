@@ -38,13 +38,12 @@ export const RelatedLinkElement = ({ link }: RelatedLinkElementProps) => {
           <p className="line-clamp-1 sm:line-clamp-2 text-sm">
             {link.description ?? previewData.data.description ?? previewData.data.details['ogTitle']}
           </p>
-          {/* <p className="line-clamp-1 sm:line-clamp-2 text-sm">{link.url}</p> */}
         </div>
         <div className="flex flex-col justify-center items-center ml-2 max-sm:w-[0px] sm:w-[150px] md:w-[0px] xl:w-[150px] sm:ml-14 sm:mr-4 sm:m-2">
           {previewData.data.image && (
             <img
-              src={previewData.data.image ? previewData.data.image.url : `${url.origin}/favicon.ico`}
-              alt={previewData.data.image ? previewData.data.image.alt : ''}
+              src={previewData.data.image.url ?? `${url.origin}/favicon.ico`}
+              alt={''}
               className="rounded-xl overflow-hidden"
             />
           )}
