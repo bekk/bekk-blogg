@@ -28,7 +28,7 @@ export function generateSecurityHeaders() {
       'style-src': [SELF, UNSAFE_INLINE],
       'img-src': [SELF, UNSAFE_INLINE, 'data:', 'cdn.sanity.io', '*'],
       'connect-src': [SELF, 'api.sanity.io', 'plausible.io', 'opengraph.ninja'],
-      'frame-src': [SELF, '*.youtube.com', 'codesandbox.io', 'player.vimeo.com'],
+      'frame-src': [SELF, '*.youtube.com', 'codesandbox.io', 'player.vimeo.com', 'anchor.fm', '*.spotify.com'],
       'font-src': [SELF],
       'object-src': [NONE],
       'media-src': [SELF],
