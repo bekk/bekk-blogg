@@ -42,7 +42,7 @@
   background-image: url('/images/bg_brick_wall_mobile.svg');
   background-position: center;
   background-size: cover;
-  background-repeat: no-repeat;
+  background-repeat: repeat;
 }
 
 @media screen and (min-width: 640px) {
