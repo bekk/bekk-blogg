@@ -27,13 +27,6 @@ export const fontLinks: LinksFunction = () => [
   },
   {
     rel: 'preload',
-    href: '/fonts/DeliciousHandrawn-Regular.ttf',
-    as: 'font',
-    type: 'font/ttf',
-    crossOrigin: 'anonymous',
-  },
-  {
-    rel: 'preload',
     href: '/fonts/SourceSerifPro-Bold.ttf',
     as: 'font',
     type: 'font/ttf',

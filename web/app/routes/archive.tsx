@@ -11,7 +11,7 @@ export default function ArchivePage() {
 
   return (
     <div className={'flex flex-col p-10 gap-8'}>
-      <h1 className="font-delicious">Arkiv</h1>
+      <h1>Arkiv</h1>
       <div className="flex flex-col gap-8">
         {availableYears.map((year) => (
           <div key={year} className="flex">

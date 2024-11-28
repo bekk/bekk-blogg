@@ -28,7 +28,6 @@ export default {
         'gt-standard-italic': ['GT-America-Standard-Regular-Italic', 'Arial', 'sans-serif'],
         'gt-light': ['GT-America-Standard-Light', 'Arial', 'sans-serif'],
         'gt-light-italic': ['GT-America-Standard-Light-Italic', 'Arial', 'sans-serif'],
-        delicious: ['Delicious Handrawn', 'cursive'],
         'source-serif-bold': ['Source Serif Pro Bold'],
       },
       fontSize: {

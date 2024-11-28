@@ -78,7 +78,7 @@ export const Article = ({ post }: ArticleProps) => {
   return (
     <div className="px-6 sm:grid-cols-[1fr_2fr] md:grid md:grid-rows-[auto_auto] md:gap-x-12 xl:gap-x-24 md:gap-y-6 md:pl-10 xl:pl-20 pb-8 md:pb-16">
       <div className="meta col-start-1 col-end-1 row-start-2 row-end-2 mb-8 md:min-w-[230px] lg:min-w-[240px] 2lg:min-w-[250px]">
-        <h1 className="sm:mb-4 text-3xl sm:text-4xl font-delicious">{post.title}</h1>
+        <h1 className="sm:mb-4 text-3xl sm:text-4xl">{post.title}</h1>
         {post.tags && (
           <div>
             {post.tags.map((tag, index) => (
