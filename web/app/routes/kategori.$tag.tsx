@@ -80,9 +80,9 @@ export default function Tags() {
       {navigation.state === 'loading' ? (
         <Spinner />
       ) : (
-        <div className="flex flex-col items-center lg:mb-12">
-          <h1 className="text-center mb-0">Innhold om {tag?.name}</h1>
-          <div className="mb-4 text-center">
+        <div className="flex flex-col items-center lg:mb-12 md:gap-8 ">
+          <h1 className="text-center mb-0 text-postcard-beige">Innhold om {tag?.name}</h1>
+          <div className="mb-4 text-center text-postcard-beige">
             <p>Totalt {pagination.totalPosts} innlegg</p>
             {pagination.totalPages > 1 && (
               <p className="text-sm">
