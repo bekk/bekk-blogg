@@ -18,7 +18,7 @@ export function generateSecurityHeaders() {
       'style-src': [SELF, UNSAFE_INLINE],
       'img-src': [SELF, 'data:', 'cdn.sanity.io', '*'],
       'connect-src': [SELF, 'api.sanity.io', 'plausible.io'],
-      'frame-src': [SELF, '*.youtube.com', '*.codesandbox.io', 'player.vimeo.com'],
+      'frame-src': [SELF, '*.youtube.com', '*.codesandbox.io', 'player.vimeo.com', 'vercel.live'],
       'font-src': [SELF],
       'object-src': [NONE],
       'media-src': [SELF],
