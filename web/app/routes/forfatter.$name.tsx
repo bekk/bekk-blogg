@@ -72,7 +72,7 @@ export default function AuthorPage() {
   if (!author) {
     return (
       <div className="flex flex-col items-center lg:mb-12">
-        <h1 className="font-delicious md:text-center mb-0">Fant ikke den forfatteren</h1>
+        <h1 className="md:text-center mb-0">Fant ikke den forfatteren</h1>
       </div>
     )
   }
@@ -80,7 +80,7 @@ export default function AuthorPage() {
   if (!posts.length) {
     return (
       <div className="flex flex-col items-center lg:mb-12">
-        <h1 className="font-delicious md:text-center mb-0">Fant ingen innlegg av {author.fullName}</h1>
+        <h1 className="md:text-center mb-0">Fant ingen innlegg av {author.fullName}</h1>
       </div>
     )
   }
@@ -91,7 +91,7 @@ export default function AuthorPage() {
         <Spinner />
       ) : (
         <div className="flex flex-col items-center gap-8 mb-4 lg:mb-12 md:gap-12">
-          <h1 className="font-delicious md:text-center mb-0">Innhold fra {author?.fullName}</h1>
+          <h1 className="md:text-center mb-0">Innhold fra {author?.fullName}</h1>
           <div className="mb-4 text-center">
             <p>Totalt {pagination.totalPosts} innlegg</p>
             {pagination.totalPages > 1 && (

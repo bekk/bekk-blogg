@@ -11,6 +11,7 @@ import {
   useLoaderData,
   useLocation,
   useMatches,
+  useParams,
   useRouteError,
 } from '@remix-run/react'
 import { VisualEditing } from '@sanity/visual-editing/remix'
@@ -20,7 +21,7 @@ import { generateSecurityHeaders } from 'utils/security'
 import { JumpToContent } from './features/jump-to-content/JumpToContent'
 import { ErrorPage } from './routes/ErrorPage'
 
-import { Header } from '~/features/navigation/Header'
+import { Header } from '~/features/header/Header'
 import styles from '~/styles/main.css?url'
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
@@ -89,20 +90,24 @@ export function ErrorBoundary() {
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const matches = useMatches()
+  const { year, date, slug } = useParams()
   const error = useRouteError()
+  const matches = useMatches()
   const location = useLocation()
 
   type PotentialLanguageType = { language: string } | undefined
   const postData = matches.find((match) => (match.data as PotentialLanguageType)?.language)
     ?.data as PotentialLanguageType
 
-  const isInArticle = matches.some((match) => match.params.slug) && !error
-  const isInDate = matches.some((match) => match.params.year && match.params.date) && !error
+  const isOnFrontPage = location.pathname === '/'
+  const isOnArticlePage = !!slug && !error
+  const isOnDatePage = !!date && !slug && !error
+  const isOnCalendarPage = !!year && !date && !error
 
-  const bodyBg = () => {
-    if (isInArticle) return 'bg-wooden-table'
-    if (location.pathname === '/' || isInDate) return `bg-table-with-tablecloth`
+  const bodyBackground = () => {
+    if (isOnFrontPage || isOnDatePage) return `bg-wooden-table-with-cloth`
+    if (isOnArticlePage) return 'bg-wooden-table'
+    if (isOnCalendarPage) return 'bg-brick-wall h-screen'
     return 'bg-envelope-beige'
   }
 
@@ -116,12 +121,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <link rel="alternate" type="application/rss+xml" title="Bekk Christmas RSS Feed" href="/feed.xml" />
         <script defer data-domain="bekk.christmas" src="https://plausible.io/js/plausible.js" />
       </head>
-      <body className={`${error ? 'error-bg' : `m-auto min-w-[375px] max-w-screen-2xl break-words ${bodyBg()}`}`}>
+      {/* <body className={`${error ? 'error-bg' : `m-auto min-w-[375px] max-w-screen-2xl break-words ${bodyBg()}`}`}> */}
+      {/* <body className={`break-words m-auto w-full max-w-screen-2xl ${bodyBackground()}`}> */}
+      <body className={`${error ? 'error-bg' : `break-words m-auto w-full max-w-screen-2xl ${bodyBackground()}`}`}>
         <JumpToContent />
-        <div className={`${isInArticle && 'striped-frame md:my-8 md:mx-8 '}`}>
-          <header className={`${isInArticle && 'relative'}`}>
-            <Header isInArticle={isInArticle} />
-          </header>
+        <div className={`${isOnArticlePage && 'striped-frame md:my-8 md:mx-8 '}`}>
+          {!isOnCalendarPage && (
+            <header className={`${isOnArticlePage && 'relative'}`}>
+              <Header isOnArticlePage={isOnArticlePage} />
+            </header>
+          )}
+
           <Scripts />
           <main id="content" className="tabindex-[-1]">
             {children}
