@@ -26,10 +26,12 @@ export const meta: MetaFunction<typeof loader> = ({ data: postsByDate }) => {
     { property: 'og:title', content: title },
     { property: 'og:description', content: description },
     { property: 'og:type', content: 'website' },
+    { property: 'og:image', content: '/og-image.png' },
     // Twitter Card tags
     { name: 'twitter:card', content: 'summary' },
     { name: 'twitter:title', content: title },
     { name: 'twitter:description', content: description },
+    { name: 'twitter:image', content: '/og-image.png' },
   ]
 }
 

@@ -43,6 +43,9 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (post.coverImage) {
     meta.push({ property: 'og:image', content: urlFor(post.coverImage).width(1200).format('webp').url() })
     meta.push({ name: 'twitter:image', content: urlFor(post.coverImage).width(1200).format('webp').url() })
+  } else {
+    meta.push({ property: 'og:image', content: '/og-image.png' })
+    meta.push({ name: 'twitter:image', content: '/og-image.png' })
   }
 
   if (availableFrom) {

@@ -11,6 +11,8 @@ export const meta: MetaFunction = () => {
       content:
         'Bekk Christmas er en julekalender med innhold om teknologi, design, strategi og produktutvikling fra Bekk',
     },
+    { property: 'og:image', content: '/og-image.png' },
+    { name: 'twitter:image', content: '/og-image.png' },
   ]
 }
 
