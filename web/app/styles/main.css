@@ -122,6 +122,15 @@
   }
 }
 
+.error-bg {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background:
+    url('/images/northern_lights.svg') top left/contain no-repeat,
+    url('/images/snow.svg') bottom center/contain no-repeat,
+    linear-gradient(to bottom, #040a2f, #003fad);
+}
 @media screen and (min-width: 1024px) {
   .link-to-archive-gift {
     position: relative;

@@ -28,6 +28,10 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     end: offset + perPage,
   })
 
+  if (!response.data.author) {
+    throw new Response('Author not found', { status: 404 })
+  }
+
   return json({
     posts: response.data.posts || [],
     author: response.data.author,

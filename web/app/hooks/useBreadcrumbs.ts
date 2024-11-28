@@ -9,6 +9,9 @@ export type Breadcrumb = {
 
 export function useBreadcrumbs(): Breadcrumb[] {
   const matches = useMatches().filter((match) => match.id !== 'root')
+  if (matches.length === 0) {
+    return []
+  }
   const currRoute = matches[matches.length - 1]
   const breadcrumbs: Breadcrumb[] = []
   let accumulatedPath = ''
