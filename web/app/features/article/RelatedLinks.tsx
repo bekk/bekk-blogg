@@ -17,7 +17,7 @@ export const RelatedLinks = ({ links, language }: RelatedLinksProps) => {
           : 'Relevante lenker anbefalt av forfatteren'}
       </h3>
       {links.map((link) => (
-        <RelatedLinkElement key={link._key} link={link} />
+        <RelatedLinkElement key={link._key} link={link} language={language} />
       ))}
     </div>
   )
