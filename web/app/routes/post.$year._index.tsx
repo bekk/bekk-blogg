@@ -63,10 +63,10 @@ export default function YearRoute() {
       <Link to="post/2024" className="absolute top-[20px] md:top-[40px] right-[20px] md:right-[40px]">
         <BekkLogo className="h-auto w-10 md:auto md:w-16" />
       </Link>
-      <div className="sm:px-4 grid grid-cols-[25px_auto_25px] sm:grid-cols-[50px_auto_50px] 2lg:grid-cols-[auto_auto_auto] grid-rows-[91px_auto_auto] sm:grid-rows-[142px_auto_auto] 2lg:grid-rows-[292px_auto_137px]">
+      <div className="sm:px-4 grid grid-cols-[25px_auto_25px] sm:grid-cols-[50px_auto_50px] 2lg:grid-cols-[auto_auto_auto] grid-rows-[91px_auto_auto] sm:grid-rows-[142px_auto_auto] md:grid-rows-[179px_auto_auto] 2lg:grid-rows-[292px_auto_137px]">
         {/* Tak */}
         <div className="bg-roof row-start-1 row-span-2 col-start-1 col-span-3">
-          <h1 className="text-postcard-beige font-delicious text-center text-4xl sm:text-6xl mt-[40px] sm:mt-[60px] 2lg:mt-[180px]">
+          <h1 className="text-postcard-beige font-delicious text-center text-4xl sm:text-6xl mt-[40px] sm:mt-[60px] md:mt-[90px] 2lg:mt-[180px]">
             {data.year}
           </h1>
         </div>
@@ -92,7 +92,7 @@ export default function YearRoute() {
         </div>
         {/* Kalender */}
         <div className="col-start-2 col-span-1 row-start-2 row-span-1">
-          <div className="grid h-full 2lg:grid-cols-[repeat(6,auto)] 2lg:grid-rows-[repeat(4,auto)] grid-cols-[repeat(3,auto)] grid-rows-[repeat(8,auto)] justify-center border-8 border-reindeer-brown">
+          <div className="grid h-full 2lg:grid-cols-[repeat(6,auto)] 2lg:grid-rows-[repeat(4,auto)] md:grid-cols-[repeat(4,auto)] md:grid-rows-[repeat(6,auto)] grid-cols-[repeat(3,auto)] grid-rows-[repeat(8,auto)] justify-center border-8 border-reindeer-brown">
             {Array.from({ length: 24 }, (_, i) => {
               const date = i + 1
               return (
