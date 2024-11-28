@@ -6,8 +6,8 @@ import { z } from 'zod'
 import { DoorSignLink } from '~/components/DoorSignLink'
 import { BekkLogo } from '~/features/article/BekkLogo'
 import { Door } from '~/features/calendar/Door'
-import { Gift2SVG } from '~/features/calendar/Gift2SVG'
-import { Gift3SVG } from '~/features/calendar/Gift3SVG'
+import { Gift2SVG } from '~/features/calendar/giftsSVG/Gift2SVG'
+import { Gift3SVG } from '~/features/calendar/giftsSVG/Gift3SVG'
 
 const ParamsSchema = z.object({
   year: z.string().min(4).max(4),
