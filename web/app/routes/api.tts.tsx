@@ -83,7 +83,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     return new Response(stream, {
       headers: {
-        Connection: 'keep-alive',
         'Content-Type': 'audio/mpeg',
         'Transfer-Encoding': 'chunked',
         'Accept-Ranges': 'bytes',
