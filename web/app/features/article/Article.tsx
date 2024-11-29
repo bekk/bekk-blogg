@@ -72,10 +72,13 @@ export const Article = ({ post }: ArticleProps) => {
               <summary className="text-2xl font-bold mb-2">{post.series.title}</summary>
               <p className="text-md">{post.series.description}</p>
               <ol className="list-disc ml-4 mt-8">
-                {post.series.posts.map((post) => (
-                  <li key={post._id}>
-                    <TextLink href={postUrl(post)} className="text-md">
-                      {post.title}
+                {post.series.posts.map((postInSeries) => (
+                  <li key={postInSeries._id}>
+                    <TextLink
+                      href={postUrl(postInSeries)}
+                      className={`text-md ${postInSeries._id === post._id ? 'font-bold' : ''}`}
+                    >
+                      {postInSeries.title}
                     </TextLink>
                   </li>
                 ))}
