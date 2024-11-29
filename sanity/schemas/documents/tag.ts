@@ -1,9 +1,11 @@
+import {BiTag} from 'react-icons/bi'
 import {defineType} from 'sanity'
 
 const tag = defineType({
   title: 'Kategori',
   name: 'tag',
   type: 'document',
+  icon: BiTag,
   fields: [
     {
       title: 'Navn',
