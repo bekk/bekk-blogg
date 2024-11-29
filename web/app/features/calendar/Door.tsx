@@ -64,7 +64,7 @@ export const Door = ({ date, year }: DoorProps) => {
         <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
           <div className={`relative z-10`}>
             {isToday() && !isHovered && (
-              <div className="absolute inset-0 flex justify-center items-center z-0">
+              <div className="absolute inset-0 flex justify-center items-center z-[-1]">
                 <div className="transform scale-50 mt-[-112px] ml-[28px]">
                   <LetterSVG />
                 </div>
