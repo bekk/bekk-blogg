@@ -42,7 +42,7 @@ export default function TagsRoute() {
   const state = useNavigation()
   return (
     <>
-      {state.state === 'loading' ? (
+      {state.state === 'idle' ? (
         <Spinner />
       ) : (
         <div className="px-2 sm:px-8 mb-8 flex flex-col">

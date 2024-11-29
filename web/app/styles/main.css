@@ -105,12 +105,10 @@
 }
 
 .spinner {
-  width: 5rem; /* w-4 (16px) */
-  height: 5rem; /* h-4 (16px) */
-  border: 4px solid #d1d5db; /* border-2 border-gray-300 */
-  border-top-color: black; /* border-t-black */
-  border-radius: 50%; /* rounded-full */
-  animation: spin 1s linear infinite; /* animate-spin */
+  border: 4px solid #d1d5db;
+  border-top-color: black;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
