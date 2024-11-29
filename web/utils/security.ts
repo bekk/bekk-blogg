@@ -24,6 +24,7 @@ export function generateSecurityHeaders() {
         '*.x.com',
         'cdn.syndication.twimg.com',
         'plausible.io',
+        'vercel.live',
       ],
       'style-src': [SELF, UNSAFE_INLINE],
       'img-src': [SELF, UNSAFE_INLINE, 'data:', 'cdn.sanity.io', '*'],
