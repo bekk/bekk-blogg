@@ -9,7 +9,6 @@ import { WhiteGiftRedRibbon } from '~/features/archive/svgs/WhiteGiftRedRibbon'
 import { WhiteGiftRedRibbonH } from '~/features/archive/svgs/WhiteGiftRedRibbonH'
 import { WhiteGiftRedRibbonSquare } from '~/features/archive/svgs/WhiteGiftRedRibbonSquare'
 import { YearBadge } from '~/features/archive/YearBadge'
-import useMediaQuery from '~/hooks/useMediaQuery'
 
 export default function ArchivePage() {
   const currentYear = new Date().getFullYear()
@@ -30,7 +29,6 @@ export default function ArchivePage() {
     RedGiftWhiteRibbonV,
     WhiteGiftRedRibbonSquare,
   ]
-  const smallScreen = useMediaQuery('(max-width: 1024px)')
   return (
     <div>
       <div className={'flex flex-col justify-center'}>
@@ -39,20 +37,17 @@ export default function ArchivePage() {
           {giftSVGList.map((GiftSVG, index) => {
             return (
               <div className="grid justify-items-center w-full pt-8" key={index}>
-                {smallScreen ? (
-                  <>
-                    <Link to={`/post/${availableYears[index]}`}>
-                      <GiftSVG />
-                    </Link>
-                    <Plank year={availableYears[index]} />
-                  </>
-                ) : (
-                  <>
-                    <Link to={`/post/${availableYears[index]}`}>
-                      <GiftSVG />
-                    </Link>
-                  </>
-                )}
+                <div className="flex flex-col w-full justify-items-center lg:hidden">
+                  <Link to={`/post/${availableYears[index]}`} className="flex justify-center">
+                    <GiftSVG />
+                  </Link>
+                  <Plank year={availableYears[index]} />
+                </div>
+                <div className="hidden lg:block">
+                  <Link to={`/post/${availableYears[index]}`}>
+                    <GiftSVG />
+                  </Link>
+                </div>
               </div>
             )
           })}
