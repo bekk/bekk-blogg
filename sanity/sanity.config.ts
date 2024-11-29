@@ -1,4 +1,5 @@
 import {codeInput} from '@sanity/code-input'
+import {nbNOLocale} from '@sanity/locale-nb-no'
 import {visionTool} from '@sanity/vision'
 import {createAuthStore, defineConfig, SchemaTypeDefinition} from 'sanity'
 import {media} from 'sanity-plugin-media'
@@ -20,6 +21,7 @@ const config = defineConfig({
   dataset: process.env.NODE_ENV === 'production' ? 'bekk-blogg-prod' : 'bekk-blogg',
 
   plugins: [
+    nbNOLocale(),
     structureTool({structure, defaultDocumentNode}),
     visionTool(),
     media(),
