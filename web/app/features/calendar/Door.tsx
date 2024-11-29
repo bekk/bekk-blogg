@@ -60,6 +60,7 @@ export const Door = ({ date, year }: DoorProps) => {
         to={isOpenable() ? `/post/${year}/${date.toString().padStart(2, '0')}` : '#'}
         key={date}
         className="flex justify-center items-center border-4 border-reindeer-brown"
+        aria-label={`Luke ${date}${isOpenable() ? '' : 'er lukket'}`}
       >
         <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
           <div
