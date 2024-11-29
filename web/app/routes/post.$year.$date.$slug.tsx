@@ -44,8 +44,8 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
     meta.push({ property: 'og:image', content: urlFor(post.coverImage).width(1200).format('webp').url() })
     meta.push({ name: 'twitter:image', content: urlFor(post.coverImage).width(1200).format('webp').url() })
   } else {
-    meta.push({ property: 'og:image', content: '/og-image.png' })
-    meta.push({ name: 'twitter:image', content: '/og-image.png' })
+    meta.push({ property: 'og:image', content: 'https://www.bekk.christmas/og-image.jpg' })
+    meta.push({ name: 'twitter:image', content: 'https://www.bekk.christmas/og-image.jpg' })
   }
 
   if (availableFrom) {
