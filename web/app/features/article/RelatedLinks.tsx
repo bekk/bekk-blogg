@@ -1,6 +1,6 @@
 import { POST_BY_SLUGResult } from 'utils/sanity/types/sanity.types'
 
-import { RelatedLinkElement } from '../../components/RelatedLink'
+import { RelatedLinkElement } from '~/components/RelatedLink'
 
 type RelatedLinksProps = {
   links: NonNullable<NonNullable<POST_BY_SLUGResult>['relatedLinks']>

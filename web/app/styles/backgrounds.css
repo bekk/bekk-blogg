@@ -30,7 +30,7 @@
 }
 
 .bg-wooden-table-with-cloth {
-  background-image: url('../../public/images/bg_cloth.svg'), url('../../public/images/bg_wood.svg');
+  background-image: url('../../images/bg_cloth.svg'), url('../../images/bg_wood.svg');
   background-size:
     auto 45vh,
     100%;
@@ -99,5 +99,45 @@
       top right,
       center;
     background-repeat: no-repeat, repeat;
+  }
+}
+
+.bg-brick-wall-with-wooden-plank {
+  background-image: url('/images/dark_plank.svg'), url('/images/bg_brick_wall_mobile.svg');
+  background-size:
+    auto 10vh,
+    cover;
+  background-position:
+    top center,
+    center;
+  background-repeat: no-repeat, no-repeat;
+  min-height: 100vh;
+}
+
+@media screen and (min-width: 900px) {
+  .bg-brick-wall-with-wooden-plank {
+    background-image: url('/images/dark_plank_large.svg'), url('/images/bg_brick_wall_mobile.svg');
+    background-size:
+      auto 20vh,
+      cover;
+    background-position:
+      top left,
+      center;
+    background-repeat: repeat-x, no-repeat;
+    min-height: 100vh;
+  }
+}
+
+@media screen and (min-width: 1300px) {
+  .bg-brick-wall-with-wooden-plank {
+    background-image: url('/images/dark_plank_large.svg'), url('/images/bg_brick_wall_mobile.svg');
+    background-size:
+      auto 20vh,
+      cover;
+    background-position:
+      top left,
+      center;
+    background-repeat: repeat-x, no-repeat;
+    min-height: 100vh;
   }
 }

@@ -123,7 +123,7 @@ export default function YearRoute() {
         </div>
         {/* Bottom */}
         <div className="bg-plank row-start-3 row-span-1 col-start-1 col-span-3 border-reindeer-brown flex justify-center flex-col md:flex-row items-center gap-8 py-6">
-          <DoorSignLink link="/archive">Se andre julekalendere</DoorSignLink>
+          <DoorSignLink link="/arkiv">Se andre julekalendere</DoorSignLink>
           <DoorSignLink link="/kategori">Se kategorier</DoorSignLink>
         </div>
       </div>
