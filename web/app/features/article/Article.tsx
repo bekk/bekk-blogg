@@ -1,6 +1,6 @@
-import { Fragment } from 'react'
 import { PortableText } from '@portabletext/react'
-import { Link } from '@remix-run/react'
+import { Link, useNavigation } from '@remix-run/react'
+import { Fragment, ReactNode, useState } from 'react'
 import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readingTime'
 import { POST_BY_SLUGResult, SanityImageAsset } from 'utils/sanity/types/sanity.types'
@@ -9,6 +9,7 @@ import { urlFor } from 'utils/sanity/utils'
 import { AudioPlayer } from './AudioPlayer'
 import { RelatedLinks } from './RelatedLinks'
 
+import { ArticleSpinner } from '~/components/ArticleSpinner'
 import { TextLink } from '~/components/TextLink'
 import { postUrl } from '~/lib/format'
 import { components } from '~/portable-text/Components'
@@ -20,6 +21,7 @@ type ArticleProps = {
 }
 
 export const Article = ({ post }: ArticleProps) => {
+  const [isNavigatingToAuthor, setIsNavigatingToAuthor] = useState<boolean>(false)
   if (!post) {
     return null
   }
@@ -31,9 +33,9 @@ export const Article = ({ post }: ArticleProps) => {
           <div>
             {post.tags.map((tag, index) => (
               <Fragment key={tag._id}>
-                <Link to={`/kategori/${tag.slug}`} className="hover:text-reindeer-brown underline">
+                <LinkWithSpinner to={`/kategori/${tag.slug}`} className="hover:text-reindeer-brown underline">
                   {tag.name}
-                </Link>
+                </LinkWithSpinner>
                 {index !== (post.tags?.length ?? 0) - 1 && ', '}
               </Fragment>
             ))}
@@ -51,9 +53,12 @@ export const Article = ({ post }: ArticleProps) => {
             Fra {''}
             {post.authors.map((author, index) => (
               <Fragment key={author._id}>
-                <Link to={`/forfatter/${author.slug?.current}`} className="hover:text-reindeer-brown underline">
+                <LinkWithSpinner
+                  to={`/forfatter/${author.slug?.current}`}
+                  className="hover:text-reindeer-brown underline"
+                >
                   {author.fullName}
-                </Link>
+                </LinkWithSpinner>
                 {index !== post.authors.length - 1 && ', '}
               </Fragment>
             ))}
@@ -135,3 +140,19 @@ export const Article = ({ post }: ArticleProps) => {
 }
 
 export const Border = () => <div className="mb-8 border-b border-bekk-night pb-1" />
+
+type LinkWithSpinnerProps = {
+  to: string
+  children: ReactNode
+  className?: string
+}
+const LinkWithSpinner = ({ to, children, className }: LinkWithSpinnerProps) => {
+  const navigation = useNavigation()
+  const isNavigating = navigation.location?.pathname === to
+  return (
+    <Link to={to} className={className}>
+      {children}
+      {isNavigating && <ArticleSpinner />}
+    </Link>
+  )
+}
