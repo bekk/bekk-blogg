@@ -232,13 +232,14 @@ export type SocialMediaLink = {
   url: string
 }
 
-export type Collection = {
+export type Series = {
   _id: string
-  _type: 'collection'
+  _type: 'series'
   _createdAt: string
   _updatedAt: string
   _rev: string
   title: string
+  slug: Slug
   description?: string
   posts: Array<{
     _ref: string
@@ -432,7 +433,7 @@ export type AllSanitySchemaTypes =
   | InfoBlock
   | Iframe
   | SocialMediaLink
-  | Collection
+  | Series
   | Tag
   | Author
   | Post
@@ -529,7 +530,7 @@ export type ALL_POSTSResult = Array<{
   priority?: number
 }>
 // Variable: POST_PROJECTION
-// Query: {     _id,  _type,  _createdAt,  _updatedAt,  _rev,  type,  language,  embedUrl,  podcastLength,  title,  slug,  canonicalUrl,  description,  previewText,  availableFrom,  keywords,  "wordCount": length(string::split(pt::text(content), ' ')),  content[] {    ...,    _type == 'imageWithMetadata' => {      ...,      asset->{        _id,        url,        metadata {          dimensions {            aspectRatio,            width,            height          }        }      }    }  },  priority,    authors[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    fullName,    slug,    companyName,    profilePicture,    socialMediaLinks  },    coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  tags[]->{    _id,    slug,    name  },  relatedLinks}
+// Query: {     _id,  _type,  _createdAt,  _updatedAt,  _rev,  type,  language,  embedUrl,  podcastLength,  title,  slug,  canonicalUrl,  description,  previewText,  availableFrom,  keywords,  "wordCount": length(string::split(pt::text(content), ' ')),  content[] {    ...,    _type == 'imageWithMetadata' => {      ...,      asset->{        _id,        url,        metadata {          dimensions {            aspectRatio,            width,            height          }        }      }    }  },  priority,    authors[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    fullName,    slug,    companyName,    profilePicture,    socialMediaLinks  },    coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  tags[]->{    _id,    slug,    name  },  relatedLinks,  "series": *[_type == "series" && references(^._id)][0] {    _id,     title,     description,    slug,    posts[] -> {      _id,      title,      availableFrom,      slug    }  }}
 export type POST_PROJECTIONResult = {
   _id: never
   _type: never
@@ -554,9 +555,21 @@ export type POST_PROJECTIONResult = {
   coverImage: never
   tags: never
   relatedLinks: never
+  series: {
+    _id: string
+    title: string
+    description: string | null
+    slug: Slug
+    posts: Array<{
+      _id: string
+      title: string
+      availableFrom: string
+      slug: Slug
+    }>
+  } | null
 }
 // Variable: POST_BY_SLUG
-// Query: *[_type == "post" && slug.current == $slug][0]{     _id,  _type,  _createdAt,  _updatedAt,  _rev,  type,  language,  embedUrl,  podcastLength,  title,  slug,  canonicalUrl,  description,  previewText,  availableFrom,  keywords,  "wordCount": length(string::split(pt::text(content), ' ')),  content[] {    ...,    _type == 'imageWithMetadata' => {      ...,      asset->{        _id,        url,        metadata {          dimensions {            aspectRatio,            width,            height          }        }      }    }  },  priority,    authors[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    fullName,    slug,    companyName,    profilePicture,    socialMediaLinks  },    coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  tags[]->{    _id,    slug,    name  },  relatedLinks}
+// Query: *[_type == "post" && slug.current == $slug][0]{     _id,  _type,  _createdAt,  _updatedAt,  _rev,  type,  language,  embedUrl,  podcastLength,  title,  slug,  canonicalUrl,  description,  previewText,  availableFrom,  keywords,  "wordCount": length(string::split(pt::text(content), ' ')),  content[] {    ...,    _type == 'imageWithMetadata' => {      ...,      asset->{        _id,        url,        metadata {          dimensions {            aspectRatio,            width,            height          }        }      }    }  },  priority,    authors[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    fullName,    slug,    companyName,    profilePicture,    socialMediaLinks  },    coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  tags[]->{    _id,    slug,    name  },  relatedLinks,  "series": *[_type == "series" && references(^._id)][0] {    _id,     title,     description,    slug,    posts[] -> {      _id,      title,      availableFrom,      slug    }  }}
 export type POST_BY_SLUGResult = {
   _id: string
   _type: 'post'
@@ -732,6 +745,18 @@ export type POST_BY_SLUGResult = {
     _type: 'relatedLink'
     _key: string
   }> | null
+  series: {
+    _id: string
+    title: string
+    description: string | null
+    slug: Slug
+    posts: Array<{
+      _id: string
+      title: string
+      availableFrom: string
+      slug: Slug
+    }>
+  } | null
 } | null
 // Variable: ARTICLE_CONTENT_BY_ID
 // Query: *[_type == "post" && type == "article" && _id == $id][0] {   title,   "description": pt::text(description),   "content": pt::text(content),   "mainAuthor": authors[0]->fullName,  "preferredVoice": authors[0]->preferredVoice  }
@@ -905,8 +930,8 @@ declare module '@sanity/client' {
     '{\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n}': COVER_IMAGE_WITH_METADATA_PROJECTIONResult
     '{\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n}': POST_PREVIEW_PROJECTIONResult
     '*[_type == "post"]': ALL_POSTSResult
-    "{\n     _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  title,\n  slug,\n  canonicalUrl,\n  description,\n  previewText,\n  availableFrom,\n  keywords,\n  \"wordCount\": length(string::split(pt::text(content), ' ')),\n  content[] {\n    ...,\n    _type == 'imageWithMetadata' => {\n      ...,\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions {\n            aspectRatio,\n            width,\n            height\n          }\n        }\n      }\n    }\n  },\n  priority,\n  \n  authors[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    fullName,\n    slug,\n    companyName,\n    profilePicture,\n    socialMediaLinks\n  },\n  \n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n\n  tags[]->{\n    _id,\n    slug,\n    name\n  },\n  relatedLinks\n}": POST_PROJECTIONResult
-    '*[_type == "post" && slug.current == $slug][0]{\n     _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  title,\n  slug,\n  canonicalUrl,\n  description,\n  previewText,\n  availableFrom,\n  keywords,\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  content[] {\n    ...,\n    _type == \'imageWithMetadata\' => {\n      ...,\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions {\n            aspectRatio,\n            width,\n            height\n          }\n        }\n      }\n    }\n  },\n  priority,\n  \n  authors[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    fullName,\n    slug,\n    companyName,\n    profilePicture,\n    socialMediaLinks\n  },\n  \n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n\n  tags[]->{\n    _id,\n    slug,\n    name\n  },\n  relatedLinks\n}': POST_BY_SLUGResult
+    '{\n     _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  title,\n  slug,\n  canonicalUrl,\n  description,\n  previewText,\n  availableFrom,\n  keywords,\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  content[] {\n    ...,\n    _type == \'imageWithMetadata\' => {\n      ...,\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions {\n            aspectRatio,\n            width,\n            height\n          }\n        }\n      }\n    }\n  },\n  priority,\n  \n  authors[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    fullName,\n    slug,\n    companyName,\n    profilePicture,\n    socialMediaLinks\n  },\n  \n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n\n  tags[]->{\n    _id,\n    slug,\n    name\n  },\n  relatedLinks,\n  "series": *[_type == "series" && references(^._id)][0] {\n    _id, \n    title, \n    description,\n    slug,\n    posts[] -> {\n      _id,\n      title,\n      availableFrom,\n      slug\n    }\n  }\n}': POST_PROJECTIONResult
+    '*[_type == "post" && slug.current == $slug][0]{\n     _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  title,\n  slug,\n  canonicalUrl,\n  description,\n  previewText,\n  availableFrom,\n  keywords,\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  content[] {\n    ...,\n    _type == \'imageWithMetadata\' => {\n      ...,\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions {\n            aspectRatio,\n            width,\n            height\n          }\n        }\n      }\n    }\n  },\n  priority,\n  \n  authors[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    fullName,\n    slug,\n    companyName,\n    profilePicture,\n    socialMediaLinks\n  },\n  \n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n\n  tags[]->{\n    _id,\n    slug,\n    name\n  },\n  relatedLinks,\n  "series": *[_type == "series" && references(^._id)][0] {\n    _id, \n    title, \n    description,\n    slug,\n    posts[] -> {\n      _id,\n      title,\n      availableFrom,\n      slug\n    }\n  }\n}': POST_BY_SLUGResult
     '*[_type == "post" && type == "article" && _id == $id][0] { \n  title, \n  "description": pt::text(description), \n  "content": pt::text(content), \n  "mainAuthor": authors[0]->fullName,\n  "preferredVoice": authors[0]->preferredVoice\n  }': ARTICLE_CONTENT_BY_IDResult
     '*[_type == "post" && availableFrom == $date] {\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n}': POSTS_BY_YEAR_AND_DATEResult
     '*[_type == "tag"] | order(name asc)': ALL_CATEGORIESResult

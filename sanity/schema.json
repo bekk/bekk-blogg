@@ -1441,7 +1441,7 @@
     }
   },
   {
-    "name": "collection",
+    "name": "series",
     "type": "document",
     "attributes": {
       "_id": {
@@ -1454,7 +1454,7 @@
         "type": "objectAttribute",
         "value": {
           "type": "string",
-          "value": "collection"
+          "value": "series"
         }
       },
       "_createdAt": {
@@ -1479,6 +1479,14 @@
         "type": "objectAttribute",
         "value": {
           "type": "string"
+        },
+        "optional": false
+      },
+      "slug": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "inline",
+          "name": "slug"
         },
         "optional": false
       },

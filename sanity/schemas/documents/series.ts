@@ -2,8 +2,8 @@ import {BiCollection} from 'react-icons/bi'
 import {defineField, defineType} from 'sanity'
 
 export default defineType({
-  name: 'collection',
-  title: 'Samling',
+  name: 'series',
+  title: 'Serie',
   type: 'document',
   icon: BiCollection,
   fields: [
@@ -12,6 +12,15 @@ export default defineType({
       title: 'Tittel',
       type: 'string',
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      validation: (rule) => rule.required(),
+      options: {
+        source: 'title',
+      },
     }),
     defineField({
       name: 'description',
@@ -23,7 +32,7 @@ export default defineType({
       title: 'Innlegg',
       type: 'array',
       of: [{type: 'reference', to: [{type: 'post'}]}],
-      validation: (rule) => rule.required().min(1),
+      validation: (rule) => rule.required().min(2),
     }),
   ],
 })

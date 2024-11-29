@@ -34,7 +34,7 @@ const POST_PREVIEW_PROJECTION = groq`{
 }`
 export const ALL_POSTS = groq`*[_type == "post"]`
 const POST_PROJECTION = groq`{
-     _id,
+  _id,
   _type,
   _createdAt,
   _updatedAt,
@@ -90,7 +90,19 @@ const POST_PROJECTION = groq`{
     slug,
     name
   },
-  relatedLinks
+  relatedLinks,
+  "series": *[_type == "series" && references(^._id)][0] {
+    _id, 
+    title, 
+    description,
+    slug,
+    posts[][_ref != ^._id] -> {
+      _id,
+      title,
+      availableFrom,
+      slug
+    }
+  }
 }`
 export const POST_BY_SLUG = defineQuery(`*[_type == "post" && slug.current == $slug][0]${POST_PROJECTION}`)
 export const ARTICLE_CONTENT_BY_ID = defineQuery(
