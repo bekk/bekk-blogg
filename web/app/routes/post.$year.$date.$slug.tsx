@@ -1,4 +1,4 @@
-import type { HeadersFunction, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
+import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { useQuery } from '@sanity/react-loader'
 import { cleanControlCharacters } from 'utils/controlCharacters'
@@ -40,9 +40,12 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
     { name: 'twitter:site', content: '@livetibekk' },
   ]
 
-  if (post.coverImage) {
+  if (post.coverImage?.asset) {
     meta.push({ property: 'og:image', content: urlFor(post.coverImage).width(1200).format('webp').url() })
     meta.push({ name: 'twitter:image', content: urlFor(post.coverImage).width(1200).format('webp').url() })
+  } else {
+    meta.push({ property: 'og:image', content: 'https://www.bekk.christmas/og-image.jpg' })
+    meta.push({ name: 'twitter:image', content: 'https://www.bekk.christmas/og-image.jpg' })
   }
 
   if (availableFrom) {
@@ -58,10 +61,6 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 
   return meta
 }
-
-export const headers: HeadersFunction = () => ({
-  'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=3600',
-})
 
 const ParamsSchema = z.object({
   year: z.string().min(4).max(4),
@@ -99,7 +98,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     throw new Response('Post date and date in url do not match', { status: 404 })
   }
 
-  const imageUrl = initial.data.coverImage
+  const imageUrl = initial.data.coverImage?.asset
     ? urlFor(initial.data.coverImage).width(1200).format('webp').url()
     : undefined
 

@@ -28,10 +28,12 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
     { property: 'og:description', content: description },
     { property: 'og:type', content: 'website' },
     { property: 'og:site_name', content: 'Bekk Christmas' },
+    { property: 'og:image', content: 'https://www.bekk.christmas/og-image.jpg' },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: title },
     { name: 'twitter:description', content: description },
     { name: 'twitter:site', content: '@livetibekk' },
+    { name: 'twitter:image', content: 'https://www.bekk.christmas/og-image.jpg' },
   ]
 }
 
@@ -43,15 +45,19 @@ export default function TagsRoute() {
       {state.state === 'loading' ? (
         <Spinner />
       ) : (
-        <div className="p-8">
-          <h1 className="md:text-center pb-2 md:pb-4">Kategorier</h1>
-          <ul className="flex flex-row flex-wrap gap-2 md:gap-4">
+        <div className="px-2 sm:px-8 mb-8 flex flex-col">
+          <h1 className="text-center text-3xl sm:text-4xl text-white pt-4">Kategorier</h1>
+          <div className="flex flex-wrap justify-center pt-12 sm:pt-20 md:pt-28 gap-2 md:gap-4 2xl:mt-20">
             {data.map((category: Tag, index: number) => (
-              <li className={'hover:text-reindeer-brown md:text-subtitle-desktop'} key={index}>
-                <Link to={`/kategori/${category.slug}`}>{category.name}</Link>
-              </li>
+              <Link
+                to={`/kategori/${category.slug}`}
+                className="hover:text-reindeer-brown md:text-subtitle-desktop"
+                key={index}
+              >
+                <p className="styled-box sm:text-2xl px-4">{category.name}</p>
+              </Link>
             ))}
-          </ul>
+          </div>
         </div>
       )}
     </>

@@ -61,6 +61,47 @@
   }
 }
 
+.bg-dark-wooden-table-with-green-cloth {
+  background-image: url('../../public/images/bg_cloth_green_2x.svg'), url('../../public/images/bg_wood_dark.svg');
+  background-size:
+    auto 300px,
+    100%;
+  background-position:
+    top center,
+    center;
+  background-repeat: no-repeat, repeat;
+  min-height: 100vh;
+}
+
+@media screen and (max-width: 900px) {
+  .bg-dark-wooden-table-with-green-cloth {
+    background-size:
+      auto 225px,
+      100%;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .bg-dark-wooden-table-with-green-cloth {
+    background-size:
+      auto 200px,
+      100%;
+  }
+}
+
+@media screen and (min-width: 1300px) {
+  .bg-dark-wooden-table-with-green-cloth {
+    background-image: url('/images/bg_cloth_green_2x.svg'), url('/images/bg_wood_dark.svg');
+    background-size:
+      auto 300px,
+      cover;
+    background-position:
+      top right,
+      center;
+    background-repeat: no-repeat, repeat;
+  }
+}
+
 .bg-brick-wall-with-wooden-plank {
   background-image: url('/images/dark_plank.svg'), url('/images/bg_brick_wall_mobile.svg');
   background-size:

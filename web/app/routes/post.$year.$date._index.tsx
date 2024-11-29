@@ -26,16 +26,14 @@ export const meta: MetaFunction<typeof loader> = ({ data: postsByDate }) => {
     { property: 'og:title', content: title },
     { property: 'og:description', content: description },
     { property: 'og:type', content: 'website' },
+    { property: 'og:image', content: 'https://www.bekk.christmas/og-image.jpg' },
     // Twitter Card tags
     { name: 'twitter:card', content: 'summary' },
     { name: 'twitter:title', content: title },
     { name: 'twitter:description', content: description },
+    { name: 'twitter:image', content: 'https://www.bekk.christmas/og-image.jpg' },
   ]
 }
-
-export const headers = () => ({
-  'Cache-Control': 'max-age=60, stale-while-revalidate=86400',
-})
 
 const ParamsSchema = z.object({
   year: z.string().min(4).max(4),
