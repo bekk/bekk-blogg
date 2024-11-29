@@ -1,9 +1,11 @@
+import { BiUser } from 'react-icons/bi'
 import {defineType} from 'sanity'
 
 const author = defineType({
   title: 'Forfatter',
   name: 'author',
   type: 'document',
+  icon: BiUser,
   fields: [
     {
       title: 'Fullt navn',

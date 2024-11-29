@@ -1,9 +1,11 @@
+import {BiBook} from 'react-icons/bi'
 import {defineType} from 'sanity'
 
 const post = defineType({
   title: 'Innlegg',
   name: 'post',
   type: 'document',
+  icon: BiBook,
   groups: [
     {
       title: 'Innhold',
