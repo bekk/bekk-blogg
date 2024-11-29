@@ -1,4 +1,4 @@
-import type { HeadersFunction, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
+import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { useQuery } from '@sanity/react-loader'
 import { cleanControlCharacters } from 'utils/controlCharacters'
@@ -61,10 +61,6 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 
   return meta
 }
-
-export const headers: HeadersFunction = () => ({
-  'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=3600',
-})
 
 const ParamsSchema = z.object({
   year: z.string().min(4).max(4),

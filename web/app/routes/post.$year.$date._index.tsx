@@ -35,10 +35,6 @@ export const meta: MetaFunction<typeof loader> = ({ data: postsByDate }) => {
   ]
 }
 
-export const headers = () => ({
-  'Cache-Control': 'max-age=60, stale-while-revalidate=86400',
-})
-
 const ParamsSchema = z.object({
   year: z.string().min(4).max(4),
   date: z.string().min(1).max(2),

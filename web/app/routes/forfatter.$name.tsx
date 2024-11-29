@@ -1,4 +1,4 @@
-import { HeadersFunction, json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
+import { json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { useLoaderData, useNavigation } from '@remix-run/react'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { AUTHOR_WITH_POSTS_QUERY } from 'utils/sanity/queries/postQueries'
@@ -62,10 +62,6 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
     { name: 'twitter:image', content: '/og-image.png' },
   ]
 }
-
-export const headers: HeadersFunction = () => ({
-  'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=3600',
-})
 
 export default function AuthorPage() {
   const { author, posts, pagination } = useLoaderData<typeof loader>()
