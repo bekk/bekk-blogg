@@ -1,4 +1,3 @@
-import { lazy, Suspense } from 'react'
 import type { HeadersFunction, LinksFunction, LoaderFunction } from '@remix-run/node'
 import {
   isRouteErrorResponse,
@@ -15,6 +14,7 @@ import {
   useRouteError,
 } from '@remix-run/react'
 import { VisualEditing } from '@sanity/visual-editing/remix'
+import { lazy, Suspense } from 'react'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
 
@@ -138,7 +138,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           )}
 
           <Scripts />
-          <main id="content" className="tabindex-[-1]">
+          <main id="content" tabIndex={-1} className="focus:outline-none">
             {children}
           </main>
           <ScrollRestoration />
