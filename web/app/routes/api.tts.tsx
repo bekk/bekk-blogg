@@ -51,6 +51,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
   // Convert the portable text content to plain text and remove invisible characters
   const text = cleanControlCharacters([post.title, post.description, post.content].join('\n\n'))
 
+  // Create an AbortController to handle disconnection
+  const abortController = new AbortController()
+
+  // Listen for client disconnect
+  request.signal.addEventListener('abort', () => {
+    abortController.abort()
+  })
+
   try {
     const textChunks = chunkText(text)
 
@@ -58,26 +66,54 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const stream = new ReadableStream({
       async start(controller) {
         try {
-          const voice = await getVoice({ name: post.mainAuthor, preferredVoice: post.preferredVoice })
+          const voice = await getVoice({
+            name: post.mainAuthor,
+            preferredVoice: post.preferredVoice,
+          })
+          console.time('tts total')
           // Process each chunk and send it immediately
           for (const chunk of textChunks) {
+            // Check if the client has disconnected
+            if (request.signal.aborted) {
+              controller.close()
+              console.log('Client disconnected, stopping TTS generation')
+              return
+            }
+
             // Empty chunks are not allowed by OpenAI
             if (chunk.length < 1) {
               continue
             }
-            const mp3 = await openai.audio.speech.create({
-              model: 'tts-1',
-              voice,
-              input: chunk,
-            })
+            console.time('tts chunk')
+            const mp3 = await openai.audio.speech.create(
+              {
+                model: 'tts-1',
+                voice,
+                input: chunk,
+                response_format: 'mp3',
+              },
+              {
+                signal: abortController.signal, // Pass the abort signal to OpenAI requests
+              }
+            )
 
-            const audioBuffer = await mp3.arrayBuffer()
-            controller.enqueue(new Uint8Array(audioBuffer))
+            const audioStream = await mp3.arrayBuffer()
+            controller.enqueue(new Uint8Array(audioStream))
+            console.timeEnd('tts chunk')
           }
           controller.close()
+          console.timeEnd('tts total')
         } catch (error) {
+          // Don't throw error if it's an abort error
+          if (error instanceof Error && error.name === 'AbortError') {
+            controller.close()
+            return
+          }
           controller.error(error)
         }
+      },
+      cancel() {
+        abortController.abort()
       },
     })
 
@@ -85,9 +121,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       headers: {
         'Content-Type': 'audio/mpeg',
         'Transfer-Encoding': 'chunked',
-        'Accept-Ranges': 'bytes',
         'Cache-Control': 'no-cache, no-store, no-transform',
-        'Content-Disposition': 'inline',
         'X-Content-Type-Options': 'nosniff',
       },
     })
