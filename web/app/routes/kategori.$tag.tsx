@@ -52,10 +52,12 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
     { property: 'og:description', content: description },
     { property: 'og:type', content: 'website' },
     { property: 'og:site_name', content: 'Bekk Christmas' },
+    { property: 'og:image', content: '/og-image.png' },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: title },
     { name: 'twitter:description', content: description },
     { name: 'twitter:site', content: '@livetibekk' },
+    { name: 'twitter:image', content: '/og-image.png' },
   ]
 }
 
