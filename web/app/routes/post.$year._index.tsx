@@ -62,7 +62,7 @@ export default function YearRoute() {
       </Link>
       <div className="sm:px-4 grid grid-cols-[25px_auto_25px] sm:grid-cols-[50px_auto_50px] 2lg:grid-cols-[auto_auto_auto] grid-rows-[91px_auto_auto] sm:grid-rows-[142px_auto_auto] md:grid-rows-[179px_auto_auto] 2lg:grid-rows-[292px_auto_137px]">
         {/* Roof */}
-        <div className="bg-roof row-start-1 row-span-2 col-start-1 col-span-3">
+        <div className="bg-roof row-start-1 row-span-2 col-start-1 col-span-3 z-5">
           <h1 className="text-postcard-beige font-delicious text-center text-2xl sm:text-4xl md:text-5xl mt-[45px] sm:mt-[80px] md:mt-[110px] 2lg:mt-[180px] 2lg:pr-5">
             {data.year}
           </h1>
@@ -89,7 +89,7 @@ export default function YearRoute() {
         </div>
         {/* Calendar */}
         <div className="col-start-2 col-span-1 row-start-2 row-span-1">
-          <div className="grid h-full 2lg:grid-cols-[repeat(6,auto)] 2lg:grid-rows-[repeat(4,auto)] md:grid-cols-[repeat(4,auto)] md:grid-rows-[repeat(6,auto)] grid-cols-[repeat(3,auto)] grid-rows-[repeat(8,auto)] justify-center border-8 border-reindeer-brown">
+          <div className="grid h-full 2lg:grid-cols-[repeat(6,auto)] 2lg:grid-rows-[repeat(4,auto)] md:grid-cols-[repeat(4,auto)] md:grid-rows-[repeat(6,auto)] grid-cols-[repeat(3,auto)] grid-rows-[repeat(8,auto)] justify-center border-8 border-reindeer-brown bg-reindeer-brown">
             {Array.from({ length: 24 }, (_, i) => {
               const date = i + 1
               return (
@@ -123,7 +123,7 @@ export default function YearRoute() {
         </div>
         {/* Bottom */}
         <div className="bg-plank row-start-3 row-span-1 col-start-1 col-span-3 border-reindeer-brown flex justify-center flex-col md:flex-row items-center gap-8 py-6">
-          <DoorSignLink link="/archive">Se andre julekalendere</DoorSignLink>
+          <DoorSignLink link="/arkiv">Se andre julekalendere</DoorSignLink>
           <DoorSignLink link="/kategori">Se kategorier</DoorSignLink>
         </div>
       </div>

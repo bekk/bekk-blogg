@@ -33,12 +33,12 @@ export function generateSecurityHeaders() {
       'object-src': [NONE],
       'media-src': [SELF],
       'child-src': [SELF, '*.youtube.com'],
+      'frame-ancestors': ['bekk-blogg-sanity.vercel.app', 'localhost:3333'],
     },
   })
 
   return {
     'Content-Security-Policy': csp,
-    'X-Frame-Options': 'DENY',
     'X-Content-Type-Options': 'nosniff',
     'Referrer-Policy': 'strict-origin-when-cross-origin',
     'Cross-Origin-Opener-Policy': 'same-origin',
