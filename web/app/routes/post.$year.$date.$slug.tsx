@@ -40,7 +40,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
     { name: 'twitter:site', content: '@livetibekk' },
   ]
 
-  if (post.coverImage) {
+  if (post.coverImage?.asset) {
     meta.push({ property: 'og:image', content: urlFor(post.coverImage).width(1200).format('webp').url() })
     meta.push({ name: 'twitter:image', content: urlFor(post.coverImage).width(1200).format('webp').url() })
   } else {
@@ -102,7 +102,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     throw new Response('Post date and date in url do not match', { status: 404 })
   }
 
-  const imageUrl = initial.data.coverImage
+  const imageUrl = initial.data.coverImage?.asset
     ? urlFor(initial.data.coverImage).width(1200).format('webp').url()
     : undefined
 
