@@ -96,7 +96,7 @@ const POST_PROJECTION = groq`{
     title, 
     description,
     slug,
-    posts[][_ref != ^._id] -> {
+    posts[] -> {
       _id,
       title,
       availableFrom,
