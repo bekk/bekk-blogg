@@ -76,7 +76,8 @@ export const Article = ({ post }: ArticleProps) => {
                   <li key={postInSeries._id}>
                     <TextLink
                       href={postUrl(postInSeries)}
-                      className={`text-md ${postInSeries._id === post._id ? 'font-bold' : ''}`}
+                      className={`text-md ${postInSeries._id === post._id ? 'font-gt-standard-medium' : ''}`}
+                      aria-current={postInSeries._id === post._id}
                     >
                       {postInSeries.title}
                     </TextLink>
