@@ -89,7 +89,7 @@ export default function YearRoute() {
         </div>
         {/* Calendar */}
         <div className="col-start-2 col-span-1 row-start-2 row-span-1">
-          <div className="grid h-full 2lg:grid-cols-[repeat(6,auto)] 2lg:grid-rows-[repeat(4,auto)] md:grid-cols-[repeat(4,auto)] md:grid-rows-[repeat(6,auto)] grid-cols-[repeat(3,auto)] grid-rows-[repeat(8,auto)] justify-center border-8 border-reindeer-brown">
+          <div className="grid h-full 2lg:grid-cols-[repeat(6,auto)] 2lg:grid-rows-[repeat(4,auto)] md:grid-cols-[repeat(4,auto)] md:grid-rows-[repeat(6,auto)] grid-cols-[repeat(3,auto)] grid-rows-[repeat(8,auto)] justify-center border-8 border-reindeer-brown bg-reindeer-brown">
             {Array.from({ length: 24 }, (_, i) => {
               const date = i + 1
               return (
