@@ -232,6 +232,23 @@ export type SocialMediaLink = {
   url: string
 }
 
+export type Collection = {
+  _id: string
+  _type: 'collection'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  description?: string
+  posts: Array<{
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    _key: string
+    [internalGroqTypeReferenceTo]?: 'post'
+  }>
+}
+
 export type Tag = {
   _id: string
   _type: 'tag'
@@ -415,6 +432,7 @@ export type AllSanitySchemaTypes =
   | InfoBlock
   | Iframe
   | SocialMediaLink
+  | Collection
   | Tag
   | Author
   | Post

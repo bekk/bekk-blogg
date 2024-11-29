@@ -1,5 +1,6 @@
 import {SchemaTypeDefinition} from 'sanity'
 import author from './documents/author'
+import collection from './documents/collection'
 import post from './documents/post'
 import tag from './documents/tag'
 import codePen from './objects/codePen'
@@ -20,6 +21,8 @@ const schema: SchemaTypeDefinition[] = [
   post,
   author,
   tag,
+  collection,
+
   // Objects (stuff used in documents)
   socialMediaLink,
   iframe,
