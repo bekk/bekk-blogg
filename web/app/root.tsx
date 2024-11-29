@@ -105,7 +105,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const isOnCalendarPage = !!year && !date && !error
   const isOnArticleListPage =
     isOnDatePage || location.pathname.includes('/kategori/') || location.pathname.includes('/forfatter/')
-  const isInArchive = location.pathname === '/archive' && !error
+  const isInArchive = location.pathname === '/arkiv' && !error
 
   const bodyBackground = () => {
     if (isOnFrontPage || isOnDatePage || isOnArticleListPage) return `bg-wooden-table-with-cloth`
@@ -115,7 +115,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
     if (error) return 'bg-error'
     return 'bg-envelope-beige'
   }
-
   return (
     <html lang={postData?.language ?? 'nb-NO'}>
       <head>
