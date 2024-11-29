@@ -138,7 +138,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           )}
 
           <Scripts />
-          <main id="content" className="tabindex-[-1]">
+          <main id="content" tabIndex={-1} className="focus:outline-none">
             {children}
           </main>
           <ScrollRestoration />
