@@ -106,11 +106,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const isOnCalendarPage = !!year && !date && !error
   const isOnArticleListPage =
     isOnDatePage || location.pathname.includes('/kategori/') || location.pathname.includes('/forfatter/')
+  const isOnCategoryPage = location.pathname.includes('/kategori')
 
   const bodyBackground = () => {
     if (isOnFrontPage || isOnDatePage || isOnArticleListPage) return `bg-wooden-table-with-cloth`
     if (isOnArticlePage) return 'bg-wooden-table'
     if (isOnCalendarPage) return 'bg-brick-wall h-screen'
+    if (isOnCategoryPage) return 'bg-dark-wooden-table-with-green-cloth'
     if (error) return 'bg-error'
     return 'bg-envelope-beige'
   }
