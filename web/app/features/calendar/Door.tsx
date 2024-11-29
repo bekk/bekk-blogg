@@ -54,7 +54,7 @@ export const Door = ({ date, year }: DoorProps) => {
       variants={shakeAnimation}
       initial={{ x: 0 }}
       exit={{ x: 0 }}
-      className={`relative ${isHovered && isOpenable() ? 'z-10 absolute' : ''}`}
+      className={`relative ${isHovered && isOpenable() ? ' absolute' : ''}`}
     >
       <Link
         to={isOpenable() ? `/post/${year}/${date.toString().padStart(2, '0')}` : '#'}
@@ -62,11 +62,7 @@ export const Door = ({ date, year }: DoorProps) => {
         className="flex justify-center items-center border-4 border-reindeer-brown"
       >
         <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-          <div
-            className={`relative ${
-              isToday() && !isHovered ? 'z-50' : 'z-10'
-            } ${isHovered && isOpenable() ? 'absolute' : 'z-[-1]'}`}
-          >
+          <div className={`relative z-10`}>
             {isToday() && !isHovered && (
               <div className="absolute inset-0 flex justify-center items-center z-[-1]">
                 <div className="transform scale-50 mt-[-112px] ml-[28px]">
