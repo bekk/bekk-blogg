@@ -34,7 +34,7 @@ export const Door = ({ date, year }: DoorProps) => {
     shaking: {
       x: [-3, 3, -3, 3, 0],
       transition: {
-        duration: 0.5,
+        duration: 0.2,
         ease: 'easeInOut',
       },
     },
@@ -65,10 +65,10 @@ export const Door = ({ date, year }: DoorProps) => {
           <div
             className={`relative ${
               isToday() && !isHovered ? 'z-50' : 'z-10'
-            } ${isHovered && isOpenable() ? 'absolute' : 'z-[-1]'}`}
+            } ${isHovered && isOpenable() ? 'absolute' : 'z-0'}`}
           >
             {isToday() && !isHovered && (
-              <div className="absolute inset-0 flex justify-center items-center z-[-1]">
+              <div className="absolute inset-0 flex justify-center items-center z-0">
                 <div className="transform scale-50 mt-[-112px] ml-[28px]">
                   <LetterSVG />
                 </div>

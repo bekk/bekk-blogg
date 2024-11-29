@@ -73,6 +73,7 @@ export default {
       },
       colors: {
         'bekk-night': '#1f1f1f',
+        'reindeer-brown': '#714319',
         foreground: 'hsl(var(--foreground))',
         card: {
           DEFAULT: 'hsl(var(--card))',
