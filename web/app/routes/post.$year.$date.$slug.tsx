@@ -80,7 +80,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const initial = await loadQuery<POST_BY_SLUGResult>(POST_BY_SLUG, { slug }, options)
 
   const formatDate = year + '-' + '12' + '-' + date.padStart(2, '0')
-  const currentDate = new Date()
+  const currentDate = new Date(new Date().getTime() + 1000 * 60 * 60)
   const targetDate = new Date(formatDate)
   const dateNumber = parseInt(date, 10)
 

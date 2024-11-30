@@ -49,7 +49,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 
   const { preview } = await loadQueryOptions(request.headers)
   const formatDate = year + '-' + '12' + '-' + date.padStart(2, '0')
-  const currentDate = new Date()
+  const currentDate = new Date(new Date().getTime() + 1000 * 60 * 60)
 
   const dateNumber = parseInt(date, 10)
   if (!preview && (isNaN(dateNumber) || dateNumber < 1 || dateNumber > 24)) {
