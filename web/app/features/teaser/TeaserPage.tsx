@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import Countdown, { CountdownRendererFn } from 'react-countdown'
+import { CountdownRendererFn } from 'react-countdown'
 import { Link } from '@remix-run/react'
 
 import { PostPreview } from '../post-preview/PostPreview'
@@ -51,17 +51,11 @@ const NumberWithLabel = ({ number, label }: { number: number; label: string }) =
 )
 
 export const TeaserPage = () => {
-  const isClientSide = useClientSideOnly()
   return (
     <div className="flex flex-col items-center justify-center px-4 h-full pb-96">
       <div className="w-full items-center sm:max-w-4xl">
-        {isClientSide && (
-          <div className="text-lg text-postcard-beige sm:text-4xl md:text-5xl">
-            <Countdown date={`${new Date().getFullYear()}/12/01`} renderer={CountdownRenderer} />
-          </div>
-        )}
         <div className="mt-16">
-          <Link to={`post/${new Date() > new Date(new Date().setFullYear(2024, 12, 1)) ? '2024' : '2023'}`}>
+          <Link to="post/2024">
             <PostPreview
               title="Bekk.christmas"
               authors={['Bekk']}
