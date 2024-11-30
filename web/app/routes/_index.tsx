@@ -19,7 +19,7 @@ export const meta: MetaFunction = () => {
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { preview } = await loadQueryOptions(request.headers)
   const liveDate = new Date('2024-12-01')
-  const now = new Date()
+  const now = new Date(new Date().getTime() + 1000 * 60 * 60)
   const isLive = now > liveDate
   if (preview || isLive) {
     return redirect('/post/2024')
