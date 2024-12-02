@@ -70,7 +70,7 @@ export default function AuthorPage() {
   if (!author) {
     return (
       <div className="flex flex-col items-center lg:mb-12">
-        <h1 className="md:text-center mb-0">Fant ikke den forfatteren</h1>
+        <h1 className="md:text-center mb-0">Fant ikke forfatteren</h1>
       </div>
     )
   }

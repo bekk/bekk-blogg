@@ -60,7 +60,7 @@ export function ErrorBoundary() {
           break
         case 404:
           if (error.data === 'Author not found') {
-            title = 'Fant ikke den forfatteren'
+            title = 'Denne forfatteren finnes ikke'
           } else if (error.data === 'No category with this name') {
             title = 'Denne kategorien finnes ikke'
           } else {
