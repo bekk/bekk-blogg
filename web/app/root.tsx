@@ -105,8 +105,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const isOnDatePage = !!date && !slug && !error
   const isOnCalendarPage = !!year && !date && !error
   const isOnArticleListPage =
-    isOnDatePage || location.pathname.includes('/kategori/') || location.pathname.includes('/forfatter/')
-  const isOnCategoryPage = location.pathname.includes('/kategori')
+    (isOnDatePage || location.pathname.includes('/kategori/') || location.pathname.includes('/forfatter/')) && !error
+  const isOnCategoryPage = location.pathname.includes('/kategori') && !error
   const isInArchive = location.pathname === '/arkiv' && !error
 
   const bodyBackground = () => {
