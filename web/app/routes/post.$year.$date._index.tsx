@@ -83,7 +83,7 @@ export default function Index() {
       <h1 className="mb-4 self-start pl-4 md:pl-0 text-4xl md:text-5xl text-postcard-beige sm:self-center">
         {parseInt(date) < 10 ? date.replace('0', '') : date}. desember
       </h1>
-      <p className="flex justify-center mb-12 text-white ">Totalt {posts.length} innlegg</p>
+      <p className="self-start sm:self-center pl-4 mb-12 text-white ">Totalt {posts.length} innlegg</p>
       <PostPreviewList posts={posts} />
       <DayNavigation day={Number(date)} year={Number(year)} />
     </div>
