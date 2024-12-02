@@ -33,6 +33,7 @@ export function generateSecurityHeaders() {
         SELF,
         '*.youtube.com',
         'codesandbox.io',
+        'codepen.io',
         'player.vimeo.com',
         'anchor.fm',
         '*.spotify.com',
