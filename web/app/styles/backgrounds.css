@@ -62,7 +62,7 @@
 }
 
 .bg-dark-wooden-table-with-green-cloth {
-  background-image: url('../../public/images/bg_cloth_green_2x.svg'), url('../../public/images/bg_wood_dark.svg');
+  background-image: url('/images/bg_cloth_green_2x.svg'), url('/images/bg_wood_dark.svg');
   background-size:
     auto 300px,
     100%;
