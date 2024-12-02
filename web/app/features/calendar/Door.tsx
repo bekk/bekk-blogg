@@ -3,10 +3,10 @@ import { Link } from '@remix-run/react'
 import { motion } from 'framer-motion'
 
 import { closedDoorSvg } from './doorsSVG/ClosedDoorSVG'
+import { LetterSVG } from './doorsSVG/LetterSVG'
 import { openDoorSvg } from './doorsSVG/OpenDoorSVG'
 import { todaysDoor } from './doorsSVG/TodaysDoorSVG'
 
-import { LetterSVG } from '~/features/calendar/doorsSVG/LetterSVG'
 import useMediaQuery from '~/hooks/useMediaQuery'
 
 type DoorProps = {
@@ -56,6 +56,13 @@ export const Door = ({ date, year }: DoorProps) => {
       exit={{ x: 0 }}
       className={`relative ${isHovered && isOpenable() ? ' absolute' : ''}`}
     >
+      {isToday() && !isHovered && (
+        <div className="absolute inset-0 flex justify-center items-center z-[1]">
+          <div className="transform scale-50 mt-[-112px] ml-[28px]">
+            <LetterSVG />
+          </div>
+        </div>
+      )}
       <Link
         to={isOpenable() ? `/post/${year}/${date.toString().padStart(2, '0')}` : '#'}
         key={date}
@@ -64,13 +71,6 @@ export const Door = ({ date, year }: DoorProps) => {
       >
         <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
           <div className={`relative z-10`}>
-            {isToday() && !isHovered && (
-              <div className="absolute inset-0 flex justify-center items-center z-[-1]">
-                <div className="transform scale-50 mt-[-112px] ml-[28px]">
-                  <LetterSVG />
-                </div>
-              </div>
-            )}
             {isHovered && isOpenable()
               ? smallScreen
                 ? isToday()
