@@ -3,8 +3,8 @@ import { Link, useLoaderData } from '@remix-run/react'
 import { motion } from 'framer-motion'
 import { z } from 'zod'
 
-import { DoorSignLink } from '~/components/DoorSignLink'
 import { BekkLogo } from '~/features/article/BekkLogo'
+import { BottomPlank } from '~/features/calendar/BottomPlank'
 import { Door } from '~/features/calendar/Door'
 import { Gift2SVG } from '~/features/calendar/giftsSVG/Gift2SVG'
 import { Gift3SVG } from '~/features/calendar/giftsSVG/Gift3SVG'
@@ -56,11 +56,11 @@ export default function YearRoute() {
   const data = useLoaderData<{ year: string }>()
 
   return (
-    <div className="2lg:h-screen flex justify-center items-center">
+    <div className="2lg:h-screen flex flex-col justify-end items-center min-h-screen">
       <Link to="/post/2024" className="absolute top-[20px] md:top-[40px] right-[20px] md:right-[40px]">
         <BekkLogo className="h-auto w-10 md:auto md:w-16" />
       </Link>
-      <div className="sm:px-4 grid grid-cols-[25px_auto_25px] sm:grid-cols-[50px_auto_50px] 2lg:grid-cols-[auto_auto_auto] grid-rows-[91px_auto_auto] sm:grid-rows-[142px_auto_auto] md:grid-rows-[179px_auto_auto] 2lg:grid-rows-[292px_auto_137px]">
+      <div className="sm:px-4 grid grid-cols-[25px_auto_25px] sm:grid-cols-[50px_auto_50px] 2lg:grid-cols-[auto_auto_auto] grid-rows-[91px_auto] sm:grid-rows-[142px_auto] md:grid-rows-[179px_auto] 2lg:grid-rows-[292px_auto]">
         {/* Roof */}
         <div className="bg-roof row-start-1 row-span-2 col-start-1 col-span-3 z-5">
           <h1 className="text-postcard-beige font-delicious text-center text-2xl sm:text-4xl md:text-5xl mt-[45px] sm:mt-[80px] md:mt-[110px] 2lg:mt-[180px] 2lg:pr-5">
@@ -121,10 +121,11 @@ export default function YearRoute() {
             <Gift2SVG />
           </motion.div>
         </div>
-        {/* Bottom */}
-        <div className="bg-plank row-start-3 row-span-1 col-start-1 col-span-3 border-reindeer-brown flex justify-center flex-col md:flex-row items-center gap-8 py-6">
-          <DoorSignLink link="/arkiv">Se andre julekalendere</DoorSignLink>
-          <DoorSignLink link="/kategori">Se kategorier</DoorSignLink>
+      </div>
+      {/* Bottom plank*/}
+      <div className="w-full">
+        <div id="bottom" className={'relative w-screen left-1/2 right-1/2 transform -translate-x-1/2'}>
+          <BottomPlank />
         </div>
       </div>
     </div>
