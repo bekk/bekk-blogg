@@ -11,7 +11,7 @@ export const DayNavigation = ({ day, year }: DayNavigationProps) => {
         <Link
           to={`/post/${year}/${day - 1}`}
           prefetch="intent"
-          className="group text-bekk-night hover:text-reindeer-brown"
+          className="group text-bekk-night hover:text-reindeer-brown styled-box-navigation px-4 py-1"
         >
           <span className="group-hover:-translate-x-1 group-hover:transition-all inline-block ">&larr;</span> {day - 1}.
           desember
@@ -21,7 +21,7 @@ export const DayNavigation = ({ day, year }: DayNavigationProps) => {
         <Link
           to={`/post/${year}/${day + 1}`}
           prefetch="intent"
-          className="group text-bekk-night hover:text-reindeer-brown"
+          className="group text-bekk-night hover:text-reindeer-brown styled-box-navigation px-4 py-1"
         >
           {day + 1}. desember{' '}
           <span className="group-hover:translate-x-1 group-hover:transition-all inline-block">&rarr;</span>
