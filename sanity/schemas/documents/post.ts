@@ -167,6 +167,14 @@ const post = defineType({
       group: 'author',
     },
     {
+      title: 'Serie',
+      description: 'Hvis innlegget er en del av en serie, velg hvilken',
+      name: 'series',
+      type: 'reference',
+      to: [{type: 'series'}],
+      group: 'author',
+    },
+    {
       title: 'Søkbare nøkkelord',
       name: 'keywords',
       description: 'Nøkkelord som hjelper å søke seg fram til innlegget',

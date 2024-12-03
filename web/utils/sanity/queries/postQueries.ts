@@ -91,12 +91,12 @@ const POST_PROJECTION = groq`{
     name
   },
   relatedLinks,
-  "series": *[_type == "series" && references(^._id)][0] {
+  series->{
     _id, 
     title, 
     description,
     slug,
-    posts[] -> {
+    "posts": *[_type == "post" && references(^._id)] | order(availableFrom asc) {
       _id,
       title,
       availableFrom,
