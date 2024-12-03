@@ -8,6 +8,7 @@ import { BottomPlank } from '~/features/calendar/BottomPlank'
 import { Door } from '~/features/calendar/Door'
 import { Gift2SVG } from '~/features/calendar/giftsSVG/Gift2SVG'
 import { Gift3SVG } from '~/features/calendar/giftsSVG/Gift3SVG'
+import { SnowAnimation } from '~/features/calendar/SnowAnimation'
 
 const ParamsSchema = z.object({
   year: z.string().min(4).max(4),
@@ -57,6 +58,7 @@ export default function YearRoute() {
 
   return (
     <div className="2lg:h-screen flex flex-col justify-end items-center min-h-screen">
+      <SnowAnimation />
       <Link to="/post/2024" className="absolute top-[20px] md:top-[40px] right-[20px] md:right-[40px]">
         <BekkLogo className="h-auto w-10 md:auto md:w-16" />
       </Link>
