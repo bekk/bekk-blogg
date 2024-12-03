@@ -2084,6 +2084,13 @@
           "type": "string"
         },
         "optional": true
+      },
+      "shouldListNonPublishedContent": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "boolean"
+        },
+        "optional": true
       }
     }
   },

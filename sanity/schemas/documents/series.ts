@@ -27,5 +27,13 @@ export default defineType({
       title: 'Beskrivelse',
       type: 'text',
     }),
+    defineField({
+      name: 'shouldListNonPublishedContent',
+      title: 'Vis ikke-publisert innhold?',
+      description:
+        'Hvis du sier at ja, vil ikke-publisert innhold også listes opp (men ikke lenket til).',
+      type: 'boolean',
+      initialValue: false,
+    }),
   ],
 })

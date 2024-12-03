@@ -96,11 +96,13 @@ const POST_PROJECTION = groq`{
     title, 
     description,
     slug,
+    shouldListNonPublishedContent,
     "posts": *[_type == "post" && references(^._id) && availableFrom < now() && !(availableFrom match "*25")] | order(availableFrom asc) {
       _id,
       title,
       availableFrom,
       slug,
+      "isAvailable": availableFrom < now()
     }
   }
 }`

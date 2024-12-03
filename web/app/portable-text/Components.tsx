@@ -1,6 +1,7 @@
 import React from 'react'
 import type { PortableTextMarkComponentProps, PortableTextReactComponents } from '@portabletext/react'
 import { PortableTextLink } from '@portabletext/types'
+import { cleanControlCharacters } from 'utils/controlCharacters'
 
 import {
   Code,
@@ -48,16 +49,19 @@ export const components: Partial<PortableTextReactComponents> = {
       withSpacing(<QuoteBlock quote={props.value.content} author={props.value.author} />),
   },
   block: {
-    h1: ({ children }: { children?: React.ReactNode }) => <h1 className="mb-6 mt-12">{children}</h1>,
+    h1: ({ children }: { children?: React.ReactNode }) => <h1 className="mb-6 mt-12 leading-none">{children}</h1>,
     h2: ({ children }: { children?: React.ReactNode }) => <h2 className="mb-6 mt-12">{children}</h2>,
-    h3: ({ children }: { children?: React.ReactNode }) => <h3 className="mb-6 mt-10 ">{children}</h3>,
+    h3: ({ children }: { children?: React.ReactNode }) => <h3 className="mb-6 mt-10">{children}</h3>,
     h4: ({ children }: { children?: React.ReactNode }) => <h4 className="mb-6 mt-10">{children}</h4>,
     normal: ({ children }: { children?: React.ReactNode }) => {
       const arrayChildren = React.Children.toArray(children)
-      if (!arrayChildren.length || arrayChildren.join('') === '') {
-        return <br />
+      arrayChildren.forEach((segment) => cleanControlCharacters(segment.toString()))
+      const regex = /[A-Za-z']+/gm
+      const matches = [...arrayChildren.join('').matchAll(regex)]
+      if (!arrayChildren.length || arrayChildren.join('') === '' || matches.length == 0) {
+        return null
       }
-      return <p className="mb-4 mt-6">{children}</p>
+      return <p className="mb-4 mt-6">{arrayChildren}</p>
     },
   },
   list: {
