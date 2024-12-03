@@ -27,12 +27,5 @@ export default defineType({
       title: 'Beskrivelse',
       type: 'text',
     }),
-    defineField({
-      name: 'posts',
-      title: 'Innlegg',
-      type: 'array',
-      of: [{type: 'reference', to: [{type: 'post'}]}],
-      validation: (rule) => rule.required().min(2),
-    }),
   ],
 })
