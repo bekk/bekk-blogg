@@ -16,10 +16,10 @@ export async function loadQueryOptions(
   }
 
   return {
-    preview,
+    preview: false,
     options: {
-      perspective: preview ? 'previewDrafts' : 'published',
-      stega: preview ? { enabled: true, studioUrl: process.env.SANITY_STUDIO_URL } : undefined,
+      perspective: 'published', // preview ? 'previewDrafts' : 'published',
+      //stega: preview ? { enabled: true, studioUrl: process.env.SANITY_STUDIO_URL } : undefined,
     },
   }
 }

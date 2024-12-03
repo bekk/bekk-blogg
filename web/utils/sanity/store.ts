@@ -10,11 +10,11 @@ if (!token) {
 
 const clientWithToken = writeClient.withConfig({
   token,
-  perspective: 'previewDrafts',
-  stega: {
-    enabled: true,
-    studioUrl: process.env.SANITY_STUDIO_URL,
-  },
+  perspective: 'published', //'previewDrafts',
+  //stega: {
+  //  enabled: true,
+  //  studioUrl: process.env.SANITY_STUDIO_URL,
+  //},
 })
 
 queryStore.setServerClient(clientWithToken)
