@@ -49,6 +49,7 @@ export default {
       },
       screens: {
         sm: '640px',
+        '2sm': '832px', // for spotify embed
         md: '900px',
         lg: '1024px',
         '2lg': '1130px',
