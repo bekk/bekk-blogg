@@ -1,6 +1,6 @@
-import { Fragment, ReactNode } from 'react'
 import { PortableText } from '@portabletext/react'
 import { Link, useNavigation } from '@remix-run/react'
+import { Fragment, ReactNode } from 'react'
 import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readingTime'
 import { POST_BY_SLUGResult, SanityImageAsset } from 'utils/sanity/types/sanity.types'
@@ -78,13 +78,17 @@ export const Article = ({ post }: ArticleProps) => {
               <ol className="list-disc ml-4 mt-8">
                 {post.series.posts.map((postInSeries) => (
                   <li key={postInSeries._id}>
-                    <TextLink
-                      href={postUrl(postInSeries)}
-                      className={`text-md ${postInSeries._id === post._id ? 'font-gt-standard-medium' : ''}`}
-                      aria-current={postInSeries._id === post._id}
-                    >
-                      {postInSeries.title}
-                    </TextLink>
+                    {postInSeries.isAvailable ? (
+                      <TextLink
+                        href={postUrl(postInSeries)}
+                        className={`text-md ${postInSeries._id === post._id ? 'font-gt-standard-medium' : ''}`}
+                        aria-current={postInSeries._id === post._id}
+                      >
+                        {postInSeries.title}
+                      </TextLink>
+                    ) : (
+                      <span className="text-md text-gray-500">{postInSeries.title}</span>
+                    )}
                   </li>
                 ))}
               </ol>

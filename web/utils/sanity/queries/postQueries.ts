@@ -100,7 +100,8 @@ const POST_PROJECTION = groq`{
       _id,
       title,
       availableFrom,
-      slug
+      slug,
+      "isAvailable": availableFrom < now()
     }
   }
 }`
