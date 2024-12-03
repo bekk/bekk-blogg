@@ -1,6 +1,6 @@
+import { Fragment, ReactNode } from 'react'
 import { PortableText } from '@portabletext/react'
 import { Link, useNavigation } from '@remix-run/react'
-import { Fragment, ReactNode } from 'react'
 import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readingTime'
 import { POST_BY_SLUGResult, SanityImageAsset } from 'utils/sanity/types/sanity.types'
@@ -76,17 +76,25 @@ export const Article = ({ post }: ArticleProps) => {
               <summary className="text-2xl font-bold mb-2">{post.series.title}</summary>
               <p className="text-md">{post.series.description}</p>
               <ol className="list-disc ml-4 mt-8">
-                {post.series.posts.map((postInSeries) => (
-                  <li key={postInSeries._id}>
-                    <TextLink
-                      href={postUrl(postInSeries)}
-                      className={`text-md ${postInSeries._id === post._id ? 'font-gt-standard-medium' : ''}`}
-                      aria-current={postInSeries._id === post._id}
-                    >
-                      {postInSeries.title}
-                    </TextLink>
-                  </li>
-                ))}
+                {post.series.posts
+                  .filter((postInSeries) =>
+                    post.series?.shouldListNonPublishedContent ? true : postInSeries.isAvailable
+                  )
+                  .map((postInSeries) => (
+                    <li key={postInSeries._id}>
+                      {postInSeries.isAvailable ? (
+                        <TextLink
+                          href={postUrl(postInSeries)}
+                          className={`text-md ${postInSeries._id === post._id ? 'font-gt-standard-medium' : ''}`}
+                          aria-current={postInSeries._id === post._id}
+                        >
+                          {postInSeries.title}
+                        </TextLink>
+                      ) : (
+                        <span className="text-md">{postInSeries.title}</span>
+                      )}
+                    </li>
+                  ))}
               </ol>
             </details>
           </div>
