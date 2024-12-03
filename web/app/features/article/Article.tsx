@@ -1,6 +1,6 @@
-import { Fragment, ReactNode } from 'react'
 import { PortableText } from '@portabletext/react'
 import { Link, useNavigation } from '@remix-run/react'
+import { Fragment, ReactNode } from 'react'
 import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readingTime'
 import { POST_BY_SLUGResult, SanityImageAsset } from 'utils/sanity/types/sanity.types'
@@ -69,7 +69,7 @@ export const Article = ({ post }: ArticleProps) => {
         {post.type === 'article' && (
           <AudioPlayer src={`/api/tts?id=${post._id}`} slug={post.slug?.current ?? 'unknown'} />
         )}
-        {post.series && (
+        {post.series && post.series.posts.length > 1 && (
           <div className="p-2 bg-primary-foreground text-black rounded-sm">
             <div className="bg-red-600 text-sm text-white rounded-sm uppercase w-fit py-1 px-4 mb-4">Serie</div>
             <details>
