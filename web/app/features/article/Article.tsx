@@ -24,6 +24,12 @@ export const Article = ({ post }: ArticleProps) => {
   if (!post) {
     return null
   }
+  const shouldShowSeriesBlock =
+    post.series &&
+    post.series.posts.length > 1 &&
+    (post.series.shouldListNonPublishedContent
+      ? true
+      : post.series.posts.every((postInSeries) => postInSeries.isAvailable))
   return (
     <div className="px-6 sm:grid-cols-[1fr_2fr] md:grid md:grid-rows-[auto_auto] md:gap-x-12 xl:gap-x-24 md:gap-y-6 md:pl-10 xl:pl-20 pb-8 md:pb-16">
       <div className="meta col-start-1 col-end-1 row-start-2 row-end-2 mb-8 md:min-w-[230px] lg:min-w-[240px] 2lg:min-w-[250px]">
@@ -69,14 +75,14 @@ export const Article = ({ post }: ArticleProps) => {
         {post.type === 'article' && (
           <AudioPlayer src={`/api/tts?id=${post._id}`} slug={post.slug?.current ?? 'unknown'} />
         )}
-        {post.series && post.series.posts.length > 1 && (
+        {shouldShowSeriesBlock && (
           <div className="p-2 bg-primary-foreground text-black rounded-sm">
             <div className="bg-red-600 text-sm text-white rounded-sm uppercase w-fit py-1 px-4 mb-4">Serie</div>
             <details>
-              <summary className="text-2xl font-bold mb-2">{post.series.title}</summary>
-              <p className="text-md">{post.series.description}</p>
+              <summary className="text-2xl font-bold mb-2">{post.series?.title}</summary>
+              <p className="text-md">{post.series?.description}</p>
               <ol className="list-disc ml-4 mt-8">
-                {post.series.posts
+                {post.series?.posts
                   .filter((postInSeries) =>
                     post.series?.shouldListNonPublishedContent ? true : postInSeries.isAvailable
                   )
