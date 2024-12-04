@@ -1,8 +1,6 @@
 import { LoaderFunctionArgs } from '@vercel/remix'
 import OpenAI from 'openai'
 import { cleanControlCharacters } from 'utils/controlCharacters'
-import { ARTICLE_CONTENT_BY_ID } from 'utils/sanity/queries/postQueries'
-import { readClient } from 'utils/sanity/sanity.server'
 import { ARTICLE_CONTENT_BY_IDResult } from 'utils/sanity/types/sanity.types'
 
 const openai = new OpenAI({
@@ -44,7 +42,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     throw new Response('Missing id parameter', { status: 400 })
   }
 
-  const post = await readClient.fetch<ARTICLE_CONTENT_BY_IDResult>(ARTICLE_CONTENT_BY_ID, { id })
+  const post = await getSanityContentTheOldFashionedWay(id)
 
   if (!post) {
     throw new Response('Post not found', { status: 404 })
@@ -160,4 +158,14 @@ const getVoice = async ({ name, preferredVoice }: GetVoiceArgs) => {
   })
   const gender = response.choices[0].message.content
   return gender === 'male' ? 'onyx' : 'nova'
+}
+
+const getSanityContentTheOldFashionedWay = async (id: string) => {
+  const response = await fetch(`
+https://ah2n1vfr.api.sanity.io/v2024-12-04/data/query/bekk-blogg-prod?query=*%5B_type+%3D%3D+%22post%22+%26%26+type+%3D%3D+%22article%22+%26%26+_id+%3D%3D+%24id%5D%5B0%5D+%7B+%0A++title%2C+%0A++%22description%22%3A+pt%3A%3Atext%28description%29%2C+%0A++%22content%22%3A+pt%3A%3Atext%28content%29%2C+%0A++%22mainAuthor%22%3A+authors%5B0%5D-%3EfullName%2C%0A++%22preferredVoice%22%3A+authors%5B0%5D-%3EpreferredVoice%0A++%7D&%24id=%22${id}%22&perspective=published`)
+  if (response.ok) {
+    const data = await response.json()
+    return data.result as ARTICLE_CONTENT_BY_IDResult
+  }
+  return null
 }
