@@ -32,9 +32,9 @@ function chunkText(text: string, chunkSize: number = 500): string[] {
   return chunks
 }
 
-// export const config = {
-//   runtime: 'edge',
-// }
+export const config = {
+  runtime: 'edge',
+}
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url)
