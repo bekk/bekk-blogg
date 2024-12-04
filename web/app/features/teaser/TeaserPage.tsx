@@ -1,10 +1,18 @@
+import { useEffect, useState } from 'react'
 import Countdown, { CountdownRendererFn } from 'react-countdown'
 import { Link } from '@remix-run/react'
 
 import { PostPreview } from '../post-preview/PostPreview'
 
 import { LinkToArchive } from '~/components/LinkToArchive'
-import useClientSideOnly from '~/hooks/useClientSideOnly'
+
+const useClientSideOnly = () => {
+  const [isClientSide, setIsClientSide] = useState(false)
+  useEffect(() => {
+    setIsClientSide(true)
+  }, [])
+  return isClientSide
+}
 
 interface CountdownRendererFnProps {
   days: number
