@@ -111,7 +111,7 @@ export const Article = ({ post }: ArticleProps) => {
       </div>
       <div className="flex flex-col col-start-2 col-end-2 row-start-2 row-end-2 max-md:max-w-screen-xl max-lg:max-w-[475px] max-2lg:max-w-[550px] 2lg:max-w-[675px] xl:pr-10 xl:max-w-3xl 2xl:max-w-4xl">
         {post?.description ? (
-          <div className="text-xl">
+          <div className="text-xl remove-margin">
             <PortableText value={post.description} components={components} />
           </div>
         ) : null}
@@ -141,7 +141,7 @@ export const Article = ({ post }: ArticleProps) => {
           </div>
         )}
         {post.content && (
-          <div className="leading-8">
+          <div className="remove-margin leading-8">
             <PortableText value={post.content} components={components} />
           </div>
         )}
