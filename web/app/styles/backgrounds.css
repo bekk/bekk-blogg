@@ -32,7 +32,7 @@
 .bg-wooden-table-with-cloth {
   background-image: url('../../images/bg_cloth.svg'), url('../../images/bg_wood.svg');
   background-size:
-    auto 45vh,
+    auto max(45vh, 500px),
     100%;
   background-position:
     top center,
