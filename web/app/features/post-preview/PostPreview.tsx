@@ -32,7 +32,7 @@ export const PostPreview = ({
   podcastLength,
   link,
 }: PostPreviewProps) => {
-  const showReadingTime = wordCount !== null && podcastLength === null
+  const showReadingTime = wordCount !== null || podcastLength !== null
   const content = (
     <motion.div
       className="striped-frame py-6 px-6 sm:p-7"
