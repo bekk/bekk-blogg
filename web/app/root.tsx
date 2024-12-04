@@ -40,7 +40,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export const headers: HeadersFunction = () => ({
   ...generateSecurityHeaders(),
-  'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=3600',
+  // 1 hour max-age, 2 hours s-maxage, 1 month stale-while-revalidate, 1 month stale-if-error
+  'Cache-Control': 'public, max-age=3600, s-maxage=7200, stale-while-revalidate=2592000, stale-if-error=2592000',
 })
 
 export function ErrorBoundary() {
