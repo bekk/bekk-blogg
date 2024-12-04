@@ -14,6 +14,7 @@ const useValidatedImageUrl = (image: NonNullable<POST_BY_SLUGResult>['coverImage
   const [validatedUrl, setValidatedUrl] = useState<string | null>(null)
 
   useEffect(() => {
+    if (!image) return
     const validateUrl = async () => {
       const url = image?.asset
         ? urlFor(image.asset as SanityAsset)
