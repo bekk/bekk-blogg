@@ -57,7 +57,7 @@ export const Door = ({ date, year }: DoorProps) => {
       className={`relative ${isHovered && isOpenable() ? ' absolute' : ''}`}
     >
       {isToday() && !isHovered && (
-        <div className="absolute inset-0 flex justify-center items-center z-[1]">
+        <div className="absolute inset-0 flex justify-center items-center z-[10]">
           <div className="transform scale-50 mt-[-112px] ml-[28px]">
             <LetterSVG />
           </div>
