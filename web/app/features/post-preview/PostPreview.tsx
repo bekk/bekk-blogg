@@ -76,7 +76,7 @@ export const PostPreview = ({
           )}
           {showReadingTime && (
             <>
-              {type == 'article' ? 'Artikkel' : type == 'podcast' ? 'Podcast' : 'Video'}{' '}
+              {type == 'article' ? 'Artikkel' : type == 'podcast' ? 'Podkast' : 'Video'}{' '}
               {podcastLength ? ` (${podcastLength} min)` : wordCount ? ` (${readingTime(wordCount)})` : null}
               <div className="sm:mb-7 border-b border-bekk-night pb-1 mb-3" />
             </>
