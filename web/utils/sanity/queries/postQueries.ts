@@ -108,15 +108,6 @@ const POST_PROJECTION = groq`{
   }
 }`
 export const POST_BY_SLUG = defineQuery(`*[_type == "post" && slug.current == $slug][0]${POST_PROJECTION}`)
-export const ARTICLE_CONTENT_BY_ID = defineQuery(
-  `*[_type == "post" && type == "article" && _id == $id][0] { 
-  title, 
-  "description": pt::text(description), 
-  "content": pt::text(content), 
-  "mainAuthor": authors[0]->fullName,
-  "preferredVoice": authors[0]->preferredVoice
-  }`
-)
 export const POSTS_BY_YEAR_AND_DATE = defineQuery(
   `*[_type == "post" && availableFrom == $date && (length(string::split(pt::text(content), ' ')) > 0 || podcastLength != null)] | order(priority desc) ${POST_PREVIEW_PROJECTION}`
 )
