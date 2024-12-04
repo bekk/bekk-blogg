@@ -117,7 +117,7 @@ export const ARTICLE_CONTENT_BY_ID = defineQuery(
   }`
 )
 export const POSTS_BY_YEAR_AND_DATE = defineQuery(
-  `*[_type == "post" && availableFrom == $date] | order(priority desc) ${POST_PREVIEW_PROJECTION}`
+  `*[_type == "post" && availableFrom == $date && (length(string::split(pt::text(content), ' ')) > 0 || podcastLength != null)] | order(priority desc) ${POST_PREVIEW_PROJECTION}`
 )
 export const ALL_CATEGORIES = defineQuery(`*[_type == "tag"] | order(name asc)`)
 export const TAG_WITH_POSTS_QUERY = defineQuery(`{
