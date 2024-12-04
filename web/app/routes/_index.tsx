@@ -1,4 +1,4 @@
-import { type LoaderFunctionArgs, type MetaFunction, redirect } from '@remix-run/node'
+import { type LoaderFunctionArgs, type MetaFunction, redirect } from '@vercel/remix'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 
 import { TeaserPage } from '~/features/teaser/TeaserPage'

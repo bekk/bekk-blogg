@@ -1,9 +1,8 @@
-import { LoaderFunctionArgs } from '@remix-run/node'
+import { LoaderFunctionArgs } from '@vercel/remix'
 import OpenAI from 'openai'
 import { cleanControlCharacters } from 'utils/controlCharacters'
-import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { ARTICLE_CONTENT_BY_ID } from 'utils/sanity/queries/postQueries'
-import { loadQuery } from 'utils/sanity/store'
+import { readClient } from 'utils/sanity/sanity.server'
 import { ARTICLE_CONTENT_BY_IDResult } from 'utils/sanity/types/sanity.types'
 
 const openai = new OpenAI({
@@ -33,6 +32,10 @@ function chunkText(text: string, chunkSize: number = 500): string[] {
   return chunks
 }
 
+// export const config = {
+//   runtime: 'edge',
+// }
+
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url)
   const id = url.searchParams.get('id')
@@ -41,8 +44,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     throw new Response('Missing id parameter', { status: 400 })
   }
 
-  const { options } = await loadQueryOptions(request.headers)
-  const { data: post } = await loadQuery<ARTICLE_CONTENT_BY_IDResult>(ARTICLE_CONTENT_BY_ID, { id }, options)
+  const post = await readClient.fetch<ARTICLE_CONTENT_BY_IDResult>(ARTICLE_CONTENT_BY_ID, { id })
 
   if (!post) {
     throw new Response('Post not found', { status: 404 })
@@ -70,7 +72,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
             name: post.mainAuthor,
             preferredVoice: post.preferredVoice,
           })
-          console.time('tts total')
           // Process each chunk and send it immediately
           for (const chunk of textChunks) {
             // Check if the client has disconnected
@@ -84,7 +85,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
             if (chunk.length < 1) {
               continue
             }
-            console.time('tts chunk')
             const mp3 = await openai.audio.speech.create(
               {
                 model: 'tts-1',
@@ -99,10 +99,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
             const audioStream = await mp3.arrayBuffer()
             controller.enqueue(new Uint8Array(audioStream))
-            console.timeEnd('tts chunk')
           }
           controller.close()
-          console.timeEnd('tts total')
         } catch (error) {
           // Don't throw error if it's an abort error
           if (error instanceof Error && error.name === 'AbortError') {
@@ -120,6 +118,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     return new Response(stream, {
       headers: {
         'Content-Type': 'audio/mpeg',
+        Connection: 'keep-alive',
         'Transfer-Encoding': 'chunked',
         'Cache-Control': 'no-cache, no-store, no-transform',
         'X-Content-Type-Options': 'nosniff',

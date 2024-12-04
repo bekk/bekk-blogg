@@ -1,5 +1,5 @@
-import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { Link, useLoaderData } from '@remix-run/react'
+import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { motion } from 'framer-motion'
 import { z } from 'zod'
 

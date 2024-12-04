@@ -1,5 +1,5 @@
-import { MetaFunction } from '@remix-run/node'
 import { Link } from '@remix-run/react'
+import { MetaFunction } from '@vercel/remix'
 
 import { SnowAnimation } from '~/features/calendar/SnowAnimation'
 

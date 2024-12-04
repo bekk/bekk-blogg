@@ -1,5 +1,5 @@
-import { json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
+import { json, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'
 import { z } from 'zod'

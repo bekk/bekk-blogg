@@ -1,5 +1,5 @@
-import { type ActionFunction, json, type LoaderFunctionArgs, redirect } from '@remix-run/node'
 import { validatePreviewUrl } from '@sanity/preview-url-secret'
+import { type ActionFunction, json, type LoaderFunctionArgs, redirect } from '@vercel/remix'
 import { readClient } from 'utils/sanity/sanity.server'
 import { commitSession, destroySession, getSession } from 'utils/sessions'
 

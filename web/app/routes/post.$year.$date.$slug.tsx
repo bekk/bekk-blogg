@@ -1,6 +1,6 @@
-import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { useQuery } from '@sanity/react-loader'
+import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { z } from 'zod'

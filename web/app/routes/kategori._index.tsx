@@ -1,5 +1,5 @@
-import { json, MetaFunction } from '@remix-run/node' // Ensure to use json here
 import { Link, useLoaderData, useNavigation } from '@remix-run/react'
+import { json, MetaFunction } from '@vercel/remix' // Ensure to use json here
 
 import { ALL_CATEGORIES } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'

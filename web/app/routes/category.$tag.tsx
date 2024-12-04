@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, redirect } from '@remix-run/node'
+import { LoaderFunctionArgs, redirect } from '@vercel/remix'
 
 export async function loader({ params }: LoaderFunctionArgs) {
   return redirect(`/kategori/${params.tag}`, {
