@@ -97,7 +97,7 @@ const POST_PROJECTION = groq`{
     description,
     slug,
     shouldListNonPublishedContent,
-    "posts": *[_type == "post" && references(^._id)] | order(availableFrom asc) {
+    "posts": *[_type == "post" && references(^._id) && availableFrom < now() && !(availableFrom match "*25")] | order(availableFrom asc) {
       _id,
       title,
       availableFrom,
@@ -124,12 +124,14 @@ export const TAG_WITH_POSTS_QUERY = defineQuery(`{
   "posts": *[
     _type == "post" && 
     $t in tags[]->.slug &&
-    availableFrom < now()
-  ][$start...$end] | order(availableFrom desc) ${POST_PREVIEW_PROJECTION},
+    availableFrom < now() && 
+    !(availableFrom match "*25")
+  ] | order(availableFrom desc)[$start...$end] ${POST_PREVIEW_PROJECTION},
   "totalCount": count(*[
     _type == "post" && 
     $t in tags[]->.slug &&
-    availableFrom < now()
+    availableFrom < now()&& 
+    !(availableFrom match "*25")
   ]),
   "tag": *[_type == "tag" && slug == $t][0] {
     name,
@@ -141,12 +143,14 @@ export const AUTHOR_WITH_POSTS_QUERY = defineQuery(`{
   "posts": *[
     _type == "post" && 
     $slug in authors[]->slug.current && 
-    availableFrom < now()
-  ][$start...$end] | order(availableFrom desc) ${POST_PREVIEW_PROJECTION},
+    availableFrom < now() && 
+    !(availableFrom match "*25")
+  ] | order(availableFrom desc)[$start...$end] ${POST_PREVIEW_PROJECTION},
   "totalCount": count(*[
     _type == "post" && 
     $slug in authors[]->slug.current && 
-    availableFrom < now()
+    availableFrom < now() && 
+    !(availableFrom match "*25")
   ]),
   "author": *[_type == "author" && slug.current == $slug][0] {
     fullName,
@@ -156,7 +160,8 @@ export const AUTHOR_WITH_POSTS_QUERY = defineQuery(`{
 
 export const RSS_FEED_QUERY = defineQuery(`*[
   _type == "post" && 
-  availableFrom < now()
+  availableFrom < now() && 
+  !(availableFrom match "*25")
 ][0...250] | order(availableFrom desc) {
   _id,
   title,
@@ -170,7 +175,7 @@ export const RSS_FEED_QUERY = defineQuery(`*[
 }`)
 
 export const SITEMAP_QUERY = defineQuery(`{
-  "posts": *[_type == "post" && defined(slug.current) && availableFrom < now()] {
+  "posts": *[_type == "post" && defined(slug.current) && availableFrom < now() && !(availableFrom match "*25")] {
     "slug": slug.current,
     availableFrom,
     _updatedAt
