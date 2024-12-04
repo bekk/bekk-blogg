@@ -87,6 +87,7 @@ export const PostPreview = ({
           </div>
         )}
       </div>
+      {summary && <p className="sm:hidden mt-2 text-sm line-clamp-3">{summary}</p>}
     </motion.div>
   )
   if (link) {
