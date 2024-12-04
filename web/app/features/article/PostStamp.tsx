@@ -9,6 +9,32 @@ type PostStampProps = {
   image?: NonNullable<POST_BY_SLUGResult>['coverImage'] | null
 }
 
+const useValidatedImageUrl = (image: NonNullable<POST_BY_SLUGResult>['coverImage'] | null): string | null => {
+  const [validatedUrl, setValidatedUrl] = useState<string | null>(null)
+
+  useEffect(() => {
+    const validateUrl = async () => {
+      const url = image?.asset
+        ? urlFor(image.asset as SanityAsset)
+            .height(450)
+            .quality(50)
+            .url()
+        : image?.src
+
+      if (!url) return
+
+      const img = new Image()
+      img.src = url
+      img.onload = () => setValidatedUrl(url)
+      img.onerror = () => setValidatedUrl(null)
+    }
+
+    validateUrl()
+  }, [image])
+
+  return validatedUrl
+}
+
 export const PostStamp = ({ size, image }: PostStampProps) => {
   const imageUrl = image?.asset
     ? urlFor(image.asset as SanityAsset)
