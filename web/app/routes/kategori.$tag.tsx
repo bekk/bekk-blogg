@@ -31,15 +31,22 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     throw new Response('No category with this name', { status: 404 })
   }
 
-  return json({
-    posts: response.data.posts || [],
-    tag: response.data.tag,
-    pagination: {
-      currentPage: page,
-      totalPages: Math.ceil((response.data.totalCount || 0) / perPage),
-      totalPosts: response.data.totalCount || 0,
+  return json(
+    {
+      posts: response.data.posts || [],
+      tag: response.data.tag,
+      pagination: {
+        currentPage: page,
+        totalPages: Math.ceil((response.data.totalCount || 0) / perPage),
+        totalPosts: response.data.totalCount || 0,
+      },
     },
-  })
+    {
+      headers: {
+        'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=3600',
+      },
+    }
+  )
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
