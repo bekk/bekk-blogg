@@ -41,7 +41,7 @@ export function generateSecurityHeaders() {
       ],
       'font-src': [SELF],
       'object-src': [NONE],
-      'media-src': [SELF],
+      'media-src': [SELF, 'bekk-blogg-tts.vercel.app'],
       'child-src': [SELF, '*.youtube.com'],
       'frame-ancestors': ['bekk-blogg-sanity.vercel.app', 'localhost:3333'],
     },
