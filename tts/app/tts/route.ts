@@ -2,11 +2,11 @@ import { createClient } from "@sanity/client";
 import { NextRequest } from "next/server";
 import OpenAI from "openai";
 
+export const runtime = "edge";
+
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const id = url.searchParams.get("id");
-
-  console.log("Hello");
 
   if (!id) {
     return new Response("Missing id parameter", { status: 400 });
