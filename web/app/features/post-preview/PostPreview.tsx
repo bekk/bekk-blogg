@@ -18,6 +18,7 @@ type PostPreviewType = {
   wordCount: number | null
   podcastLength: number | null
   link?: string
+  type: string
 }
 
 type PostPreviewProps = PostPreviewType
@@ -31,6 +32,7 @@ export const PostPreview = ({
   wordCount,
   podcastLength,
   link,
+  type,
 }: PostPreviewProps) => {
   const showReadingTime = wordCount !== null || podcastLength !== null
   const content = (
@@ -74,7 +76,8 @@ export const PostPreview = ({
           )}
           {showReadingTime && (
             <>
-              {podcastLength ? `${podcastLength} min` : wordCount ? readingTime(wordCount) : null}
+              {type == 'article' ? 'Artikkel' : type == 'podcast' ? 'Podkast' : 'Video'}{' '}
+              {podcastLength ? ` (${podcastLength} min)` : wordCount ? ` (${readingTime(wordCount)})` : null}
               <div className="sm:mb-7 border-b border-bekk-night pb-1 mb-3" />
             </>
           )}

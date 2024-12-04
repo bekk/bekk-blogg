@@ -31,6 +31,7 @@ const POST_PREVIEW_PROJECTION = groq`{
   "summary": coalesce(previewText, pt::text(description)),
   "wordCount": length(string::split(pt::text(content), ' ')),
   podcastLength,
+  type,
 }`
 export const ALL_POSTS = groq`*[_type == "post"]`
 const POST_PROJECTION = groq`{
