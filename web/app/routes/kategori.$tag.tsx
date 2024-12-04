@@ -1,5 +1,5 @@
-import { json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { useLoaderData, useNavigation } from '@remix-run/react'
+import { json, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 
 import { TAG_WITH_POSTS_QUERY } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'

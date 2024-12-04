@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs } from '@remix-run/node'
+import { LoaderFunctionArgs } from '@vercel/remix'
 import { SITEMAP_QUERY } from 'utils/sanity/queries/postQueries'
 import { loadQuery } from 'utils/sanity/store'
 import { SITEMAP_QUERYResult } from 'utils/sanity/types/sanity.types'

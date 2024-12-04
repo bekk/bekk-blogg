@@ -1,5 +1,5 @@
-import { json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { useLoaderData, useNavigation } from '@remix-run/react'
+import { json, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { AUTHOR_WITH_POSTS_QUERY } from 'utils/sanity/queries/postQueries'
 import { AUTHOR_WITH_POSTS_QUERYResult } from 'utils/sanity/types/sanity.types'

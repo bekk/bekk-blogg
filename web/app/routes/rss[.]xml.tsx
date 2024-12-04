@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs } from '@remix-run/node'
+import { LoaderFunctionArgs } from '@vercel/remix'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { RSS_FEED_QUERY } from 'utils/sanity/queries/postQueries'
 import { loadQuery } from 'utils/sanity/store'

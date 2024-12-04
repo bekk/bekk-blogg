@@ -1,5 +1,4 @@
 import { lazy, Suspense } from 'react'
-import type { HeadersFunction, LinksFunction, LoaderFunction } from '@remix-run/node'
 import {
   isRouteErrorResponse,
   json,
@@ -15,6 +14,7 @@ import {
   useRouteError,
 } from '@remix-run/react'
 import { VisualEditing } from '@sanity/visual-editing/remix'
+import type { HeadersFunction, LinksFunction, LoaderFunction } from '@vercel/remix'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
 

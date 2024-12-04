@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs } from '@remix-run/node'
+import { LoaderFunctionArgs } from '@vercel/remix'
 import OpenAI from 'openai'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
@@ -31,6 +31,10 @@ function chunkText(text: string, chunkSize: number = 500): string[] {
   }
 
   return chunks
+}
+
+export const config = {
+  runtime: 'edge',
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -120,6 +124,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     return new Response(stream, {
       headers: {
         'Content-Type': 'audio/mpeg',
+        Connection: 'keep-alive',
         'Transfer-Encoding': 'chunked',
         'Cache-Control': 'no-cache, no-store, no-transform',
         'X-Content-Type-Options': 'nosniff',
