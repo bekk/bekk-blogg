@@ -1,7 +1,6 @@
 import { lazy, Suspense } from 'react'
 import {
   isRouteErrorResponse,
-  json,
   Links,
   Meta,
   Outlet,
@@ -28,7 +27,7 @@ export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
 export const loader: LoaderFunction = async ({ request }) => {
   const { preview } = await loadQueryOptions(request.headers)
-  return json({
+  return {
     isPreview: preview,
     ENV: {
       SANITY_STUDIO_PROJECT_ID: process.env.SANITY_STUDIO_PROJECT_ID,
@@ -36,7 +35,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       SANITY_STUDIO_URL: process.env.SANITY_STUDIO_URL,
       SANITY_STUDIO_API_VERSION: process.env.SANITY_API_VERSION,
     },
-  })
+  }
 }
 
 export const headers: HeadersFunction = () => ({

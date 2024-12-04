@@ -1,5 +1,5 @@
 import { Link, useLoaderData, useNavigation } from '@remix-run/react'
-import { json, MetaFunction } from '@vercel/remix' // Ensure to use json here
+import { MetaFunction } from '@vercel/remix' // Ensure to use json here
 
 import { ALL_CATEGORIES } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
@@ -10,7 +10,7 @@ import { Spinner } from '~/components/Spinner'
 export async function loader() {
   try {
     const { data } = await loadQuery<Tag[]>(ALL_CATEGORIES)
-    return json(data) // Wrap the data in a json response
+    return data
   } catch (error) {
     console.error(error)
     // Return an error response for the client

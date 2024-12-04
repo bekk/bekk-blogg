@@ -1,5 +1,5 @@
 import { useLoaderData, useNavigation } from '@remix-run/react'
-import { json, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
+import { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 
 import { TAG_WITH_POSTS_QUERY } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
@@ -31,7 +31,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     throw new Response('No category with this name', { status: 404 })
   }
 
-  return json({
+  return {
     posts: response.data.posts || [],
     tag: response.data.tag,
     pagination: {
@@ -39,7 +39,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       totalPages: Math.ceil((response.data.totalCount || 0) / perPage),
       totalPosts: response.data.totalCount || 0,
     },
-  })
+  }
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {

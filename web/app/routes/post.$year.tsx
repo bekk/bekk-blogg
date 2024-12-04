@@ -33,6 +33,9 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export const meta: MetaFunction = ({ data }) => {
+  if (!data) {
+    return []
+  }
   const { year } = data as { year: string }
   const title = `Bekk Christmas ${year}`
   const description = `Se alle innlegg fra Bekks julekalender ${year}`

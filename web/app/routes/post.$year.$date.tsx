@@ -1,5 +1,5 @@
 import { useLoaderData } from '@remix-run/react'
-import { json, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
+import { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'
 import { z } from 'zod'
@@ -62,13 +62,15 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   }
 
   try {
-    const { data: posts } = await loadQuery<POSTS_BY_YEAR_AND_DATEResult>(POSTS_BY_YEAR_AND_DATE, { date: formatDate })
+    const { data: posts } = await loadQuery<POSTS_BY_YEAR_AND_DATEResult>(POSTS_BY_YEAR_AND_DATE, {
+      date: formatDate,
+    })
 
-    return json({
+    return {
       posts: posts ?? [],
       year,
       date,
-    })
+    }
   } catch (error) {
     console.error('Error loading posts:', error)
     throw new Response('Error loading posts', { status: 500 })
