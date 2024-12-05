@@ -1,6 +1,6 @@
 import { useLoaderData } from '@remix-run/react'
 import { useQuery } from '@sanity/react-loader'
-import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
+import type { HeadersFunction, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { z } from 'zod'
@@ -102,13 +102,30 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     ? urlFor(initial.data.coverImage).width(1200).format('webp').url()
     : undefined
 
-  return { initial, query: POST_BY_SLUG, params: parsedParams.data, imageUrl }
+  return Response.json(
+    { initial, query: POST_BY_SLUG, params: parsedParams.data, imageUrl },
+    {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': preview
+          ? 'no-cache, no-store'
+          : 'public, max-age=60, s-maxage=60, stale-while-revalidate=2592000, stale-if-error=2592000',
+      },
+    }
+  )
+}
+
+export const headers: HeadersFunction = ({ loaderHeaders, parentHeaders }) => {
+  return {
+    ...parentHeaders,
+    ...loaderHeaders,
+  }
 }
 
 export default function Index() {
   const { initial, query, params } = useLoaderData<typeof loader>()
   const { data } = useQuery<typeof initial.data>(query, params, {
-    // @ts-expect-error There's a TS issue with how initial comes over the wire
     initial,
   })
 
