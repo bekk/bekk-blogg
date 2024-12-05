@@ -102,18 +102,15 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     ? urlFor(initial.data.coverImage).width(1200).format('webp').url()
     : undefined
 
-  return Response.json(
-    { initial, query: POST_BY_SLUG, params: parsedParams.data, imageUrl },
-    {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Cache-Control': preview
-          ? 'no-cache, no-store'
-          : 'public, max-age=60, s-maxage=60, stale-while-revalidate=2592000, stale-if-error=2592000',
-      },
-    }
-  )
+  return new Response(JSON.stringify({ initial, query: POST_BY_SLUG, params: parsedParams.data, imageUrl }), {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+      'Cache-Control': preview
+        ? 'no-cache, no-store'
+        : 'public, max-age=60, s-maxage=60, stale-while-revalidate=2592000, stale-if-error=2592000',
+    },
+  })
 }
 
 export const headers: HeadersFunction = ({ loaderHeaders, parentHeaders }) => {
