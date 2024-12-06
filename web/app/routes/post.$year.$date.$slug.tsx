@@ -10,6 +10,8 @@ import { loadQuery } from '../../utils/sanity/store'
 import { POST_BY_SLUGResult } from '../../utils/sanity/types/sanity.types'
 import { toPlainText, urlFor } from '../../utils/sanity/utils'
 
+import '../portable-text/prism-theme.css'
+
 import { Article } from '~/features/article/Article'
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
