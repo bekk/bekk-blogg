@@ -1,11 +1,13 @@
 import { useLoaderData, useNavigation } from '@remix-run/react'
-import { HeadersFunction, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
+import { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
+import { combinedHeaders } from 'utils/headers'
 
 import { TAG_WITH_POSTS_QUERY } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
 import { TAG_WITH_POSTS_QUERYResult } from '../../utils/sanity/types/sanity.types'
 
 import { Spinner } from '~/components/Spinner'
+import Header from '~/features/header/Header'
 import { Pagination } from '~/features/pagination/Pagination'
 import { PostPreviewList } from '~/features/post-preview/PostPreview'
 
@@ -47,13 +49,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   }
 }
 
-export const headers: HeadersFunction = ({ loaderHeaders, parentHeaders, errorHeaders }) => {
-  return {
-    ...parentHeaders,
-    ...loaderHeaders,
-    ...errorHeaders,
-  }
-}
+export const headers = combinedHeaders
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const description = `Utforsk ${data?.pagination.totalPosts} innlegg om ${data?.tag?.name} på Bekk Christmas`
@@ -78,16 +74,16 @@ export default function Tags() {
   const { posts, tag, pagination } = useLoaderData<typeof loader>()
   const navigation = useNavigation()
 
-  if (!tag) {
-    return (
-      <div className="flex flex-col items-center lg:mb-12">
-        <h1 className="md:text-center mb-0">Fant ikke den kategorien</h1>
-      </div>
-    )
-  }
-
   return (
-    <>
+    <div className="bg-wooden-table-with-cloth">
+      <header className="relative">
+        <Header isOnArticlePage={false} />
+      </header>
+      {!tag && (
+        <div className="flex flex-col items-center lg:mb-12">
+          <h1 className="md:text-center mb-0">Fant ikke den kategorien</h1>
+        </div>
+      )}
       {navigation.state === 'loading' ? (
         <Spinner />
       ) : (
@@ -105,6 +101,6 @@ export default function Tags() {
           <Pagination {...pagination} baseUrl={`/kategori/${tag.slug}`} />
         </div>
       )}
-    </>
+    </div>
   )
 }

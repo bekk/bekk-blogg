@@ -1,5 +1,6 @@
 import { useLoaderData } from '@remix-run/react'
-import { HeadersFunction, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
+import { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
+import { combinedHeaders } from 'utils/headers'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'
 import { z } from 'zod'
@@ -8,6 +9,7 @@ import { POSTS_BY_YEAR_AND_DATE } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
 
 import { DayNavigation } from '~/features/article/DayNavigation'
+import Header from '~/features/header/Header'
 import { PostPreviewList } from '~/features/post-preview/PostPreview'
 
 export const meta: MetaFunction<typeof loader> = ({ data: postsByDate }) => {
@@ -87,25 +89,24 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   }
 }
 
-export const headers: HeadersFunction = ({ loaderHeaders, parentHeaders, errorHeaders }) => {
-  return {
-    ...parentHeaders,
-    ...loaderHeaders,
-    ...errorHeaders,
-  }
-}
+export const headers = combinedHeaders
 
 export default function Index() {
   const { date, year, posts } = useLoaderData<typeof loader>()
 
   return (
-    <div className="flex flex-col">
-      <h1 className="mb-4 sm:mb-12 self-start pl-4 md:pl-0 text-4xl md:text-5xl text-postcard-beige sm:self-center">
-        {parseInt(date) < 10 ? date.replace('0', '') : date}. desember
-      </h1>
-      <p className="self-start sm:self-center pl-4 mb-8 sm:mb-12 text-white ">Totalt {posts.length} innlegg</p>
-      <PostPreviewList posts={posts} />
-      <DayNavigation day={Number(date)} year={Number(year)} />
+    <div className="bg-wooden-table-with-cloth min-h-screen">
+      <header className="relative">
+        <Header isOnArticlePage={false} />
+      </header>
+      <div className="flex flex-col">
+        <h1 className="mb-4 sm:mb-12 self-start pl-4 md:pl-0 text-4xl md:text-5xl text-postcard-beige sm:self-center">
+          {parseInt(date) < 10 ? date.replace('0', '') : date}. desember
+        </h1>
+        <p className="self-start sm:self-center pl-4 mb-8 sm:mb-12 text-white ">Totalt {posts.length} innlegg</p>
+        <PostPreviewList posts={posts} />
+        <DayNavigation day={Number(date)} year={Number(year)} />
+      </div>
     </div>
   )
 }

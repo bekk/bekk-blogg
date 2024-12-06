@@ -7,9 +7,7 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
-  useLocation,
   useMatches,
-  useParams,
   useRouteError,
 } from '@remix-run/react'
 import { VisualEditing } from '@sanity/visual-editing/remix'
@@ -20,7 +18,6 @@ import { generateSecurityHeaders } from 'utils/security'
 import { JumpToContent } from './features/jump-to-content/JumpToContent'
 import { ErrorPage } from './routes/ErrorPage'
 
-import { Header } from '~/features/header/Header'
 import styles from '~/styles/main.css?url'
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
@@ -91,33 +88,12 @@ export function ErrorBoundary() {
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const { year, date, slug } = useParams()
-  const error = useRouteError()
   const matches = useMatches()
-  const location = useLocation()
 
   type PotentialLanguageType = { language: string } | undefined
   const postData = matches.find((match) => (match.data as PotentialLanguageType)?.language)
     ?.data as PotentialLanguageType
 
-  const isOnFrontPage = location.pathname === '/'
-  const isOnArticlePage = !!slug && !error
-  const isOnDatePage = !!date && !slug && !error
-  const isOnCalendarPage = !!year && !date && !error
-  const isOnArticleListPage =
-    (isOnDatePage || location.pathname.includes('/kategori/') || location.pathname.includes('/forfatter/')) && !error
-  const isOnCategoryPage = location.pathname.includes('/kategori') && !error
-  const isInArchive = location.pathname === '/arkiv' && !error
-
-  const bodyBackground = () => {
-    if (isOnFrontPage || isOnDatePage || isOnArticleListPage) return `bg-wooden-table-with-cloth`
-    if (isOnArticlePage) return 'bg-wooden-table'
-    if (isOnCalendarPage) return 'bg-brick-wall h-screen'
-    if (isInArchive) return 'bg-brick-wall-with-wooden-plank'
-    if (isOnCategoryPage) return 'bg-dark-wooden-table-with-green-cloth'
-    if (error) return 'bg-error'
-    return 'bg-envelope-beige'
-  }
   return (
     <html lang={postData?.language ?? 'nb-NO'}>
       <head>
@@ -128,15 +104,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <link rel="alternate" type="application/rss+xml" title="Bekk Christmas RSS Feed" href="/rss.xml" />
         <script defer data-domain="bekk.christmas" src="https://plausible.io/js/plausible.js" />
       </head>
-      <body className={`break-words m-auto w-full max-w-screen-2xl ${bodyBackground()}`}>
+      <body>
         <JumpToContent />
-        <div className={`${isOnArticlePage && 'striped-frame md:my-8 md:mx-8 '}`}>
-          {!isOnCalendarPage && (
-            <header className={`${isOnArticlePage && 'relative'}`}>
-              <Header isOnArticlePage={isOnArticlePage} />
-            </header>
-          )}
-
+        <div>
           <Scripts />
           <main id="content" tabIndex={-1} className="focus:outline-none">
             {children}

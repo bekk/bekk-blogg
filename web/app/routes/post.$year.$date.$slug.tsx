@@ -1,7 +1,8 @@
-import { useLoaderData } from '@remix-run/react'
+import { isRouteErrorResponse, useLoaderData, useRouteError } from '@remix-run/react'
 import { useQuery } from '@sanity/react-loader'
-import type { HeadersFunction, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
+import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { cleanControlCharacters } from 'utils/controlCharacters'
+import { combinedHeaders } from 'utils/headers'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { z } from 'zod'
 
@@ -10,9 +11,12 @@ import { loadQuery } from '../../utils/sanity/store'
 import { POST_BY_SLUGResult } from '../../utils/sanity/types/sanity.types'
 import { toPlainText, urlFor } from '../../utils/sanity/utils'
 
+import { ErrorPage } from './ErrorPage'
+
 import '../portable-text/prism-theme.css'
 
 import { Article } from '~/features/article/Article'
+import Header from '~/features/header/Header'
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const post = data?.initial.data
@@ -140,13 +144,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   })
 }
 
-export const headers: HeadersFunction = ({ loaderHeaders, parentHeaders, errorHeaders }) => {
-  return {
-    ...parentHeaders,
-    ...loaderHeaders,
-    ...errorHeaders,
-  }
-}
+export const headers = combinedHeaders
 
 export default function Index() {
   const { initial, query, params } = useLoaderData<typeof loader>()
@@ -158,5 +156,39 @@ export default function Index() {
     return null
   }
 
-  return <Article post={data} />
+  return (
+    <div className="bg-wooden-table break-words md:p-8">
+      <div className="striped-frame mx-auto max-w-screen-2xl">
+        <header className="relative">
+          <Header isOnArticlePage={true} />
+        </header>
+        <Article post={data} />
+      </div>
+    </div>
+  )
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError()
+
+  let title = ''
+  let message = 'Følg Bekk-stjernen for å komme tilbake til julekalenderen'
+  if (isRouteErrorResponse(error)) {
+    switch (error.status) {
+      case 404:
+        title = 'Dette innholdet finnes ikke. Det kan hende lenken er feil, eller at lenken har endret seg.'
+        break
+      case 425:
+        title = 'Dette innholdet er ikke tilgjengelig enda. Vær tålmodig og sjekk tilbake om litt!'
+        break
+      default:
+        title = 'Uventet feil'
+        message = 'Her gikk noe galt. Prøv å refresh siden. Eller følg Bekk-stjernen tilbake til julekalenderen.'
+    }
+  } else {
+    title = 'Uventet feil'
+    message = 'Her gikk noe galt. Prøv å refresh siden. Eller følg Bekk-stjernen tilbake til julekalenderen.'
+  }
+
+  return <ErrorPage title={title} description={message} />
 }

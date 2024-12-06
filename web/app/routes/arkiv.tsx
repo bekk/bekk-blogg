@@ -9,6 +9,7 @@ import { WhiteGiftRedRibbon } from '~/features/archive/svgs/WhiteGiftRedRibbon'
 import { WhiteGiftRedRibbonH } from '~/features/archive/svgs/WhiteGiftRedRibbonH'
 import { WhiteGiftRedRibbonSquare } from '~/features/archive/svgs/WhiteGiftRedRibbonSquare'
 import { YearBadge } from '~/features/archive/YearBadge'
+import Header from '~/features/header/Header'
 
 export default function ArchivePage() {
   const currentYear = new Date().getFullYear()
@@ -30,7 +31,10 @@ export default function ArchivePage() {
     WhiteGiftRedRibbonSquare,
   ]
   return (
-    <div>
+    <div className="bg-brick-wall-with-wooden-plank">
+      <header className="relative">
+        <Header isOnArticlePage={false} />
+      </header>
       <div className={'flex flex-col justify-center'}>
         <h1 className="text-white text-center">Arkiv</h1>
         <div className="grid grid-cols-1 lg:grid-cols-4 items-end pt-20 justify-items-center w-full">

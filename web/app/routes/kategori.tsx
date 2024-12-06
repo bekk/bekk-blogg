@@ -6,6 +6,7 @@ import { loadQuery } from '../../utils/sanity/store'
 import { Tag } from '../../utils/sanity/types/sanity.types'
 
 import { Spinner } from '~/components/Spinner'
+import Header from '~/features/header/Header'
 
 export async function loader() {
   try {
@@ -41,7 +42,10 @@ export default function TagsRoute() {
   const data = useLoaderData<typeof loader>() // Safely use the loader's data
   const state = useNavigation()
   return (
-    <>
+    <div className="bg-dark-wooden-table-with-green-cloth">
+      <header className="relative">
+        <Header isOnArticlePage={false} />
+      </header>
       {state.state === 'loading' ? (
         <Spinner />
       ) : (
@@ -60,6 +64,6 @@ export default function TagsRoute() {
           </div>
         </div>
       )}
-    </>
+    </div>
   )
 }
