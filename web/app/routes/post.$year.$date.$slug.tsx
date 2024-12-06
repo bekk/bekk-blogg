@@ -73,7 +73,12 @@ const ParamsSchema = z.object({
 export async function loader({ params, request }: LoaderFunctionArgs) {
   const parsedParams = ParamsSchema.safeParse(params)
   if (!parsedParams.success) {
-    throw new Response('Invalid params', { status: 400 })
+    throw new Response('Invalid params', {
+      status: 400,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
   const { year, date, slug } = parsedParams.data
 
@@ -87,17 +92,37 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const dateNumber = parseInt(date, 10)
 
   if (!preview && (isNaN(dateNumber) || dateNumber < 1 || dateNumber > 24)) {
-    throw new Response('Date not found', { status: 404 })
+    throw new Response('Date not found', {
+      status: 404,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
 
   if (!preview && currentDate < targetDate) {
-    throw new Response('Date not yet available', { status: 425 })
+    throw new Response('Date not yet available', {
+      status: 425,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
   if (!initial.data) {
-    throw new Response('Post not found', { status: 404 })
+    throw new Response('Post not found', {
+      status: 404,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
   if (!preview && initial.data.availableFrom !== formatDate) {
-    throw new Response('Post date and date in url do not match', { status: 404 })
+    throw new Response('Post date and date in url do not match', {
+      status: 404,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
 
   const imageUrl = initial.data.coverImage?.asset

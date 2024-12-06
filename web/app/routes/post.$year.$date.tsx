@@ -53,12 +53,22 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 
   const dateNumber = parseInt(date, 10)
   if (!preview && (isNaN(dateNumber) || dateNumber < 1 || dateNumber > 24)) {
-    throw new Response('Date not found', { status: 404 })
+    throw new Response('Date not found', {
+      status: 404,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
 
   const targetDate = new Date(formatDate)
   if (!preview && currentDate < targetDate) {
-    throw new Response('Date not yet available', { status: 425 })
+    throw new Response('Date not yet available', {
+      status: 425,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
 
   try {

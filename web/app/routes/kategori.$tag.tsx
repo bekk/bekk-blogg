@@ -28,7 +28,12 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   })
 
   if (!response.data || !response.data.tag) {
-    throw new Response('No category with this name', { status: 404 })
+    throw new Response('No category with this name', {
+      status: 404,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
 
   return {
