@@ -18,9 +18,4 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
-  resolve: {
-    alias: {
-      'sanity-algolia': 'sanity-algolia/dist/sanity-algolia.esm.js',
-    },
-  },
 })
