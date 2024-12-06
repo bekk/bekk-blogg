@@ -13,7 +13,12 @@ import { PostPreviewList } from '~/features/post-preview/PostPreview'
 export async function loader({ params, request }: LoaderFunctionArgs) {
   const { name } = params
   if (!name) {
-    throw new Response('Missing author', { status: 404 })
+    throw new Response('Missing author', {
+      status: 404,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
 
   // Get page from URL search params
@@ -29,7 +34,12 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   })
 
   if (!response.data.author) {
-    throw new Response('Author not found', { status: 404 })
+    throw new Response('Author not found', {
+      status: 404,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
 
   return {

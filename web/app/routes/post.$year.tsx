@@ -24,10 +24,20 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const paramsYearAsNumber = Number.parseInt(year)
 
   if (isNaN(paramsYearAsNumber) || paramsYearAsNumber < 2017) {
-    throw new Response('Invalid year', { status: 404 })
+    throw new Response('Invalid year', {
+      status: 404,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
   if (paramsYearAsNumber > currentYear) {
-    throw new Response('Year not yet available', { status: 425 })
+    throw new Response('Year not yet available', {
+      status: 425,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
   return { year }
 }
