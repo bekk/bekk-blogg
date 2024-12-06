@@ -38,13 +38,6 @@ export const PostPreview = ({
   const content = (
     <motion.div
       className="striped-frame py-6 px-6 sm:p-7"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.1 }}
-      variants={{
-        hidden: { opacity: 0, y: 50 },
-        visible: { opacity: 1, y: 0 },
-      }}
       transition={{
         duration: 0.2,
         ease: 'easeOut',
@@ -52,6 +45,7 @@ export const PostPreview = ({
       whileHover={{
         scale: 1.02,
         rotate: -0.5,
+        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
         transition: {
           type: 'spring',
           stiffness: 300,
