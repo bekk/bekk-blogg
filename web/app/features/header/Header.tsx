@@ -1,17 +1,15 @@
-import { Link, useRouteError } from '@remix-run/react'
+import { Link, useParams, useRouteError } from '@remix-run/react'
 
 import { PostStamp } from '../article/PostStamp'
 
 import { BekkLogo } from '~/features/article/BekkLogo'
 import { useBreadcrumbs } from '~/hooks/useBreadcrumbs'
 
-type HeaderProps = {
-  isOnArticlePage?: boolean
-}
-
-export const Header = ({ isOnArticlePage = false }: HeaderProps) => {
+export const Header = () => {
   const breadcrumbs = useBreadcrumbs()
   const error = useRouteError()
+  const { year, date, slug } = useParams()
+  const isOnArticlePage = Boolean(year && date && slug)
 
   return (
     <div
