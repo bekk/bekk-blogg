@@ -4,9 +4,9 @@ import { ActionFunction } from '@remix-run/node'
 import algoliasearch from 'algoliasearch'
 import indexer from 'sanity-algolia'
 
-import { POST_SEARCH_PROJECTION } from '../../../utils/sanity/queries/postQueries'
-import { readClient } from '../../../utils/sanity/sanity.server'
-import { Post } from '../../../utils/sanity/types/sanity.types'
+import { POST_SEARCH_PROJECTION } from '../../utils/sanity/queries/postQueries'
+import { readClient } from '../../utils/sanity/sanity.server'
+import { Post } from '../../utils/sanity/types/sanity.types'
 
 /**
  *  This function receives webhook POSTs from Sanity and updates, creates or
