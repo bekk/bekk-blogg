@@ -14,6 +14,7 @@ export function generateSecurityHeaders() {
         'cdn.syndication.twimg.com',
         'plausible.io',
         'vercel.live',
+        '*.vercel-scripts.com',
       ],
       'script-src-elem': [
         SELF,
@@ -25,6 +26,7 @@ export function generateSecurityHeaders() {
         'cdn.syndication.twimg.com',
         'plausible.io',
         'vercel.live',
+        '*.vercel-scripts.com',
       ],
       'style-src': [SELF, UNSAFE_INLINE],
       'img-src': [SELF, UNSAFE_INLINE, 'data:', 'cdn.sanity.io', '*'],
