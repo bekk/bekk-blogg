@@ -1,5 +1,5 @@
 import { useLoaderData } from '@remix-run/react'
-import { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
+import { HeadersFunction, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'
 import { z } from 'zod'
@@ -84,6 +84,13 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   } catch (error) {
     console.error('Error loading posts:', error)
     throw new Response('Error loading posts', { status: 500 })
+  }
+}
+
+export const headers: HeadersFunction = ({ loaderHeaders, parentHeaders }) => {
+  return {
+    ...parentHeaders,
+    ...loaderHeaders,
   }
 }
 

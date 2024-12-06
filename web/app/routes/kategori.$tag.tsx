@@ -1,5 +1,5 @@
 import { useLoaderData, useNavigation } from '@remix-run/react'
-import { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
+import { HeadersFunction, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 
 import { TAG_WITH_POSTS_QUERY } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
@@ -44,6 +44,13 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       totalPages: Math.ceil((response.data.totalCount || 0) / perPage),
       totalPosts: response.data.totalCount || 0,
     },
+  }
+}
+
+export const headers: HeadersFunction = ({ loaderHeaders, parentHeaders }) => {
+  return {
+    ...parentHeaders,
+    ...loaderHeaders,
   }
 }
 

@@ -1,5 +1,5 @@
 import { useLoaderData, useNavigation } from '@remix-run/react'
-import { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
+import { HeadersFunction, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { AUTHOR_WITH_POSTS_QUERY } from 'utils/sanity/queries/postQueries'
 import { AUTHOR_WITH_POSTS_QUERYResult } from 'utils/sanity/types/sanity.types'
@@ -71,6 +71,13 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
     { name: 'twitter:site', content: '@livetibekk' },
     { name: 'twitter:image', content: 'https://www.bekk.christmas/og-image.jpg' },
   ]
+}
+
+export const headers: HeadersFunction = ({ loaderHeaders, parentHeaders }) => {
+  return {
+    ...parentHeaders,
+    ...loaderHeaders,
+  }
 }
 
 export default function AuthorPage() {
