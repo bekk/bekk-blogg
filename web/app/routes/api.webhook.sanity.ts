@@ -1,6 +1,7 @@
 // serverless function for handling webhooks
 
 import { ActionFunction } from '@remix-run/node'
+import { isValidSignature, SIGNATURE_HEADER_NAME } from '@sanity/webhook'
 import algoliasearch from 'algoliasearch'
 import indexer from 'sanity-algolia'
 
@@ -12,8 +13,23 @@ import { Post } from '../../utils/sanity/types/sanity.types'
  *  This function receives webhook POSTs from Sanity and updates, creates or
  *  deletes records in the corresponding Algolia indices.
  */
-export const action: ActionFunction = async (req) => {
-  const body = await req.request.json()
+export const action: ActionFunction = async ({ request }) => {
+  if (request.method !== 'POST') {
+    return new Response('Method not allowed', { status: 405 })
+  }
+  const signature = request.headers.get(SIGNATURE_HEADER_NAME)
+  if (typeof signature !== 'string') {
+    return new Response('Missing or malformed signature', { status: 400 })
+  }
+
+  if (!request.body) {
+    return new Response('Missing body', { status: 400 })
+  }
+
+  const body = await request.text()
+  if (!(await isValidSignature(body, signature, process.env.SANITY_WEBHOOK_SECRET ?? ''))) {
+    return new Response('Invalid signature', { status: 401 })
+  }
 
   const algolia = algoliasearch(process.env.ALGOLIA_APP_ID ?? '', process.env.ALGOLIA_ADMIN_API_KEY ?? '')
   const algoliaIndex = algolia.initIndex(process.env.ALGOLIA_INDEX ?? '')
@@ -31,15 +47,11 @@ export const action: ActionFunction = async (req) => {
       return availableFrom <= new Date()
     }
   )
-
-  return sanityAlgolia
-    .webhookSync(readClient, body)
-    .then(() => new Response('OK', { status: 200 }))
-    .catch((err) => {
-      console.error('Error sending data to algolia', err)
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ message: 'Something went wrong' }),
-      }
-    })
+  try {
+    await sanityAlgolia.webhookSync(readClient, JSON.parse(body))
+    return new Response('OK', { status: 200 })
+  } catch (e) {
+    console.error('Error sending data to algolia', e)
+    return new Response('Something went wrong', { status: 500 })
+  }
 }
