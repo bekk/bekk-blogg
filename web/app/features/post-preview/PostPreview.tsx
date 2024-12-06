@@ -18,6 +18,7 @@ type PostPreviewType = {
   wordCount: number | null
   podcastLength: number | null
   link?: string
+  type: string
 }
 
 type PostPreviewProps = PostPreviewType
@@ -31,8 +32,9 @@ export const PostPreview = ({
   wordCount,
   podcastLength,
   link,
+  type,
 }: PostPreviewProps) => {
-  const showReadingTime = wordCount !== null && podcastLength === null
+  const showReadingTime = wordCount !== null || podcastLength !== null
   const content = (
     <motion.div
       className="striped-frame py-6 px-6 sm:p-7"
@@ -59,7 +61,7 @@ export const PostPreview = ({
     >
       <div className="grid sm:grid-cols-[1fr_1px_1fr] grid-cols-[30fr_1fr] w-full">
         <div className="col-start-1 col-end-1 row-start-2 row-end-2 sm:mr-7">
-          {title && <h2 className="sm:mb-20">{title}</h2>}
+          {title && <h2 className="sm:mb-20 overflow-auto">{title}</h2>}
         </div>
         <div className="col-start-2 row-start-1 row-end-4 hidden border-r border-bekk-night sm:block" />
         <div className="flex justify-end ml-1 sm:mb-9 col-start-3 col-end-3 row-start-2 row-end-3 sm:ml-7">
@@ -74,7 +76,8 @@ export const PostPreview = ({
           )}
           {showReadingTime && (
             <>
-              {podcastLength ? `${podcastLength} min` : wordCount ? readingTime(wordCount) : null}
+              {type == 'article' ? 'Artikkel' : type == 'podcast' ? 'Podkast' : 'Video'}{' '}
+              {podcastLength ? ` (${podcastLength} min)` : wordCount ? ` (${readingTime(wordCount)})` : null}
               <div className="sm:mb-7 border-b border-bekk-night pb-1 mb-3" />
             </>
           )}
@@ -87,6 +90,7 @@ export const PostPreview = ({
           </div>
         )}
       </div>
+      {summary && <p className="sm:hidden mt-2 text-sm line-clamp-3">{summary}</p>}
     </motion.div>
   )
   if (link) {

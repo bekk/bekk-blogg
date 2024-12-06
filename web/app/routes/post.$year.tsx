@@ -1,5 +1,5 @@
-import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { Link, useLoaderData } from '@remix-run/react'
+import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { motion } from 'framer-motion'
 import { z } from 'zod'
 
@@ -24,15 +24,28 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const paramsYearAsNumber = Number.parseInt(year)
 
   if (isNaN(paramsYearAsNumber) || paramsYearAsNumber < 2017) {
-    throw new Response('Invalid year', { status: 404 })
+    throw new Response('Invalid year', {
+      status: 404,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
   if (paramsYearAsNumber > currentYear) {
-    throw new Response('Year not yet available', { status: 425 })
+    throw new Response('Year not yet available', {
+      status: 425,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
   return { year }
 }
 
 export const meta: MetaFunction = ({ data }) => {
+  if (!data) {
+    return []
+  }
   const { year } = data as { year: string }
   const title = `Bekk Christmas ${year}`
   const description = `Se alle innlegg fra Bekks julekalender ${year}`

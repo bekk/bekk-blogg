@@ -1,4 +1,4 @@
-import { LinksFunction } from '@remix-run/node'
+import { LinksFunction } from '@vercel/remix'
 
 import styles from '~/styles/main.css?url'
 

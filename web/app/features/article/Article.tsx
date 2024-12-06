@@ -33,7 +33,7 @@ export const Article = ({ post }: ArticleProps) => {
   return (
     <div className="px-6 sm:grid-cols-[1fr_2fr] md:grid md:grid-rows-[auto_auto] md:gap-x-12 xl:gap-x-24 md:gap-y-6 md:pl-10 xl:pl-20 pb-8 md:pb-16">
       <div className="meta col-start-1 col-end-1 row-start-2 row-end-2 mb-8 md:min-w-[230px] lg:min-w-[240px] 2lg:min-w-[250px]">
-        <h1 className="sm:mb-4 text-3xl sm:text-4xl">{post.title}</h1>
+        <h1 className="sm:mb-4 text-3xl sm:text-4xl overflow-auto">{post.title}</h1>
         {post.tags && (
           <div>
             {post.tags.map((tag, index) => (
@@ -73,7 +73,10 @@ export const Article = ({ post }: ArticleProps) => {
         {post.availableFrom && formatDate(post.availableFrom)}
         <Border />
         {post.type === 'article' && (
-          <AudioPlayer src={`/api/tts?id=${post._id}`} slug={post.slug?.current ?? 'unknown'} />
+          <AudioPlayer
+            src={`https://bekk-blogg-tts.vercel.app/tts?id=${post._id}`}
+            slug={post.slug?.current ?? 'unknown'}
+          />
         )}
         {shouldShowSeriesBlock && (
           <div className="p-2 bg-primary-foreground text-black rounded-sm">
@@ -108,7 +111,7 @@ export const Article = ({ post }: ArticleProps) => {
       </div>
       <div className="flex flex-col col-start-2 col-end-2 row-start-2 row-end-2 max-md:max-w-screen-xl max-lg:max-w-[475px] max-2lg:max-w-[550px] 2lg:max-w-[675px] xl:pr-10 xl:max-w-3xl 2xl:max-w-4xl">
         {post?.description ? (
-          <div className="text-xl">
+          <div className="text-xl remove-margin">
             <PortableText value={post.description} components={components} />
           </div>
         ) : null}
@@ -138,7 +141,7 @@ export const Article = ({ post }: ArticleProps) => {
           </div>
         )}
         {post.content && (
-          <div className="leading-8">
+          <div className="remove-margin leading-8">
             <PortableText value={post.content} components={components} />
           </div>
         )}

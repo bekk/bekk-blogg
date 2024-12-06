@@ -1,6 +1,6 @@
-import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { useQuery } from '@sanity/react-loader'
+import type { HeadersFunction, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { z } from 'zod'
@@ -9,6 +9,8 @@ import { POST_BY_SLUG } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
 import { POST_BY_SLUGResult } from '../../utils/sanity/types/sanity.types'
 import { toPlainText, urlFor } from '../../utils/sanity/utils'
+
+import '../portable-text/prism-theme.css'
 
 import { Article } from '~/features/article/Article'
 
@@ -71,7 +73,12 @@ const ParamsSchema = z.object({
 export async function loader({ params, request }: LoaderFunctionArgs) {
   const parsedParams = ParamsSchema.safeParse(params)
   if (!parsedParams.success) {
-    throw new Response('Invalid params', { status: 400 })
+    throw new Response('Invalid params', {
+      status: 400,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
   const { year, date, slug } = parsedParams.data
 
@@ -85,30 +92,64 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const dateNumber = parseInt(date, 10)
 
   if (!preview && (isNaN(dateNumber) || dateNumber < 1 || dateNumber > 24)) {
-    throw new Response('Date not found', { status: 404 })
+    throw new Response('Date not found', {
+      status: 404,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
 
   if (!preview && currentDate < targetDate) {
-    throw new Response('Date not yet available', { status: 425 })
+    throw new Response('Date not yet available', {
+      status: 425,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
   if (!initial.data) {
-    throw new Response('Post not found', { status: 404 })
+    throw new Response('Post not found', {
+      status: 404,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
   if (!preview && initial.data.availableFrom !== formatDate) {
-    throw new Response('Post date and date in url do not match', { status: 404 })
+    throw new Response('Post date and date in url do not match', {
+      status: 404,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
 
   const imageUrl = initial.data.coverImage?.asset
     ? urlFor(initial.data.coverImage).width(1200).format('webp').url()
     : undefined
 
-  return { initial, query: POST_BY_SLUG, params: parsedParams.data, imageUrl }
+  return new Response(JSON.stringify({ initial, query: POST_BY_SLUG, params: parsedParams.data, imageUrl }), {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+      'Cache-Control': preview
+        ? 'no-cache, no-store'
+        : 'public, max-age=60, s-maxage=60, stale-while-revalidate=2592000, stale-if-error=2592000',
+    },
+  })
+}
+
+export const headers: HeadersFunction = ({ loaderHeaders, parentHeaders }) => {
+  return {
+    ...parentHeaders,
+    ...loaderHeaders,
+  }
 }
 
 export default function Index() {
   const { initial, query, params } = useLoaderData<typeof loader>()
   const { data } = useQuery<typeof initial.data>(query, params, {
-    // @ts-expect-error There's a TS issue with how initial comes over the wire
     initial,
   })
 

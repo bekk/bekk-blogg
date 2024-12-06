@@ -1,8 +1,6 @@
 import { lazy, Suspense } from 'react'
-import type { HeadersFunction, LinksFunction, LoaderFunction } from '@remix-run/node'
 import {
   isRouteErrorResponse,
-  json,
   Links,
   Meta,
   Outlet,
@@ -15,6 +13,7 @@ import {
   useRouteError,
 } from '@remix-run/react'
 import { VisualEditing } from '@sanity/visual-editing/remix'
+import type { HeadersFunction, LinksFunction, LoaderFunction } from '@vercel/remix'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
 
@@ -28,7 +27,7 @@ export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
 export const loader: LoaderFunction = async ({ request }) => {
   const { preview } = await loadQueryOptions(request.headers)
-  return json({
+  return {
     isPreview: preview,
     ENV: {
       SANITY_STUDIO_PROJECT_ID: process.env.SANITY_STUDIO_PROJECT_ID,
@@ -36,12 +35,13 @@ export const loader: LoaderFunction = async ({ request }) => {
       SANITY_STUDIO_URL: process.env.SANITY_STUDIO_URL,
       SANITY_STUDIO_API_VERSION: process.env.SANITY_API_VERSION,
     },
-  })
+  }
 }
 
 export const headers: HeadersFunction = () => ({
   ...generateSecurityHeaders(),
-  'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=3600',
+  // 1 hour max-age, 2 hours s-maxage, 1 month stale-while-revalidate, 1 month stale-if-error
+  'Cache-Control': 'public, max-age=3600, s-maxage=7200, stale-while-revalidate=2592000, stale-if-error=2592000',
 })
 
 export function ErrorBoundary() {

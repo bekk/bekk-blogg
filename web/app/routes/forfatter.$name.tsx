@@ -1,5 +1,5 @@
-import { json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { useLoaderData, useNavigation } from '@remix-run/react'
+import { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { AUTHOR_WITH_POSTS_QUERY } from 'utils/sanity/queries/postQueries'
 import { AUTHOR_WITH_POSTS_QUERYResult } from 'utils/sanity/types/sanity.types'
@@ -13,7 +13,12 @@ import { PostPreviewList } from '~/features/post-preview/PostPreview'
 export async function loader({ params, request }: LoaderFunctionArgs) {
   const { name } = params
   if (!name) {
-    throw new Response('Missing author', { status: 404 })
+    throw new Response('Missing author', {
+      status: 404,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
 
   // Get page from URL search params
@@ -29,10 +34,15 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   })
 
   if (!response.data.author) {
-    throw new Response('Author not found', { status: 404 })
+    throw new Response('Author not found', {
+      status: 404,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
 
-  return json({
+  return {
     posts: response.data.posts || [],
     author: response.data.author,
     pagination: {
@@ -40,7 +50,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       totalPages: Math.ceil((response.data.totalCount || 0) / perPage),
       totalPosts: response.data.totalCount || 0,
     },
-  })
+  }
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {

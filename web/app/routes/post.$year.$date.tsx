@@ -1,5 +1,5 @@
-import { json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
+import { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'
 import { z } from 'zod'
@@ -53,22 +53,34 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 
   const dateNumber = parseInt(date, 10)
   if (!preview && (isNaN(dateNumber) || dateNumber < 1 || dateNumber > 24)) {
-    throw new Response('Date not found', { status: 404 })
+    throw new Response('Date not found', {
+      status: 404,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
 
   const targetDate = new Date(formatDate)
   if (!preview && currentDate < targetDate) {
-    throw new Response('Date not yet available', { status: 425 })
+    throw new Response('Date not yet available', {
+      status: 425,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
 
   try {
-    const { data: posts } = await loadQuery<POSTS_BY_YEAR_AND_DATEResult>(POSTS_BY_YEAR_AND_DATE, { date: formatDate })
+    const { data: posts } = await loadQuery<POSTS_BY_YEAR_AND_DATEResult>(POSTS_BY_YEAR_AND_DATE, {
+      date: formatDate,
+    })
 
-    return json({
+    return {
       posts: posts ?? [],
       year,
       date,
-    })
+    }
   } catch (error) {
     console.error('Error loading posts:', error)
     throw new Response('Error loading posts', { status: 500 })

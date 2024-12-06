@@ -31,6 +31,7 @@ const POST_PREVIEW_PROJECTION = groq`{
   "summary": coalesce(previewText, pt::text(description)),
   "wordCount": length(string::split(pt::text(content), ' ')),
   podcastLength,
+  type,
 }`
 export const ALL_POSTS = groq`*[_type == "post"]`
 const POST_PROJECTION = groq`{
@@ -97,7 +98,7 @@ const POST_PROJECTION = groq`{
     description,
     slug,
     shouldListNonPublishedContent,
-    "posts": *[_type == "post" && references(^._id) && availableFrom < now() && !(availableFrom match "*25")] | order(availableFrom asc) {
+    "posts": *[_type == "post" && references(^._id)] | order(availableFrom asc) {
       _id,
       title,
       availableFrom,
@@ -123,17 +124,8 @@ export const POST_SEARCH_PROJECTION = groq`{
   podcastLength,
 }`
 export const POST_BY_SLUG = defineQuery(`*[_type == "post" && slug.current == $slug][0]${POST_PROJECTION}`)
-export const ARTICLE_CONTENT_BY_ID = defineQuery(
-  `*[_type == "post" && type == "article" && _id == $id][0] { 
-  title, 
-  "description": pt::text(description), 
-  "content": pt::text(content), 
-  "mainAuthor": authors[0]->fullName,
-  "preferredVoice": authors[0]->preferredVoice
-  }`
-)
 export const POSTS_BY_YEAR_AND_DATE = defineQuery(
-  `*[_type == "post" && availableFrom == $date] | order(priority desc) ${POST_PREVIEW_PROJECTION}`
+  `*[_type == "post" && availableFrom == $date && (length(string::split(pt::text(content), ' ')) > 0 || podcastLength != null)] | order(priority desc) ${POST_PREVIEW_PROJECTION}`
 )
 export const ALL_CATEGORIES = defineQuery(`*[_type == "tag"] | order(name asc)`)
 export const TAG_WITH_POSTS_QUERY = defineQuery(`{

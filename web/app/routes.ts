@@ -1,0 +1,16 @@
+import { index, route, type RouteConfig } from '@remix-run/route-config'
+
+export default [
+  index('routes/index.tsx'),
+  route('arkiv', 'routes/arkiv.tsx'),
+  route('category/:tag', 'routes/category.$tag.tsx'),
+  route('kategori/:tag', 'routes/kategori.$tag.tsx'),
+  route('kategori', 'routes/kategori.tsx'),
+  route('forfatter/:name', 'routes/forfatter.$name.tsx'),
+  route('post/:year', 'routes/post.$year.tsx'),
+  route('post/:year/:date', 'routes/post.$year.$date.tsx'),
+  route('post/:year/:date/:slug', 'routes/post.$year.$date.$slug.tsx'),
+  route('resource/preview', 'routes/resource.preview.tsx'),
+  route('rss.xml', 'routes/rss.xml.tsx'),
+  route('sitemap.xml', 'routes/sitemap.xml.tsx'),
+] satisfies RouteConfig

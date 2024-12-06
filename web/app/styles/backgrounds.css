@@ -3,7 +3,7 @@
   width: 100vw;
   overflow: hidden;
   background:
-    url('/images/northern_lights.svg') top left/contain no-repeat,
+    url('/images/northern_lights.png') top left/contain no-repeat,
     url('/images/snow.svg') bottom center/contain no-repeat,
     linear-gradient(to bottom, #040a2f, #003fad);
 }
@@ -32,7 +32,7 @@
 .bg-wooden-table-with-cloth {
   background-image: url('../../images/bg_cloth.svg'), url('../../images/bg_wood.svg');
   background-size:
-    auto 45vh,
+    auto max(45vh, 500px),
     100%;
   background-position:
     top center,
