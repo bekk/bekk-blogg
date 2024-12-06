@@ -3,7 +3,7 @@
   width: 100vw;
   overflow: hidden;
   background:
-    url('/images/northern_lights.svg') top left/contain no-repeat,
+    url('/images/northern_lights.png') top left/contain no-repeat,
     url('/images/snow.svg') bottom center/contain no-repeat,
     linear-gradient(to bottom, #040a2f, #003fad);
 }
