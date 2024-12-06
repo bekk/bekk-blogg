@@ -73,10 +73,11 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   ]
 }
 
-export const headers: HeadersFunction = ({ loaderHeaders, parentHeaders }) => {
+export const headers: HeadersFunction = ({ loaderHeaders, parentHeaders, errorHeaders }) => {
   return {
     ...parentHeaders,
     ...loaderHeaders,
+    ...errorHeaders,
   }
 }
 
