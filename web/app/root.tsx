@@ -14,6 +14,7 @@ import {
 } from '@remix-run/react'
 import { VisualEditing } from '@sanity/visual-editing/remix'
 import type { HeadersFunction, LinksFunction, LoaderFunction } from '@vercel/remix'
+import { SpeedInsights } from '@vercel/speed-insights/remix'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
 
@@ -143,6 +144,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </main>
           <ScrollRestoration />
           <Scripts />
+          <SpeedInsights />
         </div>
       </body>
     </html>

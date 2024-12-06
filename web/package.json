@@ -27,6 +27,7 @@
     "@sanity/visual-editing": "^2.8.0",
     "@types/react-syntax-highlighter": "^15.5.13",
     "@vercel/remix": "^2.15.0",
+    "@vercel/speed-insights": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "csp-header": "^5.2.1",
