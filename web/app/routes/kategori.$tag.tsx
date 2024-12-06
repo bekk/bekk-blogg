@@ -78,7 +78,7 @@ export default function Tags() {
   return (
     <div className="bg-wooden-table-with-cloth">
       <header className="relative">
-        <Header isOnArticlePage={false} />
+        <Header />
       </header>
       {!tag && (
         <div className="flex flex-col items-center lg:mb-12">

@@ -163,7 +163,7 @@ export default function Index() {
     <div className="bg-wooden-table break-words md:p-8 min-h-screen">
       <div className="striped-frame mx-auto max-w-screen-2xl">
         <header className="relative">
-          <Header isOnArticlePage={true} />
+          <Header />
         </header>
         <Article post={data} />
       </div>

@@ -45,7 +45,7 @@ export default function TagsRoute() {
   return (
     <div className="bg-dark-wooden-table-with-green-cloth">
       <header className="relative">
-        <Header isOnArticlePage={false} />
+        <Header />
       </header>
       {state.state === 'loading' ? (
         <Spinner />

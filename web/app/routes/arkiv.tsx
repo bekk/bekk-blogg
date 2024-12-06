@@ -33,7 +33,7 @@ export default function ArchivePage() {
   return (
     <div className="bg-brick-wall-with-wooden-plank">
       <header className="relative">
-        <Header isOnArticlePage={false} />
+        <Header />
       </header>
       <div className={'flex flex-col justify-center'}>
         <h1 className="text-white text-center">Arkiv</h1>

@@ -32,7 +32,7 @@ export const ErrorPage = ({ title, description }: ErrorPageProps) => {
   return (
     <div className="bg-error">
       <header className="relative">
-        <Header isOnArticlePage={false} />
+        <Header />
       </header>
       <div className="flex min-h-screen flex-col items-left justify-center px-4 md:px-12 sm:pl-8 md:pb-64 text-white">
         <SnowAnimation />

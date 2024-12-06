@@ -98,7 +98,7 @@ export default function Index() {
   return (
     <div className="bg-wooden-table-with-cloth min-h-screen">
       <header className="relative">
-        <Header isOnArticlePage={false} />
+        <Header />
       </header>
       <div className="flex flex-col">
         <h1 className="mb-4 sm:mb-12 self-start pl-4 md:pl-0 text-4xl md:text-5xl text-postcard-beige sm:self-center">
