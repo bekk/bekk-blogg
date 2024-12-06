@@ -1,4 +1,4 @@
-import { useLoaderData, useNavigation } from '@remix-run/react'
+import { isRouteErrorResponse, useLoaderData, useNavigation, useRouteError } from '@remix-run/react'
 import { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { combinedHeaders } from 'utils/headers'
@@ -8,6 +8,7 @@ import { AUTHOR_WITH_POSTS_QUERYResult } from 'utils/sanity/types/sanity.types'
 import { loadQuery } from '../../utils/sanity/store'
 
 import { Spinner } from '~/components/Spinner'
+import { ErrorPage } from '~/features/error-boundary/ErrorPage'
 import Header from '~/features/header/Header'
 import { Pagination } from '~/features/pagination/Pagination'
 import { PostPreviewList } from '~/features/post-preview/PostPreview'
@@ -15,8 +16,8 @@ import { PostPreviewList } from '~/features/post-preview/PostPreview'
 export async function loader({ params, request }: LoaderFunctionArgs) {
   const { name } = params
   if (!name) {
-    throw new Response('Missing author', {
-      status: 404,
+    throw new Response('Missing name parameter', {
+      status: 400,
       headers: {
         'Cache-Control': 'no-cache, no-store',
       },
@@ -111,5 +112,23 @@ export default function AuthorPage() {
         </div>
       )}
     </div>
+  )
+}
+
+export const ErrorBoundary = () => {
+  const error = useRouteError()
+  if (isRouteErrorResponse(error) && error.status === 404) {
+    return (
+      <ErrorPage
+        title="Fant ikke den forfatteren"
+        description="Det kan hende forfatteren du leter etter ikke finnes lenger, eller at du skrev inn feil URL."
+      />
+    )
+  }
+  return (
+    <ErrorPage
+      title="Uventet feil"
+      description="Her gikk noe galt. Prøv å refresh siden. Eller følg Bekk-stjernen tilbake til julekalenderen."
+    />
   )
 }

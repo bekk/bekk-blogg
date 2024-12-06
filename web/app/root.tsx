@@ -1,4 +1,3 @@
-import { lazy, Suspense } from 'react'
 import {
   isRouteErrorResponse,
   Links,
@@ -12,11 +11,12 @@ import {
 } from '@remix-run/react'
 import { VisualEditing } from '@sanity/visual-editing/remix'
 import type { HeadersFunction, LinksFunction, LoaderFunction } from '@vercel/remix'
+import { lazy, Suspense } from 'react'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
 
+import { ErrorPage } from './features/error-boundary/ErrorPage'
 import { JumpToContent } from './features/jump-to-content/JumpToContent'
-import { ErrorPage } from './routes/ErrorPage'
 
 import styles from '~/styles/main.css?url'
 

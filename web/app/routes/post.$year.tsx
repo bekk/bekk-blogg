@@ -1,4 +1,4 @@
-import { Link, useLoaderData } from '@remix-run/react'
+import { isRouteErrorResponse, Link, useLoaderData, useRouteError } from '@remix-run/react'
 import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { motion } from 'framer-motion'
 import { z } from 'zod'
@@ -9,6 +9,7 @@ import { Door } from '~/features/calendar/Door'
 import { Gift2SVG } from '~/features/calendar/giftsSVG/Gift2SVG'
 import { Gift3SVG } from '~/features/calendar/giftsSVG/Gift3SVG'
 import { SnowAnimation } from '~/features/calendar/SnowAnimation'
+import { ErrorPage } from '~/features/error-boundary/ErrorPage'
 
 const ParamsSchema = z.object({
   year: z.string().min(4).max(4),
@@ -146,5 +147,23 @@ export default function YearRoute() {
         </div>
       </div>
     </div>
+  )
+}
+
+export const ErrorBoundary = () => {
+  const error = useRouteError()
+  if (isRouteErrorResponse(error) && error.status === 425) {
+    return (
+      <ErrorPage
+        title="Nå var du litt tidlig ute"
+        description="Den julekalenderen er ikke tilgjengelig helt enda. Prøv igjen i fremtiden!"
+      />
+    )
+  }
+  return (
+    <ErrorPage
+      title="Uventet feil"
+      description="Her gikk noe galt. Prøv å refresh siden. Eller følg Bekk-stjernen tilbake til julekalenderen."
+    />
   )
 }

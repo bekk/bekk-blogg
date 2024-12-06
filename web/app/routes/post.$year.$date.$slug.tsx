@@ -1,4 +1,4 @@
-import { isRouteErrorResponse, useLoaderData, useRouteError } from '@remix-run/react'
+import { isRouteErrorResponse, json, useLoaderData, useRouteError } from '@remix-run/react'
 import { useQuery } from '@sanity/react-loader'
 import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { cleanControlCharacters } from 'utils/controlCharacters'
@@ -10,8 +10,7 @@ import { POST_BY_SLUG } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
 import { POST_BY_SLUGResult } from '../../utils/sanity/types/sanity.types'
 import { toPlainText, urlFor } from '../../utils/sanity/utils'
-
-import { ErrorPage } from './ErrorPage'
+import { ErrorPage } from '../features/error-boundary/ErrorPage'
 
 import '../portable-text/prism-theme.css'
 
@@ -133,15 +132,18 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     ? urlFor(initial.data.coverImage).width(1200).format('webp').url()
     : undefined
 
-  return new Response(JSON.stringify({ initial, query: POST_BY_SLUG, params: parsedParams.data, imageUrl }), {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/json',
-      'Cache-Control': preview
-        ? 'no-cache, no-store'
-        : 'public, max-age=60, s-maxage=60, stale-while-revalidate=2592000, stale-if-error=2592000',
-    },
-  })
+  return json(
+    { initial, query: POST_BY_SLUG, params: parsedParams.data, imageUrl },
+    {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': preview
+          ? 'no-cache, no-store'
+          : 'public, max-age=60, s-maxage=60, stale-while-revalidate=2592000, stale-if-error=2592000',
+      },
+    }
+  )
 }
 
 export const headers = combinedHeaders
@@ -149,6 +151,7 @@ export const headers = combinedHeaders
 export default function Index() {
   const { initial, query, params } = useLoaderData<typeof loader>()
   const { data } = useQuery<typeof initial.data>(query, params, {
+    // @ts-expect-error Dette er en kjent bug i sanity-react-loader
     initial,
   })
 
@@ -157,7 +160,7 @@ export default function Index() {
   }
 
   return (
-    <div className="bg-wooden-table break-words md:p-8">
+    <div className="bg-wooden-table break-words md:p-8 min-h-screen">
       <div className="striped-frame mx-auto max-w-screen-2xl">
         <header className="relative">
           <Header isOnArticlePage={true} />
@@ -171,24 +174,36 @@ export default function Index() {
 export function ErrorBoundary() {
   const error = useRouteError()
 
-  let title = ''
-  let message = 'Følg Bekk-stjernen for å komme tilbake til julekalenderen'
-  if (isRouteErrorResponse(error)) {
-    switch (error.status) {
-      case 404:
-        title = 'Dette innholdet finnes ikke. Det kan hende lenken er feil, eller at lenken har endret seg.'
-        break
-      case 425:
-        title = 'Dette innholdet er ikke tilgjengelig enda. Vær tålmodig og sjekk tilbake om litt!'
-        break
-      default:
-        title = 'Uventet feil'
-        message = 'Her gikk noe galt. Prøv å refresh siden. Eller følg Bekk-stjernen tilbake til julekalenderen.'
-    }
-  } else {
-    title = 'Uventet feil'
-    message = 'Her gikk noe galt. Prøv å refresh siden. Eller følg Bekk-stjernen tilbake til julekalenderen.'
+  if (!isRouteErrorResponse(error)) {
+    return (
+      <ErrorPage
+        title="Uventet feil"
+        description="Her gikk noe galt. Prøv å refresh siden. Eller følg Bekk-stjernen tilbake til julekalenderen."
+      />
+    )
   }
 
-  return <ErrorPage title={title} description={message} />
+  switch (error.status) {
+    case 404:
+      return (
+        <ErrorPage
+          title="Dette innholdet finnes ikke. Det kan hende lenken er feil, eller at lenken har endret  seg."
+          description="Følg Bekk-stjernen for å komme tilbake til julekalenderen"
+        />
+      )
+    case 425:
+      return (
+        <ErrorPage
+          title="Dette innholdet er ikke tilgjengelig enda. Vær tålmodig og sjekk tilbake om litt!"
+          description="Følg Bekk-stjernen for å komme tilbake til julekalenderen"
+        />
+      )
+    default:
+      return (
+        <ErrorPage
+          title="Uventet feil"
+          description="Her gikk noe galt. Prøv å refresh siden. Eller følg Bekk-stjernen tilbake til julekalenderen."
+        />
+      )
+  }
 }

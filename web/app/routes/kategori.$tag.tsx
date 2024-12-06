@@ -1,4 +1,4 @@
-import { useLoaderData, useNavigation } from '@remix-run/react'
+import { isRouteErrorResponse, useLoaderData, useNavigation, useRouteError } from '@remix-run/react'
 import { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { combinedHeaders } from 'utils/headers'
 
@@ -7,6 +7,7 @@ import { loadQuery } from '../../utils/sanity/store'
 import { TAG_WITH_POSTS_QUERYResult } from '../../utils/sanity/types/sanity.types'
 
 import { Spinner } from '~/components/Spinner'
+import { ErrorPage } from '~/features/error-boundary/ErrorPage'
 import Header from '~/features/header/Header'
 import { Pagination } from '~/features/pagination/Pagination'
 import { PostPreviewList } from '~/features/post-preview/PostPreview'
@@ -87,7 +88,7 @@ export default function Tags() {
       {navigation.state === 'loading' ? (
         <Spinner />
       ) : (
-        <div className="flex flex-col items-center lg:mb-12 md:gap-8 ">
+        <div className="flex flex-col items-center md:gap-8 pb-12">
           <h1 className="text-center md:text-center text-postcard-beige mb-4">Innhold om {tag?.name}</h1>
           <div className="flex flex-col mb-4 text-center text-postcard-beige gap-4">
             <p>Totalt {pagination.totalPosts} innlegg</p>
@@ -102,5 +103,23 @@ export default function Tags() {
         </div>
       )}
     </div>
+  )
+}
+
+export const ErrorBoundary = () => {
+  const error = useRouteError()
+  if (isRouteErrorResponse(error) && error.status === 404) {
+    return (
+      <ErrorPage
+        title="Fant ikke den kategorien"
+        description="Det kan hende kategorien du leter etter ikke finnes lenger, eller at du skrev inn feil URL."
+      />
+    )
+  }
+  return (
+    <ErrorPage
+      title="Uventet feil"
+      description="Her gikk noe galt. Prøv å refresh siden. Eller følg Bekk-stjernen tilbake til julekalenderen."
+    />
   )
 }

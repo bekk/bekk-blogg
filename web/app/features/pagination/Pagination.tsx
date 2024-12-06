@@ -65,7 +65,7 @@ export const Pagination = ({ currentPage, totalPages, baseUrl, className = '' }:
   }
 
   return (
-    <nav className={`flex justify-center gap-2 my-8 ${className}`} aria-label="Pagination">
+    <nav className={`flex justify-center gap-2 py-8 ${className}`} aria-label="Pagination">
       {/* Previous button */}
       {currentPage > 1 && (
         <Link

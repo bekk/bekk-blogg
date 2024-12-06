@@ -9,6 +9,7 @@ import { POSTS_BY_YEAR_AND_DATE } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
 
 import { DayNavigation } from '~/features/article/DayNavigation'
+import { ErrorPage } from '~/features/error-boundary/ErrorPage'
 import Header from '~/features/header/Header'
 import { PostPreviewList } from '~/features/post-preview/PostPreview'
 
@@ -108,5 +109,14 @@ export default function Index() {
         <DayNavigation day={Number(date)} year={Number(year)} />
       </div>
     </div>
+  )
+}
+
+export const ErrorBoundary = () => {
+  return (
+    <ErrorPage
+      title="Uventet feil"
+      description="Her gikk noe galt. Prøv å refresh siden. Eller følg Bekk-stjernen tilbake til julekalenderen."
+    />
   )
 }
