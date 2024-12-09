@@ -1,20 +1,23 @@
-import { useLoaderData, useNavigation } from '@remix-run/react'
+import { isRouteErrorResponse, useLoaderData, useNavigation, useRouteError } from '@remix-run/react'
 import { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { cleanControlCharacters } from 'utils/controlCharacters'
+import { combinedHeaders } from 'utils/headers'
 import { AUTHOR_WITH_POSTS_QUERY } from 'utils/sanity/queries/postQueries'
 import { AUTHOR_WITH_POSTS_QUERYResult } from 'utils/sanity/types/sanity.types'
 
 import { loadQuery } from '../../utils/sanity/store'
 
 import { Spinner } from '~/components/Spinner'
+import { ErrorPage } from '~/features/error-boundary/ErrorPage'
+import Header from '~/features/header/Header'
 import { Pagination } from '~/features/pagination/Pagination'
 import { PostPreviewList } from '~/features/post-preview/PostPreview'
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
   const { name } = params
   if (!name) {
-    throw new Response('Missing author', {
-      status: 404,
+    throw new Response('Missing name parameter', {
+      status: 400,
       headers: {
         'Cache-Control': 'no-cache, no-store',
       },
@@ -73,28 +76,24 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   ]
 }
 
+export const headers = combinedHeaders
+
 export default function AuthorPage() {
   const { author, posts, pagination } = useLoaderData<typeof loader>()
   const navigation = useNavigation()
-
-  if (!author) {
-    return (
-      <div className="flex flex-col items-center lg:mb-12">
-        <h1 className="md:text-center mb-0">Fant ikke forfatteren</h1>
-      </div>
-    )
-  }
-
-  if (!posts.length) {
-    return (
-      <div className="flex flex-col items-center lg:mb-12">
-        <h1 className="md:text-center mb-0">Fant ingen innlegg av {author.fullName}</h1>
-      </div>
-    )
-  }
-
+  const isSomethingWrong = !author || !posts || posts.length === 0
   return (
-    <>
+    <div className="bg-wooden-table-with-cloth">
+      <header className="relative">
+        <Header />
+      </header>
+      {isSomethingWrong && (
+        <div className="flex flex-col items-center lg:mb-12">
+          <h1 className="md:text-center mb-0">
+            {author ? `Fant ingen innlegg fra ${author.fullName}` : 'Fant ikke forfatteren'}
+          </h1>
+        </div>
+      )}
       {navigation.state === 'loading' ? (
         <Spinner />
       ) : (
@@ -112,6 +111,24 @@ export default function AuthorPage() {
           <Pagination {...pagination} baseUrl={`/forfatter/${author.slug?.current}`} />
         </div>
       )}
-    </>
+    </div>
+  )
+}
+
+export const ErrorBoundary = () => {
+  const error = useRouteError()
+  if (isRouteErrorResponse(error) && error.status === 404) {
+    return (
+      <ErrorPage
+        title="Fant ikke den forfatteren"
+        description="Det kan hende forfatteren du leter etter ikke finnes lenger, eller at du skrev inn feil URL."
+      />
+    )
+  }
+  return (
+    <ErrorPage
+      title="Uventet feil"
+      description="Her gikk noe galt. Prøv å refresh siden. Eller følg Bekk-stjernen tilbake til julekalenderen."
+    />
   )
 }

@@ -1,5 +1,6 @@
-import { useLoaderData } from '@remix-run/react'
+import { isRouteErrorResponse, useLoaderData, useRouteError } from '@remix-run/react'
 import { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
+import { combinedHeaders } from 'utils/headers'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'
 import { z } from 'zod'
@@ -8,6 +9,8 @@ import { POSTS_BY_YEAR_AND_DATE } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
 
 import { DayNavigation } from '~/features/article/DayNavigation'
+import { ErrorPage } from '~/features/error-boundary/ErrorPage'
+import Header from '~/features/header/Header'
 import { PostPreviewList } from '~/features/post-preview/PostPreview'
 
 export const meta: MetaFunction<typeof loader> = ({ data: postsByDate }) => {
@@ -43,7 +46,12 @@ const ParamsSchema = z.object({
 export async function loader({ params, request }: LoaderFunctionArgs) {
   const parsedParams = ParamsSchema.safeParse(params)
   if (!parsedParams.success) {
-    throw new Response('Invalid params', { status: 400 })
+    throw new Response('Invalid params', {
+      status: 400,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
   const { year, date } = parsedParams.data
 
@@ -51,7 +59,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const formatDate = year + '-' + '12' + '-' + date.padStart(2, '0')
   const currentDate = new Date(new Date().getTime() + 1000 * 60 * 60)
 
-  const dateNumber = parseInt(date, 10)
+  const dateNumber = Number(date)
   if (!preview && (isNaN(dateNumber) || dateNumber < 1 || dateNumber > 24)) {
     throw new Response('Date not found', {
       status: 404,
@@ -87,17 +95,60 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   }
 }
 
+export const headers = combinedHeaders
+
 export default function Index() {
   const { date, year, posts } = useLoaderData<typeof loader>()
 
   return (
-    <div className="flex flex-col">
-      <h1 className="mb-4 sm:mb-12 self-start pl-4 md:pl-0 text-4xl md:text-5xl text-postcard-beige sm:self-center">
-        {parseInt(date) < 10 ? date.replace('0', '') : date}. desember
-      </h1>
-      <p className="self-start sm:self-center pl-4 mb-8 sm:mb-12 text-white ">Totalt {posts.length} innlegg</p>
-      <PostPreviewList posts={posts} />
-      <DayNavigation day={Number(date)} year={Number(year)} />
+    <div className="bg-wooden-table-with-cloth min-h-screen">
+      <header className="relative">
+        <Header />
+      </header>
+      <div className="flex flex-col">
+        <h1 className="mb-4 sm:mb-12 self-start pl-4 md:pl-0 text-4xl md:text-5xl text-postcard-beige sm:self-center">
+          {parseInt(date) < 10 ? date.replace('0', '') : date}. desember
+        </h1>
+        <p className="self-start sm:self-center pl-4 mb-8 sm:mb-12 text-white ">Totalt {posts.length} innlegg</p>
+        <PostPreviewList posts={posts} />
+        <DayNavigation day={Number(date)} year={Number(year)} />
+      </div>
     </div>
+  )
+}
+
+export const ErrorBoundary = () => {
+  const error = useRouteError()
+  if (isRouteErrorResponse(error)) {
+    switch (error.status) {
+      case 400:
+      case 404:
+        return (
+          <ErrorPage
+            title="Her var det noe feil med datoen"
+            description="Denne datoen finnes ikke. Følg Bekk-stjernen tilbake til julekalenderen."
+          />
+        )
+      case 425:
+        return (
+          <ErrorPage
+            title="Nå var du for raskt ute!"
+            description="Denne datoen er ikke tilgjengelig enda. Følg Bekk-stjernen tilbake til julekalenderen."
+          />
+        )
+      default:
+        return (
+          <ErrorPage
+            title="Uventet feil"
+            description="Her gikk noe galt. Prøv å refresh siden. Eller følg Bekk-stjernen tilbake til julekalenderen."
+          />
+        )
+    }
+  }
+  return (
+    <ErrorPage
+      title="Uventet feil"
+      description="Her gikk noe galt. Prøv å refresh siden. Eller følg Bekk-stjernen tilbake til julekalenderen."
+    />
   )
 }
