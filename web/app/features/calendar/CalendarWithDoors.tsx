@@ -7,7 +7,6 @@ import { Gift3SVG } from '~/features/calendar/giftsSVG/Gift3SVG'
 
 export const CalendarWithDoors = () => {
   const data = useLoaderData<{ year: string }>()
-  console.log('data', data)
   return (
     <div className="sm:px-4 grid grid-cols-[25px_auto_25px] sm:grid-cols-[50px_auto_50px] 2lg:grid-cols-[auto_auto_auto] grid-rows-[91px_auto] sm:grid-rows-[142px_auto] md:grid-rows-[179px_auto] 2lg:grid-rows-[292px_auto]">
       {/* Roof */}
