@@ -1,4 +1,4 @@
-import { YearSVG } from '~/features/archive/svgs/YearSVG'
+import { YearBadgeSVG } from '~/features/archive/svgs/YearBadgeSVG'
 
 type YearBadgeProps = {
   year: number
@@ -6,7 +6,7 @@ type YearBadgeProps = {
 export const YearBadge = ({ year }: YearBadgeProps) => {
   return (
     <div className="relative flex items-center justify-center">
-      <YearSVG />
+      <YearBadgeSVG />
       <div className="absolute flex items-center justify-center w-full h-full">{year}</div>
     </div>
   )
