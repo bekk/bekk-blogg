@@ -97,7 +97,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 
 export const headers = combinedHeaders
 
-export default function Index() {
+export default function DateRoute() {
   const { date, year, posts } = useLoaderData<typeof loader>()
 
   return (

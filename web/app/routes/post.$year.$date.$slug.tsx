@@ -149,7 +149,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 
 export const headers = combinedHeaders
 
-export default function Index() {
+export default function ArticleRoute() {
   const { initial, query, params } = useLoaderData<typeof loader>()
   const { data } = useQuery<typeof initial.data>(query, params, {
     // @ts-expect-error Dette er en kjent bug i sanity-react-loader

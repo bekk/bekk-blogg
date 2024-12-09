@@ -18,7 +18,7 @@ type PostPreviewType = {
   wordCount: number | null
   podcastLength: number | null
   link?: string
-  type: string
+  type?: string
 }
 
 type PostPreviewProps = PostPreviewType

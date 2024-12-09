@@ -71,7 +71,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   ]
 }
 
-export default function Tags() {
+export default function TagRoute() {
   const { posts, tag, pagination } = useLoaderData<typeof loader>()
   const navigation = useNavigation()
 
