@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react'
 import {
   isRouteErrorResponse,
+  json,
   Links,
   Meta,
   Outlet,
@@ -24,7 +25,7 @@ export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
 export const loader: LoaderFunction = async ({ request }) => {
   const { preview } = await loadQueryOptions(request.headers)
-  return {
+  return json({
     isPreview: preview,
     ENV: {
       SANITY_STUDIO_PROJECT_ID: process.env.SANITY_STUDIO_PROJECT_ID,
@@ -32,13 +33,19 @@ export const loader: LoaderFunction = async ({ request }) => {
       SANITY_STUDIO_URL: process.env.SANITY_STUDIO_URL,
       SANITY_STUDIO_API_VERSION: process.env.SANITY_API_VERSION,
     },
-  }
+    headers: {
+      'Cache-Control': preview
+        ? 'no-cache, no-store'
+        : // 1 hour max-age, 2 hours s-maxage, 1 month stale-while-revalidate, 1 month stale-if-error
+          'public, max-age=3600, s-maxage=7200, stale-while-revalidate=2592000, stale-if-error=2592000',
+    },
+  })
 }
 
-export const headers: HeadersFunction = () => ({
+export const headers: HeadersFunction = ({ loaderHeaders }) => ({
   ...generateSecurityHeaders(),
-  // 1 hour max-age, 2 hours s-maxage, 1 month stale-while-revalidate, 1 month stale-if-error
-  'Cache-Control': 'public, max-age=3600, s-maxage=7200, stale-while-revalidate=2592000, stale-if-error=2592000',
+
+  ...loaderHeaders,
 })
 
 export function ErrorBoundary() {
