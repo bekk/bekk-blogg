@@ -11,7 +11,7 @@ import { WhiteGiftRedRibbonSquare } from '~/features/archive/svgs/WhiteGiftRedRi
 import { YearBadge } from '~/features/archive/YearBadge'
 import Header from '~/features/header/Header'
 
-export default function ArchivePage() {
+export default function ArchiveRoute() {
   const currentYear = new Date().getFullYear()
   const startYear = 2017
   const availableYears: number[] = []
@@ -41,12 +41,14 @@ export default function ArchivePage() {
           {giftSVGList.map((GiftSVG, index) => {
             return (
               <div className="grid justify-items-center w-full pt-8" key={index}>
+                {/*Mobile*/}
                 <div className="flex flex-col w-full justify-items-center lg:hidden">
                   <Link to={`/post/${availableYears[index]}`} className="flex justify-center">
                     <GiftSVG />
                   </Link>
                   <Plank year={availableYears[index]} />
                 </div>
+                {/*Desktop*/}
                 <div className="hidden lg:block">
                   <Link to={`/post/${availableYears[index]}`}>
                     <GiftSVG />

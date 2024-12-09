@@ -78,7 +78,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 
 export const headers = combinedHeaders
 
-export default function AuthorPage() {
+export default function AuthorRoute() {
   const { author, posts, pagination } = useLoaderData<typeof loader>()
   const navigation = useNavigation()
   const isSomethingWrong = !author || !posts || posts.length === 0
