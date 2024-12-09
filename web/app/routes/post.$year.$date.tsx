@@ -1,4 +1,4 @@
-import { useLoaderData } from '@remix-run/react'
+import { isRouteErrorResponse, useLoaderData, useRouteError } from '@remix-run/react'
 import { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { combinedHeaders } from 'utils/headers'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
@@ -46,7 +46,12 @@ const ParamsSchema = z.object({
 export async function loader({ params, request }: LoaderFunctionArgs) {
   const parsedParams = ParamsSchema.safeParse(params)
   if (!parsedParams.success) {
-    throw new Response('Invalid params', { status: 400 })
+    throw new Response('Invalid params', {
+      status: 400,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
   const { year, date } = parsedParams.data
 
@@ -54,7 +59,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const formatDate = year + '-' + '12' + '-' + date.padStart(2, '0')
   const currentDate = new Date(new Date().getTime() + 1000 * 60 * 60)
 
-  const dateNumber = parseInt(date, 10)
+  const dateNumber = Number(date)
   if (!preview && (isNaN(dateNumber) || dateNumber < 1 || dateNumber > 24)) {
     throw new Response('Date not found', {
       status: 404,
@@ -113,6 +118,33 @@ export default function Index() {
 }
 
 export const ErrorBoundary = () => {
+  const error = useRouteError()
+  if (isRouteErrorResponse(error)) {
+    switch (error.status) {
+      case 400:
+      case 404:
+        return (
+          <ErrorPage
+            title="Her var det noe feil med datoen"
+            description="Denne datoen finnes ikke. Følg Bekk-stjernen tilbake til julekalenderen."
+          />
+        )
+      case 425:
+        return (
+          <ErrorPage
+            title="Nå var du for raskt ute!"
+            description="Denne datoen er ikke tilgjengelig enda. Følg Bekk-stjernen tilbake til julekalenderen."
+          />
+        )
+      default:
+        return (
+          <ErrorPage
+            title="Uventet feil"
+            description="Her gikk noe galt. Prøv å refresh siden. Eller følg Bekk-stjernen tilbake til julekalenderen."
+          />
+        )
+    }
+  }
   return (
     <ErrorPage
       title="Uventet feil"

@@ -92,9 +92,10 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const formatDate = year + '-' + '12' + '-' + date.padStart(2, '0')
   const currentDate = new Date(new Date().getTime() + 1000 * 60 * 60)
   const targetDate = new Date(formatDate)
-  const dateNumber = parseInt(date, 10)
+  const yearNumber = Number(year)
+  const dateNumber = Number(date)
 
-  if (!preview && (isNaN(dateNumber) || dateNumber < 1 || dateNumber > 24)) {
+  if (!preview && (isNaN(dateNumber) || isNaN(yearNumber) || dateNumber < 1 || dateNumber > 24)) {
     throw new Response('Date not found', {
       status: 404,
       headers: {

@@ -18,11 +18,16 @@ const ParamsSchema = z.object({
 export async function loader({ params }: LoaderFunctionArgs) {
   const parsedParams = ParamsSchema.safeParse(params)
   if (!parsedParams.success) {
-    throw new Response('Invalid params', { status: 400 })
+    throw new Response('Invalid params', {
+      status: 400,
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+      },
+    })
   }
   const { year } = parsedParams.data
   const currentYear = new Date().getFullYear()
-  const paramsYearAsNumber = Number.parseInt(year)
+  const paramsYearAsNumber = Number(year)
 
   if (isNaN(paramsYearAsNumber) || paramsYearAsNumber < 2017) {
     throw new Response('Invalid year', {
@@ -152,13 +157,32 @@ export default function YearRoute() {
 
 export const ErrorBoundary = () => {
   const error = useRouteError()
-  if (isRouteErrorResponse(error) && error.status === 425) {
-    return (
-      <ErrorPage
-        title="Nå var du litt tidlig ute"
-        description="Den julekalenderen er ikke tilgjengelig helt enda. Prøv igjen i fremtiden!"
-      />
-    )
+  if (isRouteErrorResponse(error)) {
+    switch (error.status) {
+      case 400:
+      case 404: {
+        return (
+          <ErrorPage
+            title="Her var det noe feil med året"
+            description="Året du prøvde å nå er ikke gyldig. Følg Bekk-stjernen tilbake til julekalenderen."
+          />
+        )
+      }
+      case 425:
+        return (
+          <ErrorPage
+            title="Nå var du litt tidlig ute"
+            description="Den julekalenderen er ikke tilgjengelig helt enda. Prøv igjen i fremtiden!"
+          />
+        )
+      default:
+        return (
+          <ErrorPage
+            title="Uventet feil"
+            description="Her gikk noe galt. Prøv å refresh siden. Eller følg Bekk-stjernen tilbake til julekalenderen."
+          />
+        )
+    }
   }
   return (
     <ErrorPage
