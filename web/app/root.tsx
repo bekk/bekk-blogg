@@ -10,7 +10,6 @@ import {
   useMatches,
   useRouteError,
 } from '@remix-run/react'
-import { VisualEditing } from '@sanity/visual-editing/remix'
 import type { HeadersFunction, LinksFunction, LoaderFunction } from '@vercel/remix'
 import { SpeedInsights } from '@vercel/speed-insights/remix'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
@@ -124,6 +123,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
 const ExitPreview = lazy(() =>
   import('./components/ExitPreview').then((module) => ({
     default: module.ExitPreview,
+  }))
+)
+
+const VisualEditing = lazy(() =>
+  import('@sanity/visual-editing/remix').then((module) => ({
+    default: module.VisualEditing,
   }))
 )
 
