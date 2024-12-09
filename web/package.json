@@ -25,9 +25,12 @@
     "@sanity/overlays": "^2.3.59",
     "@sanity/react-loader": "^1.10.14",
     "@sanity/visual-editing": "^2.8.0",
+    "@sanity/webhook": "^4.0.4",
+    "@types/algoliasearch": "^3.34.11",
     "@types/react-syntax-highlighter": "^15.5.13",
     "@vercel/remix": "^2.15.0",
     "@vercel/speed-insights": "^1.1.0",
+    "algoliasearch": "^4.10.5",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "csp-header": "^5.2.1",
@@ -49,6 +52,7 @@
     "remix-auth": "^3.7.0",
     "remix-auth-microsoft": "^2.0.1",
     "sanity": "^3.62.3",
+    "sanity-algolia": "^1.1.0",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8"
@@ -79,6 +83,7 @@
     "typescript": "^5.1.6",
     "typescript-eslint": "^8.12.2",
     "vite": "^5.1.0",
+    "vite-plugin-cjs-interop": "^2.1.6",
     "vite-tsconfig-paths": "^4.2.1"
   },
   "engines": {
