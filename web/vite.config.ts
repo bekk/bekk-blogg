@@ -22,9 +22,4 @@ export default defineConfig({
       dependencies: ['sanity-algolia'],
     }),
   ],
-  resolve: {
-    alias: {
-      'sanity-algolia': 'sanity-algolia/dist/sanity-algolia.esm.js',
-    },
-  },
 })
