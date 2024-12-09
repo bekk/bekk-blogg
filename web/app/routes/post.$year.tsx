@@ -76,7 +76,7 @@ export default function YearRoute() {
   const data = useLoaderData<{ year: string }>()
 
   return (
-    <div className="bg-brick-wall-with-wooden-plank">
+    <div className="bg-brick-wall">
       <div className="2lg:h-screen flex flex-col justify-end items-center min-h-screen">
         <SnowAnimation />
         <Link to="/post/2024" className="absolute top-[20px] md:top-[40px] right-[20px] md:right-[40px]">
