@@ -8,11 +8,6 @@ export async function loadQueryOptions(
 ): Promise<{ preview: boolean; options: Parameters<typeof loadQuery>[2] }> {
   const previewSession = await getSession(headers.get('Cookie'))
   const preview = previewSession.get('projectId') && previewSession.get('projectId') === readClient.config().projectId
-  console.log('tmp logging', {
-    preview,
-    projectId: readClient.config().projectId,
-    fromCookie: previewSession.get('projectId'),
-  })
 
   if (preview && !process.env.SANITY_READ_API_TOKEN) {
     throw new Error(
