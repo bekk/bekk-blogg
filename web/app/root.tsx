@@ -97,9 +97,9 @@ export function ErrorBoundary() {
 export function Layout({ children }: { children: React.ReactNode }) {
   const matches = useMatches()
 
-  type PotentialLanguageType = { language: string } | undefined
-  const postData = matches.find((match) => (match.data as PotentialLanguageType)?.language)
-    ?.data as PotentialLanguageType
+  type PotentialPostData = { initial: { data: { language?: string; canonicalUrl?: string } } } | undefined
+  const postData = (matches.find((match) => match.id === 'routes/post.$year.$date.$slug')?.data as PotentialPostData)
+    ?.initial?.data
 
   return (
     <html lang={postData?.language ?? 'nb-NO'}>
@@ -108,6 +108,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
+        {postData?.canonicalUrl && <link rel="canonical" href={postData.canonicalUrl} />}
         <link rel="alternate" type="application/rss+xml" title="Bekk Christmas RSS Feed" href="/rss.xml" />
         <script defer data-domain="bekk.christmas" src="https://plausible.io/js/plausible.js" />
       </head>
