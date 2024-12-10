@@ -19,9 +19,10 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     ${posts
       .map((post) => {
         const postDate = new Date(post.availableFrom).toUTCString()
-        const postUrl = `${baseUrl}/post/${new Date(post.availableFrom).getFullYear()}/${new Date(
-          post.availableFrom
-        ).getDate()}/${post.slug?.current}`
+        const postUrl = `${baseUrl}/post/${new Date(post.availableFrom).getFullYear()}/${new Date(post.availableFrom)
+          .getDate()
+          .toString()
+          .padStart(2, '0')}/${post.slug}`
 
         const description = cleanControlCharacters(post.description ?? '')
 
