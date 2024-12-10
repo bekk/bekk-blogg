@@ -1,4 +1,4 @@
-import { isRouteErrorResponse, json, useLoaderData, useRouteError } from '@remix-run/react'
+import { data, isRouteErrorResponse, useLoaderData, useRouteError } from '@remix-run/react'
 import { useQuery } from '@sanity/react-loader'
 import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { cleanControlCharacters } from 'utils/controlCharacters'
@@ -129,7 +129,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     ? urlFor(initial.data.coverImage).width(1200).format('webp').url()
     : undefined
 
-  return json(
+  return data(
     { initial, query: POST_BY_SLUG, params: parsedParams.data, imageUrl },
     {
       status: 200,
