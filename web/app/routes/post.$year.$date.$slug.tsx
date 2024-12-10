@@ -86,7 +86,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const { year, date, slug } = parsedParams.data
 
   if (date.length === 1) {
-    return redirect(`/post/${year}/${date.padStart(2, '0')}/${slug}`)
+    return redirect(`/post/${year}/${date.padStart(2, '0')}/${slug}`, { status: 301 })
   }
 
   const { options, preview } = await loadQueryOptions(request.headers)
