@@ -7,6 +7,7 @@ import { POST_BY_SLUGResult, SanityImageAsset } from 'utils/sanity/types/sanity.
 import { urlFor } from 'utils/sanity/utils'
 
 import { AudioPlayer } from './AudioPlayer'
+import { LikeOrDislike } from './LikeOrDislike'
 import { RelatedLinks } from './RelatedLinks'
 
 import { ArticleSpinner } from '~/components/ArticleSpinner'
@@ -31,8 +32,8 @@ export const Article = ({ post }: ArticleProps) => {
       ? true
       : post.series.posts.every((postInSeries) => postInSeries.isAvailable))
   return (
-    <div className="px-6 sm:grid-cols-[1fr_2fr] md:grid md:grid-rows-[auto_auto] md:gap-x-12 xl:gap-x-24 md:gap-y-6 md:pl-10 xl:pl-20 pb-8 md:pb-16">
-      <div className="meta col-start-1 col-end-1 row-start-2 row-end-2 mb-8 md:min-w-[230px] lg:min-w-[240px] 2lg:min-w-[250px]">
+    <section className="px-6 sm:grid-cols-[1fr_2fr] md:grid md:grid-rows-[auto_auto] md:gap-x-12 xl:gap-x-24 md:gap-y-6 md:pl-10 xl:pl-20 pb-8 md:pb-16">
+      <aside className="meta col-start-1 col-end-1 row-start-2 row-end-2 mb-8 md:min-w-[230px] lg:min-w-[240px] 2lg:min-w-[250px]">
         <h1 className="sm:mb-4 text-3xl sm:text-4xl overflow-auto">{post.title}</h1>
         {post.tags && (
           <div>
@@ -72,6 +73,14 @@ export const Article = ({ post }: ArticleProps) => {
         <Border />
         {post.availableFrom && formatDate(post.availableFrom)}
         <Border />
+        {post.points !== null && post.points > 0 && (
+          <>
+            <p>
+              {post.points} anbefaler {formatType(post.type)}
+            </p>
+            <Border />
+          </>
+        )}
         {post.type === 'article' && (
           <AudioPlayer
             src={`https://bekk-blogg-tts.vercel.app/tts?id=${post._id}`}
@@ -108,8 +117,8 @@ export const Article = ({ post }: ArticleProps) => {
             </details>
           </div>
         )}
-      </div>
-      <div className="flex flex-col col-start-2 col-end-2 row-start-2 row-end-2 max-md:max-w-screen-xl max-lg:max-w-[475px] max-2lg:max-w-[550px] 2lg:max-w-[675px] xl:pr-10 xl:max-w-3xl 2xl:max-w-4xl">
+      </aside>
+      <article className="flex flex-col col-start-2 col-end-2 row-start-2 row-end-2 max-md:max-w-screen-xl max-lg:max-w-[475px] max-2lg:max-w-[550px] 2lg:max-w-[675px] xl:pr-10 xl:max-w-3xl 2xl:max-w-4xl">
         {post?.description ? (
           <div className="text-xl remove-margin">
             <PortableText value={post.description} components={components} />
@@ -150,8 +159,10 @@ export const Article = ({ post }: ArticleProps) => {
             <RelatedLinks links={post.relatedLinks} language={post.language} />
           </div>
         )}
-      </div>
-    </div>
+
+        <LikeOrDislike id={post._id} />
+      </article>
+    </section>
   )
 }
 
@@ -171,4 +182,17 @@ const LinkWithSpinner = ({ to, children, className }: LinkWithSpinnerProps) => {
       {isNavigating && <ArticleSpinner />}
     </Link>
   )
+}
+
+const formatType = (type: NonNullable<POST_BY_SLUGResult>['type']) => {
+  switch (type) {
+    case 'article':
+      return 'denne artikkelen'
+    case 'podcast':
+      return 'denne podcasten'
+    case 'video':
+      return 'denne videoen'
+    default:
+      return 'dette innlegget'
+  }
 }

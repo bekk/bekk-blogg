@@ -51,6 +51,7 @@ const POST_PROJECTION = groq`{
   previewText,
   availableFrom,
   keywords,
+  points,
   "wordCount": length(string::split(pt::text(content), ' ')),
   content[] {
     ...,

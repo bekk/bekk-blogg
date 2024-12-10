@@ -2025,6 +2025,13 @@
           "type": "number"
         },
         "optional": true
+      },
+      "points": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
       }
     }
   },
