@@ -1,4 +1,4 @@
-import { isRouteErrorResponse, useLoaderData, useRouteError } from '@remix-run/react'
+import { isRouteErrorResponse, redirect, useLoaderData, useRouteError } from '@remix-run/react'
 import { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { combinedHeaders } from 'utils/headers'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
@@ -54,6 +54,10 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     })
   }
   const { year, date } = parsedParams.data
+
+  if (date.length === 1) {
+    return redirect(`/post/${year}/${date.padStart(2, '0')}`, { status: 301 })
+  }
 
   const { preview } = await loadQueryOptions(request.headers)
   const formatDate = year + '-' + '12' + '-' + date.padStart(2, '0')

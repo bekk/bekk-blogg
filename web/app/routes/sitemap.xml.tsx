@@ -34,7 +34,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
             .map(
               (day) => `
         <url>
-          <loc>${baseUrl}/post/${year}/${day}</loc>
+          <loc>${baseUrl}/post/${year}/${day.toString().padStart(2, '0')}</loc>
           <changefreq>weekly</changefreq>
           <priority>0.7</priority>
         </url>
@@ -48,7 +48,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
           const date = new Date(post.availableFrom)
           return `
         <url>
-          <loc>${baseUrl}/post/${date.getFullYear()}/${date.getDate()}/${post.slug}</loc>
+          <loc>${baseUrl}/post/${date.getFullYear()}/${date.getDate().toString().padStart(2, '0')}/${post.slug}</loc>
           <lastmod>${new Date(post._updatedAt).toISOString()}</lastmod>
           <changefreq>weekly</changefreq>
           <priority>0.8</priority>
