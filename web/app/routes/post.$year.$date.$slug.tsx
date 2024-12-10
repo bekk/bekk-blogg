@@ -1,4 +1,4 @@
-import { isRouteErrorResponse, json, useLoaderData, useRouteError } from '@remix-run/react'
+import { isRouteErrorResponse, json, redirect, useLoaderData, useRouteError } from '@remix-run/react'
 import { useQuery } from '@sanity/react-loader'
 import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { cleanControlCharacters } from 'utils/controlCharacters'
@@ -84,6 +84,10 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     })
   }
   const { year, date, slug } = parsedParams.data
+
+  if (date.length === 1) {
+    return redirect(`/post/${year}/${date.padStart(2, '0')}/${slug}`)
+  }
 
   const { options, preview } = await loadQueryOptions(request.headers)
 
