@@ -1,6 +1,7 @@
-import { isRouteErrorResponse, json, redirect, useLoaderData, useRouteError } from '@remix-run/react'
+import { isRouteErrorResponse, redirect, useLoaderData, useRouteError } from '@remix-run/react'
 import { useQuery } from '@sanity/react-loader'
 import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
+import { data } from '@vercel/remix'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { combinedHeaders } from 'utils/headers'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
@@ -19,7 +20,7 @@ import { Article } from '~/features/article/Article'
 import Header from '~/features/header/Header'
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  const post = data?.initial.data
+  const post = data?.data.initial.data
 
   if (!post) {
     return []
@@ -134,7 +135,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     ? urlFor(initial.data.coverImage).width(1200).format('webp').url()
     : undefined
 
-  return json(
+  return data(
     { initial, query: POST_BY_SLUG, params: parsedParams.data, imageUrl },
     {
       status: 200,
@@ -179,7 +180,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export const headers = combinedHeaders
 
 export default function ArticleRoute() {
-  const { initial, query, params } = useLoaderData<typeof loader>()
+  const {
+    data: { initial, query, params },
+  } = useLoaderData<typeof loader>()
   const { data } = useQuery<typeof initial.data>(query, params, {
     // @ts-expect-error Dette er en kjent bug i sanity-react-loader
     initial,

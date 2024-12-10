@@ -1,7 +1,6 @@
 import { lazy, Suspense } from 'react'
 import {
   isRouteErrorResponse,
-  json,
   Links,
   Meta,
   Outlet,
@@ -11,7 +10,7 @@ import {
   useMatches,
   useRouteError,
 } from '@remix-run/react'
-import type { HeadersFunction, LinksFunction, LoaderFunction } from '@vercel/remix'
+import { data, HeadersFunction, LinksFunction, LoaderFunction } from '@vercel/remix'
 import { SpeedInsights } from '@vercel/speed-insights/remix'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
@@ -25,7 +24,7 @@ export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
 export const loader: LoaderFunction = async ({ request }) => {
   const { preview } = await loadQueryOptions(request.headers)
-  return json({
+  return data({
     isPreview: preview,
     ENV: {
       SANITY_STUDIO_PROJECT_ID: process.env.SANITY_STUDIO_PROJECT_ID,
