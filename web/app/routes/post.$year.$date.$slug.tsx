@@ -154,7 +154,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = ActionSchema.safeParse({ id: unparsed.get('id'), action: unparsed.get('action') })
   if (!formData.success) {
     console.error(formData.error)
-    return { status: 'error', error: 'Skjemaet inneholdt ugyldige data' }
+    return { status: 'error', error: 'Skjemaet inneholdt ugyldige data' } as const
   }
 
   const { action, id } = formData.data
@@ -165,9 +165,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       .setIfMissing({ points: 0 })
       .inc({ points: action === 'like' ? 1 : -1 })
       .commit<{ points: number }>()
-    return { status: 'success', points, action }
+    return { status: 'success', points } as const
   } catch {
-    return { status: 'error', error: 'Det skjedde en feil. Prøv igjen senere.' }
+    return { status: 'error', error: 'Det skjedde en feil. Prøv igjen senere.' } as const
   }
 }
 

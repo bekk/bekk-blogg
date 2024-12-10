@@ -1,6 +1,6 @@
 import { Fragment, ReactNode } from 'react'
 import { PortableText } from '@portabletext/react'
-import { Link, useNavigation } from '@remix-run/react'
+import { Link, useActionData, useNavigation } from '@remix-run/react'
 import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readingTime'
 import { POST_BY_SLUGResult, SanityImageAsset } from 'utils/sanity/types/sanity.types'
@@ -16,12 +16,15 @@ import { postUrl } from '~/lib/format'
 import { components } from '~/portable-text/Components'
 import PodcastBlock from '~/portable-text/PodcastBlock'
 import VimeoBlock from '~/portable-text/VimeoBlock'
+import { action } from '~/routes/post.$year.$date.$slug'
 
 type ArticleProps = {
   post: POST_BY_SLUGResult
 }
 
 export const Article = ({ post }: ArticleProps) => {
+  const actionResponse = useActionData<typeof action>()
+  const points = actionResponse?.status === 'success' ? actionResponse.points : (post?.points ?? 0)
   if (!post) {
     return null
   }
@@ -73,7 +76,7 @@ export const Article = ({ post }: ArticleProps) => {
         <Border />
         {post.availableFrom && formatDate(post.availableFrom)}
         <Border />
-        {post.points !== null && post.points > 0 && (
+        {points > 0 && (
           <>
             <p>
               {post.points} anbefaler {formatType(post.type)}
