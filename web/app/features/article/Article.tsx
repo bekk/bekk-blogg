@@ -1,13 +1,13 @@
 import { Fragment, ReactNode } from 'react'
 import { PortableText } from '@portabletext/react'
-import { Link, useActionData, useNavigation } from '@remix-run/react'
+import { Link, useNavigation } from '@remix-run/react'
 import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readingTime'
 import { POST_BY_SLUGResult, SanityImageAsset } from 'utils/sanity/types/sanity.types'
 import { urlFor } from 'utils/sanity/utils'
 
 import { AudioPlayer } from './AudioPlayer'
-import { LikeOrDislike } from './LikeOrDislike'
+import { LikeContent } from './LikeContent'
 import { RelatedLinks } from './RelatedLinks'
 
 import { ArticleSpinner } from '~/components/ArticleSpinner'
@@ -16,24 +16,27 @@ import { postUrl } from '~/lib/format'
 import { components } from '~/portable-text/Components'
 import PodcastBlock from '~/portable-text/PodcastBlock'
 import VimeoBlock from '~/portable-text/VimeoBlock'
-import { action } from '~/routes/post.$year.$date.$slug'
 
 type ArticleProps = {
   post: POST_BY_SLUGResult
 }
 
 export const Article = ({ post }: ArticleProps) => {
-  const actionResponse = useActionData<typeof action>()
-  const points = actionResponse?.status === 'success' ? actionResponse.points : (post?.points ?? 0)
+  const { state } = useNavigation()
+
   if (!post) {
     return null
   }
+
+  const points = state === 'submitting' ? (post?.points ?? 0) + 1 : (post?.points ?? 0)
+
   const shouldShowSeriesBlock =
     post.series &&
     post.series.posts.length > 1 &&
     (post.series.shouldListNonPublishedContent
       ? true
       : post.series.posts.every((postInSeries) => postInSeries.isAvailable))
+
   return (
     <section className="px-6 sm:grid-cols-[1fr_2fr] md:grid md:grid-rows-[auto_auto] md:gap-x-12 xl:gap-x-24 md:gap-y-6 md:pl-10 xl:pl-20 pb-8 md:pb-16">
       <aside className="meta col-start-1 col-end-1 row-start-2 row-end-2 mb-8 md:min-w-[230px] lg:min-w-[240px] 2lg:min-w-[250px]">
@@ -163,7 +166,7 @@ export const Article = ({ post }: ArticleProps) => {
           </div>
         )}
 
-        <LikeOrDislike id={post._id} />
+        <LikeContent id={post._id} />
       </article>
     </section>
   )

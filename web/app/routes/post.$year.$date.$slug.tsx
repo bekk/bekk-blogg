@@ -145,25 +145,24 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 }
 
 const ActionSchema = z.object({
-  action: z.enum(['like', 'dislike']),
   id: z.string(),
 })
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const unparsed = await request.formData()
-  const formData = ActionSchema.safeParse({ id: unparsed.get('id'), action: unparsed.get('action') })
+  const formData = ActionSchema.safeParse({ id: unparsed.get('id') })
   if (!formData.success) {
     console.error(formData.error)
     return { status: 'error', error: 'Skjemaet inneholdt ugyldige data' } as const
   }
 
-  const { action, id } = formData.data
+  const { id } = formData.data
 
   try {
     const { points } = await writeClient
       .patch(id)
       .setIfMissing({ points: 0 })
-      .inc({ points: action === 'like' ? 1 : -1 })
+      .inc({ points: 1 })
       .commit<{ points: number }>()
     return { status: 'success', points } as const
   } catch {
