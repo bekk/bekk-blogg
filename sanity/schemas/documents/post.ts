@@ -255,6 +255,15 @@ const post = defineType({
       initialValue: 0,
       group: 'admin',
     },
+    {
+      name: 'points',
+      title: 'Poeng',
+      description: 'Hvor mange tomler opp innlegget har fått',
+      type: 'number',
+      group: 'admin',
+      initialValue: 0,
+      readOnly: true,
+    },
   ],
   preview: {
     select: {
