@@ -14,7 +14,7 @@ export const LikeContent = ({ id }: LikeContent) => {
   return (
     <Form
       method="post"
-      className="bg-white rounded-lg p-4 mx-auto shadow-md w-full max-w-[50%] text-center items-center flex flex-col"
+      className="mt-8 bg-white rounded-lg p-4 mx-auto shadow-md w-full max-w-[50%] text-center items-center flex flex-col"
       aria-live="polite"
     >
       <input type="hidden" name="id" value={id} />

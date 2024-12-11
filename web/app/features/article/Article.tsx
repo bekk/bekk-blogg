@@ -1,6 +1,6 @@
 import { Fragment, ReactNode } from 'react'
 import { PortableText } from '@portabletext/react'
-import { Link, useNavigation } from '@remix-run/react'
+import { Link, useActionData, useNavigation } from '@remix-run/react'
 import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readingTime'
 import { POST_BY_SLUGResult, SanityImageAsset } from 'utils/sanity/types/sanity.types'
@@ -16,6 +16,7 @@ import { postUrl } from '~/lib/format'
 import { components } from '~/portable-text/Components'
 import PodcastBlock from '~/portable-text/PodcastBlock'
 import VimeoBlock from '~/portable-text/VimeoBlock'
+import { action } from '~/routes/post.$year.$date.$slug'
 
 type ArticleProps = {
   post: POST_BY_SLUGResult
@@ -23,12 +24,18 @@ type ArticleProps = {
 
 export const Article = ({ post }: ArticleProps) => {
   const { state } = useNavigation()
+  const actionResponse = useActionData<typeof action>()
 
   if (!post) {
     return null
   }
 
-  const points = state === 'submitting' ? (post?.points ?? 0) + 1 : (post?.points ?? 0)
+  const points =
+    state === 'submitting'
+      ? (post?.points ?? 0) + 1
+      : actionResponse?.status === 'success'
+        ? (actionResponse.points ?? 0)
+        : (post?.points ?? 0)
 
   const shouldShowSeriesBlock =
     post.series &&
