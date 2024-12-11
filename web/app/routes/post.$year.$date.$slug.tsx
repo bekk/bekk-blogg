@@ -1,4 +1,4 @@
-import { InstantSearch, useRelatedProducts } from 'react-instantsearch'
+import { InstantSearch, RelatedProducts } from 'react-instantsearch'
 import { isRouteErrorResponse, json, redirect, useLoaderData, useRouteError } from '@remix-run/react'
 import { useQuery } from '@sanity/react-loader'
 import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
@@ -19,8 +19,6 @@ import '../portable-text/prism-theme.css'
 
 import { Article } from '~/features/article/Article'
 import Header from '~/features/header/Header'
-
-const searchClient = algoliasearch(process.env.ALGOLIA_APP_ID ?? '', process.env.ALGOLIA_SEARCH_API_KEY ?? '')
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const post = data?.initial.data
@@ -139,7 +137,17 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     : undefined
 
   return json(
-    { initial, query: POST_BY_SLUG, params: parsedParams.data, imageUrl },
+    {
+      initial,
+      query: POST_BY_SLUG,
+      params: parsedParams.data,
+      imageUrl,
+      algolia: {
+        appId: process.env.ALGOLIA_APP_ID!,
+        apiKey: process.env.ALGOLIA_SEARCH_KEY!,
+        index: process.env.ALGOLIA_INDEX!,
+      },
+    },
     {
       status: 200,
       headers: {
@@ -182,7 +190,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export const headers = combinedHeaders
 
 export default function ArticleRoute() {
-  const { initial, query, params } = useLoaderData<typeof loader>()
+  const { initial, query, params, algolia } = useLoaderData<typeof loader>()
   const { data } = useQuery<typeof initial.data>(query, params, {
     // @ts-expect-error Dette er en kjent bug i sanity-react-loader
     initial,
@@ -191,6 +199,8 @@ export default function ArticleRoute() {
   if (!data) {
     return null
   }
+
+  const searchClient = algoliasearch(algolia.appId, algolia.apiKey)
 
   return (
     <div className="bg-wooden-table break-words md:p-8 min-h-screen">
@@ -201,24 +211,59 @@ export default function ArticleRoute() {
         <Article post={data} />
       </div>
       <div>
-        <InstantSearch indexName={process.env.ALGOLIA_INDEX ?? ''} searchClient={searchClient}>
-          <CustomRelatedProducts id={data._id} />
-          {/*<RelatedProducts
+        <InstantSearch searchClient={searchClient} indexName="christmas_dev">
+          <RelatedProducts
+            headerComponent={() => <h2>Relaterte artikler</h2>}
             objectIDs={[data._id]}
-            layoutComponent={Carousel}
-            emptyComponent={() => <p>No reccomendations.</p>}
-          />*/}
+            limit={3}
+            layoutComponent={(props) => (
+              <CustomLayout
+                // eslint-disable-next-line react/prop-types
+                items={props.items.map(
+                  (item) =>
+                    ({
+                      objectID: item.objectID,
+                      name: item.title,
+                      image: item.image,
+                      author: item.authors,
+                      tags: item.tags || [],
+                    }) as Product
+                )}
+              />
+            )}
+            emptyComponent={() => <p className="text-black">No recomendations.</p>}
+          />
         </InstantSearch>
       </div>
     </div>
   )
 }
 
-function CustomRelatedProducts({ id }: { id: string }) {
-  const { items } = useRelatedProducts({ objectIDs: [id] })
-  console.log('items', items)
+interface Product {
+  objectID: string
+  name: string
+  author: string[]
+  tags: string[]
+}
 
-  return <>{items}</>
+const CustomLayout = ({ items }: { items: Product[] }) => {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {items.map((item) => (
+        <div key={item.objectID} className="border p-4 rounded-lg shadow-md bg-postcard-beige">
+          <h3 className="text-lg font-semibold mt-2">{item.name}</h3>
+          <p className="text-sm text-gray-500">{item.author}</p>
+          <div className="flex flex-wrap gap-1">
+            {item.tags.map((tag) => (
+              <span key={tag} className="text-xs bg-gray-200 text-gray-800 px-2 py-1 rounded-full">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
 }
 
 export function ErrorBoundary() {
