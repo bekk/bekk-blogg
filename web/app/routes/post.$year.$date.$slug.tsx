@@ -1,9 +1,10 @@
 import { isRouteErrorResponse, json, redirect, useLoaderData, useRouteError } from '@remix-run/react'
 import { useQuery } from '@sanity/react-loader'
-import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
+import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { combinedHeaders } from 'utils/headers'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
+import { writeClient } from 'utils/sanity/sanity.server'
 import { z } from 'zod'
 
 import { POST_BY_SLUG } from '../../utils/sanity/queries/postQueries'
@@ -145,6 +146,33 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       },
     }
   )
+}
+
+const ActionSchema = z.object({
+  id: z.string(),
+})
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+  const unparsed = await request.formData()
+  const formData = ActionSchema.safeParse({ id: unparsed.get('id') })
+  if (!formData.success) {
+    console.error(formData.error)
+    return { status: 'error', error: 'Skjemaet inneholdt ugyldige data' } as const
+  }
+
+  const { id } = formData.data
+
+  try {
+    const { points } = await writeClient
+      .patch(id)
+      .setIfMissing({ points: 0 })
+      .inc({ points: 1 })
+      .commit<{ points: number }>()
+    console.info(`Registered a point for post ${id}, now totalling ${points} points`)
+    return { status: 'success', points } as const
+  } catch {
+    return { status: 'error', error: 'Det skjedde en feil. Prøv igjen senere.' } as const
+  }
 }
 
 export const headers = combinedHeaders
