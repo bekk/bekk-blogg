@@ -12,6 +12,7 @@ export const BekkLogo = ({ className, fillColor = 'fill-white' }: BekkLogoProps)
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className + ` ${fillColor}`}
+      aria-label="Bekk logo"
     >
       <g clipPath="url(#clip0_744_8604)">
         <path
