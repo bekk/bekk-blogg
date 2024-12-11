@@ -1,6 +1,6 @@
-import { ReactNode, useEffect, useState } from 'react'
 import { Form, useActionData, useNavigation } from '@remix-run/react'
 import { TrendingUp } from 'lucide-react'
+import { ReactNode, useEffect, useState } from 'react'
 
 import { action } from '~/routes/post.$year.$date.$slug'
 
@@ -14,7 +14,7 @@ export const LikeContent = ({ id }: LikeContent) => {
   return (
     <Form
       method="post"
-      className="mt-8 bg-white rounded-lg p-4 mx-auto shadow-md w-full max-w-[50%] text-center items-center flex flex-col"
+      className="mt-8 bg-white rounded-lg p-4 mx-auto shadow-md w-full sm:max-w-[50%] text-center items-center flex flex-col"
       aria-live="polite"
     >
       <input type="hidden" name="id" value={id} />

@@ -1,6 +1,6 @@
-import { Fragment, ReactNode } from 'react'
 import { PortableText } from '@portabletext/react'
 import { Link, useActionData, useNavigation } from '@remix-run/react'
+import { Fragment, ReactNode } from 'react'
 import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readingTime'
 import { POST_BY_SLUGResult, SanityImageAsset } from 'utils/sanity/types/sanity.types'
@@ -34,7 +34,7 @@ export const Article = ({ post }: ArticleProps) => {
     state === 'submitting'
       ? (post?.points ?? 0) + 1
       : actionResponse?.status === 'success'
-        ? (actionResponse.points ?? 0)
+        ? actionResponse.points
         : (post?.points ?? 0)
 
   const shouldShowSeriesBlock =
@@ -89,7 +89,7 @@ export const Article = ({ post }: ArticleProps) => {
         {points > 0 && (
           <>
             <p>
-              {post.points} anbefaler {formatType(post.type)}
+              {points} anbefaler {formatType(post.type)}
             </p>
             <Border />
           </>
