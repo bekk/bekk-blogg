@@ -1,6 +1,6 @@
+import { ReactNode, useEffect, useState } from 'react'
 import { Form, useActionData, useNavigation } from '@remix-run/react'
 import { TrendingUp } from 'lucide-react'
-import { ReactNode, useEffect, useState } from 'react'
 
 import { action } from '~/routes/post.$year.$date.$slug'
 

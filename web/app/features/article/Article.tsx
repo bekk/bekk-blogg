@@ -1,6 +1,6 @@
+import { Fragment, ReactNode } from 'react'
 import { PortableText } from '@portabletext/react'
 import { Link, useActionData, useNavigation } from '@remix-run/react'
-import { Fragment, ReactNode } from 'react'
 import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readingTime'
 import { POST_BY_SLUGResult, SanityImageAsset } from 'utils/sanity/types/sanity.types'
