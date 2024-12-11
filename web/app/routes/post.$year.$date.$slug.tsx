@@ -1,6 +1,8 @@
+import { InstantSearch, useRelatedProducts } from 'react-instantsearch'
 import { isRouteErrorResponse, json, redirect, useLoaderData, useRouteError } from '@remix-run/react'
 import { useQuery } from '@sanity/react-loader'
 import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
+import algoliasearch from 'algoliasearch/lite'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { combinedHeaders } from 'utils/headers'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
@@ -17,6 +19,8 @@ import '../portable-text/prism-theme.css'
 
 import { Article } from '~/features/article/Article'
 import Header from '~/features/header/Header'
+
+const searchClient = algoliasearch(process.env.ALGOLIA_APP_ID ?? '', process.env.ALGOLIA_SEARCH_API_KEY ?? '')
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const post = data?.initial.data
@@ -196,8 +200,25 @@ export default function ArticleRoute() {
         </header>
         <Article post={data} />
       </div>
+      <div>
+        <InstantSearch indexName={process.env.ALGOLIA_INDEX ?? ''} searchClient={searchClient}>
+          <CustomRelatedProducts id={data._id} />
+          {/*<RelatedProducts
+            objectIDs={[data._id]}
+            layoutComponent={Carousel}
+            emptyComponent={() => <p>No reccomendations.</p>}
+          />*/}
+        </InstantSearch>
+      </div>
     </div>
   )
+}
+
+function CustomRelatedProducts({ id }: { id: string }) {
+  const { items } = useRelatedProducts({ objectIDs: [id] })
+  console.log('items', items)
+
+  return <>{items}</>
 }
 
 export function ErrorBoundary() {
