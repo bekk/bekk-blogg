@@ -142,7 +142,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
         'Content-Type': 'application/json',
         'Cache-Control': preview
           ? 'no-cache, no-store'
-          : 'public, max-age=60, s-maxage=60, stale-while-revalidate=2592000, stale-if-error=2592000',
+          : 'public, max-age=10, stale-while-revalidate=2592000, stale-if-error=2592000',
       },
     }
   )
