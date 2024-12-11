@@ -9,7 +9,7 @@ import { z } from 'zod'
 
 import { POST_BY_SLUG } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
-import { POST_BY_SLUGResult } from '../../utils/sanity/types/sanity.types'
+import { Post, POST_BY_SLUGResult } from '../../utils/sanity/types/sanity.types'
 import { toPlainText, urlFor } from '../../utils/sanity/utils'
 import { ErrorPage } from '../features/error-boundary/ErrorPage'
 
@@ -142,7 +142,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
         'Content-Type': 'application/json',
         'Cache-Control': preview
           ? 'no-cache, no-store'
-          : 'public, max-age=60, s-maxage=60, stale-while-revalidate=2592000, stale-if-error=2592000',
+          : 'public, max-age=10, stale-while-revalidate=2592000, stale-if-error=2592000',
       },
     }
   )
@@ -163,10 +163,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const { id } = formData.data
 
   try {
+    const doc = await writeClient.getDocument<Post>(id)
+    const initialPoints = doc?.points ?? 0
     const { points } = await writeClient
       .patch(id)
-      .setIfMissing({ points: 0 })
-      .inc({ points: 1 })
+      .set({ points: initialPoints + 1 })
       .commit<{ points: number }>()
     console.info(`Registered a point for post ${id}, now totalling ${points} points`)
     return { status: 'success', points } as const
