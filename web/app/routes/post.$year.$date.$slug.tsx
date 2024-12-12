@@ -1,5 +1,5 @@
 import { InstantSearch, RelatedProducts } from 'react-instantsearch'
-import { isRouteErrorResponse, json, redirect, useLoaderData, useRouteError } from '@remix-run/react'
+import { isRouteErrorResponse, json, Link, redirect, useLoaderData, useRouteError } from '@remix-run/react'
 import { useQuery } from '@sanity/react-loader'
 import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import algoliasearch from 'algoliasearch/lite'
@@ -9,6 +9,7 @@ import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { writeClient } from 'utils/sanity/sanity.server'
 import { z } from 'zod'
 
+import { parseDate } from '../../utils/date'
 import { POST_BY_SLUG } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
 import { POST_BY_SLUGResult } from '../../utils/sanity/types/sanity.types'
@@ -17,6 +18,7 @@ import { ErrorPage } from '../features/error-boundary/ErrorPage'
 
 import '../portable-text/prism-theme.css'
 
+import { DoorSign } from '~/components/DoorSign'
 import { Article } from '~/features/article/Article'
 import Header from '~/features/header/Header'
 
@@ -213,11 +215,15 @@ export default function ArticleRoute() {
       <div>
         <InstantSearch searchClient={searchClient} indexName="christmas_dev">
           <RelatedProducts
-            headerComponent={() => <h2>Relaterte artikler</h2>}
+            headerComponent={() => (
+              <div className="inset-0 flex">
+                <DoorSign link="">Relaterte artikler</DoorSign>
+              </div>
+            )}
             objectIDs={[data._id]}
             limit={3}
             layoutComponent={(props) => (
-              <CustomLayout
+              <RelatedPostsLayout
                 // eslint-disable-next-line react/prop-types
                 items={props.items.map(
                   (item) =>
@@ -227,7 +233,9 @@ export default function ArticleRoute() {
                       image: item.image,
                       author: item.authors,
                       tags: item.tags || [],
-                    }) as Product
+                      slug: item.slug.current,
+                      availableFrom: item.availableFrom,
+                    }) as RelatedPostsData
                 )}
               />
             )}
@@ -239,29 +247,41 @@ export default function ArticleRoute() {
   )
 }
 
-interface Product {
+interface RelatedPostsData {
   objectID: string
   name: string
   author: string[]
   tags: string[]
+  slug?: string
+  availableFrom?: string
 }
 
-const CustomLayout = ({ items }: { items: Product[] }) => {
+const RelatedPostsLayout = ({ items }: { items: RelatedPostsData[] }) => {
+  console.log(items)
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {items.map((item) => (
-        <div key={item.objectID} className="border p-4 rounded-lg shadow-md bg-postcard-beige">
-          <h3 className="text-lg font-semibold mt-2">{item.name}</h3>
-          <p className="text-sm text-gray-500">{item.author}</p>
-          <div className="flex flex-wrap gap-1">
-            {item.tags.map((tag) => (
-              <span key={tag} className="text-xs bg-gray-200 text-gray-800 px-2 py-1 rounded-full">
-                {tag}
-              </span>
-            ))}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 m-4 pb-10">
+      {items.map((item) => {
+        const date = parseDate(item.availableFrom ?? '')
+        return (
+          <div key={item.objectID} className="border p-4 rounded-lg shadow-md bg-postcard-beige">
+            <Link to={`/post/${date.year}/${date.day}/${item.slug}`}>
+              <h3 className="text-lg font-semibold mt-2">{item.name}</h3>
+              <p className="text-sm">{item.author}</p>
+              <p className="text-sm text-gray-500">
+                {date.day}. desember, {date.year}
+              </p>
+              <div className="flex flex-wrap gap-1 mt-2">
+                {item.tags.map((tag) => (
+                  <span key={tag} className="text-xs bg-gray-200 text-gray-800 px-2 py-1 rounded-full">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </Link>
           </div>
-        </div>
-      ))}
+        )
+      })}
     </div>
   )
 }
