@@ -216,7 +216,7 @@ export default function ArticleRoute() {
         <InstantSearch searchClient={searchClient} indexName="christmas_dev">
           <RelatedProducts
             headerComponent={() => (
-              <div className="inset-0 flex">
+              <div className="inset-0 flex m-6 justify-center ">
                 <DoorSign link="">Relaterte artikler</DoorSign>
               </div>
             )}
@@ -257,15 +257,13 @@ interface RelatedPostsData {
 }
 
 const RelatedPostsLayout = ({ items }: { items: RelatedPostsData[] }) => {
-  console.log(items)
-
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 m-4 pb-10">
       {items.map((item) => {
         const date = parseDate(item.availableFrom ?? '')
         return (
           <div key={item.objectID} className="border p-4 rounded-lg shadow-md bg-postcard-beige">
-            <Link to={`/post/${date.year}/${date.day}/${item.slug}`}>
+            <Link to={`/post/${date.year}/${date.day}/${item.slug}`} className={'flex flex-col justify-between'}>
               <h3 className="text-lg font-semibold mt-2">{item.name}</h3>
               <p className="text-sm">{item.author}</p>
               <p className="text-sm text-gray-500">
