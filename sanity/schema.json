@@ -1408,10 +1408,6 @@
               },
               {
                 "type": "string",
-                "value": "medium"
-              },
-              {
-                "type": "string",
                 "value": "twitter"
               },
               {

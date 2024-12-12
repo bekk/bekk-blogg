@@ -118,7 +118,12 @@ export default function AuthorRoute() {
               <ul className="flex flex-wrap gap-2 justify-center">
                 {author?.socialMediaLinks?.map((link) => (
                   <li key={link._key}>
-                    <a href={link.url} target="_blank" rel="noopener noreferrer" title={link.type}>
+                    <a
+                      href={link.type === 'email' ? `mailto:${link.url}` : link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={link.type}
+                    >
                       <SocialMediaIcon type={link.type} />
                       <span className="sr-only">{link.type}</span>
                     </a>

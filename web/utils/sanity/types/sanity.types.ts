@@ -228,7 +228,7 @@ export type Iframe = {
 
 export type SocialMediaLink = {
   _type: 'socialMediaLink'
-  type: 'email' | 'gitHub' | 'medium' | 'twitter' | 'bluesky' | 'website' | 'linkedIn' | 'instagram'
+  type: 'email' | 'gitHub' | 'twitter' | 'bluesky' | 'website' | 'linkedIn' | 'instagram'
   url: string
 }
 

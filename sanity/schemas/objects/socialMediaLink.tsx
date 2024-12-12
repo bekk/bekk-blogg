@@ -13,7 +13,6 @@ const socialMediaLink = defineType({
         list: [
           {title: 'Email', value: 'email'},
           {title: 'GitHub', value: 'gitHub'},
-          {title: 'Medium', value: 'medium'},
           {title: 'X / Twitter', value: 'twitter'},
           {title: 'bluesky', value: 'bluesky'},
           {title: 'Website', value: 'website'},

@@ -6,8 +6,8 @@ type DayNavigationProps = {
 }
 export const DayNavigation = ({ day, year }: DayNavigationProps) => {
   const today = new Date()
-  const targetDate = new Date(year, 11, day + 1)
-  const canShowNextDay = targetDate >= today
+  const nextDate = new Date(year, 11, day + 1)
+  const canShowNextDay = nextDate <= today
 
   return (
     <div className="flex justify-center gap-4 my-8">
