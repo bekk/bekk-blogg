@@ -11,6 +11,8 @@ export default {
         'envelope-beige': '#E0C190',
         'postcard-beige': '#F7F3EE',
         'light-gray': '#e3e3e3',
+        'christmas-tree-green': '#2F7346',
+        'dark-green': '#164125',
       },
       textColor: {
         base: '#000000',
@@ -63,6 +65,7 @@ export default {
       },
       borderColor: {
         'reindeer-brown': '#714319',
+        'christmas-tree-green': '#2F7346',
       },
       height: {
         '21.4': '85.6px',
