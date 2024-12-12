@@ -1,9 +1,9 @@
 import { useMatches } from '@remix-run/react'
 
-import { Post } from '../../utils/sanity/types/sanity.types'
+import { Author, Post } from '../../utils/sanity/types/sanity.types'
 
 export type Breadcrumb = {
-  href: string
+  href?: string
   title: string
 }
 
@@ -63,14 +63,8 @@ export function useBreadcrumbs(): Breadcrumb[] {
     })
   } else if (currRoute.pathname.includes('/forfatter')) {
     addBreadcrumb('/post/2024', '📯 Postkontoret')
-    accumulatedPath += '/forfatter'
-    addBreadcrumb(
-      accumulatedPath,
-      `✍️ ${currRoute.params.name
-        ?.split('-')
-        .map((name) => name.charAt(0).toUpperCase() + name.slice(1))
-        .join(' ')}`
-    )
+    const match = matches[matches.length - 1]?.data as { author: Author }
+    addBreadcrumb('', `✍️ ${match.author.fullName}`)
   }
   return breadcrumbs
 }

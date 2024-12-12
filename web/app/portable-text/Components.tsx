@@ -1,6 +1,6 @@
-import React from 'react'
 import type { PortableTextMarkComponentProps, PortableTextReactComponents } from '@portabletext/react'
 import { PortableTextLink } from '@portabletext/types'
+import React from 'react'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 
 import {
@@ -66,10 +66,12 @@ export const components: Partial<PortableTextReactComponents> = {
   },
   list: {
     bullet: ({ children }: { children?: React.ReactNode }) => (
-      <ul className="mb-4 list-inside list-disc [&>li>ul]:ml-6 [&>li>ol]:ml-6">{children}</ul>
+      <ul className="ml-4 mb-4 list-disc [&>li>ul]:ml-6 [&>li>ol]:ml-6 [&>li>ul]:mb-0 [&>li>ol]:mb-0 [&>li>ul]:list-[circle]">
+        {children}
+      </ul>
     ),
     number: ({ children }: { children?: React.ReactNode }) => (
-      <ol className="mb-4 list-inside list-decimal [&>li>ul]:ml-6 [&>li>ol]:ml-6 [&>li>ol]:list-[lower-alpha]">
+      <ol className="ml-4 mb-4 list-decimal [&>li>ul]:ml-6 [&>li>ol]:ml-6 [&>li>ol]:list-[lower-alpha] [&>li>ol]:mb-0 [&>li>ul]:mb-0">
         {children}
       </ol>
     ),

@@ -1,4 +1,5 @@
 import { Link } from '@remix-run/react'
+import { MetaFunction } from '@vercel/remix'
 
 import { GreenGiftRedRibbon } from '~/features/archive/svgs/GreenGiftRedRibbon'
 import { GreenGiftRedRibbonH } from '~/features/archive/svgs/GreenGiftRedRibbonH'
@@ -10,6 +11,25 @@ import { WhiteGiftRedRibbonH } from '~/features/archive/svgs/WhiteGiftRedRibbonH
 import { WhiteGiftRedRibbonSquare } from '~/features/archive/svgs/WhiteGiftRedRibbonSquare'
 import { YearBadge } from '~/features/archive/YearBadge'
 import Header from '~/features/header/Header'
+
+export const meta: MetaFunction = () => {
+  const title = `Julekalendere fra Bekk Christmas`
+  const description = `Se alle julekalendere fra Bekk Christmas opp gjennom tidene`
+  return [
+    { title },
+    { name: 'description', content: description },
+    { property: 'og:title', content: title },
+    { property: 'og:description', content: description },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: 'Bekk Christmas' },
+    { property: 'og:image', content: 'https://www.bekk.christmas/og-image.jpg' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: title },
+    { name: 'twitter:description', content: description },
+    { name: 'twitter:site', content: '@livetibekk' },
+    { name: 'twitter:image', content: 'https://www.bekk.christmas/og-image.jpg' },
+  ]
+}
 
 export default function ArchiveRoute() {
   const currentYear = new Date().getFullYear()
@@ -43,14 +63,18 @@ export default function ArchiveRoute() {
               <div className="grid justify-items-center w-full pt-8" key={index}>
                 {/*Mobile*/}
                 <div className="flex flex-col w-full justify-items-center lg:hidden">
-                  <Link to={`/post/${availableYears[index]}`} className="flex justify-center">
+                  <Link
+                    to={`/post/${availableYears[index]}`}
+                    className="flex justify-center"
+                    aria-label={`Julekalender fra ${availableYears[index]}`}
+                  >
                     <GiftSVG />
                   </Link>
                   <Plank year={availableYears[index]} />
                 </div>
                 {/*Desktop*/}
                 <div className="hidden lg:block">
-                  <Link to={`/post/${availableYears[index]}`}>
+                  <Link to={`/post/${availableYears[index]}`} aria-label={`Julekalender fra ${availableYears[index]}`}>
                     <GiftSVG />
                   </Link>
                 </div>

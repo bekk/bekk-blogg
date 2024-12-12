@@ -166,7 +166,11 @@ export const AUTHOR_WITH_POSTS_QUERY = defineQuery(`{
   ]),
   "author": *[_type == "author" && slug.current == $slug][0] {
     fullName,
-    slug
+    description,
+    image,
+    slug,
+    companyName,
+    socialMediaLinks
   }
 }`)
 

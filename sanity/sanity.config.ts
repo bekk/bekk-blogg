@@ -18,7 +18,7 @@ const config = defineConfig({
   name: 'default',
   title: 'sanity',
   projectId: 'ah2n1vfr',
-  dataset: process.env.NODE_ENV === 'production' ? 'bekk-blogg-prod' : 'bekk-blogg',
+  dataset: process.env.SANITY_STUDIO_DATASET ?? 'bekk-blogg-prod',
 
   plugins: [
     nbNOLocale(),

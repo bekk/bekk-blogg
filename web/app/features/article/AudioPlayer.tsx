@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react'
 import { Loader, Pause, Play } from 'lucide-react'
+import { useRef, useState } from 'react'
 import { trackEvent } from 'utils/analytics'
 
 export const AudioPlayer = ({ src, slug }: { src: string; slug: string }) => {
@@ -30,6 +30,7 @@ export const AudioPlayer = ({ src, slug }: { src: string; slug: string }) => {
       <button
         onClick={togglePlay}
         className="w-12 h-12 rounded-full bg-bekk-night text-white flex items-center justify-center hover:bg-opacity-90 transition-colors"
+        aria-label={isLoading ? 'Varmer opp stemmen' : isPlaying ? 'Stopp høytlesning' : 'Start høytlesning'}
       >
         {isLoading ? (
           <Loader className="w-6 h-6 animate-spin" />

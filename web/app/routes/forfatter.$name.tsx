@@ -3,10 +3,12 @@ import { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { combinedHeaders } from 'utils/headers'
 import { AUTHOR_WITH_POSTS_QUERY } from 'utils/sanity/queries/postQueries'
-import { AUTHOR_WITH_POSTS_QUERYResult } from 'utils/sanity/types/sanity.types'
+import { Author, AUTHOR_WITH_POSTS_QUERYResult } from 'utils/sanity/types/sanity.types'
 
 import { loadQuery } from '../../utils/sanity/store'
 
+import { GithubIcon, GlobeIcon, InstagramIcon, LinkedinIcon, MailIcon, TwitterIcon } from 'lucide-react'
+import { urlFor } from 'utils/sanity/utils'
 import { Spinner } from '~/components/Spinner'
 import { ErrorPage } from '~/features/error-boundary/ErrorPage'
 import Header from '~/features/header/Header'
@@ -97,22 +99,79 @@ export default function AuthorRoute() {
       {navigation.state === 'loading' ? (
         <Spinner />
       ) : (
-        <div className="flex flex-col items-center lg:mb-12 md:gap-8">
-          <h1 className="text-center md:text-center text-postcard-beige mb-4">Innhold fra {author?.fullName}</h1>
-          <div className="flex flex-col mb-4 text-center text-postcard-beige gap-4">
-            <p>Totalt {pagination.totalPosts} innlegg</p>
-            {pagination.totalPages > 1 && (
-              <p className="text-sm">
-                Side {pagination.currentPage} av {pagination.totalPages}
-              </p>
-            )}
-          </div>
-          <PostPreviewList posts={posts} />
-          <Pagination {...pagination} baseUrl={`/forfatter/${author.slug?.current}`} />
+        <div>
+          <section className="flex flex-col md:flex-row gap-4 max-w-4xl mx-auto text-white px-4 mb-12">
+            <div className="flex-1 flex flex-col justify-center">
+              {author?.image && (
+                <img
+                  src={urlFor(author.image).width(400).height(400).url()}
+                  alt={`Bilde av ${author.fullName}`}
+                  className="rounded-full mb-4 w-[100px] h-[100px] md:w-[200px] md:h-[200px] object-cover mx-auto"
+                />
+              )}
+              <h1 className="text-4xl text-center md:text-center text-postcard-beige mb-0">{author?.fullName}</h1>
+            </div>
+            <div className="flex flex-col gap-4 justify-center flex-1">
+              {author?.description && (
+                <p className="text-center md:text-center text-postcard-beige">{author.description}</p>
+              )}
+              <ul className="flex flex-wrap gap-2 justify-center">
+                {author?.socialMediaLinks?.map((link) => (
+                  <li key={link._key}>
+                    <a
+                      href={link.type === 'email' ? `mailto:${link.url}` : link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={link.type}
+                    >
+                      <SocialMediaIcon type={link.type} />
+                      <span className="sr-only">{link.type}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <div className="text-center">
+                <p>{pagination.totalPosts} innlegg</p>
+                {pagination.totalPages > 1 && (
+                  <p className="text-sm">
+                    Side {pagination.currentPage} av {pagination.totalPages}
+                  </p>
+                )}
+              </div>
+            </div>
+          </section>
+          <section>
+            <div className="flex flex-col mb-4 text-center text-postcard-beige gap-4"></div>
+            <PostPreviewList posts={posts} />
+            <Pagination {...pagination} baseUrl={`/forfatter/${author.slug?.current}`} />
+          </section>
         </div>
       )}
     </div>
   )
+}
+
+type SocialMediaIconProps = {
+  type?: NonNullable<Author['socialMediaLinks']>[number]['type']
+}
+const SocialMediaIcon = ({ type }: SocialMediaIconProps) => {
+  switch (type) {
+    case 'instagram':
+      return <InstagramIcon />
+    case 'linkedIn':
+      return <LinkedinIcon />
+    case 'twitter':
+      return <TwitterIcon />
+    case 'bluesky':
+      return <span aria-hidden="true">🦋</span>
+    case 'gitHub':
+      return <GithubIcon />
+    case 'email':
+      return <MailIcon />
+    case 'website':
+    default:
+      return <GlobeIcon />
+  }
 }
 
 export const ErrorBoundary = () => {

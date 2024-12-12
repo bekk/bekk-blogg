@@ -1,4 +1,4 @@
-import { BiUser } from 'react-icons/bi'
+import {BiUser} from 'react-icons/bi'
 import {defineType} from 'sanity'
 
 const author = defineType({
@@ -14,6 +14,12 @@ const author = defineType({
       validation: (rule) => rule.required(),
     },
     {
+      title: 'Beskrivelse',
+      description: 'En kort beskrivelse av forfatteren og hva hen jobber med',
+      name: 'description',
+      type: 'text',
+    },
+    {
       title: 'Slug',
       name: 'slug',
       type: 'slug',
@@ -22,16 +28,20 @@ const author = defineType({
         source: 'fullName',
       },
     },
+    {title: 'Bilde', name: 'image', type: 'image'},
+
+    {
+      title: 'Profilbilde',
+      name: 'profilePicture',
+      type: 'string',
+      hidden: true,
+      deprecated: {reason: 'Last opp bilde istedenfor'},
+    },
     {
       title: 'Firmanavn',
       name: 'companyName',
       type: 'string',
       initialValue: 'Bekk',
-    },
-    {
-      title: 'Profilbilde',
-      name: 'profilePicture',
-      type: 'string',
     },
     {
       title: 'Foretrukket stemme',
