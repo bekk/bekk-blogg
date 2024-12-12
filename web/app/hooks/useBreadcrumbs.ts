@@ -64,7 +64,9 @@ export function useBreadcrumbs(): Breadcrumb[] {
   } else if (currRoute.pathname.includes('/forfatter')) {
     addBreadcrumb('/post/2024', '📯 Postkontoret')
     const match = matches[matches.length - 1]?.data as { author: Author }
-    addBreadcrumb('', `✍️ ${match.author.fullName}`)
+    if (match?.author?.fullName) {
+      addBreadcrumb('', `✍️ ${match?.author?.fullName}`)
+    }
   }
   return breadcrumbs
 }
