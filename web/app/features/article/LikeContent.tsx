@@ -21,7 +21,7 @@ export const LikeContent = ({ id, language }: LikeContent) => {
       <div className="mb-8 mt-12 border-b border-bekk-night pb-1 text-body-mobile md:text-body-desktop" />
       <Form method="post" className="p-4 mx-auto w-full text-center items-center flex flex-col" aria-live="polite">
         <input type="hidden" name="id" value={id} />
-        <h2 className="mb-4">{texts.header}</h2>
+        <h1 className="mb-4 text-[32px]">{texts.header}</h1>
         <div className="mb-8">{texts.description}</div>
 
         <div className="flex flex-row">
@@ -33,7 +33,7 @@ export const LikeContent = ({ id, language }: LikeContent) => {
           <button
             type="submit"
             onClick={() => trackEvent('like_content_clicked')}
-            aria-label="Lik innlegg"
+            aria-label={isOptimisticallySuccessful ? texts.likeButtonClicked : texts.likeButton}
             className="w-[190px] ml-4 first-line:placeholder:ml-6 px-4 py-2 bg-christmas-tree-green hover:bg-dark-green text-white rounded-sm shadow-md transition-colors duration-200 flex items-center justify-center gap-2 mx-auto"
           >
             <span className="text-xl">
@@ -65,7 +65,7 @@ const CopyUrlButton = ({ onClick = () => {}, defaultText, clickedText }: CopyUrl
   return (
     <button
       className="w-[190px] inline-flex items-center justify-center px-3 py-1.5 font-medium rounded-sm border-2 border-christmas-tree-green hover:bg-gray-300"
-      aria-label="Kopier URLen til innlegget"
+      aria-label={isCopied ? clickedText : defaultText}
       type="button"
       onClick={() => {
         navigator.clipboard.writeText(window.location?.href)
