@@ -21,10 +21,10 @@ export const LikeContent = ({ id, language }: LikeContent) => {
       <div className="mb-8 mt-12 border-b border-bekk-night pb-1 text-body-mobile md:text-body-desktop" />
       <Form method="post" className="p-4 mx-auto w-full text-center items-center flex flex-col" aria-live="polite">
         <input type="hidden" name="id" value={id} />
-        <h1 className="mb-4 text-[32px]">{texts.header}</h1>
-        <div className="mb-8">{texts.description}</div>
+        <h1 className="mb-4 text-[26px]">{texts.header}</h1>
+        <div className="mb-8 text-[18px]">{texts.description}</div>
 
-        <div className="flex flex-row">
+        <div className="flex flex-col md:flex-row">
           <CopyUrlButton
             onClick={() => trackEvent('copy_url_clicked')}
             defaultText={texts.copyButton}
@@ -34,7 +34,7 @@ export const LikeContent = ({ id, language }: LikeContent) => {
             type="submit"
             onClick={() => trackEvent('like_content_clicked')}
             aria-label={isOptimisticallySuccessful ? texts.likeButtonClicked : texts.likeButton}
-            className="w-[190px] ml-4 first-line:placeholder:ml-6 px-4 py-2 bg-christmas-tree-green hover:bg-dark-green text-white rounded-sm shadow-md transition-colors duration-200 flex items-center justify-center gap-2 mx-auto"
+            className="w-[190px] mt-2 md:mt-0 md:ml-4 first-line:placeholder:ml-6 px-4 py-2 bg-christmas-tree-green hover:bg-dark-green text-white rounded-sm shadow-md transition-colors duration-200 flex items-center justify-center gap-2 mx-auto"
           >
             <span className="text-xl">
               <Heart fill={isOptimisticallySuccessful ? 'white' : 'transparent'} />
@@ -80,9 +80,9 @@ const CopyUrlButton = ({ onClick = () => {}, defaultText, clickedText }: CopyUrl
 
 const translate: Texts = {
   'en-US': {
-    header: 'Did you like the article?',
+    header: 'Did you like the post?',
     description: 'Feel free to share it with friends and colleagues',
-    likeButton: 'Like article',
+    likeButton: 'Like post',
     likeButtonClicked: 'Liked',
     copyButton: 'Copy URL',
     copyButtonClicked: 'Copied',
