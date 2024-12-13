@@ -4,6 +4,17 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+
+env:
+  SANITY_STUDIO_PROJECT_ID: ${{ secrets.SANITY_STUDIO_PROJECT_ID }}
+  SANITY_STUDIO_DATASET: ${{ secrets.SANITY_STUDIO_DATASET }}
+  SANITY_API_VERSION: ${{ secrets.SANITY_API_VERSION }}
+  SANITY_READ_API_TOKEN: ${{ secrets.SANITY_READ_API_TOKEN }}
+  SANITY_WRITE_API_TOKEN: ${{ secrets.SANITY_WRITE_API_TOKEN }}
+  SANITY_SESSION_SECRET: ${{ secrets.SANITY_SESSION_SECRET }}
+  SANITY_SESSION_API_TOKEN: ${{ secrets.SANITY_SESSION_API_TOKEN }}
+  SANITY_STUDIO_URL: ${{ secrets.SANITY_STUDIO_URL }}
+
 jobs:
   test:
     timeout-minutes: 60
