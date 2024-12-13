@@ -16,10 +16,6 @@ export const LikeContent = ({ id, language }: LikeContent) => {
   const texts = translate[language]
   const isOptimisticallySuccessful = state === 'submitting' || actionResponse?.status === 'success'
 
-  if (actionResponse?.status === 'error') {
-    console.log('Error!!')
-  }
-
   return (
     <>
       <div className="mb-8 mt-12 border-b border-bekk-night pb-1 text-body-mobile md:text-body-desktop" />
