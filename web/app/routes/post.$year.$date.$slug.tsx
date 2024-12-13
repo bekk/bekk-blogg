@@ -222,10 +222,9 @@ export default function ArticleRoute() {
             )}
             objectIDs={[data._id]}
             limit={3}
-            layoutComponent={(props) => (
+            layoutComponent={({ items }) => (
               <RelatedPostsLayout
-                // eslint-disable-next-line react/prop-types
-                items={props.items.map(
+                items={items.map(
                   (item) =>
                     ({
                       objectID: item.objectID,
@@ -262,7 +261,7 @@ const RelatedPostsLayout = ({ items }: { items: RelatedPostsData[] }) => {
       {items.map((item) => {
         const date = parseDate(item.availableFrom ?? '')
         return (
-          <div key={item.objectID} className="border p-4 rounded-lg shadow-md bg-postcard-beige">
+          <div key={item.objectID} className="striped-frame border p-4 rounded-lg shadow-md bg-postcard-beige">
             <Link to={`/post/${date.year}/${date.day}/${item.slug}`} className={'flex flex-col justify-between'}>
               <h3 className="text-lg font-semibold mt-2">{item.name}</h3>
               <p className="text-sm">{item.author}</p>
