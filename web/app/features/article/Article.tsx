@@ -173,7 +173,7 @@ export const Article = ({ post }: ArticleProps) => {
           </div>
         )}
 
-        <LikeContent id={post._id} />
+        <LikeContent id={post._id} language={post.language} />
       </article>
     </section>
   )

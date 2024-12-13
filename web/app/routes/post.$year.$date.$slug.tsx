@@ -172,6 +172,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     console.info(`Registered a point for post ${id}, now totalling ${points} points`)
     return { status: 'success', points } as const
   } catch {
+    console.error('Something went wrong while increasing points for post ', id)
     return { status: 'error', error: 'Det skjedde en feil. Prøv igjen senere.' } as const
   }
 }
