@@ -1,5 +1,6 @@
 import {codeInput} from '@sanity/code-input'
 import {nbNOLocale} from '@sanity/locale-nb-no'
+import {table} from '@sanity/table'
 import {visionTool} from '@sanity/vision'
 import {createAuthStore, defineConfig, SchemaTypeDefinition} from 'sanity'
 import {media} from 'sanity-plugin-media'
@@ -26,6 +27,7 @@ const config = defineConfig({
     visionTool(),
     media(),
     codeInput(),
+    table(),
     presentationTool({
       devMode: process.env.NODE_ENV !== 'production',
       previewUrl: {

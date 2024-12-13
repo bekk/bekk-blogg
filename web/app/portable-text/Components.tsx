@@ -27,6 +27,7 @@ import { UnfurledUrlBlock } from './UnfurledUrlBlock'
 import { YouTubeBlock } from './YouTubeBlock'
 
 import { TextLink } from '~/components/TextLink'
+import { TableBlock } from './TableBlock'
 
 const withSpacing = (component: React.ReactNode, margin: number = 2) => {
   return <div style={{ marginTop: `${margin}rem`, marginBottom: `${margin}rem` }}>{component}</div>
@@ -47,6 +48,7 @@ export const components: Partial<PortableTextReactComponents> = {
       withSpacing(<InfoBlock content={props.value.content as PortableText} />),
     quote: (props: { value: Quote }) =>
       withSpacing(<QuoteBlock quote={props.value.content} author={props.value.author} />),
+    table: (props: { value: { rows: { cells: string[] }[] } }) => withSpacing(<TableBlock data={props.value} />),
   },
   block: {
     h1: ({ children }: { children?: React.ReactNode }) => <h1 className="mb-6 mt-12 leading-none">{children}</h1>,

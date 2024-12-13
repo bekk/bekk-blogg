@@ -20,6 +20,7 @@
     "@sanity/code-input": "^4.1.4",
     "@sanity/locale-nb-no": "^1.1.16",
     "@sanity/structure": "^2.36.2",
+    "@sanity/table": "^1.1.2",
     "@sanity/vision": "^3.61.0",
     "get-youtube-id": "^1.0.1",
     "react": "^18.2.0",
