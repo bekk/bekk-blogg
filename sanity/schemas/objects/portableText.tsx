@@ -15,6 +15,7 @@ const portableText = defineType({
   type: 'array',
   title: 'Post body',
   of: [
+    {type: 'table'},
     {
       type: 'block',
       title: 'Block',

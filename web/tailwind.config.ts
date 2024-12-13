@@ -49,7 +49,7 @@ export default {
       },
       screens: {
         sm: '640px',
-        '2sm': '832px', // for spotify embed
+        '2sm': '832px',
         md: '900px',
         lg: '1024px',
         '2lg': '1130px',
@@ -57,9 +57,9 @@ export default {
         '2xl': '1536px',
       },
       borderWidth: {
-        DEFAULT: '1px',
         '14': '14px',
         '30': '30px',
+        DEFAULT: '1px',
       },
       borderColor: {
         'reindeer-brown': '#714319',
@@ -114,6 +114,7 @@ export default {
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))',
         },
+        background: 'hsl(var(--background))',
       },
     },
   },
