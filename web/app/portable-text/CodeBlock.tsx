@@ -19,6 +19,7 @@ import python from 'refractor/lang/python.js'
 import rust from 'refractor/lang/rust.js'
 import scala from 'refractor/lang/scala.js'
 import scss from 'refractor/lang/scss.js'
+import sql from 'refractor/lang/sql.js'
 import swift from 'refractor/lang/swift.js'
 import tsx from 'refractor/lang/tsx.js'
 
@@ -46,7 +47,7 @@ registerLanguage(scala)
 registerLanguage(scss)
 registerLanguage(swift)
 registerLanguage(tsx)
-
+registerLanguage(sql)
 interface CodeBlockProps {
   code: CodeType
 }
