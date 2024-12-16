@@ -1,4 +1,3 @@
-import { lazy, Suspense } from 'react'
 import {
   isRouteErrorResponse,
   json,
@@ -13,6 +12,7 @@ import {
 } from '@remix-run/react'
 import type { HeadersFunction, LinksFunction, LoaderFunction } from '@vercel/remix'
 import { SpeedInsights } from '@vercel/speed-insights/remix'
+import { lazy, Suspense } from 'react'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
 
@@ -38,6 +38,7 @@ export const loader: LoaderFunction = async ({ request }) => {
         ? 'no-cache, no-store'
         : // 1 hour max-age, 2 hours s-maxage, 1 month stale-while-revalidate, 1 month stale-if-error
           'public, max-age=3600, s-maxage=7200, stale-while-revalidate=2592000, stale-if-error=2592000',
+      Vary: 'Cookie',
     },
   })
 }
