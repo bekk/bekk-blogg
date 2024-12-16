@@ -1,5 +1,5 @@
 import { InstantSearch, RelatedProducts } from 'react-instantsearch'
-import { isRouteErrorResponse, json, Link, redirect, useLoaderData, useRouteError } from '@remix-run/react'
+import { isRouteErrorResponse, json, redirect, useLoaderData, useRouteError } from '@remix-run/react'
 import { useQuery } from '@sanity/react-loader'
 import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import algoliasearch from 'algoliasearch/lite'
@@ -9,7 +9,6 @@ import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { writeClient } from 'utils/sanity/sanity.server'
 import { z } from 'zod'
 
-import { parseDate } from '../../utils/date'
 import { POST_BY_SLUG } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
 import { POST_BY_SLUGResult } from '../../utils/sanity/types/sanity.types'
@@ -20,6 +19,7 @@ import '../portable-text/prism-theme.css'
 
 import { DoorSign } from '~/components/DoorSign'
 import { Article } from '~/features/article/Article'
+import { RelatedPostsLayout } from '~/features/article/RelatedPostLayout'
 import Header from '~/features/header/Header'
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
@@ -224,62 +224,21 @@ export default function ArticleRoute() {
             limit={3}
             layoutComponent={({ items }) => (
               <RelatedPostsLayout
-                items={items.map(
-                  (item) =>
-                    ({
-                      objectID: item.objectID,
-                      name: item.title,
-                      image: item.image,
-                      author: item.authors,
-                      tags: item.tags || [],
-                      slug: item.slug.current,
-                      availableFrom: item.availableFrom,
-                    }) as RelatedPostsData
-                )}
+                items={items.map((item) => ({
+                  objectID: item.objectID,
+                  name: item.title,
+                  image: item.image,
+                  author: item.authors,
+                  tags: item.tags || [],
+                  slug: item.slug.current,
+                  availableFrom: item.availableFrom,
+                }))}
               />
             )}
             emptyComponent={() => <p className="text-black">Ingen anbefalinger</p>}
           />
         </InstantSearch>
       </div>
-    </div>
-  )
-}
-
-interface RelatedPostsData {
-  objectID: string
-  name: string
-  author: string[]
-  tags: string[]
-  slug?: string
-  availableFrom?: string
-}
-
-const RelatedPostsLayout = ({ items }: { items: RelatedPostsData[] }) => {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 m-4 pb-10">
-      {items.map((item) => {
-        if (!item || !item.availableFrom) return null
-        const date = parseDate(item.availableFrom)
-        return (
-          <div key={item.objectID} className="striped-frame border p-4 rounded-lg shadow-md bg-postcard-beige">
-            <Link to={`/post/${date.year}/${String(date.day).padStart(2, "0")}/${item.slug}`} className={'flex flex-col justify-between'}>
-              <h3 className="text-lg font-semibold mt-2">{item.name}</h3>
-              <p className="text-sm">{item.author}</p>
-              <p className="text-sm text-gray-500">
-                {date.day}. desember, {date.year}
-              </p>
-              <div className="flex flex-wrap gap-1 mt-2">
-                {item.tags.map((tag) => (
-                  <span key={tag} className="text-xs bg-gray-200 text-gray-800 px-2 py-1 rounded-full">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </Link>
-          </div>
-        )
-      })}
     </div>
   )
 }
