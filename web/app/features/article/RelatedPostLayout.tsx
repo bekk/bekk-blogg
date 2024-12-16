@@ -26,7 +26,7 @@ export const RelatedPostsLayout = ({ items }: { items: RelatedPostsData[] }) => 
             key={item.objectID}
           >
             <motion.div
-              className="striped-frame"
+              className="striped-frame "
               transition={{
                 duration: 0.2,
                 ease: 'easeOut',
