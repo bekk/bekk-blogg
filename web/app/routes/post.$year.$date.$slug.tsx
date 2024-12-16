@@ -263,7 +263,7 @@ const RelatedPostsLayout = ({ items }: { items: RelatedPostsData[] }) => {
         const date = parseDate(item.availableFrom)
         return (
           <div key={item.objectID} className="striped-frame border p-4 rounded-lg shadow-md bg-postcard-beige">
-            <Link to={`/post/${date.year}/${date.day}/${item.slug}`} className={'flex flex-col justify-between'}>
+            <Link to={`/post/${date.year}/${String(date.day).padStart(2, "0")}/${item.slug}`} className={'flex flex-col justify-between'}>
               <h3 className="text-lg font-semibold mt-2">{item.name}</h3>
               <p className="text-sm">{item.author}</p>
               <p className="text-sm text-gray-500">
