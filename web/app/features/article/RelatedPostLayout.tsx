@@ -26,7 +26,7 @@ export const RelatedPostsLayout = ({ items }: { items: RelatedPostsData[] }) => 
             key={item.objectID}
           >
             <motion.div
-              className="striped-frame "
+              className="striped-frame border p-4 rounded-lg bg-postcard-beige"
               transition={{
                 duration: 0.2,
                 ease: 'easeOut',
@@ -42,7 +42,7 @@ export const RelatedPostsLayout = ({ items }: { items: RelatedPostsData[] }) => 
                 },
               }}
             >
-              <div className=" border p-4 rounded-lg shadow-md bg-postcard-beige">
+              <div className="">
                 <h3 className="text-lg font-semibold mt-2">{item.name}</h3>
                 <p className="text-sm">{item.author}</p>
                 <p className="text-sm text-gray-500">
