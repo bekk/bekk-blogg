@@ -1,6 +1,5 @@
 import {
   isRouteErrorResponse,
-  json,
   Links,
   Meta,
   Outlet,
@@ -11,6 +10,7 @@ import {
   useRouteError,
 } from '@remix-run/react'
 import type { HeadersFunction, LinksFunction, LoaderFunction } from '@vercel/remix'
+import { json } from '@vercel/remix'
 import { SpeedInsights } from '@vercel/speed-insights/remix'
 import { lazy, Suspense } from 'react'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
@@ -25,29 +25,34 @@ export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
 export const loader: LoaderFunction = async ({ request }) => {
   const { preview } = await loadQueryOptions(request.headers)
-  return json({
-    isPreview: preview,
-    ENV: {
-      SANITY_STUDIO_PROJECT_ID: process.env.SANITY_STUDIO_PROJECT_ID,
-      SANITY_STUDIO_DATASET: process.env.SANITY_STUDIO_DATASET,
-      SANITY_STUDIO_URL: process.env.SANITY_STUDIO_URL,
-      SANITY_STUDIO_API_VERSION: process.env.SANITY_API_VERSION,
+  return json(
+    {
+      isPreview: preview,
+      ENV: {
+        SANITY_STUDIO_PROJECT_ID: process.env.SANITY_STUDIO_PROJECT_ID,
+        SANITY_STUDIO_DATASET: process.env.SANITY_STUDIO_DATASET,
+        SANITY_STUDIO_URL: process.env.SANITY_STUDIO_URL,
+        SANITY_STUDIO_API_VERSION: process.env.SANITY_API_VERSION,
+      },
     },
-    headers: {
-      'Cache-Control': preview
-        ? 'no-cache, no-store'
-        : // 1 hour max-age, 2 hours s-maxage, 1 month stale-while-revalidate, 1 month stale-if-error
-          'public, max-age=3600, s-maxage=7200, stale-while-revalidate=2592000, stale-if-error=2592000',
-      Vary: 'Cookie',
-    },
-  })
+    {
+      headers: {
+        'Cache-Control': preview
+          ? 'no-cache, no-store'
+          : // 1 hour max-age, 2 hours s-maxage, 1 month stale-while-revalidate, 1 month stale-if-error
+            'public, max-age=3600, s-maxage=7200, stale-while-revalidate=2592000, stale-if-error=2592000',
+        Vary: 'Cookie',
+      },
+    }
+  )
 }
 
-export const headers: HeadersFunction = ({ loaderHeaders }) => ({
-  ...generateSecurityHeaders(),
-
-  ...loaderHeaders,
-})
+export const headers: HeadersFunction = ({ loaderHeaders }) => {
+  return {
+    ...generateSecurityHeaders(),
+    ...Object.fromEntries(loaderHeaders),
+  }
+}
 
 export function ErrorBoundary() {
   const error = useRouteError()
