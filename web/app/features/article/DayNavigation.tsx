@@ -5,11 +5,15 @@ type DayNavigationProps = {
   year: number
 }
 export const DayNavigation = ({ day, year }: DayNavigationProps) => {
+  const today = new Date()
+  const nextDate = new Date(year, 11, day + 1)
+  const canShowNextDay = nextDate <= today
+
   return (
     <div className="flex justify-center gap-4 my-8">
       {day > 1 && (
         <Link
-          to={`/post/${year}/${day - 1}`}
+          to={`/post/${year}/${String(day - 1).padStart(2, '0')}`}
           prefetch="intent"
           className="group text-bekk-night hover:text-reindeer-brown styled-box-navigation px-4 py-1"
         >
@@ -17,9 +21,9 @@ export const DayNavigation = ({ day, year }: DayNavigationProps) => {
           desember
         </Link>
       )}
-      {day < 24 && (
+      {day < 24 && canShowNextDay && (
         <Link
-          to={`/post/${year}/${day + 1}`}
+          to={`/post/${year}/${String(day + 1).padStart(2, '0')}`}
           prefetch="intent"
           className="group text-bekk-night hover:text-reindeer-brown styled-box-navigation px-4 py-1"
         >

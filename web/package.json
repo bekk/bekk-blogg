@@ -12,7 +12,10 @@
     "prettier:fix": "prettier --write .",
     "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc",
-    "prepare": "cd .. && npx husky web/.husky"
+    "prepare": "cd .. && npx husky web/.husky",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug"
   },
   "dependencies": {
     "@algolia/recommend": "^4.24.0",
@@ -33,7 +36,7 @@
     "@vercel/remix": "^2.15.0",
     "@vercel/speed-insights": "^1.1.0",
     "algoliasearch": "^4.24.0",
-    "class-variance-authority": "^0.7.0",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "csp-header": "^5.2.1",
     "get-youtube-id": "^1.0.1",
@@ -56,15 +59,17 @@
     "remix-auth-microsoft": "^2.0.1",
     "sanity": "^3.62.3",
     "sanity-algolia": "^1.1.0",
-    "tailwind-merge": "^2.5.4",
+    "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@playwright/test": "^1.49.1",
     "@remix-run/dev": "^2.9.1",
     "@remix-run/eslint-config": "^2.13.1",
     "@remix-run/route-config": "^2.15.0",
     "@tailwindcss/typography": "^0.5.15",
+    "@types/node": "^22.10.2",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^8.13.0",

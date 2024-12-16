@@ -1,6 +1,6 @@
-import React from 'react'
 import type { PortableTextMarkComponentProps, PortableTextReactComponents } from '@portabletext/react'
 import { PortableTextLink } from '@portabletext/types'
+import React from 'react'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 
 import {
@@ -27,6 +27,7 @@ import { UnfurledUrlBlock } from './UnfurledUrlBlock'
 import { YouTubeBlock } from './YouTubeBlock'
 
 import { TextLink } from '~/components/TextLink'
+import { TableBlock } from './TableBlock'
 
 const withSpacing = (component: React.ReactNode, margin: number = 2) => {
   return <div style={{ marginTop: `${margin}rem`, marginBottom: `${margin}rem` }}>{component}</div>
@@ -47,6 +48,7 @@ export const components: Partial<PortableTextReactComponents> = {
       withSpacing(<InfoBlock content={props.value.content as PortableText} />),
     quote: (props: { value: Quote }) =>
       withSpacing(<QuoteBlock quote={props.value.content} author={props.value.author} />),
+    table: (props: { value: { rows: { cells: string[] }[] } }) => withSpacing(<TableBlock data={props.value} />),
   },
   block: {
     h1: ({ children }: { children?: React.ReactNode }) => <h1 className="mb-6 mt-12 leading-none">{children}</h1>,
@@ -66,10 +68,12 @@ export const components: Partial<PortableTextReactComponents> = {
   },
   list: {
     bullet: ({ children }: { children?: React.ReactNode }) => (
-      <ul className="mb-4 list-inside list-disc [&>li>ul]:ml-6 [&>li>ol]:ml-6">{children}</ul>
+      <ul className="ml-4 mb-4 list-disc [&>li>ul]:ml-6 [&>li>ol]:ml-6 [&>li>ul]:mb-0 [&>li>ol]:mb-0 [&>li>ul]:list-[circle]">
+        {children}
+      </ul>
     ),
     number: ({ children }: { children?: React.ReactNode }) => (
-      <ol className="mb-4 list-inside list-decimal [&>li>ul]:ml-6 [&>li>ol]:ml-6 [&>li>ol]:list-[lower-alpha]">
+      <ol className="ml-4 mb-4 list-decimal [&>li>ul]:ml-6 [&>li>ol]:ml-6 [&>li>ol]:list-[lower-alpha] [&>li>ol]:mb-0 [&>li>ul]:mb-0">
         {children}
       </ol>
     ),

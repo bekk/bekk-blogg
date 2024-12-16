@@ -4,7 +4,7 @@ import { sanityConfig } from './config'
 
 export const writeClient = createClient({
   ...sanityConfig,
-  useCdn: process.env.NODE_ENV === 'production',
+  useCdn: false,
   token: process.env.SANITY_WRITE_API_TOKEN,
 })
 

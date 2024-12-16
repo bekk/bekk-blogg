@@ -11,6 +11,8 @@ export default {
         'envelope-beige': '#E0C190',
         'postcard-beige': '#F7F3EE',
         'light-gray': '#e3e3e3',
+        'christmas-tree-green': '#2F7346',
+        'dark-green': '#164125',
       },
       textColor: {
         base: '#000000',
@@ -49,7 +51,7 @@ export default {
       },
       screens: {
         sm: '640px',
-        '2sm': '832px', // for spotify embed
+        '2sm': '832px',
         md: '900px',
         lg: '1024px',
         '2lg': '1130px',
@@ -57,12 +59,13 @@ export default {
         '2xl': '1536px',
       },
       borderWidth: {
-        DEFAULT: '1px',
         '14': '14px',
         '30': '30px',
+        DEFAULT: '1px',
       },
       borderColor: {
         'reindeer-brown': '#714319',
+        'christmas-tree-green': '#2F7346',
       },
       height: {
         '21.4': '85.6px',
@@ -114,6 +117,7 @@ export default {
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))',
         },
+        background: 'hsl(var(--background))',
       },
     },
   },
