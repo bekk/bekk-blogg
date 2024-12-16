@@ -87,6 +87,7 @@ const portableText = defineType({
           {title: 'SCSS', value: 'scss'},
           {title: 'Swift', value: 'swift'},
           {title: 'TS / TSX', value: 'tsx'},
+          {title: 'SQL', value: 'sql'},
         ],
       },
     },
