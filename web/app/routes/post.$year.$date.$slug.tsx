@@ -213,11 +213,11 @@ export default function ArticleRoute() {
         <Article post={data} />
       </div>
       <div>
-        <InstantSearch searchClient={searchClient} indexName="christmas_dev">
+        <InstantSearch searchClient={searchClient} indexName={algolia.index}>
           <RelatedProducts
             headerComponent={() => (
               <div className="inset-0 flex m-6 justify-center ">
-                <DoorSign link="">Relaterte artikler</DoorSign>
+                <DoorSign>Relaterte artikler</DoorSign>
               </div>
             )}
             objectIDs={[data._id]}
@@ -238,7 +238,7 @@ export default function ArticleRoute() {
                 )}
               />
             )}
-            emptyComponent={() => <p className="text-black">No recomendations.</p>}
+            emptyComponent={() => <p className="text-black">Ingen anbefalinger</p>}
           />
         </InstantSearch>
       </div>
@@ -259,7 +259,8 @@ const RelatedPostsLayout = ({ items }: { items: RelatedPostsData[] }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 m-4 pb-10">
       {items.map((item) => {
-        const date = parseDate(item.availableFrom ?? '')
+        if (!item || !item.availableFrom) return null
+        const date = parseDate(item.availableFrom)
         return (
           <div key={item.objectID} className="striped-frame border p-4 rounded-lg shadow-md bg-postcard-beige">
             <Link to={`/post/${date.year}/${date.day}/${item.slug}`} className={'flex flex-col justify-between'}>

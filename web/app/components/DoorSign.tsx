@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion'
 
 type Props = {
-  link: string
   children: React.ReactNode
 }
 
