@@ -22,6 +22,7 @@ import { DoorSign } from '~/components/DoorSign'
 import { Article } from '~/features/article/Article'
 import { RelatedPostsLayout } from '~/features/article/RelatedPostLayout'
 import Header from '~/features/header/Header'
+import Series, { shouldShowSeries } from '~/features/article/Series'
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const post = data?.initial.data
@@ -214,6 +215,7 @@ export default function ArticleRoute() {
         </header>
         <Article post={data} />
       </div>
+      {shouldShowSeries(data) && data.series && <Series postId={data._id} series={data.series} mobileOnly />}
       <div>
         <InstantSearch searchClient={searchClient.current} indexName={algolia.index}>
           <RelatedProducts

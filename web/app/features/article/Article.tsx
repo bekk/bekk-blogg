@@ -11,12 +11,11 @@ import { LikeContent } from './LikeContent'
 import { RelatedLinks } from './RelatedLinks'
 
 import { ArticleSpinner } from '~/components/ArticleSpinner'
-import { TextLink } from '~/components/TextLink'
-import { postUrl } from '~/lib/format'
 import { components } from '~/portable-text/Components'
 import PodcastBlock from '~/portable-text/PodcastBlock'
 import VimeoBlock from '~/portable-text/VimeoBlock'
 import { action } from '~/routes/post.$year.$date.$slug'
+import Series, { shouldShowSeries } from './Series'
 
 type ArticleProps = {
   post: POST_BY_SLUGResult
@@ -37,12 +36,7 @@ export const Article = ({ post }: ArticleProps) => {
         ? actionResponse.points
         : (post?.points ?? 0)
 
-  const shouldShowSeriesBlock =
-    post.series &&
-    post.series.posts.length > 1 &&
-    (post.series.shouldListNonPublishedContent
-      ? true
-      : post.series.posts.every((postInSeries) => postInSeries.isAvailable))
+  const shouldShowSeriesBlock = shouldShowSeries(post)
 
   return (
     <section className="px-6 sm:grid-cols-[1fr_2fr] md:grid md:grid-rows-[auto_auto] md:gap-x-12 xl:gap-x-24 md:gap-y-6 md:pl-10 xl:pl-20 pb-8 md:pb-16">
@@ -105,36 +99,7 @@ export const Article = ({ post }: ArticleProps) => {
             slug={post.slug?.current ?? 'unknown'}
           />
         )}
-        {shouldShowSeriesBlock && (
-          <div className="p-2 bg-primary-foreground text-black rounded-sm">
-            <div className="bg-red-600 text-sm text-white rounded-sm uppercase w-fit py-1 px-4 mb-4">Serie</div>
-            <details>
-              <summary className="text-2xl font-bold mb-2">{post.series?.title}</summary>
-              <p className="text-md">{post.series?.description}</p>
-              <ol className="list-disc ml-4 mt-8">
-                {post.series?.posts
-                  .filter((postInSeries) =>
-                    post.series?.shouldListNonPublishedContent ? true : postInSeries.isAvailable
-                  )
-                  .map((postInSeries) => (
-                    <li key={postInSeries._id}>
-                      {postInSeries.isAvailable ? (
-                        <TextLink
-                          href={postUrl(postInSeries)}
-                          className={`text-md ${postInSeries._id === post._id ? 'font-gt-standard-medium' : ''}`}
-                          aria-current={postInSeries._id === post._id}
-                        >
-                          {postInSeries.title}
-                        </TextLink>
-                      ) : (
-                        <span className="text-md">{postInSeries.title}</span>
-                      )}
-                    </li>
-                  ))}
-              </ol>
-            </details>
-          </div>
-        )}
+        {shouldShowSeriesBlock && post.series && <Series postId={post._id} series={post.series} mobileOnly={false} />}
       </aside>
       <article className="flex flex-col col-start-2 col-end-2 row-start-2 row-end-2 max-md:max-w-screen-xl max-lg:max-w-[475px] max-2lg:max-w-[550px] 2lg:max-w-[675px] xl:pr-10 xl:max-w-3xl 2xl:max-w-4xl">
         {post?.description ? (
