@@ -1,5 +1,5 @@
 import { Form, useActionData, useNavigation } from '@remix-run/react'
-import { Heart, Files } from 'lucide-react'
+import { Files, Heart } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { trackEvent } from 'utils/analytics'
 
@@ -13,7 +13,7 @@ type LikeContent = {
 export const LikeContent = ({ id, language }: LikeContent) => {
   const actionResponse = useActionData<typeof action>()
   const { state } = useNavigation()
-  const texts = translate[language]
+  const texts = translate[language] || translate['nb-NO']
   const isOptimisticallySuccessful = state === 'submitting' || actionResponse?.status === 'success'
 
   return (
