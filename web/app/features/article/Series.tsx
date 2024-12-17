@@ -1,6 +1,7 @@
 import { POST_BY_SLUGResult } from 'utils/sanity/types/sanity.types'
 import { TextLink } from '~/components/TextLink'
 import { postUrl } from '~/lib/format'
+import { RedSealSVG } from '../../components/RedSealSVG'
 
 type SeriesProps = {
   postId: string
@@ -9,16 +10,16 @@ type SeriesProps = {
 
 const Series = ({ postId, series }: SeriesProps) => {
   return (
-    <div className="p-2 bg-primary-foreground text-black rounded-sm">
-      <div className="bg-red-600 text-sm text-white rounded-sm uppercase w-fit py-1 px-4 mb-4">Serie</div>
-      <details>
-        <summary className="text-2xl font-bold mb-2">{series.title}</summary>
-        <p className="text-md">{series.description}</p>
-        <ol className="list-disc ml-4 mt-8">
+    <div className="mt-12 p-4 pl-6 h-[338px] box-border bg-[url('/images/letter-white.svg')] md:bg-[url('/images/letter-beige.svg')] text-black rounded-sm bg-no-repeat">
+      <RedSealSVG />
+      <div className="h-full pb-8 overflow-scroll text-action-desktop">
+        <h2 className="text-2xl my-4">{series.title}</h2>
+        <p>{series.description}</p>
+        <div className="mt-6 pb-6 border-box">
           {series.posts
             .filter((postInSeries) => (series?.shouldListNonPublishedContent ? true : postInSeries.isAvailable))
             .map((postInSeries) => (
-              <li key={postInSeries._id}>
+              <div className="mt-2" key={postInSeries._id}>
                 {postInSeries.isAvailable ? (
                   <TextLink
                     href={postUrl(postInSeries)}
@@ -30,10 +31,10 @@ const Series = ({ postId, series }: SeriesProps) => {
                 ) : (
                   <span className="text-md">{postInSeries.title}</span>
                 )}
-              </li>
+              </div>
             ))}
-        </ol>
-      </details>
+        </div>
+      </div>
     </div>
   )
 }
