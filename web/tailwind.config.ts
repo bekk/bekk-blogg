@@ -66,6 +66,7 @@ export default {
       borderColor: {
         'reindeer-brown': '#714319',
         'christmas-tree-green': '#2F7346',
+        'santa-red': '#D0332E',
       },
       height: {
         '21.4': '85.6px',

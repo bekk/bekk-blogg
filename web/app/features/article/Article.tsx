@@ -47,6 +47,11 @@ export const Article = ({ post }: ArticleProps) => {
   return (
     <section className="px-6 sm:grid-cols-[1fr_2fr] md:grid md:grid-rows-[auto_auto] md:gap-x-12 xl:gap-x-24 md:gap-y-6 md:pl-10 xl:pl-20 pb-8 md:pb-16">
       <aside className="meta col-start-1 col-end-1 row-start-2 row-end-2 mb-8 md:min-w-[230px] lg:min-w-[240px] 2lg:min-w-[250px]">
+        {shouldShowSeriesBlock && (
+          <div className="border-[3px] border-santa-red w-fit px-[10px] py-[4px] font-gt-expanded text-sm rounded-sm mb-6 hidden md:block uppercase">
+            Del av en serie
+          </div>
+        )}
         <h1 className="sm:mb-4 text-3xl sm:text-4xl overflow-auto">{post.title}</h1>
         {post.tags && (
           <div>
