@@ -88,6 +88,10 @@ export const CodeBlock = ({ code }: CodeBlockProps) => {
   )
 }
 
+/** These are languages that are not supported by refractor,
+ * but that are in the Sanity database somehow.
+ * In a perfect world, we should remove them from the database.
+ **/
 const nonSupportedLanguages = [
   'jsonnet',
   'F#',
