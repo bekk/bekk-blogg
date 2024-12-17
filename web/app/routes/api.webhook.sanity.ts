@@ -7,7 +7,6 @@ import indexer from 'sanity-algolia'
 
 import { POST_SEARCH_PROJECTION } from '../../utils/sanity/queries/postQueries'
 import { readClient } from '../../utils/sanity/sanity.server'
-import { Post } from '../../utils/sanity/types/sanity.types'
 
 /**
  *  This function receives webhook POSTs from Sanity and updates, creates or
@@ -41,11 +40,7 @@ export const action: ActionFunction = async ({ request }) => {
         projection: POST_SEARCH_PROJECTION,
       },
     },
-    (post) => post,
-    (post) => {
-      const availableFrom = new Date((post as Post).availableFrom)
-      return availableFrom <= new Date()
-    }
+    (post) => ({ ...post, availableFromMillis: new Date(post.availableFrom).getTime() })
   )
   try {
     await sanityAlgolia.webhookSync(readClient, JSON.parse(body))
