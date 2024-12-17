@@ -1,6 +1,5 @@
 import { Link, useLoaderData, useNavigation } from '@remix-run/react'
 import { MetaFunction } from '@vercel/remix' // Ensure to use json here
-
 import { ALL_CATEGORIES } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from '../../utils/sanity/store'
 import { Tag } from '../../utils/sanity/types/sanity.types'
@@ -12,7 +11,14 @@ import Header from '~/features/header/Header'
 export async function loader() {
   try {
     const { data } = await loadQuery<Tag[]>(ALL_CATEGORIES)
-    return data
+    return {
+      data,
+      algolia: {
+        app: process.env.ALGOLIA_APP_ID!,
+        key: process.env.ALGOLIA_SEARCH_KEY!,
+        index: process.env.ALGOLIA_INDEX!,
+      },
+    }
   } catch (error) {
     console.error(error)
     // Return an error response for the client
@@ -21,8 +27,8 @@ export async function loader() {
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  const title = `Innhold fra ${data?.length} kategorier | Bekk Christmas`
-  const description = `Utforsk ${data?.length} kategorier på Bekk Christmas`
+  const title = `Innhold fra ${data?.data.length} kategorier | Bekk Christmas`
+  const description = `Utforsk ${data?.data.length} kategorier på Bekk Christmas`
   return [
     { title },
     { name: 'description', content: description },
@@ -45,7 +51,7 @@ export default function TagsRoute() {
   return (
     <div className="bg-dark-wooden-table-with-green-cloth">
       <header className="relative">
-        <Header />
+        <Header algolia={data.algolia} />
       </header>
       {state.state === 'loading' ? (
         <Spinner />
@@ -53,7 +59,7 @@ export default function TagsRoute() {
         <div className="px-2 sm:px-8 mb-8 flex flex-col">
           <h1 className="text-center text-3xl sm:text-4xl text-white pt-4">Kategorier</h1>
           <div className="flex flex-wrap justify-center pt-12 sm:pt-20 md:pt-28 gap-2 md:gap-4 2xl:mt-20">
-            {data.map((category: Tag, index: number) => (
+            {data.data.map((category: Tag, index: number) => (
               <Link
                 to={`/kategori/${category.slug}`}
                 className="hover:text-reindeer-brown md:text-subtitle-desktop"

@@ -1,4 +1,4 @@
-import { Link } from '@remix-run/react'
+import { Link, useLoaderData } from '@remix-run/react'
 import { MetaFunction } from '@vercel/remix'
 
 import { GreenGiftRedRibbon } from '~/features/archive/svgs/GreenGiftRedRibbon'
@@ -11,7 +11,20 @@ import { WhiteGiftRedRibbonH } from '~/features/archive/svgs/WhiteGiftRedRibbonH
 import { WhiteGiftRedRibbonSquare } from '~/features/archive/svgs/WhiteGiftRedRibbonSquare'
 import { YearBadge } from '~/features/archive/YearBadge'
 import Header from '~/features/header/Header'
-
+export async function loader() {
+  try {
+    return {
+      algolia: {
+        app: process.env.ALGOLIA_APP_ID!,
+        key: process.env.ALGOLIA_SEARCH_KEY!,
+        index: process.env.ALGOLIA_INDEX!,
+      },
+    }
+  } catch (error) {
+    console.error(error)
+    throw new Response('Failed to load Algolia configuration', { status: 500 })
+  }
+}
 export const meta: MetaFunction = () => {
   const title = `Julekalendere fra Bekk Christmas`
   const description = `Se alle julekalendere fra Bekk Christmas opp gjennom tidene`
@@ -32,6 +45,7 @@ export const meta: MetaFunction = () => {
 }
 
 export default function ArchiveRoute() {
+  const { algolia } = useLoaderData<typeof loader>()
   const currentYear = new Date().getFullYear()
   const startYear = 2017
   const availableYears: number[] = []
@@ -53,7 +67,7 @@ export default function ArchiveRoute() {
   return (
     <div className="bg-brick-wall-with-wooden-plank">
       <header className="relative">
-        <Header />
+        <Header algolia={algolia} />
       </header>
       <div className={'flex flex-col justify-center'}>
         <h1 className="text-white text-center">Arkiv</h1>

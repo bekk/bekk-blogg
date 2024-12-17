@@ -47,6 +47,11 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       totalPages: Math.ceil((response.data.totalCount || 0) / perPage),
       totalPosts: response.data.totalCount || 0,
     },
+    algolia: {
+      app: process.env.ALGOLIA_APP_ID!,
+      key: process.env.ALGOLIA_SEARCH_KEY!,
+      index: process.env.ALGOLIA_INDEX!,
+    },
   }
 }
 
@@ -72,13 +77,13 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 }
 
 export default function TagRoute() {
-  const { posts, tag, pagination } = useLoaderData<typeof loader>()
+  const { posts, tag, pagination, algolia } = useLoaderData<typeof loader>()
   const navigation = useNavigation()
 
   return (
     <div className="bg-wooden-table-with-cloth">
       <header className="relative">
-        <Header />
+        <Header algolia={algolia} />
       </header>
       {!tag && (
         <div className="flex flex-col items-center lg:mb-12">
