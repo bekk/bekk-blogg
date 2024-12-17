@@ -222,6 +222,7 @@ export default function ArticleRoute() {
                 <DoorSign>Relaterte artikler</DoorSign>
               </div>
             )}
+            /*queryParameters={{ filters: `availableFromMillis <= ${Math.floor(Date.now() / 1000)}` }}*/
             objectIDs={[data._id]}
             limit={3}
             layoutComponent={({ items }) => (
