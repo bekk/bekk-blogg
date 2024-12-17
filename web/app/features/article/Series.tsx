@@ -8,14 +8,12 @@ type SeriesProps = {
   series: NonNullable<NonNullable<POST_BY_SLUGResult>['series']>
 }
 
+const visiblePosts = (series: NonNullable<NonNullable<POST_BY_SLUGResult>['series']>) => {
+  return series.posts.filter((post) => series.shouldListNonPublishedContent || post.isAvailable)
+}
+
 export const shouldShowSeries = (post: NonNullable<POST_BY_SLUGResult>) => {
-  return (
-    post.series &&
-    post.series.posts.length > 1 &&
-    (post.series.shouldListNonPublishedContent
-      ? true
-      : post.series.posts.every((postInSeries) => postInSeries.isAvailable))
-  )
+  return post.series && visiblePosts(post.series).length >= 2
 }
 
 const Series = ({ postId, series }: SeriesProps) => {
