@@ -15,7 +15,7 @@ import { components } from '~/portable-text/Components'
 import PodcastBlock from '~/portable-text/PodcastBlock'
 import VimeoBlock from '~/portable-text/VimeoBlock'
 import { action } from '~/routes/post.$year.$date.$slug'
-import Series from './Series'
+import Series, { shouldShowSeries } from './Series'
 import useMediaQuery from '~/hooks/useMediaQuery'
 
 type ArticleProps = {
@@ -38,12 +38,7 @@ export const Article = ({ post }: ArticleProps) => {
         ? actionResponse.points
         : (post?.points ?? 0)
 
-  const shouldShowSeriesBlock =
-    post.series &&
-    post.series.posts.length > 1 &&
-    (post.series.shouldListNonPublishedContent
-      ? true
-      : post.series.posts.every((postInSeries) => postInSeries.isAvailable))
+  const shouldShowSeriesBlock = shouldShowSeries(post)
 
   return (
     <section className="px-6 sm:grid-cols-[1fr_2fr] md:grid md:grid-rows-[auto_auto] md:gap-x-12 xl:gap-x-24 md:gap-y-6 md:pl-10 xl:pl-20 pb-8 md:pb-16">

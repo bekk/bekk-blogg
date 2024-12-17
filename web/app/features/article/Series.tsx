@@ -8,11 +8,21 @@ type SeriesProps = {
   series: NonNullable<NonNullable<POST_BY_SLUGResult>['series']>
 }
 
+export const shouldShowSeries = (post: NonNullable<POST_BY_SLUGResult>) => {
+  return (
+    post.series &&
+    post.series.posts.length > 1 &&
+    (post.series.shouldListNonPublishedContent
+      ? true
+      : post.series.posts.every((postInSeries) => postInSeries.isAvailable))
+  )
+}
+
 const Series = ({ postId, series }: SeriesProps) => {
   return (
-    <div className="mt-12 p-4 pl-6 h-[338px] box-border bg-[url('/images/letter-white.svg')] md:bg-[url('/images/letter-beige.svg')] text-black rounded-sm bg-no-repeat">
+    <div className="mx-auto mt-12 p-4 pl-6 h-[335px] w-[358px] md:w-auto box-border bg-[url('/images/letter-white.svg')] md:bg-[url('/images/letter-beige.svg')] text-black rounded-sm bg-no-repeat">
       <RedSealSVG />
-      <div className="h-full pb-8 overflow-scroll text-action-desktop">
+      <div className="h-full w-full pb-8 overflow-scroll text-action-desktop">
         <h2 className="text-2xl my-4">{series.title}</h2>
         <p>{series.description}</p>
         <div className="mt-6 pb-6 border-box">
