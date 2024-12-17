@@ -30,7 +30,7 @@ export function generateSecurityHeaders() {
       ],
       'style-src': [SELF, UNSAFE_INLINE],
       'img-src': [SELF, UNSAFE_INLINE, 'data:', 'cdn.sanity.io', '*'],
-      'connect-src': [SELF, 'api.sanity.io', 'plausible.io', 'opengraph.ninja'],
+      'connect-src': [SELF, 'api.sanity.io', 'plausible.io', 'opengraph.ninja', '*.algolia.net '],
       'frame-src': [
         SELF,
         '*.youtube.com',

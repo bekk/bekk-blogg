@@ -1,6 +1,8 @@
+import { InstantSearch, RelatedProducts } from 'react-instantsearch'
 import { isRouteErrorResponse, json, redirect, useLoaderData, useRouteError } from '@remix-run/react'
 import { useQuery } from '@sanity/react-loader'
 import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
+import algoliasearch from 'algoliasearch/lite'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { combinedHeaders } from 'utils/headers'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
@@ -15,7 +17,9 @@ import { ErrorPage } from '../features/error-boundary/ErrorPage'
 
 import '../portable-text/prism-theme.css'
 
+import { DoorSign } from '~/components/DoorSign'
 import { Article } from '~/features/article/Article'
+import { RelatedPostsLayout } from '~/features/article/RelatedPostLayout'
 import Header from '~/features/header/Header'
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
@@ -135,7 +139,17 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     : undefined
 
   return json(
-    { initial, query: POST_BY_SLUG, params: parsedParams.data, imageUrl },
+    {
+      initial,
+      query: POST_BY_SLUG,
+      params: parsedParams.data,
+      imageUrl,
+      algolia: {
+        appId: process.env.ALGOLIA_APP_ID!,
+        apiKey: process.env.ALGOLIA_SEARCH_KEY!,
+        index: process.env.ALGOLIA_INDEX!,
+      },
+    },
     {
       status: 200,
       headers: {
@@ -180,7 +194,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export const headers = combinedHeaders
 
 export default function ArticleRoute() {
-  const { initial, query, params } = useLoaderData<typeof loader>()
+  const { initial, query, params, algolia } = useLoaderData<typeof loader>()
   const { data } = useQuery<typeof initial.data>(query, params, {
     // @ts-expect-error Dette er en kjent bug i sanity-react-loader
     initial,
@@ -190,6 +204,8 @@ export default function ArticleRoute() {
     return null
   }
 
+  const searchClient = algoliasearch(algolia.appId, algolia.apiKey)
+
   return (
     <div className="bg-wooden-table break-words md:p-8 min-h-screen">
       <div className="striped-frame mx-auto max-w-screen-2xl">
@@ -197,6 +213,33 @@ export default function ArticleRoute() {
           <Header />
         </header>
         <Article post={data} />
+      </div>
+      <div>
+        <InstantSearch searchClient={searchClient} indexName={algolia.index}>
+          <RelatedProducts
+            headerComponent={() => (
+              <div className="inset-0 flex m-6 justify-center ">
+                <DoorSign>Relaterte artikler</DoorSign>
+              </div>
+            )}
+            objectIDs={[data._id]}
+            limit={3}
+            layoutComponent={({ items }) => (
+              <RelatedPostsLayout
+                items={items.map((item) => ({
+                  objectID: item.objectID,
+                  name: item.title,
+                  image: item.image,
+                  author: item.authors,
+                  tags: item.tags || [],
+                  slug: item.slug.current,
+                  availableFrom: item.availableFrom,
+                }))}
+              />
+            )}
+            emptyComponent={() => <p className="text-black">Ingen anbefalinger</p>}
+          />
+        </InstantSearch>
       </div>
     </div>
   )

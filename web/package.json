@@ -18,6 +18,8 @@
     "test:e2e:debug": "playwright test --debug"
   },
   "dependencies": {
+    "@algolia/recommend": "^4.24.0",
+    "@algolia/recommend-react": "^1.15.0",
     "@opengraphninja/react": "^0.2.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@remix-run/node": "^2.15.0",
@@ -33,7 +35,7 @@
     "@types/react-syntax-highlighter": "^15.5.13",
     "@vercel/remix": "^2.15.0",
     "@vercel/speed-insights": "^1.1.0",
-    "algoliasearch": "^4.10.5",
+    "algoliasearch": "^4.24.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "csp-header": "^5.2.1",
@@ -48,6 +50,7 @@
     "react": "^18.2.0",
     "react-countdown": "^2.3.6",
     "react-dom": "^18.2.0",
+    "react-instantsearch": "^7.13.9",
     "react-refractor": "^3.1.1",
     "react-responsive": "^10.0.0",
     "react-twitter-embed": "^4.0.4",
