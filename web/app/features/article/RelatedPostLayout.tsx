@@ -2,6 +2,7 @@ import { Link } from '@remix-run/react'
 import { motion } from 'framer-motion'
 
 import { parseDate } from '../../../utils/date'
+import { trackEvent } from '../../../utils/analytics'
 
 interface RelatedPostsData {
   objectID: string
@@ -24,6 +25,7 @@ export const RelatedPostsLayout = ({ items }: { items: RelatedPostsData[] }) => 
             to={`/post/${date.year}/${String(date.day).padStart(2, '0')}/${item.slug}`}
             className={'flex flex-col justify-between'}
             key={item.objectID}
+            onClick={() => trackEvent('related_post_clicked', { slug: item.slug ?? 'unknown' })}
           >
             <motion.div
               className="striped-frame border p-4 rounded-lg bg-postcard-beige"
