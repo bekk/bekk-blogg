@@ -1,8 +1,8 @@
-import { InstantSearch, RelatedProducts } from 'react-instantsearch'
 import { isRouteErrorResponse, json, redirect, useLoaderData, useRouteError } from '@remix-run/react'
 import { useQuery } from '@sanity/react-loader'
 import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import algoliasearch from 'algoliasearch/lite'
+import { InstantSearch, RelatedProducts } from 'react-instantsearch'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { combinedHeaders } from 'utils/headers'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
@@ -17,6 +17,7 @@ import { ErrorPage } from '../features/error-boundary/ErrorPage'
 
 import '../portable-text/prism-theme.css'
 
+import { useRef } from 'react'
 import { DoorSign } from '~/components/DoorSign'
 import { Article } from '~/features/article/Article'
 import { RelatedPostsLayout } from '~/features/article/RelatedPostLayout'
@@ -199,12 +200,11 @@ export default function ArticleRoute() {
     // @ts-expect-error Dette er en kjent bug i sanity-react-loader
     initial,
   })
+  const searchClient = useRef(algoliasearch(algolia.appId, algolia.apiKey))
 
   if (!data) {
     return null
   }
-
-  const searchClient = algoliasearch(algolia.appId, algolia.apiKey)
 
   return (
     <div className="bg-wooden-table break-words md:p-8 min-h-screen">
@@ -215,7 +215,7 @@ export default function ArticleRoute() {
         <Article post={data} />
       </div>
       <div>
-        <InstantSearch searchClient={searchClient} indexName={algolia.index}>
+        <InstantSearch searchClient={searchClient.current} indexName={algolia.index}>
           <RelatedProducts
             headerComponent={() => (
               <div className="inset-0 flex m-6 justify-center ">
@@ -224,19 +224,23 @@ export default function ArticleRoute() {
             )}
             objectIDs={[data._id]}
             limit={3}
-            layoutComponent={({ items }) => (
-              <RelatedPostsLayout
-                items={items.map((item) => ({
-                  objectID: item.objectID,
-                  name: item.title,
-                  image: item.image,
-                  author: item.authors,
-                  tags: item.tags || [],
-                  slug: item.slug.current,
-                  availableFrom: item.availableFrom,
-                }))}
-              />
-            )}
+            layoutComponent={({ items }) => {
+              return (
+                <RelatedPostsLayout
+                  items={items
+                    .filter((item) => !item._id.startsWith('drafts.'))
+                    .map((item) => ({
+                      objectID: item.objectID,
+                      name: item.title,
+                      image: item.image,
+                      author: item.authors,
+                      tags: item.tags || [],
+                      slug: item.slug?.current,
+                      availableFrom: item.availableFrom,
+                    }))}
+                />
+              )
+            }}
             emptyComponent={() => <p className="text-black">Ingen anbefalinger</p>}
           />
         </InstantSearch>
