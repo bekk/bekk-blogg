@@ -22,7 +22,6 @@ import { Article } from '~/features/article/Article'
 import { RelatedPostsLayout } from '~/features/article/RelatedPostLayout'
 import Header from '~/features/header/Header'
 import Series, { shouldShowSeries } from '~/features/article/Series'
-import useMediaQuery from '~/hooks/useMediaQuery'
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const post = data?.initial.data
@@ -197,7 +196,6 @@ export const headers = combinedHeaders
 
 export default function ArticleRoute() {
   const { initial, query, params, algolia } = useLoaderData<typeof loader>()
-  const smallScreen = useMediaQuery('(max-width: 900px)')
   const { data } = useQuery<typeof initial.data>(query, params, {
     // @ts-expect-error Dette er en kjent bug i sanity-react-loader
     initial,
@@ -217,7 +215,7 @@ export default function ArticleRoute() {
         </header>
         <Article post={data} />
       </div>
-      {shouldShowSeries(data) && smallScreen && data.series && <Series postId={data._id} series={data.series} />}
+      {shouldShowSeries(data) && data.series && <Series postId={data._id} series={data.series} mobileOnly />}
       <div>
         <InstantSearch searchClient={searchClient} indexName={algolia.index}>
           <RelatedProducts

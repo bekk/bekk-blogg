@@ -16,7 +16,6 @@ import PodcastBlock from '~/portable-text/PodcastBlock'
 import VimeoBlock from '~/portable-text/VimeoBlock'
 import { action } from '~/routes/post.$year.$date.$slug'
 import Series, { shouldShowSeries } from './Series'
-import useMediaQuery from '~/hooks/useMediaQuery'
 
 type ArticleProps = {
   post: POST_BY_SLUGResult
@@ -25,7 +24,6 @@ type ArticleProps = {
 export const Article = ({ post }: ArticleProps) => {
   const { state } = useNavigation()
   const actionResponse = useActionData<typeof action>()
-  const smallScreen = useMediaQuery('(max-width: 900px)')
 
   if (!post) {
     return null
@@ -101,7 +99,7 @@ export const Article = ({ post }: ArticleProps) => {
             slug={post.slug?.current ?? 'unknown'}
           />
         )}
-        {shouldShowSeriesBlock && !smallScreen && post.series && <Series postId={post._id} series={post.series} />}
+        {shouldShowSeriesBlock && post.series && <Series postId={post._id} series={post.series} mobileOnly={false} />}
       </aside>
       <article className="flex flex-col col-start-2 col-end-2 row-start-2 row-end-2 max-md:max-w-screen-xl max-lg:max-w-[475px] max-2lg:max-w-[550px] 2lg:max-w-[675px] xl:pr-10 xl:max-w-3xl 2xl:max-w-4xl">
         {post?.description ? (

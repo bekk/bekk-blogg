@@ -6,6 +6,7 @@ import { RedSealSVG } from '../../components/RedSealSVG'
 type SeriesProps = {
   postId: string
   series: NonNullable<NonNullable<POST_BY_SLUGResult>['series']>
+  mobileOnly: boolean
 }
 
 const visiblePosts = (series: NonNullable<NonNullable<POST_BY_SLUGResult>['series']>) => {
@@ -16,9 +17,11 @@ export const shouldShowSeries = (post: NonNullable<POST_BY_SLUGResult>) => {
   return post.series && visiblePosts(post.series).length >= 2
 }
 
-const Series = ({ postId, series }: SeriesProps) => {
+const Series = ({ postId, series, mobileOnly }: SeriesProps) => {
   return (
-    <div className="mx-auto mt-12 p-4 pl-6 h-[335px] w-[358px] md:w-auto box-border bg-[url('/images/letter-white.svg')] md:bg-[url('/images/letter-beige.svg')] text-black rounded-sm bg-no-repeat">
+    <div
+      className={`${mobileOnly ? 'block md:hidden' : 'hidden md:block'} mx-auto mt-12 p-4 pl-6 h-[335px] w-[358px] md:w-auto box-border bg-[url('/images/letter-white.svg')] md:bg-[url('/images/letter-beige.svg')] text-black rounded-sm bg-no-repeat`}
+    >
       <RedSealSVG />
       <div className="h-full w-full pb-8 overflow-scroll text-action-desktop">
         <h2 className="text-2xl my-4">{series.title}</h2>
