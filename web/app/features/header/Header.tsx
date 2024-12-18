@@ -38,7 +38,7 @@ export const Header = () => {
           )}
         </Link>
       </div>
-      {algolia && searchClient && (
+      {algolia && searchClient && !isOnArticlePage && (
         <div className="md:col-start-1 md:col-span-2 md:row-start-1 flex justify-start md:justify-center order-first md:order-none  md:mx-auto">
           <Search searchClient={searchClient} indexName={algolia.index} />
         </div>
