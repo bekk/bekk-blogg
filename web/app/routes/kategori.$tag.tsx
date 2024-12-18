@@ -77,13 +77,13 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 }
 
 export default function TagRoute() {
-  const { posts, tag, pagination, algolia } = useLoaderData<typeof loader>()
+  const { posts, tag, pagination } = useLoaderData<typeof loader>()
   const navigation = useNavigation()
 
   return (
     <div className="bg-wooden-table-with-cloth">
       <header className="relative">
-        <Header algolia={algolia} />
+        <Header />
       </header>
       {!tag && (
         <div className="flex flex-col items-center lg:mb-12">

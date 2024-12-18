@@ -1,4 +1,4 @@
-import { Link, useLoaderData } from '@remix-run/react'
+import { Link } from '@remix-run/react'
 import { MetaFunction } from '@vercel/remix'
 
 import { GreenGiftRedRibbon } from '~/features/archive/svgs/GreenGiftRedRibbon'
@@ -45,7 +45,6 @@ export const meta: MetaFunction = () => {
 }
 
 export default function ArchiveRoute() {
-  const { algolia } = useLoaderData<typeof loader>()
   const currentYear = new Date().getFullYear()
   const startYear = 2017
   const availableYears: number[] = []
@@ -67,7 +66,7 @@ export default function ArchiveRoute() {
   return (
     <div className="bg-brick-wall-with-wooden-plank">
       <header className="relative">
-        <Header algolia={algolia} />
+        <Header />
       </header>
       <div className={'flex flex-col justify-center'}>
         <h1 className="text-white text-center">Arkiv</h1>

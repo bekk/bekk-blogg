@@ -51,7 +51,7 @@ export default function TagsRoute() {
   return (
     <div className="bg-dark-wooden-table-with-green-cloth">
       <header className="relative">
-        <Header algolia={data.algolia} />
+        <Header />
       </header>
       {state.state === 'loading' ? (
         <Spinner />

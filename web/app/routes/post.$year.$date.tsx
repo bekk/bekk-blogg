@@ -107,12 +107,12 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 export const headers = combinedHeaders
 
 export default function DateRoute() {
-  const { date, year, posts, algolia } = useLoaderData<typeof loader>()
+  const { date, year, posts } = useLoaderData<typeof loader>()
 
   return (
     <div className="bg-wooden-table-with-cloth min-h-screen">
       <header className="relative">
-        <Header algolia={algolia} />
+        <Header />
       </header>
       <div className="flex flex-col">
         <h1 className="mb-4 sm:mb-12 self-start pl-4 md:pl-0 text-4xl md:text-5xl text-postcard-beige sm:self-center">

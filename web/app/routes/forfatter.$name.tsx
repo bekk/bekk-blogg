@@ -86,13 +86,13 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 export const headers = combinedHeaders
 
 export default function AuthorRoute() {
-  const { author, posts, pagination, algolia } = useLoaderData<typeof loader>()
+  const { author, posts, pagination } = useLoaderData<typeof loader>()
   const navigation = useNavigation()
   const isSomethingWrong = !author || !posts || posts.length === 0
   return (
     <div className="bg-wooden-table-with-cloth">
       <header className="relative">
-        <Header algolia={algolia} />
+        <Header />
       </header>
       {isSomethingWrong && (
         <div className="flex flex-col items-center lg:mb-12">

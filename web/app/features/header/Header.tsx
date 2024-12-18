@@ -1,4 +1,4 @@
-import { Link, useParams, useRouteError } from '@remix-run/react'
+import { Link, useLoaderData, useParams, useRouteError } from '@remix-run/react'
 
 import { PostStamp } from '../article/PostStamp'
 
@@ -7,20 +7,19 @@ import { useBreadcrumbs } from '~/hooks/useBreadcrumbs'
 import algoliasearch from 'algoliasearch'
 import { Search } from '~/components/Search'
 
-export const Header = ({
-  algolia,
-}: {
-  algolia?: {
-    app: string
-    key: string
-    index: string
-  }
-}) => {
+export const Header = () => {
+  const data = useLoaderData<{
+    algolia: {
+      app: string
+      key: string
+      index: string
+    }
+  }>()
   const breadcrumbs = useBreadcrumbs()
   const error = useRouteError()
   const { year, date, slug } = useParams()
   const isOnArticlePage = Boolean(year && date && slug)
-  const searchClient = algolia && algoliasearch(algolia.app, algolia.key)
+  const searchClient = data && data.algolia && algoliasearch(data.algolia.app, data.algolia.key)
 
   return (
     <div
@@ -39,9 +38,9 @@ export const Header = ({
           )}
         </Link>
       </div>
-      {algolia && searchClient && (
+      {data.algolia && searchClient && (
         <div className="md:col-start-1 md:col-span-2 md:row-start-1 flex justify-start md:justify-center order-first md:order-none  md:mx-auto">
-          <Search searchClient={searchClient} indexName={algolia.index} />
+          <Search searchClient={searchClient} indexName={data.algolia.index} />
         </div>
       )}
       {!error && (
