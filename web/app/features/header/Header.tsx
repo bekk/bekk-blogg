@@ -1,15 +1,25 @@
-import { Link, useParams, useRouteError } from '@remix-run/react'
+import { Link, useMatches, useParams, useRouteError } from '@remix-run/react'
 
 import { PostStamp } from '../article/PostStamp'
 
 import { BekkLogo } from '~/features/article/BekkLogo'
 import { useBreadcrumbs } from '~/hooks/useBreadcrumbs'
+import algoliasearch from 'algoliasearch'
+import { Search } from '~/components/Search'
+import { useRef } from 'react'
+
+const useAlgoliaConfig = () => {
+  const rootMatch = useMatches().find((match) => match.id === 'root')
+  return (rootMatch?.data as { algolia: { app: string; key: string; index: string } })?.algolia
+}
 
 export const Header = () => {
+  const algolia = useAlgoliaConfig()
   const breadcrumbs = useBreadcrumbs()
   const error = useRouteError()
   const { year, date, slug } = useParams()
   const isOnArticlePage = Boolean(year && date && slug)
+  const searchClient = useRef(algolia && algoliasearch(algolia.app, algolia.key))
 
   return (
     <div
@@ -28,9 +38,14 @@ export const Header = () => {
           )}
         </Link>
       </div>
+      {algolia && searchClient && !isOnArticlePage && (
+        <div className="md:col-start-1 md:col-span-2 md:row-start-1 flex justify-start md:justify-center order-first md:order-none  md:mx-auto">
+          <Search searchClient={searchClient} indexName={algolia.index} />
+        </div>
+      )}
       {!error && (
-        <div className="md:content-end col-span-2 md:col-span-1 md:row-start-1 md:col-start-1 min-w-0 flex-1 ">
-          <ol className="scrollbar-none flex overflow-x-auto">
+        <div className="col-span-2 md:col-span-1 md:row-start-2 min-w-0 flex-1 md:content-end">
+          <ol className="scrollbar-none flex overflow-x-auto mt-4 md:mt-0">
             {breadcrumbs.map((breadcrumb, index) => {
               const isLast = index === breadcrumbs.length - 1
 
