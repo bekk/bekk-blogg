@@ -6,6 +6,7 @@ import { BekkLogo } from '~/features/article/BekkLogo'
 import { useBreadcrumbs } from '~/hooks/useBreadcrumbs'
 import algoliasearch from 'algoliasearch'
 import { Search } from '~/components/Search'
+import { useRef } from 'react'
 
 export const Header = () => {
   const data = useLoaderData<{
@@ -19,7 +20,7 @@ export const Header = () => {
   const error = useRouteError()
   const { year, date, slug } = useParams()
   const isOnArticlePage = Boolean(year && date && slug)
-  const searchClient = data && data.algolia && algoliasearch(data.algolia.app, data.algolia.key)
+  const searchClient = useRef(data.algolia && algoliasearch(data.algolia.app, data.algolia.key))
 
   return (
     <div

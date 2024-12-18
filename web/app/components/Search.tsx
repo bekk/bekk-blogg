@@ -2,9 +2,15 @@ import { SearchClient } from 'algoliasearch'
 import { Link } from '@remix-run/react'
 import { Configure, Hits, InstantSearch, useSearchBox } from 'react-instantsearch'
 import { postUrl } from '~/lib/format'
-export const Search = ({ searchClient, indexName }: { searchClient: SearchClient; indexName: string }) => {
+export const Search = ({
+  searchClient,
+  indexName,
+}: {
+  searchClient: React.MutableRefObject<SearchClient>
+  indexName: string
+}) => {
   return (
-    <InstantSearch searchClient={searchClient} indexName={indexName}>
+    <InstantSearch searchClient={searchClient.current} indexName={indexName}>
       <SearchBoxWithDropdown />
       <Configure hitsPerPage={5} />
     </InstantSearch>
