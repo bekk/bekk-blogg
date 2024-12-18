@@ -225,7 +225,7 @@ export default function ArticleRoute() {
           <RelatedProducts
             headerComponent={() => (
               <div className="inset-0 flex m-6 justify-center ">
-                <DoorSign>Relatert innhold</DoorSign>
+                <DoorSign as="h2">Relatert innhold</DoorSign>
               </div>
             )}
             objectIDs={[data._id]}
