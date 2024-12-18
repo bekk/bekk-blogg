@@ -1,7 +1,6 @@
 import { isRouteErrorResponse, json, redirect, useLoaderData, useRouteError } from '@remix-run/react'
 import { useQuery } from '@sanity/react-loader'
 import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
-import algoliasearch from 'algoliasearch/lite'
 import { InstantSearch, RelatedProducts } from 'react-instantsearch'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { combinedHeaders } from 'utils/headers'
@@ -17,12 +16,12 @@ import { ErrorPage } from '../features/error-boundary/ErrorPage'
 
 import '../portable-text/prism-theme.css'
 
-import { useRef } from 'react'
 import { DoorSign } from '~/components/DoorSign'
 import { Article } from '~/features/article/Article'
 import { RelatedPostsLayout } from '~/features/article/RelatedPostLayout'
 import Series, { shouldShowSeries } from '~/features/article/Series'
 import Header from '~/features/header/Header'
+import { useAlgoliaClient, useAlgoliaConfig } from '~/hooks/useAlgolia'
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const post = data?.initial.data
@@ -148,11 +147,6 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       query: POST_BY_SLUG,
       params: parsedParams.data,
       imageUrl,
-      algolia: {
-        appId: process.env.ALGOLIA_APP_ID!,
-        apiKey: process.env.ALGOLIA_SEARCH_KEY!,
-        index: process.env.ALGOLIA_INDEX!,
-      },
     },
     {
       status: 200,
@@ -198,12 +192,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export const headers = combinedHeaders
 
 export default function ArticleRoute() {
-  const { initial, query, params, algolia } = useLoaderData<typeof loader>()
+  const { initial, query, params } = useLoaderData<typeof loader>()
   const { data } = useQuery<typeof initial.data>(query, params, {
     // @ts-expect-error Dette er en kjent bug i sanity-react-loader
     initial,
   })
-  const searchClient = useRef(algoliasearch(algolia.appId, algolia.apiKey))
+  const algoliaConfig = useAlgoliaConfig()
+  const client = useAlgoliaClient()
 
   if (!data) {
     return null
@@ -222,11 +217,15 @@ export default function ArticleRoute() {
       </div>
       {shouldShowSeries(data) && data.series && <Series postId={data._id} series={data.series} mobileOnly />}
       <div>
-        <InstantSearch searchClient={searchClient.current} indexName={algolia.index}>
+        <InstantSearch
+          searchClient={client.current}
+          indexName={algoliaConfig.index}
+          future={{ persistHierarchicalRootCount: true, preserveSharedStateOnUnmount: true }}
+        >
           <RelatedProducts
             headerComponent={() => (
               <div className="inset-0 flex m-6 justify-center ">
-                <DoorSign>Relaterte artikler</DoorSign>
+                <DoorSign>Relatert innhold</DoorSign>
               </div>
             )}
             objectIDs={[data._id]}
