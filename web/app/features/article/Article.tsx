@@ -1,6 +1,6 @@
-import { Fragment, ReactNode } from 'react'
 import { PortableText } from '@portabletext/react'
 import { Link, useActionData, useNavigation } from '@remix-run/react'
+import { Fragment, ReactNode } from 'react'
 import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readingTime'
 import { POST_BY_SLUGResult, SanityImageAsset } from 'utils/sanity/types/sanity.types'
@@ -49,7 +49,7 @@ export const Article = ({ post }: ArticleProps) => {
         <h1 className="sm:mb-4 text-3xl sm:text-4xl overflow-auto">{post.title}</h1>
         {post.tags && (
           <div>
-            {post.tags.map((tag, index) => (
+            {post.tags.filter(Boolean).map((tag, index) => (
               <Fragment key={tag._id}>
                 <LinkWithSpinner to={`/kategori/${tag.slug}`} className="hover:text-reindeer-brown underline">
                   {tag.name}
@@ -69,7 +69,7 @@ export const Article = ({ post }: ArticleProps) => {
         {post.authors && (
           <div>
             Fra {''}
-            {post.authors.map((author, index) => (
+            {post.authors.filter(Boolean).map((author, index) => (
               <Fragment key={author._id}>
                 <LinkWithSpinner
                   to={`/forfatter/${author.slug?.current}`}
