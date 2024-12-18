@@ -31,7 +31,7 @@ function CustomSearchBox({
       type="search"
       value={query}
       onChange={(event) => refine(event.currentTarget.value)}
-      placeholder="Søk etter et innlegg"
+      placeholder="Søk"
       onReset={clear}
       className="w-full max-w-lg h-12 px-4 py-2 text-lg bg-transparent rounded-sm border border-white focus:outline-none focus:ring-2 focus:ring-white focus:text-white placeholder-white"
     />
