@@ -18,6 +18,8 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     throw new Response('Missing tag', { status: 404 })
   }
 
+  const decodedTag = decodeURIComponent(tag)
+
   // Get page from URL search params
   const url = new URL(request.url)
   const page = parseInt(url.searchParams.get('page') || '1')
@@ -25,7 +27,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const offset = (page - 1) * perPage
 
   const response = await loadQuery<TAG_WITH_POSTS_QUERYResult>(TAG_WITH_POSTS_QUERY, {
-    t: tag,
+    t: decodedTag,
     start: offset,
     end: offset + perPage,
   })

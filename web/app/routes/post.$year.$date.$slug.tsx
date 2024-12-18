@@ -21,8 +21,8 @@ import { useRef } from 'react'
 import { DoorSign } from '~/components/DoorSign'
 import { Article } from '~/features/article/Article'
 import { RelatedPostsLayout } from '~/features/article/RelatedPostLayout'
-import Header from '~/features/header/Header'
 import Series, { shouldShowSeries } from '~/features/article/Series'
+import Header from '~/features/header/Header'
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const post = data?.initial.data
@@ -89,12 +89,14 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const { year, date, slug } = parsedParams.data
 
   if (date.length === 1) {
-    return redirect(`/post/${year}/${date.padStart(2, '0')}/${slug}`, { status: 301 })
+    return redirect(`/post/${year}/${date.padStart(2, '0')}/${encodeURIComponent(slug)}`, { status: 301 })
   }
+
+  const decodedSlug = decodeURIComponent(slug)
 
   const { options, preview } = await loadQueryOptions(request.headers)
 
-  const initial = await loadQuery<POST_BY_SLUGResult>(POST_BY_SLUG, { slug }, options)
+  const initial = await loadQuery<POST_BY_SLUGResult>(POST_BY_SLUG, { slug: decodedSlug }, options)
 
   const formatDate = year + '-' + '12' + '-' + date.padStart(2, '0')
   const currentDate = new Date(new Date().getTime() + 1000 * 60 * 60)
