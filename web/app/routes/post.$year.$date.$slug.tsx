@@ -222,7 +222,11 @@ export default function ArticleRoute() {
       </div>
       {shouldShowSeries(data) && data.series && <Series postId={data._id} series={data.series} mobileOnly />}
       <div>
-        <InstantSearch searchClient={searchClient.current} indexName={algolia.index}>
+        <InstantSearch
+          searchClient={searchClient.current}
+          indexName={algolia.index}
+          future={{ persistHierarchicalRootCount: true, preserveSharedStateOnUnmount: true }}
+        >
           <RelatedProducts
             headerComponent={() => (
               <div className="inset-0 flex m-6 justify-center ">

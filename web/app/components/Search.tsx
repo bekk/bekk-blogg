@@ -1,5 +1,5 @@
-import { SearchClient } from 'algoliasearch'
 import { Link } from '@remix-run/react'
+import { SearchClient } from 'algoliasearch'
 import { Configure, Hits, InstantSearch, useSearchBox } from 'react-instantsearch'
 import { postUrl } from '~/lib/format'
 export const Search = ({
@@ -10,7 +10,11 @@ export const Search = ({
   indexName: string
 }) => {
   return (
-    <InstantSearch searchClient={searchClient.current} indexName={indexName}>
+    <InstantSearch
+      searchClient={searchClient.current}
+      indexName={indexName}
+      future={{ persistHierarchicalRootCount: true, preserveSharedStateOnUnmount: true }}
+    >
       <SearchBoxWithDropdown />
       <Configure hitsPerPage={5} />
     </InstantSearch>
