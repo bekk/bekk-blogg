@@ -13,6 +13,7 @@ import gradle from 'refractor/lang/gradle.js'
 import graphql from 'refractor/lang/graphql.js'
 import groovy from 'refractor/lang/groovy.js'
 import haskell from 'refractor/lang/haskell.js'
+import hcl from 'refractor/lang/hcl.js'
 import idris from 'refractor/lang/idris.js'
 import java from 'refractor/lang/java.js'
 import json from 'refractor/lang/json.js'
@@ -70,7 +71,7 @@ registerLanguage(csv)
 registerLanguage(elixir)
 registerLanguage(idris)
 registerLanguage(glsl)
-
+registerLanguage(hcl)
 interface CodeBlockProps {
   code: CodeType
 }
@@ -78,7 +79,8 @@ export const CodeBlock = ({ code }: CodeBlockProps) => {
   if (!code?.code) {
     return null
   }
-  const language = nonSupportedLanguages.includes(code.language ?? '') ? 'text' : (code.language ?? 'text')
+  let language = nonSupportedLanguages.includes(code.language ?? '') ? 'text' : (code.language ?? 'text')
+  language = language.toLowerCase()
   return (
     <div className="codeBlockColorOverride text-sm max-w-[800px] overflow-hidden rounded-md">
       <div className="overflow-x-auto bg-gray-50 p-4">
@@ -92,16 +94,4 @@ export const CodeBlock = ({ code }: CodeBlockProps) => {
  * but that are in the Sanity database somehow.
  * In a perfect world, we should remove them from the database.
  **/
-const nonSupportedLanguages = [
-  'jsonnet',
-  'F#',
-  'Kotlin',
-  'example',
-  'TSX',
-  'math',
-  'jsonc',
-  'CSS',
-  'svelte',
-  'HCL',
-  'JavaScript',
-]
+const nonSupportedLanguages = ['jsonnet', 'F#', 'example', 'math', 'jsonc', 'svelte']
