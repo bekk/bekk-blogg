@@ -13,11 +13,6 @@ export async function loader() {
     const { data } = await loadQuery<Tag[]>(ALL_CATEGORIES)
     return {
       data,
-      algolia: {
-        app: process.env.ALGOLIA_APP_ID!,
-        key: process.env.ALGOLIA_SEARCH_KEY!,
-        index: process.env.ALGOLIA_INDEX!,
-      },
     }
   } catch (error) {
     console.error(error)

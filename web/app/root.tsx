@@ -34,6 +34,11 @@ export const loader: LoaderFunction = async ({ request }) => {
         SANITY_STUDIO_URL: process.env.SANITY_STUDIO_URL,
         SANITY_STUDIO_API_VERSION: process.env.SANITY_API_VERSION,
       },
+      algolia: {
+        app: process.env.ALGOLIA_APP_ID!,
+        key: process.env.ALGOLIA_SEARCH_KEY!,
+        index: process.env.ALGOLIA_INDEX!,
+      },
     },
     {
       headers: {

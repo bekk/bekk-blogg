@@ -55,11 +55,6 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       totalPages: Math.ceil((response.data.totalCount || 0) / perPage),
       totalPosts: response.data.totalCount || 0,
     },
-    algolia: {
-      app: process.env.ALGOLIA_APP_ID!,
-      key: process.env.ALGOLIA_SEARCH_KEY!,
-      index: process.env.ALGOLIA_INDEX!,
-    },
   }
 }
 

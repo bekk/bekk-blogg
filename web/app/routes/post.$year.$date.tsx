@@ -92,11 +92,6 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       posts: posts ?? [],
       year,
       date,
-      algolia: {
-        app: process.env.ALGOLIA_APP_ID!,
-        key: process.env.ALGOLIA_SEARCH_KEY!,
-        index: process.env.ALGOLIA_INDEX!,
-      },
     }
   } catch (error) {
     console.error('Error loading posts:', error)
