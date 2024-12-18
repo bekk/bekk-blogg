@@ -1,8 +1,8 @@
 import { Link } from '@remix-run/react'
 import { motion } from 'framer-motion'
 
-import { parseDate } from '../../../utils/date'
 import { trackEvent } from '../../../utils/analytics'
+import { parseDate } from '../../../utils/date'
 
 interface RelatedPostsData {
   objectID: string
@@ -46,7 +46,9 @@ export const RelatedPostsLayout = ({ items }: { items: RelatedPostsData[] }) => 
             >
               <div className="">
                 <h3 className="text-lg font-semibold mt-2">{item.name}</h3>
-                <p className="text-sm">{item.author}</p>
+                <p className="text-sm">
+                  {new Intl.ListFormat('nb-NO', { type: 'conjunction', style: 'long' }).format(item.author)}
+                </p>
                 <p className="text-sm text-gray-500">
                   {date.day}. desember, {date.year}
                 </p>

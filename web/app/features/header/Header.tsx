@@ -1,26 +1,17 @@
-import { Link, useMatches, useParams, useRouteError } from '@remix-run/react'
+import { Link, useParams, useRouteError } from '@remix-run/react'
 
 import { PostStamp } from '../article/PostStamp'
 
+import { Search } from '~/components/Search'
 import { BekkLogo } from '~/features/article/BekkLogo'
 import { useBreadcrumbs } from '~/hooks/useBreadcrumbs'
-import algoliasearch from 'algoliasearch'
-import { Search } from '~/components/Search'
-import { useRef } from 'react'
-
-const useAlgoliaConfig = () => {
-  const rootMatch = useMatches().find((match) => match.id === 'root')
-  return (rootMatch?.data as { algolia: { app: string; key: string; index: string } })?.algolia
-}
 
 export const Header = () => {
-  const algolia = useAlgoliaConfig()
   const breadcrumbs = useBreadcrumbs()
   const error = useRouteError()
   const { year, date, slug } = useParams()
   const isOnArticlePage = Boolean(year && date && slug)
-  const searchClient = useRef(algolia && algoliasearch(algolia.app, algolia.key))
-  const showSearch = algolia && searchClient && !isOnArticlePage && !error
+  const showSearch = !isOnArticlePage && !error
 
   return (
     <div
@@ -41,7 +32,7 @@ export const Header = () => {
       </div>
       {showSearch && (
         <div className="md:col-start-1 md:col-span-2 md:row-start-1 flex justify-start md:justify-center order-first md:order-none  md:mx-auto">
-          <Search searchClient={searchClient} indexName={algolia.index} />
+          <Search />
         </div>
       )}
       {!error && (

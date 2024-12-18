@@ -1,18 +1,15 @@
 import { Link } from '@remix-run/react'
-import { SearchClient } from 'algoliasearch'
 import { Configure, Hits, InstantSearch, useSearchBox } from 'react-instantsearch'
+import { useAlgoliaClient, useAlgoliaConfig } from '~/hooks/useAlgolia'
 import { postUrl } from '~/lib/format'
-export const Search = ({
-  searchClient,
-  indexName,
-}: {
-  searchClient: React.MutableRefObject<SearchClient>
-  indexName: string
-}) => {
+
+export const Search = () => {
+  const algoliaConfig = useAlgoliaConfig()
+  const client = useAlgoliaClient()
   return (
     <InstantSearch
-      searchClient={searchClient.current}
-      indexName={indexName}
+      searchClient={client.current}
+      indexName={algoliaConfig.index}
       future={{ persistHierarchicalRootCount: true, preserveSharedStateOnUnmount: true }}
     >
       <SearchBoxWithDropdown />
