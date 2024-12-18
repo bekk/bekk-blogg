@@ -147,11 +147,6 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       query: POST_BY_SLUG,
       params: parsedParams.data,
       imageUrl,
-      algolia: {
-        appId: process.env.ALGOLIA_APP_ID!,
-        apiKey: process.env.ALGOLIA_SEARCH_KEY!,
-        index: process.env.ALGOLIA_INDEX!,
-      },
     },
     {
       status: 200,
@@ -197,7 +192,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export const headers = combinedHeaders
 
 export default function ArticleRoute() {
-  const { initial, query, params, algolia } = useLoaderData<typeof loader>()
+  const { initial, query, params } = useLoaderData<typeof loader>()
   const { data } = useQuery<typeof initial.data>(query, params, {
     // @ts-expect-error Dette er en kjent bug i sanity-react-loader
     initial,
