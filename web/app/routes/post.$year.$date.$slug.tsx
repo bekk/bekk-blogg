@@ -92,9 +92,11 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     return redirect(`/post/${year}/${date.padStart(2, '0')}/${encodeURIComponent(slug)}`, { status: 301 })
   }
 
+  const decodedSlug = decodeURIComponent(slug)
+
   const { options, preview } = await loadQueryOptions(request.headers)
 
-  const initial = await loadQuery<POST_BY_SLUGResult>(POST_BY_SLUG, { slug }, options)
+  const initial = await loadQuery<POST_BY_SLUGResult>(POST_BY_SLUG, { slug: decodedSlug }, options)
 
   const formatDate = year + '-' + '12' + '-' + date.padStart(2, '0')
   const currentDate = new Date(new Date().getTime() + 1000 * 60 * 60)
