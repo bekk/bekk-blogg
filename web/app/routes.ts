@@ -12,6 +12,7 @@ export default [
   route('post/:year/:date/:slug', 'routes/post.$year.$date.$slug.tsx'),
   route('resource/preview', 'routes/resource.preview.tsx'),
   route('rss.xml', 'routes/rss.xml.tsx'),
+  route('feed.xml', 'routes/rss.xml.tsx', { id: 'feed' }),
   route('sitemap.xml', 'routes/sitemap.xml.tsx'),
   route('api/webhook/sanity', 'routes/api.webhook.sanity.ts'),
 ] satisfies RouteConfig
