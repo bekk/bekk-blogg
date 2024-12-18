@@ -20,6 +20,7 @@ export const Header = () => {
   const { year, date, slug } = useParams()
   const isOnArticlePage = Boolean(year && date && slug)
   const searchClient = useRef(algolia && algoliasearch(algolia.app, algolia.key))
+  const showSearch = algolia && searchClient && !isOnArticlePage && !error
 
   return (
     <div
@@ -38,7 +39,7 @@ export const Header = () => {
           )}
         </Link>
       </div>
-      {algolia && searchClient && !isOnArticlePage && (
+      {showSearch && (
         <div className="md:col-start-1 md:col-span-2 md:row-start-1 flex justify-start md:justify-center order-first md:order-none  md:mx-auto">
           <Search searchClient={searchClient} indexName={algolia.index} />
         </div>
