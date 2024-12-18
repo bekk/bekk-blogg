@@ -15,7 +15,7 @@ interface RelatedPostsData {
 
 export const RelatedPostsLayout = ({ items }: { items: RelatedPostsData[] }) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 m-4 pb-10">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-16">
       {items.map((item) => {
         if (!item || !item.availableFrom) return null
         const date = parseDate(item.availableFrom)
@@ -23,12 +23,11 @@ export const RelatedPostsLayout = ({ items }: { items: RelatedPostsData[] }) => 
         return (
           <Link
             to={`/post/${date.year}/${String(date.day).padStart(2, '0')}/${item.slug}`}
-            className={'flex flex-col justify-between'}
             key={item.objectID}
             onClick={() => trackEvent('related_post_clicked', { slug: item.slug ?? 'unknown' })}
           >
             <motion.div
-              className="striped-frame border p-4 rounded-lg bg-postcard-beige"
+              className="striped-frame-small p-4 rounded-lg bg-postcard-beige flex flex-col h-full justify-between"
               transition={{
                 duration: 0.2,
                 ease: 'easeOut',
@@ -44,8 +43,8 @@ export const RelatedPostsLayout = ({ items }: { items: RelatedPostsData[] }) => 
                 },
               }}
             >
-              <div className="">
-                <h3 className="text-lg font-semibold mt-2">{item.name}</h3>
+              <h3 className="text-lg font-semibold mt-2">{item.name}</h3>
+              <div>
                 <p className="text-sm">{item.author}</p>
                 <p className="text-sm text-gray-500">
                   {date.day}. desember, {date.year}
