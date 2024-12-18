@@ -209,6 +209,9 @@ export default function ArticleRoute() {
     return null
   }
 
+  const today = new Date()
+  const formattedDate = today.toISOString().split('T')[0]
+
   return (
     <div className="bg-wooden-table break-words md:p-8 min-h-screen">
       <div className="striped-frame mx-auto max-w-screen-2xl">
@@ -226,13 +229,13 @@ export default function ArticleRoute() {
                 <DoorSign>Relaterte artikler</DoorSign>
               </div>
             )}
-            /*queryParameters={{ filters: `availableFromMillis <= ${Math.floor(Date.now() / 1000)}` }}*/
             objectIDs={[data._id]}
-            limit={3}
+            limit={10}
             layoutComponent={({ items }) => {
+              const filteredItems = items.filter((item) => item.availableFrom <= formattedDate).slice(0, 3)
               return (
                 <RelatedPostsLayout
-                  items={items
+                  items={filteredItems
                     .filter((item) => !item._id.startsWith('drafts.'))
                     .map((item) => ({
                       objectID: item.objectID,
