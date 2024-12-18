@@ -68,16 +68,20 @@ const Hit = ({
   const link =
     hit.availableFrom && hit.slug?.current ? postUrl({ availableFrom: hit.availableFrom, slug: hit.slug }) : '#'
 
+  const formatter = new Intl.ListFormat('no', { style: 'long', type: 'conjunction' })
+  const authors = hit.authors && hit.authors.length > 0 ? formatter.format(hit.authors) : null
+  const tags = hit.tags && hit.tags.length > 0 ? formatter.format(hit.tags) : null
+
   return (
     <div className="px-4 py-2 border-b border-black ">
       <Link to={link} className="text-black hover:text-reindeer-brown">
         <div className="font-semibold text-base">{title}</div>
         <div className="text-sm text-gray-600">
-          {hit.authors && hit.authors.length > 0 && <span>{hit.authors.join(', ')}</span>}
-          {hit.tags && hit.tags.length > 0 && (
+          {authors && <span>{authors}</span>}
+          {tags && (
             <>
-              {hit.authors && hit.authors.length > 0 && ' - '}
-              <span>{hit.tags.join(', ')}</span>
+              {authors && ' - '}
+              <span>{tags}</span>
             </>
           )}
         </div>
