@@ -2,8 +2,8 @@ import { isRouteErrorResponse, useLoaderData, useNavigation, useRouteError } fro
 import { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { combinedHeaders } from 'utils/headers'
 
+import { loadQuery } from 'utils/sanity/loader.server'
 import { TAG_WITH_POSTS_QUERY } from '../../utils/sanity/queries/postQueries'
-import { loadQuery } from '../../utils/sanity/store'
 import { TAG_WITH_POSTS_QUERYResult } from '../../utils/sanity/types/sanity.types'
 
 import { Spinner } from '~/components/Spinner'

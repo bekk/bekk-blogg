@@ -8,14 +8,8 @@ export const writeClient = createClient({
   token: process.env.SANITY_WRITE_API_TOKEN,
 })
 
-export const authClient = createClient({
-  ...sanityConfig,
-  useCdn: process.env.NODE_ENV === 'production',
-  token: process.env.SANITY_SESSION_API_TOKEN,
-})
-
 export const readClient = createClient({
   ...sanityConfig,
-  useCdn: process.env.NODE_ENV === 'production',
+  useCdn: true,
   token: process.env.SANITY_READ_API_TOKEN,
 })
