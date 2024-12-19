@@ -5,6 +5,7 @@ import csharp from 'refractor/lang/csharp.js'
 import css from 'refractor/lang/css.js'
 import csv from 'refractor/lang/csv.js'
 import diff from 'refractor/lang/diff.js'
+import docker from 'refractor/lang/docker.js'
 import elixir from 'refractor/lang/elixir.js'
 import elm from 'refractor/lang/elm.js'
 import fsharp from 'refractor/lang/fsharp.js'
@@ -72,6 +73,7 @@ registerLanguage(elixir)
 registerLanguage(idris)
 registerLanguage(glsl)
 registerLanguage(hcl)
+registerLanguage(docker)
 interface CodeBlockProps {
   code: CodeType
 }
