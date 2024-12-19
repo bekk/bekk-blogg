@@ -33,13 +33,11 @@ export const RelatedPosts = ({ objectID }: RelatedPostsProps) => {
                 <p className="text-white mb-8">Hvis du likte denne artikkelen vil du kanskje også like disse:</p>
               </div>
             )}
+            queryParameters={{ filters: `availableFromMillis <=  ${Date.now()}` }}
             objectIDs={[objectID]}
-            limit={10}
+            limit={3}
             layoutComponent={({ items }) => {
-              const filteredItems = items
-                .filter((item) => item.availableFrom <= formattedDate)
-                .filter((item) => !item._id.startsWith('drafts.'))
-                .slice(0, 3)
+              const filteredItems = items.filter((item) => !item._id.startsWith('drafts.'))
               return (
                 <RelatedPostsLayout
                   items={filteredItems.map((item) => ({
