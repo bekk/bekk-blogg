@@ -11,6 +11,7 @@ import {
 } from '../../components/ui/dialog'
 import { Input } from '../../components/ui/input'
 import { useToast } from '../../hooks/use-toast'
+import { Label } from '~/components/ui/label'
 
 export function NewsletterForm() {
   const [email, setEmail] = useState('')
@@ -65,7 +66,9 @@ export function NewsletterForm() {
           <DialogHeader>
             <DialogTitle className="text-xl font-bold text-gray-900">Meld deg på bekk.christmas nyhetsbrev</DialogTitle>
             <DialogDescription className="text-gray-600">
-              Få varsel når neste års julekalender er klar 🎁
+              Bekk vil av og til sende deg nyhetsbrev med informasjon om nye artikler, podcaster og arrangementer vi
+              tror kan være nyttige for deg.
+              <br /> E-posten din vil kun bli brukt til dette formålet og vil ikke bli delt med tredjeparter.
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-4">
