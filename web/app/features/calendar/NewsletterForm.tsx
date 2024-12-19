@@ -58,7 +58,7 @@ export function NewsletterForm() {
           <Button
             variant="outline"
             className="w-full bg-[#D4B572] hover:bg-[#C1A465] text-black font-medium rounded-xl border-2 border-[#8B7B4B] shadow-md transform hover:scale-105 transition-transform duration-200 px-3 text-sm md:p-5 md:text-lg mb-2"
-            onClick={() => trackEvent('open_newsletter_clicked')}
+            onClick={() => trackEvent('newsletter_modal_opened')}
           >
             <Bell className="mr-1 h-3 w-3 sm:mr-2 sm:h-4 sm:w-4" />
             Meld deg på nyhetsbrev
@@ -92,7 +92,7 @@ export function NewsletterForm() {
                 onClick={() => {
                   setIsOpen(false)
                   setEmail('')
-                  trackEvent('close_newsletter_clicked')
+                  trackEvent('newsletter_modal_closed')
                 }}
                 className="w-full bg-gray-300 text-black border-2 border-gray-400 font-bold transform hover:bg-gray-400 hover:scale-105 transition-transform duration-200"
               >
@@ -101,7 +101,7 @@ export function NewsletterForm() {
               <Button
                 type="submit"
                 className="w-full bg-[#D4B572] hover:bg-[#C1A465] text-black border-2 border-[#8B7B4B] font-bold transform hover:scale-105 transition-transform duration-200"
-                onClick={() => trackEvent('sign_up_newsletter_clicked')}
+                onClick={() => trackEvent('signed_up_newsletter')}
               >
                 Meld meg på
               </Button>
