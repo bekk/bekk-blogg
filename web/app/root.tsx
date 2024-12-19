@@ -19,6 +19,7 @@ import { ErrorPage } from './features/error-boundary/ErrorPage'
 import { JumpToContent } from './features/jump-to-content/JumpToContent'
 
 import styles from '~/styles/main.css?url'
+import { Toaster } from './components/ui/toaster'
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
@@ -130,6 +131,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <main id="content" tabIndex={-1} className="focus:outline-none">
             {children}
           </main>
+          <Toaster />
           <ScrollRestoration />
           <Scripts />
           <SpeedInsights />
