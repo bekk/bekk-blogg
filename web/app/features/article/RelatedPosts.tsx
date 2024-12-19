@@ -1,20 +1,12 @@
 import { InstantSearch, RelatedProducts } from 'react-instantsearch'
 import { RelatedPostsLayout } from '~/features/article/RelatedPostLayout'
-import { useMatches } from '@remix-run/react'
-import { useAlgoliaClient } from '~/hooks/useAlgolia'
+import { useAlgoliaClient, useAlgoliaConfig } from '~/hooks/useAlgolia'
 
 interface RelatedPostsProps {
   objectID: string
 }
 
-const useAlgoliaConfig = () => {
-  const rootMatch = useMatches().find((match) => match.id === 'root')
-  return (rootMatch?.data as { algolia: { app: string; key: string; index: string } })?.algolia
-}
-
 export const RelatedPosts = ({ objectID }: RelatedPostsProps) => {
-  const today = new Date()
-  const formattedDate = today.toISOString().split('T')[0]
   const algoliaConfig = useAlgoliaConfig()
   const client = useAlgoliaClient()
 
@@ -30,7 +22,7 @@ export const RelatedPosts = ({ objectID }: RelatedPostsProps) => {
             headerComponent={() => (
               <div>
                 <h2 className="text-white mb-4">Relatert innhold</h2>
-                <p className="text-white mb-8">Hvis du likte denne artikkelen vil du kanskje også like disse:</p>
+                <p className="text-white mb-8">Hvis du likte dette innholdet vil du kanskje også like:</p>
               </div>
             )}
             queryParameters={{ filters: `availableFromMillis <=  ${Date.now()}` }}
