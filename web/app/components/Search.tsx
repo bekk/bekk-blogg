@@ -1,40 +1,22 @@
-import { SearchClient } from 'algoliasearch'
 import { Link } from '@remix-run/react'
-import { Configure, Hits, InstantSearch, useSearchBox } from 'react-instantsearch'
+import { Configure, Hits, InstantSearch, InstantSearchSSRProvider, useSearchBox } from 'react-instantsearch'
+import { useAlgoliaClient, useAlgoliaConfig } from '~/hooks/useAlgolia'
 import { postUrl } from '~/lib/format'
-export const Search = ({
-  searchClient,
-  indexName,
-}: {
-  searchClient: React.MutableRefObject<SearchClient>
-  indexName: string
-}) => {
-  return (
-    <InstantSearch searchClient={searchClient.current} indexName={indexName}>
-      <SearchBoxWithDropdown />
-      <Configure hitsPerPage={5} />
-    </InstantSearch>
-  )
-}
 
-function CustomSearchBox({
-  query,
-  refine,
-  clear,
-}: {
-  query: string
-  refine: (value: string) => void
-  clear: () => void
-}) {
+export const Search = () => {
+  const algoliaConfig = useAlgoliaConfig()
+  const client = useAlgoliaClient()
   return (
-    <input
-      type="search"
-      value={query}
-      onChange={(event) => refine(event.currentTarget.value)}
-      placeholder="Søk"
-      onReset={clear}
-      className="w-full max-w-lg h-12 px-4 py-2 text-lg bg-transparent rounded-sm border border-white focus:outline-none focus:ring-2 focus:ring-white focus:text-white placeholder-white"
-    />
+    <InstantSearchSSRProvider>
+      <InstantSearch
+        searchClient={client.current}
+        indexName={algoliaConfig.index}
+        future={{ persistHierarchicalRootCount: true, preserveSharedStateOnUnmount: true }}
+      >
+        <SearchBoxWithDropdown />
+        <Configure hitsPerPage={5} />
+      </InstantSearch>
+    </InstantSearchSSRProvider>
   )
 }
 
@@ -50,6 +32,33 @@ const SearchBoxWithDropdown = () => {
         </div>
       )}
     </div>
+  )
+}
+
+function CustomSearchBox({
+  query,
+  refine,
+  clear,
+}: {
+  query: string
+  refine: (value: string) => void
+  clear: () => void
+}) {
+  return (
+    <>
+      <label htmlFor="search" className="sr-only">
+        Søk
+      </label>
+      <input
+        id="search"
+        type="search"
+        value={query}
+        onChange={(event) => refine(event.currentTarget.value)}
+        placeholder="Søk"
+        onReset={clear}
+        className="w-full max-w-lg h-12 px-4 py-2 text-lg bg-transparent rounded-sm border border-white focus:outline-none focus:ring-2 focus:ring-white focus:text-white placeholder-white"
+      />
+    </>
   )
 }
 

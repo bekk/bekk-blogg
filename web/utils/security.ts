@@ -39,6 +39,7 @@ export function generateSecurityHeaders() {
         '*.algolia.net',
         'ws-us3.pusher.com',
         '*.algolia.io',
+        '*.algolianet.com',
       ],
       'frame-src': [
         SELF,
@@ -75,7 +76,6 @@ export function generateSecurityHeaders() {
       'microphone=()',
       'payment=()',
       'usb=()',
-      'interest-cohort=()',
     ].join(', '),
     'X-XSS-Protection': '1; mode=block',
   }

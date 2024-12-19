@@ -1,8 +1,7 @@
 import { InstantSearch, RelatedProducts } from 'react-instantsearch'
 import { RelatedPostsLayout } from '~/features/article/RelatedPostLayout'
-import { useRef } from 'react'
-import algoliasearch from 'algoliasearch/lite'
 import { useMatches } from '@remix-run/react'
+import { useAlgoliaClient } from '~/hooks/useAlgolia'
 
 interface RelatedPostsProps {
   objectID: string
@@ -14,15 +13,19 @@ const useAlgoliaConfig = () => {
 }
 
 export const RelatedPosts = ({ objectID }: RelatedPostsProps) => {
-  const algolia = useAlgoliaConfig()
-  const searchClient = useRef(algoliasearch(algolia?.app, algolia?.key))
   const today = new Date()
   const formattedDate = today.toISOString().split('T')[0]
+  const algoliaConfig = useAlgoliaConfig()
+  const client = useAlgoliaClient()
 
   return (
     <div className="bg-purple-cloth relative w-screen flex mt-2 md:mt-6 pb-12 justify-center ">
       <div className="pt-10 md:pt-20 max-w-[1540px] lg:mx-6 mx-4">
-        <InstantSearch searchClient={searchClient.current} indexName={algolia.index}>
+        <InstantSearch
+          searchClient={client.current}
+          indexName={algoliaConfig.index}
+          future={{ persistHierarchicalRootCount: true, preserveSharedStateOnUnmount: true }}
+        >
           <RelatedProducts
             headerComponent={() => (
               <div>
@@ -35,8 +38,8 @@ export const RelatedPosts = ({ objectID }: RelatedPostsProps) => {
             layoutComponent={({ items }) => {
               const filteredItems = items
                 .filter((item) => item.availableFrom <= formattedDate)
-                .slice(0, 3)
                 .filter((item) => !item._id.startsWith('drafts.'))
+                .slice(0, 3)
               return (
                 <RelatedPostsLayout
                   items={filteredItems.map((item) => ({
