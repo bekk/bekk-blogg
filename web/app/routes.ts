@@ -14,4 +14,5 @@ export default [
   route('rss.xml', 'routes/rss.xml.tsx'),
   route('sitemap.xml', 'routes/sitemap.xml.tsx'),
   route('api/webhook/sanity', 'routes/api.webhook.sanity.ts'),
+  route('api/newsletter', 'routes/api.newsletter.ts'),
 ] satisfies RouteConfig
