@@ -49,7 +49,7 @@ export const RelatedPostsLayout = ({ items }: { items: RelatedPostsData[] }) => 
                 <p className="text-sm">
                   {new Intl.ListFormat('nb-NO', { type: 'conjunction', style: 'long' }).format(item.author)}
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-700">
                   {date.day}. desember, {date.year}
                 </p>
                 <div className="flex flex-wrap gap-1 mt-2">

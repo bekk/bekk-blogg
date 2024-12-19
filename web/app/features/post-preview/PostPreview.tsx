@@ -89,7 +89,7 @@ export const PostPreview = ({
   )
   if (link) {
     return (
-      <Link to={link} className="w-full max-w-4xl mx-auto px-2 md:px-0">
+      <Link to={link} className="w-full max-w-4xl mx-auto px-2 md:px-0" prefetch="intent">
         {content}
       </Link>
     )
