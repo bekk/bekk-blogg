@@ -15,7 +15,7 @@ export const Search = () => {
         future={{ persistHierarchicalRootCount: true, preserveSharedStateOnUnmount: true }}
       >
         <SearchBoxWithDropdown />
-        <Configure hitsPerPage={5} filters={`availableFromMillis <=  ${Date.now()}`} />
+        <Configure hitsPerPage={20} filters={`availableFromMillis <=  ${Date.now()}`} />
       </InstantSearch>
     </InstantSearchSSRProvider>
   )
@@ -28,7 +28,7 @@ const SearchBoxWithDropdown = () => {
     <div className="relative w-[75%] md:w-[500px]">
       <CustomSearchBox query={query} refine={refine} clear={clear} />
       {query && (
-        <div className="absolute z-[100] mt-2 w-full bg-white bg-opacity-90 shadow-lg rounded-lg border border-gray-300">
+        <div className="absolute z-[100] mt-2 w-full bg-white bg-opacity-90 shadow-lg rounded-lg border border-gray-300 max-h-[290px] overflow-y-scroll">
           <Hits hitComponent={Hit} />
         </div>
       )}
