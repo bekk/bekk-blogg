@@ -96,7 +96,7 @@ export function NewsletterForm() {
                 }}
                 className="w-full bg-gray-300 text-black border-2 border-gray-400 font-bold transform hover:bg-gray-400 hover:scale-105 transition-transform duration-200"
               >
-                Avbryt
+                Nei takk
               </Button>
               <Button
                 type="submit"
