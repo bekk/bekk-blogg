@@ -1,4 +1,11 @@
-type CustomEvent = 'article_audio_played' | 'like_content_clicked' | 'copy_url_clicked' | 'related_post_clicked'
+type CustomEvent =
+  | 'article_audio_played'
+  | 'like_content_clicked'
+  | 'copy_url_clicked'
+  | 'related_post_clicked'
+  | 'open_newsletter_clicked'
+  | 'sign_up_newsletter_clicked'
+  | 'close_newsletter_clicked'
 
 export const trackEvent = (eventName: CustomEvent, options?: Record<string, string | number>) => {
   // Check if DNT is enabled (returns true if user has requested not to be tracked)
