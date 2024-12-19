@@ -51,7 +51,7 @@ export function NewsletterForm() {
   }
 
   return (
-    <div className="md:absolute md:right-4 md:top-12">
+    <div className="xl:absolute xl:right-4 xl:top-12">
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
           <Button
