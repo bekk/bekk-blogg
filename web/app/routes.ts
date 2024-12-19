@@ -15,4 +15,5 @@ export default [
   route('feed.xml', 'routes/rss.xml.tsx', { id: 'feed' }),
   route('sitemap.xml', 'routes/sitemap.xml.tsx'),
   route('api/webhook/sanity', 'routes/api.webhook.sanity.ts'),
+  route('api/newsletter', 'routes/api.newsletter.ts'),
 ] satisfies RouteConfig

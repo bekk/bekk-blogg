@@ -1,13 +1,17 @@
 import { DoorSignLink } from '~/components/DoorSignLink'
+import { NewsletterForm } from './NewsletterForm'
 
 export const BottomPlank = () => {
   return (
     <div className="relative max-w-full overflow-hidden w-screen left-1/2 right-1/2 transform -translate-x-1/2">
       <div className="md:hidden">{mediumPlank}</div>
       <div className="hidden md:block">{largePlank}</div>
-      <div className="absolute inset-0 flex flex-col md:flex-row items-center content-center justify-center gap-4 md:gap-8 py-8">
-        <DoorSignLink link="/arkiv">Se andre julekalendere</DoorSignLink>
-        <DoorSignLink link="/kategori">Se kategorier</DoorSignLink>
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 py-8">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-8">
+          <DoorSignLink link="/arkiv">Se andre julekalendere</DoorSignLink>
+          <DoorSignLink link="/kategori">Se kategorier</DoorSignLink>
+        </div>
+        <NewsletterForm />
       </div>
     </div>
   )
