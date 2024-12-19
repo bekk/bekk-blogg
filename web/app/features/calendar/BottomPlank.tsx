@@ -1,4 +1,5 @@
 import { DoorSignLink } from '~/components/DoorSignLink'
+import { NewsletterForm } from './NewsletterForm'
 
 export const BottomPlank = () => {
   return (
@@ -8,6 +9,7 @@ export const BottomPlank = () => {
       <div className="absolute inset-0 flex flex-col md:flex-row items-center content-center justify-center gap-4 md:gap-8 py-8">
         <DoorSignLink link="/arkiv">Se andre julekalendere</DoorSignLink>
         <DoorSignLink link="/kategori">Se kategorier</DoorSignLink>
+        <NewsletterForm />
       </div>
     </div>
   )
