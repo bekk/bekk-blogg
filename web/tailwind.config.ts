@@ -59,6 +59,7 @@ export default {
         '2xl': '1536px',
       },
       borderWidth: {
+        '6': '6px',
         '14': '14px',
         '30': '30px',
         DEFAULT: '1px',

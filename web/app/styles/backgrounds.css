@@ -141,3 +141,14 @@
     min-height: 100vh;
   }
 }
+
+.bg-purple-cloth {
+  background-image: url('../../images/purple_cloth_small.svg');
+}
+
+@media screen and (min-width: 900px) {
+  .bg-purple-cloth {
+    background-image: url('../../images/purple_cloth.svg');
+    background-repeat: no-repeat;
+  }
+}

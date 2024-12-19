@@ -1,6 +1,5 @@
 import { isRouteErrorResponse, json, redirect, useLoaderData, useRouteError } from '@remix-run/react'
 import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
-import { InstantSearch, RelatedProducts } from 'react-instantsearch'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { combinedHeaders } from 'utils/headers'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
@@ -16,12 +15,10 @@ import { ErrorPage } from '../features/error-boundary/ErrorPage'
 import '../portable-text/prism-theme.css'
 
 import { useQuery } from 'utils/sanity/loader'
-import { DoorSign } from '~/components/DoorSign'
 import { Article } from '~/features/article/Article'
-import { RelatedPostsLayout } from '~/features/article/RelatedPostLayout'
 import Series, { shouldShowSeries } from '~/features/article/Series'
 import Header from '~/features/header/Header'
-import { useAlgoliaClient, useAlgoliaConfig } from '~/hooks/useAlgolia'
+import { RelatedPosts } from '~/features/article/RelatedPosts'
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const post = data?.initial.data
@@ -199,61 +196,23 @@ export default function ArticleRoute() {
     // @ts-expect-error Dette er en kjent bug i sanity-react-loader
     initial,
   })
-  const algoliaConfig = useAlgoliaConfig()
-  const client = useAlgoliaClient()
 
   if (!data) {
     return null
   }
 
-  const today = new Date()
-  const formattedDate = today.toISOString().split('T')[0]
-
   return (
-    <div className="bg-wooden-table break-words md:p-8 min-h-screen">
-      <div className="striped-frame mx-auto max-w-screen-2xl">
-        <header className="relative">
-          <Header />
-        </header>
-        <Article post={data} />
+    <div className="bg-wooden-table break-words min-h-screen">
+      <div className="md:px-8">
+        <div className="striped-frame mx-auto max-w-screen-2xl">
+          <header className="relative">
+            <Header />
+          </header>
+          <Article post={data} />
+        </div>
       </div>
       {shouldShowSeries(data) && data.series && <Series postId={data._id} series={data.series} mobileOnly />}
-      <div>
-        <InstantSearch
-          searchClient={client.current}
-          indexName={algoliaConfig.index}
-          future={{ persistHierarchicalRootCount: true, preserveSharedStateOnUnmount: true }}
-        >
-          <RelatedProducts
-            headerComponent={() => (
-              <div className="inset-0 flex m-6 justify-center ">
-                <DoorSign as="h2">Relatert innhold</DoorSign>
-              </div>
-            )}
-            objectIDs={[data._id]}
-            limit={10}
-            layoutComponent={({ items }) => {
-              const filteredItems = items.filter((item) => item.availableFrom <= formattedDate).slice(0, 3)
-              return (
-                <RelatedPostsLayout
-                  items={filteredItems
-                    .filter((item) => !item._id.startsWith('drafts.'))
-                    .map((item) => ({
-                      objectID: item.objectID,
-                      name: item.title,
-                      image: item.image,
-                      author: item.authors,
-                      tags: item.tags || [],
-                      slug: item.slug?.current,
-                      availableFrom: item.availableFrom,
-                    }))}
-                />
-              )
-            }}
-            emptyComponent={() => <p className="text-black">Ingen anbefalinger</p>}
-          />
-        </InstantSearch>
-      </div>
+      <RelatedPosts objectID={data._id} />
     </div>
   )
 }
