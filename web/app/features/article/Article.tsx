@@ -115,21 +115,35 @@ export const Article = ({ post }: ArticleProps) => {
         )}
         {post.coverImage && !post.coverImage.hideFromPost && (
           <div className="mb-7">
-            <img
-              src={
-                post.coverImage.asset
-                  ? urlFor(post.coverImage.asset as unknown as SanityImageAsset)
-                      .width(1700)
+            {post.coverImage.asset ? (
+              <img
+                src={urlFor(post.coverImage.asset as SanityImageAsset)
+                  .width(1700)
+                  .quality(80)
+                  .url()}
+                srcSet={[400, 800, 1200, 1700]
+                  .map((width) => {
+                    const url = urlFor(post.coverImage!.asset as SanityImageAsset)
+                      .width(width)
                       .quality(80)
                       .url()
-                  : (post.coverImage.src ?? '')
-              }
-              alt={post.coverImage.alt || ''}
-              className="w-full rounded-2xl object-cover max-w-full"
-              style={{
-                aspectRatio: post.coverImage.asset?.metadata?.dimensions?.aspectRatio ?? undefined,
-              }}
-            />
+                    return `${url} ${width}w`
+                  })
+                  .join(', ')}
+                sizes="(max-width: 400px) 400px, (max-width: 800px) 800px, (max-width: 1200px) 1200px, 1700px"
+                alt={post.coverImage.alt || ''}
+                className="w-full rounded-2xl object-cover max-w-full"
+                style={{
+                  aspectRatio: post.coverImage.asset?.metadata?.dimensions?.aspectRatio ?? undefined,
+                }}
+              />
+            ) : (
+              <img
+                src={post.coverImage.src ?? ''}
+                alt={post.coverImage.alt || ''}
+                className="w-full rounded-2xl object-cover max-w-full"
+              />
+            )}
           </div>
         )}
         {post.content && (
