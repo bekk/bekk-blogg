@@ -52,6 +52,21 @@ const post = defineType({
       validation: (rule) => rule.required(),
     },
     {
+      title: 'Språk',
+      name: 'language',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Engelsk', value: 'en-US'},
+          {title: 'Norsk (Bokmål)', value: 'nb-NO'},
+          {title: 'Norsk (Nynorsk)', value: 'nn-NO'},
+        ],
+      },
+      group: 'author',
+      initialValue: 'nb-NO',
+      validation: (rule) => rule.required(),
+    },
+    {
       title: 'Embed URL',
       description:
         'Hvis du laster opp en video eller podkast, må du laste opp innholdet til noen som har erfaring med dette. Last opp podkaster til anchor.fm og videoer til vimeo.com. Hvis du trenger tilgang, ta kontakt med Kristofer G. Selbekk.',
@@ -128,6 +143,10 @@ const post = defineType({
           title: 'Bildekilde',
           name: 'src',
           type: 'string',
+          hidden: true,
+          deprecated: {
+            reason: 'Bildekilde er ikke lenger nødvendig – last opp bilder til Sanity',
+          },
         },
         {
           title: 'Skjul fra innlegget',
@@ -135,6 +154,10 @@ const post = defineType({
             'Kryss av her hvis du kun vil at bildet skal vises på lukesiden, ikke i ditt eget innlegg',
           name: 'hideFromPost',
           type: 'boolean',
+          hidden: true,
+          deprecated: {
+            reason: 'Støttes ikke lenger',
+          },
         },
       ],
       group: 'author',
@@ -223,20 +246,6 @@ const post = defineType({
       description:
         'Hvis innholdet har blitt publisert et annet sted først kan du lenke til det her',
       group: 'author',
-    },
-    {
-      title: 'Språk',
-      name: 'language',
-      type: 'string',
-      options: {
-        list: [
-          {title: 'Engelsk', value: 'en-US'},
-          {title: 'Norsk (Bokmål)', value: 'nb-NO'},
-          {title: 'Norsk (Nynorsk)', value: 'nn-NO'},
-        ],
-      },
-      group: 'author',
-      validation: (rule) => rule.required(),
     },
     {
       title: 'Publiseringsdato',
