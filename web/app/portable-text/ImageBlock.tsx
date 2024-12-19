@@ -47,7 +47,7 @@ export default function ImageBlock({ image }: ImageWithMetadataDisplayProps) {
       .join(', ')
 
     return (
-      <figure style={{ maxWidth: image.maxWidth || '100%', aspectRatio }}>
+      <figure style={{ maxWidth: image.maxWidth || '100%', aspectRatio, display: 'inline-block' }}>
         <img
           src={urlFor(image.asset).width(1700).quality(80).url()}
           srcSet={srcSet}
