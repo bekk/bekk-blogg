@@ -1,5 +1,6 @@
 import { useLoaderData } from '@remix-run/react'
 import { motion } from 'framer-motion'
+import { Search } from '~/components/Search'
 
 import { Door } from '~/features/calendar/Door'
 import { Gift2SVG } from '~/features/calendar/giftsSVG/Gift2SVG'
@@ -10,10 +11,13 @@ export const CalendarWithDoors = () => {
   return (
     <div className="sm:px-4 grid grid-cols-[25px_auto_25px] sm:grid-cols-[50px_auto_50px] 2lg:grid-cols-[auto_auto_auto] grid-rows-[91px_auto] sm:grid-rows-[142px_auto] md:grid-rows-[179px_auto] 2lg:grid-rows-[292px_auto]">
       {/* Roof */}
-      <div className="bg-roof row-start-1 row-span-2 col-start-1 col-span-3 z-5">
-        <h1 className="text-postcard-beige font-delicious text-center text-2xl sm:text-4xl md:text-5xl mt-[45px] sm:mt-[80px] md:mt-[110px] 2lg:mt-[180px] 2lg:pr-5">
+      <div className="bg-roof row-start-1 row-span-2 col-start-1 col-span-3 z-5 flex flex-col items-center">
+        <h1 className="text-postcard-beige font-delicious text-center text-2xl sm:text-4xl md:text-5xl mt-[45px] sm:mt-[80px] md:mt-[110px] 2lg:mt-[160px] 2lg:pr-5 mb-4">
           {data.year}
         </h1>
+        <div className="text-white hidden 2lg:block">
+          <Search />
+        </div>
       </div>
       {/* Gift left */}
       <div className="row-start-2 row-span-1 col-start-1 col-span-1 hidden 2lg:flex self-end">
