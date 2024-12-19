@@ -5,7 +5,7 @@ import { combinedHeaders } from 'utils/headers'
 import { AUTHOR_WITH_POSTS_QUERY } from 'utils/sanity/queries/postQueries'
 import { Author, AUTHOR_WITH_POSTS_QUERYResult } from 'utils/sanity/types/sanity.types'
 
-import { loadQuery } from '../../utils/sanity/store'
+import { loadQuery } from 'utils/sanity/loader.server'
 
 import { GithubIcon, GlobeIcon, InstagramIcon, LinkedinIcon, MailIcon, TwitterIcon } from 'lucide-react'
 import { urlFor } from 'utils/sanity/utils'

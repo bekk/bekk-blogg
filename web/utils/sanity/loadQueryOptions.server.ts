@@ -20,7 +20,7 @@ export async function loadQueryOptions(
     options: {
       perspective: preview ? 'previewDrafts' : 'published',
       useCdn: preview ? false : process.env.NODE_ENV === 'production',
-      stega: preview ? { enabled: true, studioUrl: process.env.SANITY_STUDIO_URL } : undefined,
+      stega: preview ? { enabled: true, studioUrl: process.env.SANITY_STUDIO_URL } : false,
     },
   }
 }

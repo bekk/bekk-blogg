@@ -1,6 +1,6 @@
 import { LoaderFunctionArgs } from '@vercel/remix'
+import { loadQuery } from 'utils/sanity/loader.server'
 import { SITEMAP_QUERY } from 'utils/sanity/queries/postQueries'
-import { loadQuery } from 'utils/sanity/store'
 import { SITEMAP_QUERYResult } from 'utils/sanity/types/sanity.types'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
