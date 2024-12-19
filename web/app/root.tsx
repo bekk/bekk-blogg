@@ -145,11 +145,7 @@ const ExitPreview = lazy(() =>
   }))
 )
 
-const VisualEditing = lazy(() =>
-  import('@sanity/visual-editing/remix').then((module) => ({
-    default: module.VisualEditing,
-  }))
-)
+const LiveVisualEditing = lazy(() => import('utils/sanity/LiveVisualEditing'))
 
 export default function App() {
   const { ENV, isPreview } = useLoaderData<typeof loader>()
@@ -158,7 +154,7 @@ export default function App() {
       <Outlet />
       {isPreview ? (
         <Suspense fallback={null}>
-          <VisualEditing />
+          <LiveVisualEditing />
           <ExitPreview />
         </Suspense>
       ) : null}

@@ -6,8 +6,8 @@ import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'
 import { z } from 'zod'
 
 import { POSTS_BY_YEAR_AND_DATE } from '../../utils/sanity/queries/postQueries'
-import { loadQuery } from '../../utils/sanity/store'
 
+import { loadQuery } from 'utils/sanity/loader.server'
 import { DayNavigation } from '~/features/article/DayNavigation'
 import { ErrorPage } from '~/features/error-boundary/ErrorPage'
 import Header from '~/features/header/Header'

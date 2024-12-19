@@ -1,5 +1,4 @@
 import { isRouteErrorResponse, json, redirect, useLoaderData, useRouteError } from '@remix-run/react'
-import { useQuery } from '@sanity/react-loader'
 import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { combinedHeaders } from 'utils/headers'
@@ -7,13 +6,15 @@ import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { writeClient } from 'utils/sanity/sanity.server'
 import { z } from 'zod'
 
-import { POST_BY_SLUG } from '../../utils/sanity/queries/postQueries'
-import { loadQuery } from '../../utils/sanity/store'
-import { Post, POST_BY_SLUGResult } from '../../utils/sanity/types/sanity.types'
-import { toPlainText, urlFor } from '../../utils/sanity/utils'
+import { loadQuery, setServerClient } from 'utils/sanity/loader.server'
+import { POST_BY_SLUG } from 'utils/sanity/queries/postQueries'
+import { Post, POST_BY_SLUGResult } from 'utils/sanity/types/sanity.types'
+import { toPlainText, urlFor } from 'utils/sanity/utils'
 import { ErrorPage } from '../features/error-boundary/ErrorPage'
 
 import '../portable-text/prism-theme.css'
+
+import { useQuery } from 'utils/sanity/loader'
 import { Article } from '~/features/article/Article'
 import Series, { shouldShowSeries } from '~/features/article/Series'
 import Header from '~/features/header/Header'
@@ -90,10 +91,12 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const decodedSlug = decodeURIComponent(slug)
 
   const { options, preview } = await loadQueryOptions(request.headers)
-
+  if (options) {
+    setServerClient(options)
+  }
   const initial = await loadQuery<POST_BY_SLUGResult>(POST_BY_SLUG, { slug: decodedSlug }, options)
 
-  const formatDate = year + '-' + '12' + '-' + date.padStart(2, '0')
+  const formatDate = `${year}-12-${date.padStart(2, '0')}`
   const currentDate = new Date(new Date().getTime() + 1000 * 60 * 60)
   const targetDate = new Date(formatDate)
   const yearNumber = Number(year)
