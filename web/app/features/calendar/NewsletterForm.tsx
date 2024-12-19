@@ -72,8 +72,11 @@ export function NewsletterForm() {
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <Label htmlFor="email">E-postadresse</Label>
+            <Label id="email" htmlFor="email">
+              E-postadresse
+            </Label>
             <Input
+              id="email"
               type="email"
               placeholder="din@epost.no"
               value={email}
