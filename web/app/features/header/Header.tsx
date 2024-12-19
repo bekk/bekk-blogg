@@ -31,7 +31,7 @@ export const Header = () => {
         </Link>
       </div>
       {showSearch && (
-        <div className="md:col-start-1 md:col-span-2 md:row-start-1 flex justify-start md:justify-center order-first md:order-none  md:mx-auto">
+        <div className="md:col-start-1 md:col-span-2 md:row-start-1 flex justify-start md:justify-center order-first md:order-none md:mx-auto text-white">
           <Search />
         </div>
       )}
