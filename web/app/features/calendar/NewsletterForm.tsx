@@ -1,5 +1,7 @@
-import { useState } from 'react'
 import { Bell } from 'lucide-react'
+import { useState } from 'react'
+import { trackEvent } from 'utils/analytics'
+import { Label } from '~/components/ui/label'
 import { Button } from '../../components/ui/button'
 import {
   Dialog,
@@ -11,8 +13,6 @@ import {
 } from '../../components/ui/dialog'
 import { Input } from '../../components/ui/input'
 import { useToast } from '../../hooks/use-toast'
-import { Label } from '~/components/ui/label'
-import { trackEvent } from 'utils/analytics'
 
 export function NewsletterForm() {
   const [email, setEmail] = useState('')

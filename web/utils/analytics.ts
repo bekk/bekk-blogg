@@ -6,6 +6,10 @@ type CustomEvent =
   | 'newsletter_modal_opened'
   | 'signed_up_newsletter'
   | 'newsletter_modal_closed'
+  | 'christmas_game_reset'
+  | 'christmas_game_powerup_used'
+  | 'christmas_game_lost'
+  | 'christmas_game_won'
 
 export const trackEvent = (eventName: CustomEvent, options?: Record<string, string | number>) => {
   // Check if DNT is enabled (returns true if user has requested not to be tracked)
