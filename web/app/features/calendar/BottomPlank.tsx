@@ -11,7 +11,9 @@ export const BottomPlank = () => {
           <DoorSignLink link="/arkiv">Se andre julekalendere</DoorSignLink>
           <DoorSignLink link="/kategori">Se kategorier</DoorSignLink>
         </div>
-        <NewsletterForm />
+        <div className="xl:absolute xl:right-4 xl:top-12">
+          <NewsletterForm />
+        </div>
       </div>
     </div>
   )
