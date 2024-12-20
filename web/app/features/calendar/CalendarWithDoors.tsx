@@ -1,4 +1,4 @@
-import { useLoaderData } from '@remix-run/react'
+import { Link, useLoaderData } from '@remix-run/react'
 import { motion } from 'framer-motion'
 import { Search } from '~/components/Search'
 
@@ -36,7 +36,9 @@ export const CalendarWithDoors = () => {
             damping: 20,
           }}
         >
-          <Gift3SVG />
+          <Link to="/julesveiper">
+            <Gift3SVG />
+          </Link>
         </motion.div>
       </div>
       {/* Calendar */}

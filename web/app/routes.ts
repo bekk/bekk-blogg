@@ -11,6 +11,7 @@ export default [
   route('post/:year/:date', 'routes/post.$year.$date.tsx'),
   route('post/:year/:date/:slug', 'routes/post.$year.$date.$slug.tsx'),
   route('resource/preview', 'routes/resource.preview.tsx'),
+  route('julesveiper', 'routes/julesveiper.tsx'),
   route('rss.xml', 'routes/rss.xml.tsx'),
   route('feed.xml', 'routes/rss.xml.tsx', { id: 'feed' }),
   route('sitemap.xml', 'routes/sitemap.xml.tsx'),
