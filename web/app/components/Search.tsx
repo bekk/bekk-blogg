@@ -3,7 +3,11 @@ import { Configure, Hits, InstantSearch, InstantSearchSSRProvider, useSearchBox 
 import { useAlgoliaClient, useAlgoliaConfig } from '~/hooks/useAlgolia'
 import { postUrl } from '~/lib/format'
 
-export const Search = () => {
+type SearchProps = {
+  transparent?: boolean
+}
+
+export const Search = ({ transparent = true }: SearchProps) => {
   const algoliaConfig = useAlgoliaConfig()
   const client = useAlgoliaClient()
 
@@ -14,19 +18,19 @@ export const Search = () => {
         indexName={algoliaConfig.index}
         future={{ persistHierarchicalRootCount: true, preserveSharedStateOnUnmount: true }}
       >
-        <SearchBoxWithDropdown />
+        <SearchBoxWithDropdown transparent={transparent} />
         <Configure hitsPerPage={20} filters={`availableFromMillis <=  ${Date.now()}`} />
       </InstantSearch>
     </InstantSearchSSRProvider>
   )
 }
 
-const SearchBoxWithDropdown = () => {
+const SearchBoxWithDropdown = ({ transparent }: SearchProps) => {
   const { query, refine, clear } = useSearchBox()
 
   return (
     <div className="relative w-[75%] md:w-[500px]">
-      <CustomSearchBox query={query} refine={refine} clear={clear} />
+      <CustomSearchBox query={query} refine={refine} clear={clear} transparent={transparent} />
       {query && (
         <div className="absolute z-[100] mt-2 w-full bg-white bg-opacity-90 shadow-lg rounded-lg border border-gray-300 max-h-[290px] overflow-y-scroll">
           <Hits hitComponent={Hit} />
@@ -40,24 +44,26 @@ function CustomSearchBox({
   query,
   refine,
   clear,
+  transparent,
 }: {
   query: string
   refine: (value: string) => void
   clear: () => void
+  transparent?: boolean
 }) {
   return (
     <>
       <label htmlFor="search" className="sr-only">
-        Søk
+        Søk etter en artikkel
       </label>
       <input
         id="search"
         type="search"
         value={query}
         onChange={(event) => refine(event.currentTarget.value)}
-        placeholder="Søk"
+        placeholder="Søk etter en artikkel"
         onReset={clear}
-        className="w-full max-w-lg h-12 px-4 py-2 text-lg bg-transparent rounded-sm border border-white focus:outline-none focus:ring-2 focus:ring-white focus:text-white placeholder-white"
+        className={`w-full max-w-lg h-12 px-4 py-2 text-lg rounded-sm border focus:outline-none focus:ring-2 ${transparent ? 'border-white focus:ring-white focus:text-white placeholder-white bg-transparent' : 'border-black focus:ring-black focus:text-black placeholder-black bg-white'}`}
       />
     </>
   )
