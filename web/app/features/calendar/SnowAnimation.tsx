@@ -60,7 +60,7 @@ export const SnowAnimation = () => {
   }, [flakes, maxFlakes])
 
   return (
-    <div className="absolute w-full h-full top-0 overflow-hidden pointer-events-none">
+    <div className="fixed inset-0 w-full h-full top-0 overflow-hidden pointer-events-none min-h-screen z-20">
       {flakes.map((flake) => (
         <Snowflake key={flake.id} size={flake.size} left={flake.left} duration={flake.duration} />
       ))}
