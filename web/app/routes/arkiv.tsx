@@ -32,7 +32,11 @@ export const meta: MetaFunction = () => {
 }
 
 export default function ArchiveRoute() {
-  const currentYear = new Date().getFullYear()
+  let currentYear = new Date().getFullYear()
+  if (new Date().getMonth() < 11) {
+    currentYear -= 1
+  }
+
   const startYear = 2017
   const availableYears: number[] = []
 
@@ -50,19 +54,25 @@ export default function ArchiveRoute() {
     RedGiftWhiteRibbonV,
     WhiteGiftRedRibbonSquare,
   ]
+
+  const giftList = []
+  for (let i = 0; availableYears.length > i; i++) {
+    giftList.push(giftSVGList[i % 8])
+  }
+
   return (
     <div className="bg-brick-wall-with-wooden-plank">
       <header className="relative">
         <Header />
       </header>
-      <div className={'flex flex-col justify-center'}>
+      <div className="flex flex-col justify-center">
         <h1 className="text-white text-center">Arkiv</h1>
-        <div className="grid grid-cols-1 lg:grid-cols-4 items-end pt-20 justify-items-center w-full">
-          {giftSVGList.map((GiftSVG, index) => {
+        <div className="grid grid-cols-1 lg:grid-cols-4 items-end pt-20 w-full">
+          {giftList.map((GiftSVG, index) => {
             return (
               <div className="grid justify-items-center w-full pt-8" key={index}>
                 {/*Mobile*/}
-                <div className="flex flex-col w-full justify-items-center lg:hidden">
+                <div className="flex flex-col w-full lg:hidden">
                   <Link
                     to={`/post/${availableYears[index]}`}
                     className="flex justify-center"
@@ -81,12 +91,19 @@ export default function ArchiveRoute() {
               </div>
             )
           })}
-          <div className="col-start-1 row-start-2 col-span-4 justify-self-stretch hidden lg:block">
-            <BigPlank years={availableYears.slice(0, 4)} />
-          </div>
-          <div className="col-start-1 row-start-4 col-span-4 justify-self-stretch hidden lg:block">
-            <BigPlank years={availableYears.slice(4, 8)} />
-          </div>
+          {availableYears.map((_, index) => {
+            if (index % 4 === 0) {
+              const rowStart = 2 * (index / 4) + 2
+              return (
+                <div
+                  key={index}
+                  className={`col-start-1 row-start-${rowStart} col-span-4 justify-self-stretch hidden lg:block`}
+                >
+                  <BigPlank years={availableYears.slice(index, index + 4)} />
+                </div>
+              )
+            }
+          })}
         </div>
       </div>
     </div>
@@ -94,7 +111,7 @@ export default function ArchiveRoute() {
 }
 
 const BigPlank = ({ years }: { years: number[] }) => (
-  <div className={'bg-plank p-10 justify-self-stretch flex justify-between px-24'}>
+  <div className="bg-plank py-10 grid grid-cols-1 lg:grid-cols-4 justify-items-center">
     {years.map((year, i) => (
       <YearBadge year={year} key={i} />
     ))}
