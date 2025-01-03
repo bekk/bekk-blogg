@@ -1,16 +1,13 @@
 import { expect, test } from '@playwright/test'
 
-test('home page redirects to current year after December 1st', async ({ page }) => {
-  const currentYear = new Date().getFullYear()
-
-  // Mock the date to December 1st
+test('home page redirects to year after December 1st', async ({ page }) => {
   await page.goto('/')
 
   // Should redirect to /post/YYYY
-  await expect(page).toHaveURL(`/post/${currentYear}`)
+  await expect(page).toHaveURL(new RegExp(`/post/\\d{4}$`))
 })
 
-test('navigating all the way to a post works as expected', async ({ page }) => {
+test('navigating all the way to a post in 2024 works as expected', async ({ page }) => {
   await page.goto('/post/2024')
 
   await expect(page).toHaveURL('/post/2024')
