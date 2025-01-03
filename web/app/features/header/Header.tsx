@@ -15,7 +15,7 @@ export const Header = () => {
 
   return (
     <div
-      className={`grid grid-cols-1 md:grid-cols-[8fr_1fr] p-4 md:pb-14 ${isOnArticlePage ? 'pt-6 px-6 md:pl-10 xl:pl-20 md:pt-5' : 'px-4 md:px-10 md:pt-8'}`}
+      className={`grid grid-cols-1 md:grid-cols-[8fr_1fr] p-4 md:pb-8 ${isOnArticlePage ? 'pt-6 px-6 md:pl-10 xl:pl-20 md:pt-5' : 'px-4 md:px-10 md:pt-8'}`}
     >
       <div className={`justify-self-end md:col-start-2 ${error ? 'ml-auto' : ''}`}>
         <Link to="/" aria-label="Gå til forsiden">
