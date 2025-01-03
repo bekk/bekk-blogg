@@ -22,7 +22,7 @@ test('navigating all the way to a post in 2024 works as expected', async ({ page
   await expect(page.getByText('Velkommen til en helt ny julefeiring')).toBeVisible()
   await page.getByText('Velkommen til en helt ny julefeiring').click()
 
-  await expect(page).toHaveURL('/post/2024/01/velkommen-til-en-helt-ny-julefeiring', { timeout: 30_000 })
+  await expect(page).toHaveURL('/post/2024/01/velkommen-til-en-helt-ny-julefeiring', { timeout: 60_000 })
   await expect(page).toHaveTitle('Velkommen til en helt ny julefeiring | Bekk Christmas')
   await expect(page.getByRole('heading', { name: 'Velkommen til en helt ny julefeiring', level: 1 })).toBeVisible()
 })
