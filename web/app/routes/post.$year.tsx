@@ -1,6 +1,7 @@
 import { isRouteErrorResponse, Link, useRouteError } from '@remix-run/react'
 import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { z } from 'zod'
+import { Search } from '~/components/Search'
 
 import { BekkLogo } from '~/features/article/BekkLogo'
 import { BottomPlank } from '~/features/calendar/BottomPlank'
@@ -72,13 +73,15 @@ export const meta: MetaFunction = ({ data }) => {
 export default function YearRoute() {
   return (
     <div className="bg-brick-wall">
+      <div className="pl-6 pt-8 mb-12 2lg:hidden">
+        <Search transparent={false} />
+      </div>
       <div className="2lg:h-auto flex flex-col justify-end items-center min-h-screen">
         <SnowAnimation />
         <Link to="/post/2024" className="absolute top-[20px] md:top-[40px] right-[20px] md:right-[40px]">
           <BekkLogo className="h-auto w-10 md:auto md:w-16" />
         </Link>
         <CalendarWithDoors />
-        {/* Bottom plank*/}
         <BottomPlank />
       </div>
     </div>
