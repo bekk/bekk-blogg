@@ -11,8 +11,8 @@ export const RelatedPosts = ({ objectID }: RelatedPostsProps) => {
   const client = useAlgoliaClient()
 
   return (
-    <div className="bg-purple-cloth relative w-screen flex mt-2 md:mt-6 pb-12 justify-center ">
-      <div className="pt-10 md:pt-20 max-w-[1540px] lg:mx-6 mx-4">
+    <div className="bg-purple-cloth relative w-screen flex mt-2 md:mt-6 justify-center min-h-[500px] max-lg:pb-4">
+      <div className="pt-10 md:pt-20 max-w-[1540px] mx-4 md:mx-7 lg:mx-7">
         <InstantSearch
           searchClient={client.current}
           indexName={algoliaConfig.index}
