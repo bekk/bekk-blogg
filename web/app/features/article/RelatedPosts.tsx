@@ -12,7 +12,7 @@ export const RelatedPosts = ({ objectID }: RelatedPostsProps) => {
 
   return (
     <div className="bg-purple-cloth relative w-screen flex mt-2 md:mt-6 justify-center min-h-[500px] max-lg:pb-4">
-      <div className="pt-10 md:pt-20 max-w-[1540px] mx-4 md:mx-7 lg:mx-7">
+      <div className="pt-10 md:pt-20 max-w-[1540px] mx-4 md:mx-7 lg:mx-7 w-screen">
         <InstantSearch
           searchClient={client.current}
           indexName={algoliaConfig.index}
