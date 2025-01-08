@@ -1,4 +1,4 @@
-import { at, defineMigration, patch, setIfMissing } from 'sanity/migrate'
+import {at, defineMigration, patch, setIfMissing} from 'sanity/migrate'
 import slugify from 'slugify'
 
 /**
