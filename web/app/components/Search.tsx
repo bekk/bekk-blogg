@@ -1,4 +1,5 @@
 import { Link } from '@remix-run/react'
+import { useEffect, useRef, useState } from 'react'
 import { Configure, Hits, InstantSearch, InstantSearchSSRProvider, useSearchBox } from 'react-instantsearch'
 import { useAlgoliaClient, useAlgoliaConfig } from '~/hooks/useAlgolia'
 import { postUrl } from '~/lib/format'
@@ -27,11 +28,43 @@ export const Search = ({ transparent = true }: SearchProps) => {
 
 const SearchBoxWithDropdown = ({ transparent }: SearchProps) => {
   const { query, refine, clear } = useSearchBox()
+  const searchRef = useRef<HTMLDivElement | null>(null)
+  const [showResults, setShowResults] = useState(false)
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+      setShowResults(false)
+    }
+  }
+
+  const handleKeyUp = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      setShowResults(false)
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('keyup', handleKeyUp)
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('keyup', handleKeyUp)
+    }
+  }, [])
 
   return (
-    <div className="relative w-[75%] md:w-[500px]">
-      <CustomSearchBox query={query} refine={refine} clear={clear} transparent={transparent} />
-      {query && (
+    <div className="relative w-[75%] md:w-[500px]" ref={searchRef}>
+      <CustomSearchBox
+        query={query}
+        refine={(value: string) => {
+          setShowResults(true)
+          refine(value)
+        }}
+        clear={clear}
+        transparent={transparent}
+      />
+      {query && showResults && (
         <div className="absolute z-[100] mt-2 w-full bg-white bg-opacity-90 shadow-lg rounded-lg border border-gray-300 max-h-[290px] overflow-y-scroll">
           <Hits hitComponent={Hit} />
         </div>
