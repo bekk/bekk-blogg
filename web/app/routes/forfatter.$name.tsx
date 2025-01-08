@@ -85,7 +85,7 @@ export default function AuthorRoute() {
   const navigation = useNavigation()
   const isSomethingWrong = !author || !posts || posts.length === 0
   return (
-    <div className="bg-wooden-table-with-cloth pb-8">
+    <div className="bg-wooden-table-with-cloth">
       <header className="relative">
         <Header />
       </header>

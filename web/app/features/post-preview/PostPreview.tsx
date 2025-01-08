@@ -1,4 +1,4 @@
-import { Link, useLocation } from '@remix-run/react'
+import { Link } from '@remix-run/react'
 import { motion } from 'framer-motion'
 import { readingTime } from 'utils/readingTime'
 import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'
@@ -6,7 +6,6 @@ import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'
 import { PostStamp } from '../article/PostStamp'
 
 import { postUrl } from '~/lib/format'
-import { formatDate } from 'utils/date'
 
 type PostPreviewType = {
   _id: string
@@ -20,7 +19,6 @@ type PostPreviewType = {
   podcastLength: number | null
   link?: string
   type?: string
-  availableFrom?: string
 }
 
 type PostPreviewProps = PostPreviewType
@@ -35,11 +33,8 @@ export const PostPreview = ({
   podcastLength,
   link,
   type,
-  availableFrom,
 }: PostPreviewProps) => {
   const showReadingTime = wordCount !== null || podcastLength !== null
-  const location = useLocation()
-  const isInArticle = location.pathname.includes('post')
   const content = (
     <motion.div
       className="striped-frame py-6 px-6 sm:p-7"
@@ -60,7 +55,7 @@ export const PostPreview = ({
     >
       <div className="grid sm:grid-cols-[1fr_1px_1fr] grid-cols-[30fr_1fr] w-full">
         <div className="col-start-1 col-end-1 row-start-2 row-end-2 sm:mr-7">
-          {title && <h2 className="sm:mb-10 overflow-auto">{title}</h2>}
+          {title && <h2 className="sm:mb-20 overflow-auto">{title}</h2>}
         </div>
         <div className="col-start-2 row-start-1 row-end-4 hidden border-r border-bekk-night sm:block" />
         <div className="flex justify-end ml-1 sm:mb-9 col-start-3 col-end-3 row-start-2 row-end-3 sm:ml-7">
@@ -82,12 +77,6 @@ export const PostPreview = ({
           )}
           {authors && `Fra ${authors.join(', ')}`}
           <div className="sm:mb-7 border-b border-bekk-night pb-1 mb-3" />
-          {availableFrom && !isInArticle && (
-            <>
-              {formatDate(availableFrom)}
-              <div className="sm:mb-7 border-b border-bekk-night pb-1 mb-3" />
-            </>
-          )}
         </div>
         {summary && (
           <div className="hidden sm:text-lg sm:block col-start-3 col-end-3 row-start-3 row-end-3 sm:ml-7">

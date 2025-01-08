@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
 
   const post = await sanityClient.fetch<ARTICLE_CONTENT_BY_IDResult>(
     ARTICLE_CONTENT_BY_ID,
-    { id },
+    { id }
   );
 
   if (!post) {
@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
 
   // Convert the portable text content to plain text and remove invisible characters
   const text = cleanControlCharacters(
-    [post.title, post.description, post.content].join("\n\n"),
+    [post.title, post.description, post.content].join("\n\n")
   );
 
   // Create an AbortController to handle disconnection
@@ -67,7 +67,7 @@ export async function GET(request: NextRequest) {
               },
               {
                 signal: abortController.signal, // Pass the abort signal to OpenAI requests
-              },
+              }
             );
 
             const audioStream = await mp3.arrayBuffer();
