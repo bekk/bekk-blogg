@@ -46,6 +46,11 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
     { name: 'twitter:title', content: title },
     { name: 'twitter:description', content: description },
     { name: 'twitter:site', content: '@livetibekk' },
+    {
+      tagName: 'link',
+      rel: 'canonical',
+      href: `https://bekk.christmas/post/${post.availableFrom}/${post.availableFrom}/${post.slug?.current}`,
+    },
   ]
 
   if (post.coverImage?.asset) {
