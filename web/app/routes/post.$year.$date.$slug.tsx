@@ -49,7 +49,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
     {
       tagName: 'link',
       rel: 'canonical',
-      href: `https://bekk.christmas/post/${post.availableFrom}/${post.availableFrom}/${post.slug?.current}`,
+      href: `https://bekk.christmas/post/${availableFrom?.getFullYear()}/${availableFrom?.getDate().toString().padStart(2, '0')}/${post.slug?.current}`,
     },
   ]
 
