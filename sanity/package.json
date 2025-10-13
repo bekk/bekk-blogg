@@ -16,7 +16,7 @@
     "sanity"
   ],
   "dependencies": {
-    "@opengraphninja/react": "^0.2.0",
+    "@opengraphninja/react": "^0.2.1",
     "@sanity/code-input": "^6.0.1",
     "@sanity/locale-nb-no": "^1.1.26",
     "@sanity/table": "^2.0.0",
@@ -42,10 +42,6 @@
     "typescript": "^5.9.3"
   },
   "overrides": {
-    "@opengraphninja/react": {
-      "react": "^19.2.0",
-      "react-dom": "^19.2.0"
-    },
     "react-twitter-embed": {
       "react": "^19.2.0",
       "react-dom": "^19.2.0"
