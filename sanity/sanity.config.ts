@@ -19,7 +19,7 @@ const schemaTypes = schemas as SchemaTypeDefinition[]
 const config = defineConfig({
   basePath: '/',
   name: 'default',
-  title: 'sanity',
+  title: 'Bekk Christmas',
   projectId: 'ah2n1vfr',
   dataset: process.env.SANITY_STUDIO_DATASET ?? 'bekk-blogg-prod',
 
