@@ -13,6 +13,7 @@ export default {
         'light-gray': '#e3e3e3',
         'christmas-tree-green': '#2F7346',
         'dark-green': '#164125',
+        'soft-pink': '#F7C9C9',
       },
       textColor: {
         base: '#000000',

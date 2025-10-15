@@ -53,7 +53,7 @@ const NumberWithLabel = ({ number, label }: { number: number; label: string }) =
 export const TeaserPage = () => {
   const isClientSide = useClientSideOnly()
   return (
-    <div className="flex flex-col items-center justify-center px-4 h-full pb-96">
+    <div className="flex flex-col items-center justify-center px-4 h-full pb-96 bg-soft-pink">
       <div className="w-full items-center sm:max-w-4xl">
         {isClientSide && (
           <div className="text-lg text-postcard-beige sm:text-4xl md:text-5xl">
