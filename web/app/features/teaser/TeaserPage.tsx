@@ -1,6 +1,6 @@
+import { Link } from '@remix-run/react'
 import { useEffect, useState } from 'react'
 import Countdown, { CountdownRendererFn } from 'react-countdown'
-import { Link } from '@remix-run/react'
 
 import { PostPreview } from '../post-preview/PostPreview'
 
@@ -61,7 +61,7 @@ export const TeaserPage = () => {
           </div>
         )}
         <div className="mt-16">
-          <Link to={`post/${new Date() > new Date(new Date().setFullYear(2024, 12, 1)) ? '2024' : '2023'}`}>
+          <Link to={`post/${new Date() > new Date(new Date().setFullYear(2024, 12, 1)) ? '2025' : '2024'}`}>
             <PostPreview
               title="Bekk.christmas"
               authors={['Bekk']}
