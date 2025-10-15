@@ -1,6 +1,6 @@
+import { Link } from '@remix-run/react'
 import { useEffect, useState } from 'react'
 import Countdown, { CountdownRendererFn } from 'react-countdown'
-import { Link } from '@remix-run/react'
 
 import { PostPreview } from '../post-preview/PostPreview'
 
