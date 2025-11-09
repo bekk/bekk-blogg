@@ -25,7 +25,7 @@ export const Header = () => {
             </div>
           ) : (
             <div>
-              <BekkLogo className="h-auto w-10 md:auto md:w-16" />
+              <BekkLogo className="h-auto w-10 md:auto md:w-16 text-white" />
             </div>
           )}
         </Link>

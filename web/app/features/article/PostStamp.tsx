@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
 import { SanityAsset } from '@sanity/image-url/lib/types/types'
+import { useEffect, useState } from 'react'
 import { POST_BY_SLUGResult } from 'utils/sanity/types/sanity.types'
 import { urlFor } from 'utils/sanity/utils'
 
@@ -44,7 +44,7 @@ export const PostStamp = ({ size, image }: PostStampProps) => {
     <div className={`relative ${size ? size : 'h-21.4 w-16 md:h-[107px] md:w-[80px]'}`}>
       <StampSvg imgUrl={imageUrl} size={size} />
       <div className="absolute inset-0 flex items-center justify-center">
-        {!imageUrl && <BekkLogo className="size-1/2" />}
+        {!imageUrl && <BekkLogo className="size-1/2 text-white" />}
       </div>
     </div>
   )
