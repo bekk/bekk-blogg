@@ -5,6 +5,8 @@ import Countdown, { CountdownRendererFn } from 'react-countdown'
 import { PostPreview } from '../post-preview/PostPreview'
 
 import { LinkToArchive } from '~/components/LinkToArchive'
+import { TeaserPageFooter } from '~/components/TeaserPageFooter'
+import { BekkLogo } from '../article/BekkLogo'
 
 const useClientSideOnly = () => {
   const [isClientSide, setIsClientSide] = useState(false)
@@ -33,7 +35,7 @@ const CountdownRenderer: CountdownRendererFn = ({
     return <h1>Nå skjer det!</h1>
   } else {
     return (
-      <div className="flex justify-center">
+      <div className="flex justify-center mb-16 gap-2 sm:gap-8 text-lg text-red-berry sm:text-4xl md:text-5xl">
         <NumberWithLabel number={days} label="Dager" />
         <NumberWithLabel number={hours} label="Timer" />
         <NumberWithLabel number={minutes} label="Minutter" />
@@ -44,7 +46,7 @@ const CountdownRenderer: CountdownRendererFn = ({
 }
 
 const NumberWithLabel = ({ number, label }: { number: number; label: string }) => (
-  <div className="flex flex-col items-center mx-4">
+  <div className="flex flex-col items-center mx-4 gap-7">
     <p className="text-5xl">{number}</p>
     <p>{label}</p>
   </div>
@@ -53,19 +55,18 @@ const NumberWithLabel = ({ number, label }: { number: number; label: string }) =
 export const TeaserPage = () => {
   const isClientSide = useClientSideOnly()
   return (
-    <div className="flex flex-col items-center justify-center px-4 h-full pb-96 bg-soft-pink">
-      <div className="w-full items-center sm:max-w-4xl">
-        {isClientSide && (
-          <div className="text-lg text-postcard-beige sm:text-4xl md:text-5xl">
-            <Countdown date={`${new Date().getFullYear()}/12/01`} renderer={CountdownRenderer} />
-          </div>
-        )}
-        <div className="mt-16">
+    <div className="flex flex-col items-center min-h-screen h-full bg-soft-pink">
+      <div className="self-start w-full p-6">
+        <BekkLogo className="text-red-berry" />
+      </div>
+      <div className="w-full items-center sm:max-w-4xl gap-12 flex flex-col">
+        {isClientSide && <Countdown date={`${new Date().getFullYear()}/12/01`} renderer={CountdownRenderer} />}
+        <div>
           <Link to={`post/${new Date() > new Date(new Date().setFullYear(2024, 12, 1)) ? '2024' : '2023'}`}>
             <PostPreview
-              title="Bekk.christmas"
+              title="bekk.christmas"
               authors={['Bekk']}
-              summary="24 dager med feiring av fagmiljøet og delingskulturen vår"
+              summary="Hver dag en luke, en liten sak, som en bekk som renner, sakte og smak. Åpne med glede, se hva du får, snart er det jul, vi feirer i år!"
               _id="123"
               slug={null}
               coverImage={null}
@@ -75,10 +76,9 @@ export const TeaserPage = () => {
             />
           </Link>
         </div>
-        <div className="link-to-archive-gift">
-          <LinkToArchive />
-        </div>
+        <LinkToArchive className="block lg:hidden" />
       </div>
+      <TeaserPageFooter className="hidden lg:flex" />
     </div>
   )
 }

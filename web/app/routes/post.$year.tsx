@@ -79,7 +79,7 @@ export default function YearRoute() {
       <div className="2lg:h-auto flex flex-col justify-end items-center min-h-screen">
         <SnowAnimation />
         <Link to="/post/2024" className="absolute top-[20px] md:top-[40px] right-[20px] md:right-[40px]">
-          <BekkLogo className="h-auto w-10 md:auto md:w-16" />
+          <BekkLogo className="h-auto w-10 md:auto md:w-16 text-white" />
         </Link>
         <CalendarWithDoors />
         <BottomPlank />
