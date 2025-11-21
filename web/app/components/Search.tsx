@@ -96,7 +96,7 @@ function CustomSearchBox({
         onChange={(event) => refine(event.currentTarget.value)}
         placeholder="Søk etter en artikkel"
         onReset={clear}
-        className={`w-full max-w-lg h-12 px-4 py-2 text-lg rounded-sm border focus:outline-none focus:ring-2 ${transparent ? 'border-white focus:ring-white focus:text-white placeholder-white bg-transparent' : 'border-black focus:ring-black focus:text-black placeholder-black bg-white'}`}
+        className={`w-full max-w-lg h-12 px-4 py-2 text-lg rounded-sm border focus:outline-none focus:ring-2 ${transparent ? 'border-red-berry focus:ring-red-berry focus:text-red-berry placeholder-red-berry bg-transparent' : 'border-black focus:ring-black focus:text-black placeholder-black bg-white'}`}
       />
     </>
   )

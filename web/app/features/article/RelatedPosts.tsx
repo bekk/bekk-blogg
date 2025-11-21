@@ -11,7 +11,7 @@ export const RelatedPosts = ({ objectID }: RelatedPostsProps) => {
   const client = useAlgoliaClient()
 
   return (
-    <div className="bg-purple-cloth relative w-screen flex mt-2 md:mt-6 justify-center min-h-[500px] max-lg:pb-4">
+    <div className="relative w-screen flex mt-2 md:mt-6 justify-center min-h-[500px] max-lg:pb-4">
       <div className="pt-10 md:pt-20 max-w-[1540px] mx-4 md:mx-7 lg:mx-7 w-screen">
         <InstantSearch
           searchClient={client.current}
@@ -21,8 +21,7 @@ export const RelatedPosts = ({ objectID }: RelatedPostsProps) => {
           <RelatedProducts
             headerComponent={() => (
               <div>
-                <h2 className="text-white mb-4">Relatert innhold</h2>
-                <p className="text-white mb-8">Hvis du likte dette innholdet vil du kanskje også like:</p>
+                <p className="text-red-berry mb-8 text-xl">Hvis du likte denne artikkelen vil du også like disse:</p>
               </div>
             )}
             queryParameters={{ filters: `availableFromMillis <=  ${Date.now()}` }}

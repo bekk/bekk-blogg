@@ -78,7 +78,7 @@ export default function TagRoute() {
   const navigation = useNavigation()
 
   return (
-    <div className="bg-wooden-table-with-cloth">
+    <div className="bg-soft-pink">
       <header className="relative">
         <Header />
       </header>
@@ -91,8 +91,8 @@ export default function TagRoute() {
         <Spinner />
       ) : (
         <div className="flex flex-col items-center md:gap-8 pb-12">
-          <h1 className="text-center md:text-center text-postcard-beige mb-4">Innhold om {tag?.name}</h1>
-          <div className="flex flex-col mb-4 text-center text-postcard-beige gap-4">
+          <h1 className="text-center md:text-center text-red-berry mb-4">Innhold om {tag?.name}</h1>
+          <div className="flex flex-col mb-4 text-center text-red-berry gap-4">
             <p>Totalt {pagination.totalPosts} innlegg</p>
             {pagination.totalPages > 1 && (
               <p className="text-sm">

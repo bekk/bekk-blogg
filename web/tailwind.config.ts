@@ -70,6 +70,13 @@ export default {
         'reindeer-brown': '#714319',
         'christmas-tree-green': '#2F7346',
         'santa-red': '#D0332E',
+        'red-berry': '#A7060E',
+      },
+      ringColor: {
+        'red-berry': '#A7060E',
+      },
+      placeholderColor: {
+        'red-berry': '#A7060E',
       },
       height: {
         '21.4': '85.6px',

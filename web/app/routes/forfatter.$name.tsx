@@ -85,7 +85,7 @@ export default function AuthorRoute() {
   const navigation = useNavigation()
   const isSomethingWrong = !author || !posts || posts.length === 0
   return (
-    <div className="bg-wooden-table-with-cloth pb-8">
+    <div className="bg-soft-pink pb-8">
       <header className="relative">
         <Header />
       </header>
@@ -100,7 +100,7 @@ export default function AuthorRoute() {
         <Spinner />
       ) : (
         <div>
-          <section className="flex flex-col md:flex-row gap-4 max-w-4xl mx-auto text-white px-4 mb-12">
+          <section className="flex flex-col md:flex-row gap-4 max-w-4xl mx-auto text-red-berry px-4 mb-12">
             <div className="flex-1 flex flex-col justify-center">
               {author?.image && (
                 <img
@@ -109,12 +109,10 @@ export default function AuthorRoute() {
                   className="rounded-full mb-4 w-[100px] h-[100px] md:w-[200px] md:h-[200px] object-cover mx-auto"
                 />
               )}
-              <h1 className="text-4xl text-center md:text-center text-postcard-beige mb-0">{author?.fullName}</h1>
+              <h1 className="text-4xl text-center md:text-center text-red-berry mb-0">{author?.fullName}</h1>
             </div>
             <div className="flex flex-col gap-4 justify-center flex-1">
-              {author?.description && (
-                <p className="text-center md:text-center text-postcard-beige">{author.description}</p>
-              )}
+              {author?.description && <p className="text-center md:text-center text-red-berry">{author.description}</p>}
               <ul className="flex flex-wrap gap-2 justify-center">
                 {author?.socialMediaLinks?.map((link) => (
                   <li key={link._key}>
