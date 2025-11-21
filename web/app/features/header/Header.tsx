@@ -25,13 +25,13 @@ export const Header = () => {
             </div>
           ) : (
             <div>
-              <BekkLogo className="h-auto w-10 md:auto md:w-16 text-white" />
+              <BekkLogo className="h-auto w-10 md:auto md:w-16 text-red-berry" />
             </div>
           )}
         </Link>
       </div>
       {showSearch && (
-        <div className="md:col-start-1 md:col-span-2 md:row-start-1 flex justify-start md:justify-center order-first md:order-none md:mx-auto text-white">
+        <div className="md:col-start-1 md:col-span-2 md:row-start-1 flex justify-start md:justify-center order-first md:order-none md:mx-auto text-red-berry">
           <Search />
         </div>
       )}
@@ -45,13 +45,11 @@ export const Header = () => {
                 <li key={index} className="flex-none min-w-0 flex items-center whitespace-nowrap">
                   <Link
                     to={`${breadcrumb.href}`}
-                    className={`${isOnArticlePage ? 'text-black' : 'text-postcard-beige'} ${isLast ? 'truncate' : ''}`}
+                    className={`${isOnArticlePage ? 'text-black' : 'text-red-berry'} ${isLast ? 'truncate' : ''}`}
                   >
                     {breadcrumb.title}
                   </Link>
-                  {!isLast && (
-                    <p className={`shrink-0 px-2 ${isOnArticlePage ? 'text-black' : 'text-postcard-beige'}`}>/</p>
-                  )}
+                  {!isLast && <p className={`shrink-0 px-2 ${isOnArticlePage ? 'text-black' : 'text-red-berry'}`}>/</p>}
                 </li>
               )
             })}
