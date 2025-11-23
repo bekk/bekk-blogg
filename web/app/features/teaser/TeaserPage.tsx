@@ -54,13 +54,15 @@ const NumberWithLabel = ({ number, label }: { number: number; label: string }) =
 
 export const TeaserPage = () => {
   const isClientSide = useClientSideOnly()
+
   return (
-    <div className="flex flex-col items-center h-screen bg-soft-pink overflow-hidden">
+    <div className="flex flex-col justify-between items-center overflow-y-auto h-screen bg-soft-pink">
       <div className="self-start p-6">
         <BekkLogo className="text-red-berry relative lg:absolute" />
       </div>
-      <div className="w-full items-center sm:max-w-4xl mt-6 flex flex-col">
+      <div className="w-full flex flex-col items-center sm:max-w-4xl flex-grow justify-center mt-6">
         {isClientSide && <Countdown date={`${new Date().getFullYear()}/12/01`} renderer={CountdownRenderer} />}
+
         <div className="mb-12 lg:mb-0">
           <Link to={`post/${new Date() > new Date(new Date().setFullYear(2024, 12, 1)) ? '2024' : '2023'}`}>
             <PostPreview
@@ -76,7 +78,7 @@ export const TeaserPage = () => {
             />
           </Link>
         </div>
-        <LinkToArchive className="block lg:hidden" />
+        <LinkToArchive className="block lg:hidden mb-12" />
       </div>
       <TeaserPageFooter className="hidden lg:flex" />
     </div>
