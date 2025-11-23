@@ -14,6 +14,7 @@ export default {
         'christmas-tree-green': '#2F7346',
         'dark-green': '#164125',
         'soft-pink': '#FDD0D8',
+        'mid-green': '#32432D',
       },
       textColor: {
         base: '#000000',
@@ -64,6 +65,7 @@ export default {
         '6': '6px',
         '14': '14px',
         '30': '30px',
+        '40': '40px',
         DEFAULT: '1px',
       },
       borderColor: {
@@ -71,6 +73,7 @@ export default {
         'christmas-tree-green': '#2F7346',
         'santa-red': '#D0332E',
         'red-berry': '#A7060E',
+        'mid-green': '#32432D',
       },
       ringColor: {
         'red-berry': '#A7060E',

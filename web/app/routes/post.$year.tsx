@@ -1,12 +1,10 @@
-import { isRouteErrorResponse, Link, useRouteError } from '@remix-run/react'
+import { isRouteErrorResponse, Link, useLoaderData, useRouteError } from '@remix-run/react'
 import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { z } from 'zod'
 import { Search } from '~/components/Search'
 
 import { BekkLogo } from '~/features/article/BekkLogo'
-import { BottomPlank } from '~/features/calendar/BottomPlank'
 import { CalendarWithDoors } from '~/features/calendar/CalendarWithDoors'
-import { SnowAnimation } from '~/features/calendar/SnowAnimation'
 import { ErrorPage } from '~/features/error-boundary/ErrorPage'
 
 const ParamsSchema = z.object({
@@ -71,18 +69,25 @@ export const meta: MetaFunction = ({ data }) => {
 }
 
 export default function YearRoute() {
+  const data = useLoaderData<{ year: string }>()
   return (
-    <div className="bg-soft-pink">
-      <div className="pl-6 pt-8 mb-12 2lg:hidden">
-        <Search transparent={false} />
-      </div>
-      <div className="2lg:h-auto flex flex-col justify-end items-center min-h-screen">
-        <SnowAnimation />
-        <Link to="/post/2024" className="absolute top-[20px] md:top-[40px] right-[20px] md:right-[40px]">
-          <BekkLogo className="h-auto w-10 md:auto md:w-16 text-red-berry" />
-        </Link>
-        <CalendarWithDoors />
-        <BottomPlank />
+    <div className="bg-soft-pink h-screen">
+      <Link to="/post/2025" className="absolute top-[20px] md:top-[40px] left-[20px] md:left-[40px]">
+        <BekkLogo className="h-auto w-10 md:auto md:w-16 text-red-berry" />
+      </Link>
+
+      <div className="flex flex-col gap-8">
+        <div className="flex justify-center pt-[20px] md:pt-[40px] text-headline-desktop text-red-berry">
+          {data.year}
+        </div>
+
+        <div className="flex justify-center">
+          <Search transparent={true} />
+        </div>
+
+        <div className="2lg:h-auto flex flex-col items-center">
+          <CalendarWithDoors />
+        </div>
       </div>
     </div>
   )
