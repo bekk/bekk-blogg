@@ -1,4 +1,4 @@
-import { HeadersFunction } from '@remix-run/node'
+import { HeadersFunction } from 'react-router'
 
 function isObject(value: unknown) {
   return value !== null && typeof value === 'object'

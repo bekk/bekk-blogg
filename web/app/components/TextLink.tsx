@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { Link } from '@remix-run/react'
+import { Link } from 'react-router'
 
 type TextLinkProps = {
   href?: string

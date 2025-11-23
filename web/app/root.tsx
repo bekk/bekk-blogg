@@ -1,4 +1,5 @@
 import {
+  data,
   isRouteErrorResponse,
   Links,
   Meta,
@@ -8,9 +9,8 @@ import {
   useLoaderData,
   useMatches,
   useRouteError,
-} from '@remix-run/react'
+} from 'react-router'
 import type { HeadersFunction, LinksFunction, LoaderFunction } from '@vercel/remix'
-import { json } from '@vercel/remix'
 import { SpeedInsights } from '@vercel/speed-insights/remix'
 import { lazy, Suspense } from 'react'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
@@ -25,7 +25,7 @@ export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
 export const loader: LoaderFunction = async ({ request }) => {
   const { preview } = await loadQueryOptions(request.headers)
-  return json(
+  return data(
     {
       isPreview: preview,
       ENV: {

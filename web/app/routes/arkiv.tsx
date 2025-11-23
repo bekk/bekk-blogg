@@ -1,4 +1,4 @@
-import { Link } from '@remix-run/react'
+import { Link } from 'react-router'
 import { MetaFunction } from '@vercel/remix'
 
 import { GreenGiftRedRibbon } from '~/features/archive/svgs/GreenGiftRedRibbon'

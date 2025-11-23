@@ -1,4 +1,4 @@
-import { Link, useParams, useRouteError } from '@remix-run/react'
+import { Link, useParams, useRouteError } from 'react-router'
 
 import { PostStamp } from '../article/PostStamp'
 

@@ -1,4 +1,4 @@
-import { isRouteErrorResponse, redirect, useLoaderData, useRouteError } from '@remix-run/react'
+import { isRouteErrorResponse, redirect, useLoaderData, useRouteError } from 'react-router'
 import { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { combinedHeaders } from 'utils/headers'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'

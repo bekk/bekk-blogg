@@ -1,4 +1,4 @@
-import { isRouteErrorResponse, useLoaderData, useNavigation, useRouteError } from '@remix-run/react'
+import { isRouteErrorResponse, useLoaderData, useNavigation, useRouteError } from 'react-router'
 import { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { combinedHeaders } from 'utils/headers'

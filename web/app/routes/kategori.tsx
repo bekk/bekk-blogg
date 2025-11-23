@@ -1,4 +1,4 @@
-import { Link, useLoaderData, useNavigation } from '@remix-run/react'
+import { Link, useLoaderData, useNavigation } from 'react-router'
 import { MetaFunction } from '@vercel/remix' // Ensure to use json here
 import { loadQuery } from 'utils/sanity/loader.server'
 import { ALL_CATEGORIES } from '../../utils/sanity/queries/postQueries'

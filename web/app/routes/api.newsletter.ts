@@ -1,4 +1,3 @@
-import { json } from '@remix-run/node'
 import * as Brevo from '@getbrevo/brevo'
 
 let contactsClient: Brevo.ContactsApi | null = null
@@ -19,7 +18,7 @@ export const action = async ({ request }: { request: Request }) => {
   try {
     const { email } = await request.json()
     if (!email) {
-      return json({ error: 'Email is required' }, { status: 400 })
+      return Response.json({ error: 'Email is required' }, { status: 400 })
     }
 
     const client = getContactsClient()
@@ -30,15 +29,15 @@ export const action = async ({ request }: { request: Request }) => {
     })
 
     if (response.response.statusCode === 201 || response.response.statusCode === 204) {
-      return json({ message: 'Success' })
+      return { message: 'Success' }
     }
 
-    return json(
+    return Response.json(
       { error: 'Failed to add user to newsletter. Please try again later.' },
       { status: response.response.statusCode }
     )
   } catch (error) {
     console.error('Error in newsletter signup:', error)
-    return json({ error: 'Internal server error. Please try again later.' }, { status: 500 })
+    return Response.json({ error: 'Internal server error. Please try again later.' }, { status: 500 })
   }
 }

@@ -1,4 +1,4 @@
-import { Link } from '@remix-run/react'
+import { Link } from 'react-router'
 import { useEffect, useRef, useState } from 'react'
 import { Configure, Hits, InstantSearch, InstantSearchSSRProvider, useSearchBox } from 'react-instantsearch'
 import { useAlgoliaClient, useAlgoliaConfig } from '~/hooks/useAlgolia'

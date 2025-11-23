@@ -1,4 +1,4 @@
-import { useMatches } from '@remix-run/react'
+import { useMatches } from 'react-router'
 
 import { Author, Post } from '../../utils/sanity/types/sanity.types'
 
