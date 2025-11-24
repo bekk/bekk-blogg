@@ -24,3 +24,11 @@
 //   await expect(page).toHaveTitle('Velkommen til en helt ny julefeiring | Bekk Christmas')
 //   await expect(page.getByRole('heading', { name: 'Velkommen til en helt ny julefeiring', level: 1 })).toBeVisible()
 // })
+
+//empty test
+import { test } from '@playwright/test'
+
+test('placeholder', async ({ page }) => {
+  // This is a placeholder test to ensure the test suite runs without errors.
+  // Actual tests are located in other spec files.
+})
