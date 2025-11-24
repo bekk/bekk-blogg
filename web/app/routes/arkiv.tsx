@@ -61,12 +61,12 @@ export default function ArchiveRoute() {
   }
 
   return (
-    <div className="bg-brick-wall-with-wooden-plank">
+    <div className="bg-soft-pink">
       <header className="relative">
         <Header />
       </header>
       <div className="flex flex-col justify-center">
-        <h1 className="text-white text-center">Arkiv</h1>
+        <h1 className="text-red-berry text-center">Arkiv</h1>
         <div className="grid grid-cols-1 lg:grid-cols-4 items-end pt-20 w-full">
           {giftList.map((GiftSVG, index) => {
             return (

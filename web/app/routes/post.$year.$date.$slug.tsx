@@ -207,8 +207,8 @@ export default function ArticleRoute() {
   }
 
   return (
-    <div className="bg-wooden-table break-words min-h-screen">
-      <div className="md:px-8">
+    <div className="bg-soft-pink break-words min-h-screen">
+      <div className="md:p-8">
         <div className="striped-frame mx-auto max-w-screen-2xl">
           <header className="relative">
             <Header />

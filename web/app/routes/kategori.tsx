@@ -42,7 +42,7 @@ export default function TagsRoute() {
   const data = useLoaderData<typeof loader>() // Safely use the loader's data
   const state = useNavigation()
   return (
-    <div className="bg-dark-wooden-table-with-green-cloth">
+    <div className="bg-soft-pink min-h-screen pb-8">
       <header className="relative">
         <Header />
       </header>
@@ -50,7 +50,7 @@ export default function TagsRoute() {
         <Spinner />
       ) : (
         <div className="px-2 sm:px-8 mb-8 flex flex-col">
-          <h1 className="text-center text-3xl sm:text-4xl text-white pt-4">Kategorier</h1>
+          <h1 className="text-center text-3xl sm:text-4xl text-red-berry pt-4">Kategorier</h1>
           <div className="flex flex-wrap justify-center pt-12 sm:pt-20 md:pt-28 gap-2 md:gap-4 2xl:mt-20">
             {data.map((category: Tag, index: number) => (
               <Link
