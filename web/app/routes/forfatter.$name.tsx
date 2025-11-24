@@ -1,5 +1,11 @@
-import { isRouteErrorResponse, useLoaderData, useNavigation, useRouteError } from 'react-router'
-import { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
+import {
+  isRouteErrorResponse,
+  LoaderFunctionArgs,
+  MetaFunction,
+  useLoaderData,
+  useNavigation,
+  useRouteError,
+} from 'react-router'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { combinedHeaders } from 'utils/headers'
 import { AUTHOR_WITH_POSTS_QUERY } from 'utils/sanity/queries/postQueries'

@@ -1,5 +1,4 @@
-import { LinksFunction } from '@vercel/remix'
-
+import { LinksFunction } from 'react-router'
 import styles from '~/styles/main.css?url'
 
 export const fontLinks: LinksFunction = () => [

@@ -1,7 +1,11 @@
+import { lazy, Suspense } from 'react'
 import {
   data,
+  HeadersFunction,
   isRouteErrorResponse,
   Links,
+  LinksFunction,
+  LoaderFunction,
   Meta,
   Outlet,
   Scripts,
@@ -10,9 +14,6 @@ import {
   useMatches,
   useRouteError,
 } from 'react-router'
-import type { HeadersFunction, LinksFunction, LoaderFunction } from '@vercel/remix'
-import { SpeedInsights } from '@vercel/speed-insights/remix'
-import { lazy, Suspense } from 'react'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
 import { ErrorPage } from './features/error-boundary/ErrorPage'
@@ -134,7 +135,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <Toaster />
           <ScrollRestoration />
           <Scripts />
-          <SpeedInsights />
         </div>
       </body>
     </html>

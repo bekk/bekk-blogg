@@ -1,5 +1,12 @@
-import { isRouteErrorResponse, redirect, useLoaderData, useRouteError } from 'react-router'
-import { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
+import {
+  isRouteErrorResponse,
+  LoaderFunctionArgs,
+  MetaFunction,
+  redirect,
+  useLoaderData,
+  useRouteError,
+} from 'react-router'
+
 import { combinedHeaders } from 'utils/headers'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'

@@ -1,5 +1,13 @@
-import { data, type ActionFunctionArgs, type LoaderFunctionArgs, type MetaFunction } from '@vercel/remix'
-import { isRouteErrorResponse, redirect, useLoaderData, useRouteError } from 'react-router'
+import {
+  ActionFunctionArgs,
+  data,
+  isRouteErrorResponse,
+  LoaderFunctionArgs,
+  MetaFunction,
+  redirect,
+  useLoaderData,
+  useRouteError,
+} from 'react-router'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { combinedHeaders } from 'utils/headers'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
@@ -199,7 +207,6 @@ export const headers = combinedHeaders
 
 export default function ArticleRoute() {
   const loaderData = useLoaderData<typeof loader>()
-  //@ts-expect-error ble typetrøbbel her, fikser om tid
   const { initial, query, params } = loaderData
   const { data } = useQuery<typeof initial.data>(query, params, {
     initial,
