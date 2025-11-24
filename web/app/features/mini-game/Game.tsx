@@ -1,5 +1,5 @@
-import { Link } from 'react-router'
 import { useCallback, useEffect, useState } from 'react'
+import { Link } from 'react-router'
 import { Button } from '~/components/ui/button'
 import { GameBoard } from './GameBoard'
 import { GameHeader } from './GameHeader'

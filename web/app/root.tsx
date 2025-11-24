@@ -20,11 +20,12 @@ import { ErrorPage } from './features/error-boundary/ErrorPage'
 import { JumpToContent } from './features/jump-to-content/JumpToContent'
 
 import styles from '~/styles/main.css?url'
+import { Route } from './+types/root'
 import { Toaster } from './components/ui/toaster'
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request }: Route.LoaderArgs) => {
   const { preview } = await loadQueryOptions(request.headers)
   return data(
     {
