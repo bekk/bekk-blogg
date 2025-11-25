@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ClosedDoorSvg } from './doorsSVG/ClosedDoorSVG'
 import { TodaysDoor } from './doorsSVG/TodaysDoorSVG'
 import { Link } from 'react-router'
-import { motion } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 
 import useMediaQuery from '~/hooks/useMediaQuery'
 import { OpenDoorSvg } from './doorsSVG/OpenDoorSVG'
@@ -23,7 +23,7 @@ export const Door = ({ date, year }: DoorProps) => {
 
   const doorSize = smallScreen ? { width: 90, height: 90 } : { width: 140, height: 140 }
 
-  const shakeAnimation = {
+  const shakeAnimation: Variants = {
     shaking: {
       x: [-3, 3, -3, 3, 0],
       transition: {
