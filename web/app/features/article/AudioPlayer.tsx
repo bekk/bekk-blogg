@@ -29,7 +29,7 @@ export const AudioPlayer = ({ src, slug }: { src: string; slug: string }) => {
     <div className="mb-6 flex items-center gap-2">
       <button
         onClick={togglePlay}
-        className="w-12 h-12 rounded-full bg-bekk-night text-white flex items-center justify-center hover:bg-opacity-90 transition-colors"
+        className="w-12 h-12 rounded-full bg-red-berry text-white flex items-center justify-center hover:bg-opacity-90 transition-colors"
         aria-label={isLoading ? 'Varmer opp stemmen' : isPlaying ? 'Stopp høytlesning' : 'Start høytlesning'}
       >
         {isLoading ? (
@@ -37,10 +37,10 @@ export const AudioPlayer = ({ src, slug }: { src: string; slug: string }) => {
         ) : isPlaying ? (
           <Pause className="w-6 h-6" />
         ) : (
-          <Play className="w-6 h-6 ml-1" />
+          <Play className="w-6 h-6" />
         )}
       </button>
-      <p className="text-md text-bekk-night">
+      <p className="text-md text-red-berry">
         {isLoading ? 'Varmer opp stemmen' : isPlaying ? 'Leser høyt for deg…' : 'Høytlesning'}
       </p>
       {/* eslint-disable-next-line jsx-a11y/media-has-caption*/}

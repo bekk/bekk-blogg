@@ -222,13 +222,15 @@ export default function ArticleRoute() {
       <header className="relative">
         <Header logoOnly={true} />
       </header>
-      <div className="md:p-8">
-        <div className="striped-frame mx-auto max-w-screen-2xl">
-          <ArticleHeader />
-          <Article post={data} />
+      <div className="flex flex-col items-center">
+        <div className="md:p-8">
+          <div className="striped-frame mx-auto max-w-screen-2xl">
+            <ArticleHeader />
+            <Article post={data} />
+          </div>
         </div>
+        {shouldShowSeries(data) && data.series && <Series postId={data._id} series={data.series} mobileOnly />}
       </div>
-      {shouldShowSeries(data) && data.series && <Series postId={data._id} series={data.series} mobileOnly />}
       <RelatedPosts objectID={data._id} />
     </div>
   )
