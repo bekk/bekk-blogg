@@ -1,4 +1,4 @@
-import { Link } from '@remix-run/react'
+import { Link } from 'react-router'
 import { useEffect, useState } from 'react'
 import Countdown, { CountdownRendererFn } from 'react-countdown'
 

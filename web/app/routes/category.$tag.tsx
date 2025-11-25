@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, redirect } from '@vercel/remix'
+import { LoaderFunctionArgs, redirect } from 'react-router'
 
 export async function loader({ params }: LoaderFunctionArgs) {
   if (!params.tag) {

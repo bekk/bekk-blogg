@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs } from '@vercel/remix'
+import { LoaderFunctionArgs } from 'react-router'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { loadQuery } from 'utils/sanity/loader.server'
 import { RSS_FEED_QUERY } from 'utils/sanity/queries/postQueries'

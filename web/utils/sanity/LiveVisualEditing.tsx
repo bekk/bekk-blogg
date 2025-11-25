@@ -1,4 +1,4 @@
-import { VisualEditing } from '@sanity/visual-editing/remix'
+import { VisualEditing } from '@sanity/visual-editing/react-router'
 import { client } from './client'
 import { useLiveMode } from './loader'
 

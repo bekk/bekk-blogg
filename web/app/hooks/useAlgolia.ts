@@ -1,4 +1,4 @@
-import { useMatches } from '@remix-run/react'
+import { useMatches } from 'react-router'
 import algoliasearch from 'algoliasearch'
 import { useRef } from 'react'
 

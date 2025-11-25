@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from '@remix-run/react'
+import { Link } from 'react-router'
 import { motion } from 'framer-motion'
 
 import { closedDoorSvg } from './doorsSVG/ClosedDoorSVG'

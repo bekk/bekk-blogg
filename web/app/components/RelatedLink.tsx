@@ -1,5 +1,5 @@
 import { usePreviewData } from '@opengraphninja/react'
-import { Link } from '@remix-run/react'
+import { Link } from 'react-router'
 import { POST_BY_SLUGResult } from 'utils/sanity/types/sanity.types'
 
 type RelatedLinkElementProps = {

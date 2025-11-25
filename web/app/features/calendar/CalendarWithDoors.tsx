@@ -1,4 +1,4 @@
-import { Link, useLoaderData } from '@remix-run/react'
+import { Link, useLoaderData } from 'react-router'
 import { motion } from 'framer-motion'
 import { Search } from '~/components/Search'
 
