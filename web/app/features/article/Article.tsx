@@ -1,6 +1,6 @@
 import { PortableText } from '@portabletext/react'
-import { Link, useActionData, useNavigation } from 'react-router'
 import { Fragment, ReactNode } from 'react'
+import { Link, useActionData, useNavigation } from 'react-router'
 import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readingTime'
 import { POST_BY_SLUGResult, SanityImageAsset } from 'utils/sanity/types/sanity.types'
@@ -16,7 +16,6 @@ import PodcastBlock from '~/portable-text/PodcastBlock'
 import VimeoBlock from '~/portable-text/VimeoBlock'
 import { action } from '~/routes/post.$year.$date.$slug'
 import Series, { shouldShowSeries } from './Series'
-import { NewsletterForm } from '../calendar/NewsletterForm'
 
 type ArticleProps = {
   post: POST_BY_SLUGResult
@@ -159,11 +158,6 @@ export const Article = ({ post }: ArticleProps) => {
         )}
 
         <LikeContent id={post._id} language={post.language} />
-        <div className="mt-8 flex justify-center border-t border-bekk-night">
-          <div className="w-auto mt-8">
-            <NewsletterForm />
-          </div>
-        </div>
       </article>
     </section>
   )

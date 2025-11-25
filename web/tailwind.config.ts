@@ -1,6 +1,7 @@
 import typography from '@tailwindcss/typography'
 import type { Config } from 'tailwindcss'
 import animate from 'tailwindcss-animate'
+import { PluginAPI } from 'tailwindcss/types/config'
 
 export default {
   darkMode: ['class'],
@@ -92,6 +93,7 @@ export default {
       colors: {
         'bekk-night': '#1f1f1f',
         'reindeer-brown': '#714319',
+        'red-berry': '#A7060E',
         foreground: 'hsl(var(--foreground))',
         card: {
           DEFAULT: 'hsl(var(--card))',
@@ -135,5 +137,45 @@ export default {
       },
     },
   },
-  plugins: [typography, animate],
+  plugins: [
+    typography,
+    animate,
+    function ({ addComponents }: PluginAPI) {
+      addComponents({
+        '.stamp-border': {
+          position: 'relative',
+          isolation: 'isolate',
+          padding: '0',
+          '--border-thickness': 'calc(var(--border-radius) * 1.5)',
+        },
+
+        '.stamp-border::before': {
+          content: '""',
+          position: 'absolute',
+          inset: '0',
+          zIndex: '-1',
+
+          backgroundImage:
+            'radial-gradient(var(--border-radius), transparent 100%, var(--border-color)), linear-gradient(var(--border-color) 0 0)',
+          backgroundRepeat: 'round, no-repeat',
+          backgroundPosition: 'calc(var(--border-radius) * -1.5) calc(var(--border-radius) * -1.5), 50%',
+          backgroundSize:
+            'calc(var(--border-radius) * 3) calc(var(--border-radius) * 3), calc(100% - var(--border-radius) * 3) calc(100% - var(--border-radius) * 3)',
+          transform: 'rotate(var(--border-rotation, 0deg))',
+          transformOrigin: 'center center',
+        },
+
+        '.stamp-border::after': {
+          content: '""',
+          position: 'absolute',
+          inset: 'var(--border-thickness)',
+
+          zIndex: '-1',
+          background: 'var(--stamp-bg)',
+          transform: 'rotate(var(--border-rotation, 0deg))',
+          transformOrigin: 'center center',
+        },
+      })
+    },
+  ],
 } satisfies Config
