@@ -7,7 +7,7 @@ interface TeaserPageFooterProps {
 
 export const TeaserPageFooter = ({ className }: TeaserPageFooterProps) => {
   return (
-    <div className={`w-full mt-16 px-16 gap-24 flex-row items-end ${className}`}>
+    <div className={`w-full px-16 pb-0 gap-24 flex flex-row items-end bg-soft-pink bottom-0 ${className}`}>
       <BigParcel />
       <GiftsWithLink />
     </div>

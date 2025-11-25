@@ -1,5 +1,5 @@
 import { validatePreviewUrl } from '@sanity/preview-url-secret'
-import { type ActionFunction, type LoaderFunctionArgs, redirect } from '@vercel/remix'
+import { ActionFunction, LoaderFunctionArgs, redirect } from 'react-router'
 import { readClient } from 'utils/sanity/sanity.server'
 import { commitSession, destroySession, getSession } from 'utils/sessions'
 

@@ -1,10 +1,9 @@
 // serverless function for handling webhooks
 
-import { ActionFunction } from '@remix-run/node'
 import { isValidSignature, SIGNATURE_HEADER_NAME } from '@sanity/webhook'
 import algoliasearch from 'algoliasearch'
+import { ActionFunction } from 'react-router'
 import indexer from 'sanity-algolia'
-
 import { POST_SEARCH_PROJECTION } from '../../utils/sanity/queries/postQueries'
 import { readClient } from '../../utils/sanity/sanity.server'
 

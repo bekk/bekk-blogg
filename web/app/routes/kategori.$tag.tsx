@@ -1,11 +1,11 @@
-import { isRouteErrorResponse, useLoaderData, useNavigation, useRouteError } from '@remix-run/react'
-import { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
+import { isRouteErrorResponse, MetaFunction, useLoaderData, useNavigation, useRouteError } from 'react-router'
 import { combinedHeaders } from 'utils/headers'
 
 import { loadQuery } from 'utils/sanity/loader.server'
 import { TAG_WITH_POSTS_QUERY } from '../../utils/sanity/queries/postQueries'
 import { TAG_WITH_POSTS_QUERYResult } from '../../utils/sanity/types/sanity.types'
 
+import { LoaderFunctionArgs } from 'react-router'
 import { Spinner } from '~/components/Spinner'
 import { ErrorPage } from '~/features/error-boundary/ErrorPage'
 import Header from '~/features/header/Header'

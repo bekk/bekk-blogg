@@ -1,12 +1,11 @@
-import { Link } from '@remix-run/react'
-
+import { useState } from 'react'
 import { ClosedDoorSvg } from './doorsSVG/ClosedDoorSVG'
 import { TodaysDoor } from './doorsSVG/TodaysDoorSVG'
+import { Link } from 'react-router'
 import { motion } from 'framer-motion'
 
 import useMediaQuery from '~/hooks/useMediaQuery'
 import { OpenDoorSvg } from './doorsSVG/OpenDoorSVG'
-import { useState } from 'react'
 
 const today = new Date()
 
@@ -29,7 +28,7 @@ export const Door = ({ date, year }: DoorProps) => {
       x: [-3, 3, -3, 3, 0],
       transition: {
         duration: 0.2,
-        ease: 'easeInOut',
+        ease: ['easeInOut'],
       },
     },
   }

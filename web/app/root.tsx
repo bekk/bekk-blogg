@@ -1,6 +1,11 @@
+import { lazy, Suspense } from 'react'
 import {
+  data,
+  HeadersFunction,
   isRouteErrorResponse,
   Links,
+  LinksFunction,
+  LoaderFunction,
   Meta,
   Outlet,
   Scripts,
@@ -8,24 +13,21 @@ import {
   useLoaderData,
   useMatches,
   useRouteError,
-} from '@remix-run/react'
-import type { HeadersFunction, LinksFunction, LoaderFunction } from '@vercel/remix'
-import { json } from '@vercel/remix'
-import { SpeedInsights } from '@vercel/speed-insights/remix'
-import { lazy, Suspense } from 'react'
+} from 'react-router'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
 import { ErrorPage } from './features/error-boundary/ErrorPage'
 import { JumpToContent } from './features/jump-to-content/JumpToContent'
 
 import styles from '~/styles/main.css?url'
+import { Route } from './+types/root'
 import { Toaster } from './components/ui/toaster'
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request }: Route.LoaderArgs) => {
   const { preview } = await loadQueryOptions(request.headers)
-  return json(
+  return data(
     {
       isPreview: preview,
       ENV: {
@@ -134,7 +136,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <Toaster />
           <ScrollRestoration />
           <Scripts />
-          <SpeedInsights />
         </div>
       </body>
     </html>

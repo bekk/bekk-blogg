@@ -1,12 +1,12 @@
-import { Link, useLocation } from '@remix-run/react'
 import { motion } from 'framer-motion'
+import { Link, useLocation } from 'react-router'
 import { readingTime } from 'utils/readingTime'
 import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'
 
 import { PostStamp } from '../article/PostStamp'
 
-import { postUrl } from '~/lib/format'
 import { formatDate } from 'utils/date'
+import { postUrl } from '~/lib/format'
 
 type PostPreviewType = {
   _id: string

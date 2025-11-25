@@ -1,5 +1,13 @@
-import { isRouteErrorResponse, json, redirect, useLoaderData, useRouteError } from '@remix-run/react'
-import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
+import {
+  ActionFunctionArgs,
+  data,
+  isRouteErrorResponse,
+  LoaderFunctionArgs,
+  MetaFunction,
+  redirect,
+  useLoaderData,
+  useRouteError,
+} from 'react-router'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { combinedHeaders } from 'utils/headers'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
@@ -16,9 +24,9 @@ import '../portable-text/prism-theme.css'
 
 import { useQuery } from 'utils/sanity/loader'
 import { Article } from '~/features/article/Article'
+import { RelatedPosts } from '~/features/article/RelatedPosts'
 import Series, { shouldShowSeries } from '~/features/article/Series'
 import Header from '~/features/header/Header'
-import { RelatedPosts } from '~/features/article/RelatedPosts'
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const post = data?.initial.data
@@ -30,7 +38,9 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const availableFrom = post.availableFrom ? new Date(post.availableFrom) : undefined
   const title = cleanControlCharacters(post.title ?? 'Innlegg')
   const description = cleanControlCharacters(post.previewText ?? toPlainText(post.description))
-  const authors = cleanControlCharacters(post.authors?.map((author) => author.fullName).join(', '))
+  const authors = cleanControlCharacters(
+    post.authors?.map((author: { fullName: string }) => author.fullName).join(', ')
+  )
 
   const meta = [
     { title: `${title} | Bekk Christmas` },
@@ -145,7 +155,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     ? urlFor(initial.data.coverImage).width(1200).format('webp').url()
     : undefined
 
-  return json(
+  return data(
     {
       initial,
       query: POST_BY_SLUG,
@@ -196,9 +206,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export const headers = combinedHeaders
 
 export default function ArticleRoute() {
-  const { initial, query, params } = useLoaderData<typeof loader>()
+  const loaderData = useLoaderData<typeof loader>()
+  const { initial, query, params } = loaderData
   const { data } = useQuery<typeof initial.data>(query, params, {
-    // @ts-expect-error Dette er en kjent bug i sanity-react-loader
     initial,
   })
 

@@ -1,5 +1,5 @@
 import { PortableText } from '@portabletext/react'
-import { Link, useActionData, useNavigation } from '@remix-run/react'
+import { Link, useActionData, useNavigation } from 'react-router'
 import { Fragment, ReactNode } from 'react'
 import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readingTime'

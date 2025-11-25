@@ -1,5 +1,5 @@
-import { useLoaderData } from '@remix-run/react'
-import { Door } from './Door'
+import { useLoaderData } from 'react-router'
+import { Door } from '~/features/calendar/Door'
 
 export const CalendarWithDoors = () => {
   const data = useLoaderData<{ year: string }>()

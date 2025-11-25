@@ -1,5 +1,11 @@
-import { isRouteErrorResponse, Link, useLoaderData, useRouteError } from '@remix-run/react'
-import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix'
+import {
+  isRouteErrorResponse,
+  Link,
+  LoaderFunctionArgs,
+  MetaFunction,
+  useLoaderData,
+  useRouteError,
+} from 'react-router'
 import { z } from 'zod'
 import { Search } from '~/components/Search'
 
