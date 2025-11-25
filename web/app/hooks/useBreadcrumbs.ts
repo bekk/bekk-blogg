@@ -51,7 +51,7 @@ export function useBreadcrumbs(): Breadcrumb[] {
     })
   } else if (currRoute.pathname.includes('/kategori')) {
     breadcrumbs.unshift({
-      href: '/post/2024',
+      href: '/post/2025',
       title: 'Postkontoret',
     })
     addBreadcrumb('/kategori', 'Kategorier')
@@ -62,7 +62,7 @@ export function useBreadcrumbs(): Breadcrumb[] {
       }
     })
   } else if (currRoute.pathname.includes('/forfatter')) {
-    addBreadcrumb('/post/2024', 'Postkontoret')
+    addBreadcrumb('/post/2025', 'Postkontoret')
     const match = matches[matches.length - 1]?.data as { author: Author }
     if (match?.author?.fullName) {
       addBreadcrumb('', `${match?.author?.fullName}`)

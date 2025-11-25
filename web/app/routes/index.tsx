@@ -22,7 +22,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const now = new Date(new Date().getTime() + 1000 * 60 * 60)
   const isLive = now > liveDate
   if (preview || isLive) {
-    return redirect('/post/2024')
+    return redirect('/post/2025')
   }
   return null
 }
