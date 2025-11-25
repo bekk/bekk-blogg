@@ -54,7 +54,7 @@ const SearchBoxWithDropdown = ({ transparent }: SearchProps) => {
   }, [])
 
   return (
-    <div className="relative w-[75%] md:w-[500px]" ref={searchRef}>
+    <div className="relative w-[75%] md:w-[500px] flex justify-center" ref={searchRef}>
       <CustomSearchBox
         query={query}
         refine={(value: string) => {

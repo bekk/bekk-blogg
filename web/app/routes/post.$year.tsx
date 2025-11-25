@@ -77,7 +77,7 @@ export const meta: MetaFunction = ({ data }) => {
 export default function YearRoute() {
   const data = useLoaderData<{ year: string }>()
   return (
-    <div className="bg-soft-pink h-screen">
+    <div className="bg-soft-pink min-h-screen pb-12">
       <Link to="/post/2025" className="absolute top-[20px] md:top-[40px] left-[20px] md:left-[40px]">
         <BekkLogo className="h-auto w-10 md:auto md:w-16 text-red-berry" />
       </Link>
