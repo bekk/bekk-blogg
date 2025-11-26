@@ -19,6 +19,8 @@ import { DayNavigation } from '~/features/article/DayNavigation'
 import { ErrorPage } from '~/features/error-boundary/ErrorPage'
 import Header from '~/features/header/Header'
 import { PostPreviewList } from '~/features/post-preview/PostPreview'
+import { GiftsLeftSideArticle } from '~/features/article/svgs/GiftsLeftSideArticle'
+import { GiftRightSideArticle } from '~/features/article/svgs/GiftRightSideArticle'
 
 export const meta: MetaFunction<typeof loader> = ({ data: postsByDate }) => {
   if (!postsByDate) {
@@ -121,9 +123,18 @@ export default function DateRoute() {
           {parseInt(date) < 10 ? date.replace('0', '') : date}. desember
         </h1>
         <p className="self-start sm:self-center pl-4 mb-8 sm:mb-12 text-red-berry ">Totalt {posts.length} innlegg</p>
-        <PostPreviewList posts={posts} />
+        <div className="flex justify-center items-end">
+          <div className="hidden xl:block w-[300px]">
+            <GiftsLeftSideArticle />
+          </div>
+          <PostPreviewList posts={posts} />
+          <div className="hidden xl:block w-[300px]">
+            <GiftRightSideArticle />
+          </div>
+        </div>
         <DayNavigation day={Number(date)} year={Number(year)} />
       </div>
+      <div className="flex justify-between absolute inset-x-0 bottom-0 z-10"></div>
     </div>
   )
 }

@@ -4,9 +4,8 @@ import Countdown, { CountdownRendererFn } from 'react-countdown'
 
 import { PostPreview } from '../post-preview/PostPreview'
 
-import { LinkToArchive } from '~/components/LinkToArchive'
-import { TeaserPageFooter } from '~/components/TeaserPageFooter'
 import { BekkLogo } from '../article/BekkLogo'
+import { TeaserPageFooter } from './TeaserPageFooter'
 
 const useClientSideOnly = () => {
   const [isClientSide, setIsClientSide] = useState(false)
@@ -79,9 +78,8 @@ export const TeaserPage = () => {
             />
           </Link>
         </div>
-        <LinkToArchive className="block lg:hidden mb-12" />
       </div>
-      <TeaserPageFooter className="hidden lg:flex" />
+      <TeaserPageFooter />
     </div>
   )
 }
