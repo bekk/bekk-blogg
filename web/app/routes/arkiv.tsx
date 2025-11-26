@@ -1,14 +1,7 @@
 import { Link, MetaFunction } from 'react-router'
+import { GiftsWithBadge } from '~/features/archive/svgs/GiftsWithBadge'
+import { motion } from 'framer-motion'
 
-import { GreenGiftRedRibbon } from '~/features/archive/svgs/GreenGiftRedRibbon'
-import { GreenGiftRedRibbonH } from '~/features/archive/svgs/GreenGiftRedRibbonH'
-import { RedGiftWhiteRibbon } from '~/features/archive/svgs/RedGiftWhiteRibbon'
-import { RedGiftWhiteRibbonV } from '~/features/archive/svgs/RedGiftWhiteRibbonV'
-import { WhiteGiftGreenRibbon } from '~/features/archive/svgs/WhiteGiftGreenRibbon'
-import { WhiteGiftRedRibbon } from '~/features/archive/svgs/WhiteGiftRedRibbon'
-import { WhiteGiftRedRibbonH } from '~/features/archive/svgs/WhiteGiftRedRibbonH'
-import { WhiteGiftRedRibbonSquare } from '~/features/archive/svgs/WhiteGiftRedRibbonSquare'
-import { YearBadge } from '~/features/archive/YearBadge'
 import Header from '~/features/header/Header'
 
 export const meta: MetaFunction = () => {
@@ -43,81 +36,43 @@ export default function ArchiveRoute() {
     availableYears.push(i)
   }
 
-  const giftSVGList = [
-    WhiteGiftRedRibbon,
-    RedGiftWhiteRibbon,
-    WhiteGiftGreenRibbon,
-    GreenGiftRedRibbon,
-    GreenGiftRedRibbonH,
-    WhiteGiftRedRibbonH,
-    RedGiftWhiteRibbonV,
-    WhiteGiftRedRibbonSquare,
-  ]
-
-  const giftList = []
-  for (let i = 0; availableYears.length > i; i++) {
-    giftList.push(giftSVGList[i % 8])
-  }
-
   return (
-    <div className="bg-soft-pink">
+    <div className="bg-soft-pink min-h-screen">
       <header className="relative">
         <Header />
       </header>
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col justify-center items-center">
         <h1 className="text-red-berry text-center">Arkiv</h1>
-        <div className="grid grid-cols-1 lg:grid-cols-4 items-end pt-20 w-full">
-          {giftList.map((GiftSVG, index) => {
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-10 md:gap-y-40 md:px-24 w-full max-w-[1800px] mb-12">
+          {availableYears.map((_, index) => {
+            const colorRibbonBigPackage = index % 2 ? '#32432D' : '#AEB7AB'
+            const colorWrappingBigPackage = index % 2 ? '#AEB7AB' : '#32432D'
+
+            const colorRibbonSmallPackage = index % 2 ? '#ED7E87' : '#6D0D22'
+            const colorWrappingSmallPackage = index % 2 ? '#A7060E' : '#ED7E87'
             return (
               <div className="grid justify-items-center w-full pt-8" key={index}>
-                {/*Mobile*/}
-                <div className="flex flex-col w-full lg:hidden">
-                  <Link
-                    to={`/post/${availableYears[index]}`}
-                    className="flex justify-center"
-                    aria-label={`Julekalender fra ${availableYears[index]}`}
-                  >
-                    <GiftSVG />
-                  </Link>
-                  <Plank year={availableYears[index]} />
-                </div>
-                {/*Desktop*/}
-                <div className="hidden lg:block">
+                <motion.div
+                  whileHover={{
+                    scale: 1.1,
+                    transition: { duration: 0.2 },
+                  }}
+                >
                   <Link to={`/post/${availableYears[index]}`} aria-label={`Julekalender fra ${availableYears[index]}`}>
-                    <GiftSVG />
+                    <GiftsWithBadge
+                      year={availableYears[index]}
+                      colorRibbonBigPackage={colorRibbonBigPackage}
+                      colorWrappingBigPackage={colorWrappingBigPackage}
+                      colorRibbonSmallPackage={colorRibbonSmallPackage}
+                      colorWrappingSmallPackage={colorWrappingSmallPackage}
+                    />
                   </Link>
-                </div>
+                </motion.div>
               </div>
             )
-          })}
-          {availableYears.map((_, index) => {
-            if (index % 4 === 0) {
-              const rowStart = 2 * (index / 4) + 2
-              return (
-                <div
-                  key={index}
-                  className={`col-start-1 row-start-${rowStart} col-span-4 justify-self-stretch hidden lg:block`}
-                >
-                  <BigPlank years={availableYears.slice(index, index + 4)} />
-                </div>
-              )
-            }
           })}
         </div>
       </div>
     </div>
   )
 }
-
-const BigPlank = ({ years }: { years: number[] }) => (
-  <div className="bg-plank py-10 grid grid-cols-1 lg:grid-cols-4 justify-items-center">
-    {years.map((year, i) => (
-      <YearBadge year={year} key={i} />
-    ))}
-  </div>
-)
-const Plank = ({ year }: { year: number }) => (
-  <div className={'bg-plank p-10 justify-self-stretch'}>
-    <YearBadge year={year} />
-  </div>
-)
