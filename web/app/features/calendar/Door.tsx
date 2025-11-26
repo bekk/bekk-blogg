@@ -40,6 +40,11 @@ export const Door = ({ date, year }: DoorProps) => {
     }
   }
 
+  const colorIndex = (date - 1) % 3
+
+  const giftWrappingPalette = ['#A7060E', '#6D0D22', '#AEB7AB']
+  const giftRibbonPalette = ['#ED7E87', '#ED7E87', '#D9DCCF']
+
   if (isOpenable) {
     return (
       <Link
@@ -55,7 +60,16 @@ export const Door = ({ date, year }: DoorProps) => {
               transition: { duration: 0.2 },
             }}
           >
-            {isToday ? <TodaysDoor date={date} {...doorSize} /> : <OpenDoorSvg date={date} {...doorSize} />}
+            {isToday ? (
+              <TodaysDoor date={date} {...doorSize} />
+            ) : (
+              <OpenDoorSvg
+                giftWrappingColor={giftWrappingPalette[colorIndex]}
+                giftRibbonColor={giftRibbonPalette[colorIndex]}
+                date={date}
+                {...doorSize}
+              />
+            )}
           </motion.div>
         </div>
       </Link>
