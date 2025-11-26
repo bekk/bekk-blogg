@@ -80,7 +80,7 @@ export default function YearRoute() {
   return (
     <div className="bg-soft-pink min-h-screen">
       <div className="relative min-h-screen sm:min-h-[960px]">
-        <Link to="/post/2025" className="absolute top-[20px] md:top-[40px] left-[20px] md:left-[40px]">
+        <Link to="/" className="absolute top-[20px] md:top-[40px] left-[20px] md:left-[40px]">
           <BekkLogo className="h-auto w-10 md:auto md:w-16 text-red-berry" />
         </Link>
 
