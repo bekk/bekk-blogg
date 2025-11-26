@@ -5,7 +5,7 @@ import { RightSideGiftsTeaser } from './svgs/RightSideGiftsTeaser'
 export const TeaserPageFooter = () => {
   return (
     <>
-      <div className="hidden md:flex justify-between items-end w-full max-w-[1800px]">
+      <div className="hidden md:flex justify-between items-end max-w-[1800px] w-full">
         <LeftSideGiftsTeaser />
         <RightSideGiftsTeaser />
       </div>
