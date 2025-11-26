@@ -39,6 +39,8 @@ export const RelatedPosts = ({ objectID }: RelatedPostsProps) => {
                     tags: item.tags || [],
                     slug: item.slug?.current,
                     availableFrom: item.availableFrom,
+                    summary: item.summary,
+                    coverImage: item.coverImage,
                   }))}
                 />
               )
