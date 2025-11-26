@@ -10,6 +10,7 @@ export default [
   route('post/:year', 'routes/post.$year.tsx'),
   route('post/:year/:date', 'routes/post.$year.$date.tsx'),
   route('post/:year/:date/:slug', 'routes/post.$year.$date.$slug.tsx'),
+  route('skjerm', 'routes/screen.tsx'),
   route('resource/preview', 'routes/resource.preview.tsx'),
   route('julesveiper', 'routes/julesveiper.tsx'),
   route('rss.xml', 'routes/rss.xml.tsx'),
