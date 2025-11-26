@@ -53,6 +53,7 @@ const NumberWithLabel = ({ number, label }: { number: number; label: string }) =
 
 export const TeaserPage = () => {
   const isClientSide = useClientSideOnly()
+  const launchDate = new Date(new Date().getFullYear(), 11, 1, 0, 0, 0, 0) // Første desember kl 00:00:00
 
   return (
     <div className="flex flex-col justify-between items-center overflow-y-auto h-screen bg-soft-pink">
@@ -63,7 +64,7 @@ export const TeaserPage = () => {
         {isClientSide && <Countdown date={`${new Date().getFullYear()}/12/01`} renderer={CountdownRenderer} />}
 
         <div className="mb-12 lg:mb-0">
-          <Link to={`post/${new Date() > new Date(new Date().setFullYear(2024, 12, 1)) ? '2024' : '2023'}`}>
+          <Link to={`post/${new Date() > launchDate ? '2025' : '2024'}`}>
             <PostPreview
               title="bekk.christmas"
               authors={['Bekk']}
