@@ -65,7 +65,7 @@ const SearchBoxWithDropdown = ({ transparent }: SearchProps) => {
         transparent={transparent}
       />
       {query && showResults && (
-        <div className="absolute z-[100] mt-2 w-full bg-white bg-opacity-90 shadow-lg rounded-lg  max-h-[290px] overflow-y-scroll">
+        <div className="absolute top-full z-[100] mt-1 w-full bg-white bg-opacity-90 shadow-lg rounded-lg max-h-[290px] overflow-y-scroll">
           <Hits hitComponent={Hit} />
         </div>
       )}
