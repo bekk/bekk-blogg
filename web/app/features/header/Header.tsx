@@ -5,13 +5,13 @@ import { BekkLogo } from '~/features/article/BekkLogo'
 import { useBreadcrumbs } from '~/hooks/useBreadcrumbs'
 
 interface HeaderProps {
-  logoOnly?: boolean
+  withBreadcrumbs?: boolean
 }
 
-export const Header = ({ logoOnly = false }: HeaderProps) => {
+export const Header = ({ withBreadcrumbs = true }: HeaderProps) => {
   const breadcrumbs = useBreadcrumbs()
   const error = useRouteError()
-  const expandedHeader = !logoOnly && !error
+  const expandedHeader = withBreadcrumbs && !error
 
   return (
     <div className={`flex flex-col gap-8 p-4 md:pb-8 px-4 md:px-10 md:pt-8`}>
@@ -20,7 +20,7 @@ export const Header = ({ logoOnly = false }: HeaderProps) => {
           <BekkLogo className="h-auto w-10 md:auto md:w-16 text-red-berry" />
         </Link>
 
-        {expandedHeader && <Search />}
+        <Search />
       </div>
 
       {expandedHeader && (

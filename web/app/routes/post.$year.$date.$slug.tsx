@@ -220,7 +220,7 @@ export default function ArticleRoute() {
   return (
     <div className="bg-soft-pink break-words min-h-screen">
       <header className="relative">
-        <Header logoOnly={true} />
+        <Header withBreadcrumbs={false} />
       </header>
       <div className="md:p-8">
         <div className="striped-frame mx-auto max-w-screen-2xl">
