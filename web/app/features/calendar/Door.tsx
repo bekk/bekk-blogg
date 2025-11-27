@@ -14,8 +14,13 @@ type DoorProps = {
   year: number
 }
 
+const giftWrappingPalette = ['#A7060E', '#6D0D22', '#AEB7AB']
+const giftRibbonPalette = ['#ED7E87', '#ED7E87', '#D9DCCF']
+
 export const Door = ({ date, year }: DoorProps) => {
   const [isShaking, setIsShaking] = useState(false)
+  const [colorIndex] = useState(() => Math.floor(Math.random() * giftWrappingPalette.length))
+
   const smallScreen = useMediaQuery('(max-width: 640px)')
 
   const isOpenable = new Date(year, 11, date) <= today
@@ -39,7 +44,6 @@ export const Door = ({ date, year }: DoorProps) => {
       setTimeout(() => setIsShaking(false), 500)
     }
   }
-
   if (isOpenable) {
     return (
       <Link
@@ -55,7 +59,16 @@ export const Door = ({ date, year }: DoorProps) => {
               transition: { duration: 0.2 },
             }}
           >
-            {isToday ? <TodaysDoor date={date} {...doorSize} /> : <OpenDoorSvg date={date} {...doorSize} />}
+            {isToday ? (
+              <TodaysDoor date={date} {...doorSize} />
+            ) : (
+              <OpenDoorSvg
+                giftWrappingColor={giftWrappingPalette[colorIndex]}
+                giftRibbonColor={giftRibbonPalette[colorIndex]}
+                date={date}
+                {...doorSize}
+              />
+            )}
           </motion.div>
         </div>
       </Link>
