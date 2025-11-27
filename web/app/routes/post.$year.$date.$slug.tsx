@@ -27,7 +27,7 @@ import { Article } from '~/features/article/Article'
 import { RelatedPosts } from '~/features/article/RelatedPosts'
 import Series, { shouldShowSeries } from '~/features/article/Series'
 import { ArticleHeader } from '~/features/article/ArticleHeader'
-import { HeaderWithLogoAndSearchBar } from '~/features/header/Header'
+import Header from '~/features/header/Header'
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const post = data?.initial.data
@@ -220,7 +220,7 @@ export default function ArticleRoute() {
   return (
     <div className="bg-soft-pink break-words min-h-screen">
       <header className="relative">
-        <HeaderWithLogoAndSearchBar />
+        <Header withBreadcrumbs={false} />
       </header>
       <div className="md:p-8">
         <div className="striped-frame mx-auto max-w-screen-2xl">

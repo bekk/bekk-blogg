@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { CalendarWithDoors } from '~/features/calendar/CalendarWithDoors'
 import { CalendarPageFooter } from '~/features/calendar/CalendarPageFooter'
 import { ErrorPage } from '~/features/error-boundary/ErrorPage'
-import { HeaderWithLogoAndSearchBar } from '~/features/header/Header'
+import Header from '~/features/header/Header'
 
 const ParamsSchema = z.object({
   year: z.string().min(4).max(4),
@@ -72,7 +72,7 @@ export default function YearRoute() {
   return (
     <div className="bg-soft-pink min-h-screen">
       <div className="relative min-h-screen sm:min-h-[960px]">
-        <HeaderWithLogoAndSearchBar />
+        <Header withBreadcrumbs={false} />
         <div className="flex flex-col gap-6">
           <div className="flex justify-center text-headline-desktop text-red-berry">{data.year}</div>
           <div className="2lg:h-auto flex justify-center relative z-0">
