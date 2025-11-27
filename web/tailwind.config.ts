@@ -8,6 +8,18 @@ export default {
   content: ['./app/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      keyframes: {
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(0deg)' },
+          '12.5%': { transform: 'rotate(-2deg)' },
+          '37.5%': { transform: 'rotate(2deg)' },
+          '62.5%': { transform: 'rotate(-2deg)' },
+          '87.5%': { transform: 'rotate(2deg)' },
+        },
+      },
+      animation: {
+        wiggle: 'wiggle 0.4s ease-in-out',
+      },
       backgroundColor: {
         'envelope-beige': '#E0C190',
         'postcard-beige': '#F7F3EE',
@@ -16,6 +28,10 @@ export default {
         'dark-green': '#164125',
         'soft-pink': '#FDD0D8',
         'mid-green': '#32432D',
+        'red-berry': '#A7060E',
+        'soft-green': '#AEB7AB',
+        'soft-red': '#ED7E87',
+        'dark-red': '#6D0D22',
       },
       textColor: {
         base: '#000000',
@@ -27,6 +43,10 @@ export default {
         'light-brown': '#FFEBBF',
         'dark-brown': '#413009',
         'red-berry': '#A7060E',
+        'soft-pink': '#FDD0D8',
+        'soft-green': '#AEB7AB',
+        'soft-red': '#ED7E87',
+        'dark-red': '#6D0D22',
       },
       fontFamily: {
         'gt-expanded': ['GT-America-Expanded-Medium', 'Arial', 'sans-serif'],
