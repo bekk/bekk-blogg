@@ -14,8 +14,13 @@ type DoorProps = {
   year: number
 }
 
+const giftWrappingPalette = ['#A7060E', '#6D0D22', '#AEB7AB']
+const giftRibbonPalette = ['#ED7E87', '#ED7E87', '#D9DCCF']
+
 export const Door = ({ date, year }: DoorProps) => {
   const [isShaking, setIsShaking] = useState(false)
+  const [colorIndex] = useState(() => Math.floor(Math.random() * giftWrappingPalette.length))
+
   const smallScreen = useMediaQuery('(max-width: 640px)')
 
   const isOpenable = new Date(year, 11, date) <= today
@@ -39,12 +44,6 @@ export const Door = ({ date, year }: DoorProps) => {
       setTimeout(() => setIsShaking(false), 500)
     }
   }
-
-  const colorIndex = (date - 1) % 3
-
-  const giftWrappingPalette = ['#A7060E', '#6D0D22', '#AEB7AB']
-  const giftRibbonPalette = ['#ED7E87', '#ED7E87', '#D9DCCF']
-
   if (isOpenable) {
     return (
       <Link
