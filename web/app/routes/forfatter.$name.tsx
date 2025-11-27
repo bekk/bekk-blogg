@@ -105,14 +105,14 @@ export default function AuthorRoute() {
       {navigation.state === 'loading' ? (
         <Spinner />
       ) : (
-        <div>
-          <section className="flex flex-col md:flex-row gap-4 max-w-4xl mx-auto text-red-berry px-4 mb-12">
+        <div className="flex md:flex-row flex-col">
+          <section className="flex md:flex-1 self-start flex-col gap-4 max-w-4xl mx-auto text-red-berry px-4 mb-12">
             <div className="flex-1 flex flex-col justify-center">
               {author?.image && (
                 <img
-                  src={urlFor(author.image).width(400).height(400).url()}
+                  src={urlFor(author.image).width(700).height(800).url()}
                   alt={`Bilde av ${author.fullName}`}
-                  className="rounded-full mb-4 w-[100px] h-[100px] md:w-[200px] md:h-[200px] object-cover mx-auto"
+                  className=" mb-4 w-[300px] h-[360px] md:w-[400px] md:h-[500px] object-cover mx-auto"
                 />
               )}
               <h1 className="text-4xl text-center md:text-center text-red-berry mb-0">{author?.fullName}</h1>
@@ -144,13 +144,13 @@ export default function AuthorRoute() {
               </div>
             </div>
           </section>
-          <section>
+          <section className="flex md:flex-[2] flex-col md:mr-4">
             <div className="flex flex-col mb-4 text-center text-postcard-beige gap-4"></div>
             <PostPreviewList posts={posts} />
-            <Pagination {...pagination} baseUrl={`/forfatter/${author.slug?.current}`} />
           </section>
         </div>
       )}
+      <Pagination {...pagination} baseUrl={`/forfatter/${author.slug?.current}`} />
     </div>
   )
 }
