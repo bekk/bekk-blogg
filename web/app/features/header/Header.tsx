@@ -44,3 +44,17 @@ export const Header = ({ logoOnly = false }: HeaderProps) => {
 }
 
 export default Header
+
+export const HeaderWithLogoAndSearchBar = () => {
+  return (
+    <div className={`flex flex-col gap-8 p-4 px-4 md:px-10 md:pt-8`}>
+      <div className="flex flex-row justify-between items-center gap-4 md:gap-8">
+        <Link to="/" aria-label="Gå til forsiden">
+          <BekkLogo className="h-auto w-10 md:auto md:w-16 text-red-berry" />
+        </Link>
+
+        <Search />
+      </div>
+    </div>
+  )
+}

@@ -1,18 +1,10 @@
-import {
-  isRouteErrorResponse,
-  Link,
-  LoaderFunctionArgs,
-  MetaFunction,
-  useLoaderData,
-  useRouteError,
-} from 'react-router'
+import { isRouteErrorResponse, LoaderFunctionArgs, MetaFunction, useLoaderData, useRouteError } from 'react-router'
 import { z } from 'zod'
-import { Search } from '~/components/Search'
 
-import { BekkLogo } from '~/features/article/BekkLogo'
 import { CalendarWithDoors } from '~/features/calendar/CalendarWithDoors'
 import { CalendarPageFooter } from '~/features/calendar/CalendarPageFooter'
 import { ErrorPage } from '~/features/error-boundary/ErrorPage'
+import { HeaderWithLogoAndSearchBar } from '~/features/header/Header'
 
 const ParamsSchema = z.object({
   year: z.string().min(4).max(4),
@@ -80,19 +72,9 @@ export default function YearRoute() {
   return (
     <div className="bg-soft-pink min-h-screen">
       <div className="relative min-h-screen sm:min-h-[960px]">
-        <Link to="/" className="absolute top-[20px] md:top-[40px] left-[20px] md:left-[40px]">
-          <BekkLogo className="h-auto w-10 md:auto md:w-16 text-red-berry" />
-        </Link>
-
+        <HeaderWithLogoAndSearchBar />
         <div className="flex flex-col gap-6">
-          <div className="flex justify-center pt-[20px] md:pt-[40px] text-headline-desktop text-red-berry">
-            {data.year}
-          </div>
-
-          <div className="flex justify-center">
-            <Search transparent={true} />
-          </div>
-
+          <div className="flex justify-center text-headline-desktop text-red-berry">{data.year}</div>
           <div className="2lg:h-auto flex justify-center relative z-0">
             <CalendarWithDoors />
           </div>
