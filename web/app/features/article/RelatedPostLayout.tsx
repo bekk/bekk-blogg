@@ -53,7 +53,7 @@ export const RelatedPostsLayout = ({ items }: { items: RelatedPostsData[] }) => 
                   <path d="M0 191.364L243.056 0L486.113 191.364V395.036H0V191.364Z" fill="#AEB7AB" />
                 </svg>
                 <motion.div
-                  className="absolute top-[20px]"
+                  className="absolute top-[20px] w-full"
                   variants={{
                     rest: { y: 0 },
                     hover: {
