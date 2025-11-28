@@ -218,7 +218,7 @@ export default function ArticleRoute() {
   }
 
   return (
-    <div className="bg-soft-pink break-words min-h-screen">
+    <div className="bg-soft-pink break-words min-h-screen pb-20">
       <header className="relative">
         <Header withBreadcrumbs={false} />
       </header>
