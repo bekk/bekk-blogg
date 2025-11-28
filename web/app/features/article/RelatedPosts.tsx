@@ -11,8 +11,8 @@ export const RelatedPosts = ({ objectID }: RelatedPostsProps) => {
   const client = useAlgoliaClient()
 
   return (
-    <div className="relative w-screen flex mt-2 md:mt-6 justify-center min-h-[500px] max-lg:pb-4">
-      <div className="pt-10 md:pt-20 max-w-[1540px] mx-4 md:mx-7 lg:mx-7 w-screen">
+    <div className="relative flex mt-2 md:mt-6 justify-center min-h-[500px] max-lg:pb-4">
+      <div className="pt-10 md:pt-20 max-w-[1540px] mx-4 md:mx-7 lg:mx-7">
         <InstantSearch
           searchClient={client.current}
           indexName={algoliaConfig.index}
@@ -21,7 +21,7 @@ export const RelatedPosts = ({ objectID }: RelatedPostsProps) => {
           <RelatedProducts
             headerComponent={() => (
               <div>
-                <p className="text-red-berry mb-8 text-xl">Hvis du likte denne artikkelen vil du også like disse:</p>
+                <h2 className="text-red-berry mb-20 text-xl">Hvis du likte denne artikkelen vil du også like disse:</h2>
               </div>
             )}
             queryParameters={{ filters: `availableFromMillis <=  ${Date.now()}` }}
@@ -41,6 +41,8 @@ export const RelatedPosts = ({ objectID }: RelatedPostsProps) => {
                     availableFrom: item.availableFrom,
                     summary: item.summary,
                     coverImage: item.coverImage,
+                    podcastLength: item.podcastLength,
+                    wordCount: item.wordCount,
                   }))}
                 />
               )
