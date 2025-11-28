@@ -91,7 +91,7 @@ export default function AuthorRoute() {
   const navigation = useNavigation()
   const isSomethingWrong = !author || !posts || posts.length === 0
   return (
-    <div className="bg-soft-pink pb-8">
+    <div className="bg-soft-pink pb-8 min-h-screen">
       <header className="relative">
         <Header />
       </header>
@@ -105,47 +105,50 @@ export default function AuthorRoute() {
       {navigation.state === 'loading' ? (
         <Spinner />
       ) : (
-        <div className="flex md:flex-row flex-col">
-          <section className="flex md:flex-1 self-start flex-col gap-4 max-w-4xl mx-auto text-red-berry px-4 mb-12">
-            <div className="flex-1 flex flex-col justify-center">
-              {author?.image && (
-                <img
-                  src={urlFor(author.image).width(700).height(800).url()}
-                  alt={`Bilde av ${author.fullName}`}
-                  className=" mb-4 w-[300px] h-[360px] md:w-[400px] md:h-[500px] object-cover mx-auto"
-                />
-              )}
-              <h1 className="text-4xl text-center md:text-center text-red-berry mb-0">{author?.fullName}</h1>
-            </div>
-            <div className="flex flex-col gap-4 justify-center flex-1">
-              {author?.description && <p className="text-center md:text-center text-red-berry">{author.description}</p>}
-              <ul className="flex flex-wrap gap-2 justify-center">
-                {author?.socialMediaLinks?.map((link) => (
-                  <li key={link._key}>
-                    <a
-                      href={link.type === 'email' ? `mailto:${link.url}` : link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      title={link.type}
-                    >
-                      <SocialMediaIcon type={link.type} />
-                      <span className="sr-only">{link.type}</span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-              <div className="text-center">
-                <p>{pagination.totalPosts} innlegg</p>
-                {pagination.totalPages > 1 && (
-                  <p className="text-sm">
-                    Side {pagination.currentPage} av {pagination.totalPages}
-                  </p>
+        <div className="flex lg:flex-row flex-col lg:gap-16">
+          <section className="flex md:flex-[1] flex-col text-red-berry mb-12 lg:items-end">
+            <div>
+              <div className="flex flex-col justify-center">
+                {author?.image && (
+                  <img
+                    src={urlFor(author.image).width(700).height(800).url()}
+                    alt={`Bilde av ${author.fullName}`}
+                    className=" mb-4 w-[300px] h-[360px] md:w-[400px] md:h-[500px] object-cover mx-auto"
+                  />
                 )}
+                <h1 className="text-4xl text-center md:text-center text-red-berry mb-0">{author?.fullName}</h1>
+              </div>
+              <div className="flex flex-col gap-4 justify-center flex-1">
+                {author?.description && (
+                  <p className="text-center md:text-center text-red-berry">{author.description}</p>
+                )}
+                <ul className="flex flex-wrap gap-2 justify-center">
+                  {author?.socialMediaLinks?.map((link) => (
+                    <li key={link._key}>
+                      <a
+                        href={link.type === 'email' ? `mailto:${link.url}` : link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={link.type}
+                      >
+                        <SocialMediaIcon type={link.type} />
+                        <span className="sr-only">{link.type}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+                <div className="text-center">
+                  <p>{pagination.totalPosts} innlegg</p>
+                  {pagination.totalPages > 1 && (
+                    <p className="text-sm">
+                      Side {pagination.currentPage} av {pagination.totalPages}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           </section>
-          <section className="flex md:flex-[2] flex-col md:mr-4">
-            <div className="flex flex-col mb-4 text-center text-postcard-beige gap-4"></div>
+          <section className="flex md:flex-[1] flex-col md:mr-4 lg:items-start">
             <PostPreviewList posts={posts} />
           </section>
         </div>
