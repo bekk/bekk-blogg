@@ -1,4 +1,11 @@
-import { isRouteErrorResponse, LoaderFunctionArgs, MetaFunction, useLoaderData, useRouteError } from 'react-router'
+import {
+  isRouteErrorResponse,
+  LoaderFunctionArgs,
+  MetaFunction,
+  redirect,
+  useLoaderData,
+  useRouteError,
+} from 'react-router'
 import { combinedHeaders } from 'utils/headers'
 import { isNumericString } from 'utils/numbers'
 import { loadQuery } from 'utils/sanity/loader.server'
@@ -50,12 +57,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   const dateNumber = Number(date)
   if (!preview && (isNaN(dateNumber) || dateNumber < 1 || dateNumber > 24)) {
-    throw new Response('Date not found', {
-      status: 404,
-      headers: {
-        'Cache-Control': 'no-cache, no-store',
-      },
-    })
+    return redirect(`/`, { status: 301 })
   }
 
   if (!preview && today < targetDate) {
@@ -114,14 +116,6 @@ export const ErrorBoundary = () => {
   const error = useRouteError()
   if (isRouteErrorResponse(error)) {
     switch (error.status) {
-      case 400:
-      case 404:
-        return (
-          <ErrorPage
-            title="Her var det noe feil med datoen"
-            description="Denne datoen finner du ikke i julekalenderen. Følg Bekk-stjernen tilbake til julekalenderen."
-          />
-        )
       case 425:
         return (
           <ErrorPage
