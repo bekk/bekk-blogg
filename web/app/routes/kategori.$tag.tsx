@@ -78,7 +78,7 @@ export default function TagRoute() {
   const navigation = useNavigation()
 
   return (
-    <div className="bg-soft-pink">
+    <div className="bg-soft-pink min-h-screen">
       <header className="relative">
         <Header />
       </header>

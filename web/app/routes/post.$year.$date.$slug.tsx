@@ -6,6 +6,7 @@ import {
   MetaFunction,
   redirect,
   useLoaderData,
+  useNavigation,
   useRouteError,
 } from 'react-router'
 import { cleanControlCharacters } from 'utils/controlCharacters'
@@ -23,6 +24,7 @@ import { ErrorPage } from '../features/error-boundary/ErrorPage'
 import '../portable-text/prism-theme.css'
 
 import { useQuery } from 'utils/sanity/loader'
+import { Spinner } from '~/components/Spinner'
 import { Article } from '~/features/article/Article'
 import { RelatedPosts } from '~/features/article/RelatedPosts'
 import Series, { shouldShowSeries } from '~/features/article/Series'
@@ -212,6 +214,8 @@ export default function ArticleRoute() {
   const { data } = useQuery<typeof initial.data>(query, params, {
     initial,
   })
+  const { state } = useNavigation()
+  const isNavigating = state === 'loading'
 
   if (!data) {
     return null
@@ -222,16 +226,24 @@ export default function ArticleRoute() {
       <header className="relative">
         <Header withBreadcrumbs={false} />
       </header>
-      <div className="md:p-8">
-        <div className="striped-frame mx-auto max-w-screen-2xl">
-          <ArticleHeader />
-          <Article post={data} />
+      {isNavigating ? (
+        <div className="flex items-center justify-center py-20">
+          <Spinner />
         </div>
-      </div>
-      <div className="w-full flex justify-center">
-        {shouldShowSeries(data) && data.series && <Series postId={data._id} series={data.series} mobileOnly />}
-      </div>
-      <RelatedPosts objectID={data._id} />
+      ) : (
+        <>
+          <div className="md:p-8">
+            <div className="striped-frame mx-auto max-w-screen-2xl">
+              <ArticleHeader />
+              <Article post={data} />
+            </div>
+          </div>
+          <div className="w-full flex justify-center">
+            {shouldShowSeries(data) && data.series && <Series postId={data._id} series={data.series} mobileOnly />}
+          </div>
+          <RelatedPosts objectID={data._id} />
+        </>
+      )}
     </div>
   )
 }

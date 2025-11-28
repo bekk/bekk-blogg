@@ -1,5 +1,5 @@
 import { PortableText } from '@portabletext/react'
-import { Fragment, ReactNode } from 'react'
+import { Fragment } from 'react'
 import { Link, useActionData, useNavigation } from 'react-router'
 import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readingTime'
@@ -10,7 +10,6 @@ import { AudioPlayer } from './AudioPlayer'
 import { LikeContent } from './LikeContent'
 import { RelatedLinks } from './RelatedLinks'
 
-import { ArticleSpinner } from '~/components/ArticleSpinner'
 import { components } from '~/portable-text/Components'
 import PodcastBlock from '~/portable-text/PodcastBlock'
 import VimeoBlock from '~/portable-text/VimeoBlock'
@@ -51,9 +50,9 @@ export const Article = ({ post }: ArticleProps) => {
           <div>
             {post.tags.filter(Boolean).map((tag, index) => (
               <Fragment key={tag._id}>
-                <LinkWithSpinner to={`/kategori/${tag.slug}`} className="hover:text-reindeer-brown underline">
+                <Link to={`/kategori/${tag.slug}`} className="hover:text-reindeer-brown underline">
                   {tag.name}
-                </LinkWithSpinner>
+                </Link>
                 {index !== (post.tags?.length ?? 0) - 1 && ', '}
               </Fragment>
             ))}
@@ -71,12 +70,9 @@ export const Article = ({ post }: ArticleProps) => {
             Fra {''}
             {post.authors.filter(Boolean).map((author, index) => (
               <Fragment key={author._id}>
-                <LinkWithSpinner
-                  to={`/forfatter/${author.slug?.current}`}
-                  className="hover:text-reindeer-brown underline"
-                >
+                <Link to={`/forfatter/${author.slug?.current}`} className="hover:text-reindeer-brown underline">
                   {author.fullName}
-                </LinkWithSpinner>
+                </Link>
                 {index !== post.authors.length - 1 && ', '}
               </Fragment>
             ))}
@@ -164,22 +160,6 @@ export const Article = ({ post }: ArticleProps) => {
 }
 
 export const Border = () => <div className="mb-8 border-b border-bekk-night pb-1" />
-
-type LinkWithSpinnerProps = {
-  to: string
-  children: ReactNode
-  className?: string
-}
-const LinkWithSpinner = ({ to, children, className }: LinkWithSpinnerProps) => {
-  const navigation = useNavigation()
-  const isNavigating = navigation.location?.pathname === to
-  return (
-    <Link to={to} className={className}>
-      {children}
-      {isNavigating && <ArticleSpinner />}
-    </Link>
-  )
-}
 
 const formatType = (type: NonNullable<POST_BY_SLUGResult>['type']) => {
   switch (type) {
