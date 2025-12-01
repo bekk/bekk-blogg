@@ -93,7 +93,7 @@ export default function AuthorRoute() {
   return (
     <div className="bg-soft-pink pb-8 min-h-screen">
       <header className="relative">
-        <Header />
+        <Header withBreadcrumbs={false} />
       </header>
       {isSomethingWrong && (
         <div className="flex flex-col items-center xl:mb-12">
@@ -105,7 +105,7 @@ export default function AuthorRoute() {
       {navigation.state === 'loading' ? (
         <Spinner />
       ) : (
-        <div className="flex xl:flex-row flex-col xl:gap-16">
+        <div className="flex xl:flex-row flex-col xl:gap-16 mt-10">
           <section className="flex xl:flex-[1] flex-col text-red-berry mb-12 xl:items-end xl:ml-8">
             <div>
               <div className="flex flex-col justify-center">
