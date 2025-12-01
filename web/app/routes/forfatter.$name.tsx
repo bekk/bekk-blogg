@@ -96,7 +96,7 @@ export default function AuthorRoute() {
         <Header />
       </header>
       {isSomethingWrong && (
-        <div className="flex flex-col items-center lg:mb-12">
+        <div className="flex flex-col items-center xl:mb-12">
           <h1 className="md:text-center mb-0">
             {author ? `Fant ingen innlegg fra ${author.fullName}` : 'Fant ikke forfatteren'}
           </h1>
@@ -105,8 +105,8 @@ export default function AuthorRoute() {
       {navigation.state === 'loading' ? (
         <Spinner />
       ) : (
-        <div className="flex lg:flex-row flex-col lg:gap-16">
-          <section className="flex md:flex-[1] flex-col text-red-berry mb-12 lg:items-end">
+        <div className="flex xl:flex-row flex-col xl:gap-16">
+          <section className="flex xl:flex-[1] flex-col text-red-berry mb-12 xl:items-end xl:ml-8">
             <div>
               <div className="flex flex-col justify-center">
                 {author?.image && (
@@ -118,7 +118,7 @@ export default function AuthorRoute() {
                 )}
                 <h1 className="text-4xl text-center md:text-center text-red-berry mb-0">{author?.fullName}</h1>
               </div>
-              <div className="flex flex-col gap-4 justify-center flex-1">
+              <div className="flex flex-col w-[300px] xl:w-[400px] gap-4 justify-center flex-1 mx-auto">
                 {author?.description && (
                   <p className="text-center md:text-center text-red-berry">{author.description}</p>
                 )}
@@ -148,7 +148,7 @@ export default function AuthorRoute() {
               </div>
             </div>
           </section>
-          <section className="flex md:flex-[1] flex-col md:mr-4 lg:items-start">
+          <section className="flex xl:flex-[2] flex-col md:mr-4 xl:items-start">
             <PostPreviewList posts={posts} />
           </section>
         </div>
