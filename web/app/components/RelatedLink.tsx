@@ -43,11 +43,11 @@ export const RelatedLinkElement = ({ link, language }: RelatedLinkElementProps) 
       className="flex mt-4 bg-light-gray rounded-xl h-full max-h-20 min-h-20 sm:max-h-28 sm:min-h-28 hover:underline hover:shadow-md transition-shadow group"
     >
       <Link to={link.url} className="flex w-full">
-        <div className="flex flex-grow flex-col justify-center ml-5 w-[125px] no-underline">
+        <div className="flex grow flex-col justify-center ml-5 w-[125px] no-underline">
           <h3 className="line-clamp-2 sm:line-clamp-2 text-base mb-1 sm:text-xl">{title}</h3>
           <p className="line-clamp-1 sm:line-clamp-2 text-sm">{description}</p>
         </div>
-        <div className="flex flex-col justify-center items-center ml-2 max-sm:w-[0px] sm:w-[150px] md:w-[0px] xl:w-[150px] sm:ml-14 sm:mr-4 sm:m-2">
+        <div className="flex flex-col justify-center items-center ml-2 max-sm:w-0 sm:w-[150px] md:w-0 xl:w-[150px] sm:ml-14 sm:mr-4 sm:m-2">
           {image && <img src={image} alt={''} className="rounded-xl overflow-hidden" />}
         </div>
         <div className="sm:hidden md:flex md:items-center xl:hidden flex ml-auto items-center mr-4 sm:mr-4 sm:mb-4">

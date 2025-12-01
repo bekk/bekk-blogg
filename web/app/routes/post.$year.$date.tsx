@@ -114,7 +114,7 @@ export default function DateRoute() {
   const { date, year, posts } = useLoaderData<typeof loader>()
 
   return (
-    <div className="bg-soft-pink">
+    <div className="bg-soft-pink min-h-screen">
       <header className="relative">
         <Header />
       </header>

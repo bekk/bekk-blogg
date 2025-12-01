@@ -130,7 +130,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <JumpToContent />
         <div>
           <Scripts />
-          <main id="content" tabIndex={-1} className="focus:outline-none">
+          <main id="content" tabIndex={-1} className="focus:outline-hidden">
             {children}
           </main>
           <Toaster />

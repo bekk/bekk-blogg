@@ -24,6 +24,7 @@ export const RelatedPosts = ({ objectID }: RelatedPostsProps) => {
                 <h2 className="text-red-berry mb-20 text-xl">Hvis du likte denne artikkelen vil du også like disse:</h2>
               </div>
             )}
+            /* eslint-disable-next-line react-hooks/purity */
             queryParameters={{ filters: `availableFromMillis <=  ${Date.now()}` }}
             objectIDs={[objectID]}
             limit={3}
