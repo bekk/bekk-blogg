@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 export function ExitPreview() {
   const [inIframe, setInIframe] = useState(true)
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setInIframe(window.self !== window.top)
   }, [])
 

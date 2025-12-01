@@ -222,7 +222,7 @@ export default function ArticleRoute() {
   }
 
   return (
-    <div className="bg-soft-pink break-words min-h-screen pb-20">
+    <div className="bg-soft-pink wrap-break-word min-h-screen pb-20">
       <header className="relative">
         <Header withBreadcrumbs={false} />
       </header>
@@ -233,7 +233,7 @@ export default function ArticleRoute() {
       ) : (
         <>
           <div className="md:p-8">
-            <div className="striped-frame mx-auto max-w-screen-2xl">
+            <div className="striped-frame mx-auto max-w-(--breakpoint-2xl)">
               <ArticleHeader />
               <Article post={data} />
             </div>

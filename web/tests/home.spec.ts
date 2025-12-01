@@ -28,7 +28,7 @@
 //empty test
 import { test } from '@playwright/test'
 
-test('placeholder', async ({ page }) => {
+test('placeholder', async () => {
   // This is a placeholder test to ensure the test suite runs without errors.
   // Actual tests are located in other spec files.
 })

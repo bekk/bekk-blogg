@@ -1,9 +1,174 @@
-@import 'fonts.css';
-@import 'backgrounds.css';
+@import 'tailwindcss';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import './fonts.css' layer(base);
+@import './backgrounds.css' layer(base);
+
+/* Enable plugins in v4 */
+@plugin '@tailwindcss/typography';
+@plugin 'tailwindcss-animate';
+
+/* Tailwind v4: define theme tokens in CSS */
+@theme {
+  /* Screens (breakpoints) */
+  --breakpoint-sm: 640px;
+  --breakpoint-2sm: 832px;
+  --breakpoint-md: 900px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-2lg: 1130px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  /* Border radius */
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  /* Border widths */
+  --border-6: 6px;
+  --border-14: 14px;
+  --border-30: 30px;
+  --border-40: 40px;
+
+  /* Height */
+  --size-21-4: 85.6px; /* use via h-21-4 */
+
+  /* Font families */
+  --font-gt-expanded: 'GT-America-Expanded-Medium', Arial, sans-serif;
+  --font-gt-standard-medium: 'GT-America-Standard-Medium', Arial, sans-serif;
+  --font-gt-standard-medium-italic: 'GT-America-Standard-Medium-Italic', Arial, sans-serif;
+  --font-gt-standard: 'GT-America-Standard-Regular', Arial, sans-serif;
+  --font-gt-standard-italic: 'GT-America-Standard-Regular-Italic', Arial, sans-serif;
+  --font-gt-light: 'GT-America-Standard-Light', Arial, sans-serif;
+  --font-gt-light-italic: 'GT-America-Standard-Light-Italic', Arial, sans-serif;
+  --font-source-serif-bold: 'Source Serif Pro Bold';
+
+  /* Font sizes */
+  --text-large-desktop: 6rem;
+  --text-display-desktop: 3.5rem;
+  --text-headline-desktop: 3rem;
+  --text-leading-desktop: 2rem;
+  --text-subtitle-desktop: 1.5rem;
+  --text-body-desktop: 1.25rem;
+  --text-action-desktop: 1rem;
+  --text-display-mobile: 2rem;
+  --text-headline-mobile: 1.625rem;
+  --text-leading-mobile: 1.375rem;
+  --text-subtitle-mobile: 1.25rem;
+  --text-body-mobile: 1.125rem;
+  --text-action-mobile: 0.75rem;
+
+  /* Colors (CSS variables used by tailwind’s color utilities) */
+  --color-bekk-night: #1f1f1f;
+  --color-reindeer-brown: #714319;
+  --color-red-berry: #a7060e;
+
+  /* Extended background colors */
+  --color-envelope-beige: #e0c190;
+  --color-postcard-beige: #f7f3ee;
+  --color-light-gray: #e3e3e3;
+  --color-christmas-tree-green: #2f7346;
+  --color-dark-green: #164125;
+  --color-soft-pink: #fdd0d8;
+  --color-mid-green: #32432d;
+  --color-soft-green: #aeb7ab;
+  --color-soft-red: #ed7e87;
+  --color-dark-red: #6d0d22;
+  --color-calendar-door-fill-green: #232f20;
+
+  /* Extended text colors */
+  --color-text-base: #000000;
+  --color-text-reindeer-brown: #714319;
+  --color-text-postcard-beige: #f7f3ee;
+  --color-text-santa-red: #d0332e;
+  --color-text-christmas-tree-green: #2f7346;
+  --color-text-ruben-red: #a01a1a;
+  --color-text-light-brown: #ffebbf;
+  --color-text-dark-brown: #413009;
+  --color-text-red-berry: #a7060e;
+  --color-text-soft-pink: #fdd0d8;
+  --color-text-soft-green: #aeb7ab;
+  --color-text-soft-red: #ed7e87;
+  --color-text-dark-red: #6d0d22;
+
+  /* Border colors */
+  --color-border-reindeer-brown: #714319;
+  --color-border-christmas-tree-green: #2f7346;
+  --color-border-santa-red: #d0332e;
+  --color-border-red-berry: #a7060e;
+  --color-border-mid-green: #32432d;
+  --color-border-calendar-door-border-green: #293825;
+
+  /* Ring and placeholder colors */
+  --color-ring-red-berry: #a7060e;
+  --color-placeholder-red-berry: #a7060e;
+
+  /* Semantic colors from your CSS variables */
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+  --color-background: hsl(var(--background));
+}
+
+/* Custom keyframes + utility for animation */
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  12.5% {
+    transform: rotate(-2deg);
+  }
+  37.5% {
+    transform: rotate(2deg);
+  }
+  62.5% {
+    transform: rotate(-2deg);
+  }
+  87.5% {
+    transform: rotate(2deg);
+  }
+}
+@utility animate-wiggle {
+  animation: wiggle 0.4s ease-in-out;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
 
 @layer base {
   :root {
@@ -80,6 +245,153 @@
 
   strong {
     font-family: 'GT-America-Standard-Regular', system-ui, sans-serif;
+  }
+}
+
+/* Components: moved from tailwind.config plugin to CSS */
+@layer components {
+  .stamp-border {
+    position: relative;
+    isolation: isolate;
+    padding: 0;
+    --border-thickness: calc(var(--border-radius) * 1.5);
+  }
+  .stamp-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      radial-gradient(var(--border-radius), transparent 100%, var(--border-color)),
+      linear-gradient(var(--border-color) 0 0);
+    background-repeat: round, no-repeat;
+    background-position:
+      calc(var(--border-radius) * -1.5) calc(var(--border-radius) * -1.5),
+      50%;
+    background-size:
+      calc(var(--border-radius) * 3) calc(var(--border-radius) * 3),
+      calc(100% - var(--border-radius) * 3) calc(100% - var(--border-radius) * 3);
+    transform: rotate(var(--border-rotation, 0deg));
+    transform-origin: center center;
+  }
+  .stamp-border::after {
+    content: '';
+    position: absolute;
+    inset: var(--border-thickness);
+    z-index: -1;
+    background: var(--stamp-bg);
+    transform: rotate(var(--border-rotation, 0deg));
+    transform-origin: center center;
+  }
+}
+
+/* Utility color mappings for convenience (background/text/border) */
+@layer utilities {
+  /* Backgrounds */
+  .bg-envelope-beige {
+    background-color: var(--color-envelope-beige);
+  }
+  .bg-postcard-beige {
+    background-color: var(--color-postcard-beige);
+  }
+  .bg-light-gray {
+    background-color: var(--color-light-gray);
+  }
+  .bg-christmas-tree-green {
+    background-color: var(--color-christmas-tree-green);
+  }
+  .bg-dark-green {
+    background-color: var(--color-dark-green);
+  }
+  .bg-soft-pink {
+    background-color: var(--color-soft-pink);
+  }
+  .bg-mid-green {
+    background-color: var(--color-mid-green);
+  }
+  .bg-red-berry {
+    background-color: var(--color-red-berry);
+  }
+  .bg-soft-green {
+    background-color: var(--color-soft-green);
+  }
+  .bg-soft-red {
+    background-color: var(--color-soft-red);
+  }
+  .bg-dark-red {
+    background-color: var(--color-dark-red);
+  }
+  .bg-calendar-door-fill-green {
+    background-color: var(--color-calendar-door-fill-green);
+  }
+
+  /* Text */
+  .text-base {
+    color: var(--color-text-base);
+  }
+  .text-reindeer-brown {
+    color: var(--color-text-reindeer-brown);
+  }
+  .text-postcard-beige {
+    color: var(--color-text-postcard-beige);
+  }
+  .text-santa-red {
+    color: var(--color-text-santa-red);
+  }
+  .text-christmas-tree-green {
+    color: var(--color-text-christmas-tree-green);
+  }
+  .text-ruben-red {
+    color: var(--color-text-ruben-red);
+  }
+  .text-light-brown {
+    color: var(--color-text-light-brown);
+  }
+  .text-dark-brown {
+    color: var(--color-text-dark-brown);
+  }
+  .text-red-berry {
+    color: var(--color-text-red-berry);
+  }
+  .text-soft-pink {
+    color: var(--color-text-soft-pink);
+  }
+  .text-soft-green {
+    color: var(--color-text-soft-green);
+  }
+  .text-soft-red {
+    color: var(--color-text-soft-red);
+  }
+  .text-dark-red {
+    color: var(--color-text-dark-red);
+  }
+
+  /* Borders */
+  .border-reindeer-brown {
+    border-color: var(--color-border-reindeer-brown);
+  }
+  .border-christmas-tree-green {
+    border-color: var(--color-border-christmas-tree-green);
+  }
+  .border-santa-red {
+    border-color: var(--color-border-santa-red);
+  }
+  .border-red-berry {
+    border-color: var(--color-border-red-berry);
+  }
+  .border-mid-green {
+    border-color: var(--color-border-mid-green);
+  }
+  .border-calendar-door-border-green {
+    border-color: var(--color-border-calendar-door-border-green);
+  }
+
+  /* Ring and placeholder */
+  .ring-red-berry {
+    --tw-ring-color: var(--color-ring-red-berry);
+  }
+  .placeholder-red-berry::placeholder {
+    color: var(--color-placeholder-red-berry);
   }
 }
 

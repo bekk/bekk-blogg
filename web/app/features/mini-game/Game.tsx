@@ -11,6 +11,16 @@ export function ChristmasMinesweeper() {
   const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'lost'>('playing')
   const [santaHelperAvailable, setSantaHelperAvailable] = useState(true)
 
+  const countNeighborMines = (board: CellType[][], row: number, col: number) => {
+    let count = 0
+    for (let r = Math.max(0, row - 1); r <= Math.min(BOARD_SIZE - 1, row + 1); r++) {
+      for (let c = Math.max(0, col - 1); c <= Math.min(BOARD_SIZE - 1, col + 1); c++) {
+        if (board[r][c].isMine) count++
+      }
+    }
+    return count
+  }
+
   const initializeBoard = useCallback(() => {
     const newBoard = Array(BOARD_SIZE)
       .fill(null)
@@ -40,6 +50,9 @@ export function ChristmasMinesweeper() {
     for (let row = 0; row < BOARD_SIZE; row++) {
       for (let col = 0; col < BOARD_SIZE; col++) {
         if (!newBoard[row][col].isMine) {
+          {
+            /* eslint-disable-next-line react-hooks/immutability */
+          }
           newBoard[row][col].neighborMines = countNeighborMines(newBoard, row, col)
         }
       }
@@ -51,18 +64,9 @@ export function ChristmasMinesweeper() {
   }, [])
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     initializeBoard()
   }, [initializeBoard])
-
-  const countNeighborMines = (board: CellType[][], row: number, col: number) => {
-    let count = 0
-    for (let r = Math.max(0, row - 1); r <= Math.min(BOARD_SIZE - 1, row + 1); r++) {
-      for (let c = Math.max(0, col - 1); c <= Math.min(BOARD_SIZE - 1, col + 1); c++) {
-        if (board[r][c].isMine) count++
-      }
-    }
-    return count
-  }
 
   const handleCellClick = (row: number, col: number) => {
     if (gameStatus !== 'playing') return

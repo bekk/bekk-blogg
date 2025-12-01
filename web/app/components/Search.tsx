@@ -20,6 +20,7 @@ export const Search = ({ transparent = true }: SearchProps) => {
         future={{ persistHierarchicalRootCount: true, preserveSharedStateOnUnmount: true }}
       >
         <SearchBoxWithDropdown transparent={transparent} />
+        {/* eslint-disable-next-line react-hooks/purity */}
         <Configure hitsPerPage={20} filters={`availableFromMillis <=  ${Date.now()}`} />
       </InstantSearch>
     </InstantSearchSSRProvider>
@@ -65,7 +66,7 @@ const SearchBoxWithDropdown = ({ transparent }: SearchProps) => {
         transparent={transparent}
       />
       {query && showResults && (
-        <div className="absolute top-full z-[100] mt-1 w-full bg-white bg-opacity-90 shadow-lg rounded-lg max-h-[290px] overflow-y-scroll">
+        <div className="absolute top-full z-100 mt-1 w-full bg-white bg-opacity-90 shadow-lg rounded-lg max-h-[290px] overflow-y-scroll">
           <Hits hitComponent={Hit} />
         </div>
       )}
@@ -96,7 +97,7 @@ function CustomSearchBox({
         onChange={(event) => refine(event.currentTarget.value)}
         placeholder="Søk etter en artikkel"
         onReset={clear}
-        className={`w-full max-w-lg h-12 px-4 py-2 text-lg rounded-sm border focus:outline-none focus:ring-2 ${transparent ? 'border-red-berry focus:ring-red-berry focus:text-red-berry placeholder-red-berry bg-transparent' : 'border-black focus:ring-black focus:text-black placeholder-black bg-white'}`}
+        className={`w-full max-w-lg h-12 px-4 py-2 text-lg rounded-sm border focus:outline-hidden focus:ring-2 ${transparent ? 'border-red-berry focus:ring-red-berry focus:text-red-berry placeholder-red-berry bg-transparent' : 'border-black focus:ring-black focus:text-black placeholder-black bg-white'}`}
       />
     </>
   )

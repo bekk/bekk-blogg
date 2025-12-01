@@ -20,7 +20,7 @@ export const OpenDoor = ({
   return (
     <motion.div initial="rest" whileHover="hover">
       <div
-        className="relative border-calendar-door-border-green border-[10px] sm:border-[15px] border-b-[#3A4B35] bg-calendar-door-fill-green"
+        className="relative border-calendar-door-border-green border-10 sm:border-15 border-b-[#3A4B35] bg-calendar-door-fill-green"
         style={{ width, height }}
       >
         <motion.div
