@@ -38,7 +38,7 @@ export function useBreadcrumbs(): Breadcrumb[] {
         if (date && parseInt(date) < 10) {
           date = date.replace('0', '')
         }
-        title = `${date}. des`
+        title = `${date}. desember`
       } else if (key === 'slug' && currRoute.data) {
         const postTitle = (currRoute.data as { initial: { data: Post } }).initial.data?.title
         title = `${postTitle ?? ' Innlegg'}`
