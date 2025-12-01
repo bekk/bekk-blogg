@@ -1,4 +1,4 @@
-import { SanityAsset } from '@sanity/image-url/lib/types/types'
+import { SanityAsset } from '@sanity/image-url'
 import { useEffect, useState } from 'react'
 import { POST_BY_SLUGResult } from 'utils/sanity/types/sanity.types'
 import { urlFor } from 'utils/sanity/utils'

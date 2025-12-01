@@ -24,7 +24,7 @@ export const SpinningText = ({ label, children, className }: SpinningTextProps) 
 
   return (
     <div className={`relative inline-block ${className ?? ''}`}>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" className="min-h-32 min-w-32 flex-shrink-0">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" className="min-h-32 min-w-32 shrink-0">
         <title>{repeatedLabel}</title>
         <defs>
           <path

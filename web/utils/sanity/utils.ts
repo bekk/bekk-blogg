@@ -3,8 +3,7 @@
  * Borrowed from https://www.sanity.io/docs/presenting-block-text#ac67a867dd69
  */
 /* eslint-disable  @typescript-eslint/no-explicit-any */
-import imageUrlBuilder from '@sanity/image-url'
-import { SanityImageSource } from '@sanity/image-url/lib/types/types'
+import { createImageUrlBuilder, SanityImageSource } from '@sanity/image-url'
 
 export function toPlainText(blocks: any[] | null = []) {
   if (!blocks || !blocks.length) {
@@ -33,7 +32,7 @@ const projectId =
   typeof process === 'undefined' ? window?.ENV?.SANITY_STUDIO_PROJECT_ID : process.env.SANITY_STUDIO_PROJECT_ID
 const dataset = typeof process === 'undefined' ? window?.ENV?.SANITY_STUDIO_DATASET : process.env.SANITY_STUDIO_DATASET
 
-const builder = imageUrlBuilder({
+const builder = createImageUrlBuilder({
   projectId: projectId ?? 'ah2n1vfr',
   dataset: dataset ?? 'bekk-blogg-prod',
 })

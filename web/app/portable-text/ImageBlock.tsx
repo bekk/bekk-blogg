@@ -1,4 +1,4 @@
-import { SanityImageSource } from '@sanity/image-url/lib/types/types'
+import { SanityImageSource } from '@sanity/image-url'
 import type { ImageWithMetadata, SanityImageAsset } from '../../utils/sanity/types/sanity.types'
 import { urlFor } from '../../utils/sanity/utils'
 

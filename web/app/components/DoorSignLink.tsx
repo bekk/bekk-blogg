@@ -16,7 +16,7 @@ export const DoorSignLink = ({ link, children }: Props) => {
         {children}
       </Link>
       <motion.div
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 pointer-events-none"
+        className="absolute inset-0 bg-linear-to-r from-transparent via-white to-transparent opacity-0 pointer-events-none"
         variants={{
           rest: { opacity: 0, x: '-10%' },
           hover: { opacity: 0.5, x: '10%', transition: { duration: 0.3 } },

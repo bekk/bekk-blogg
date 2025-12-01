@@ -107,7 +107,7 @@ const RelatedPostcard = ({ item }: { item: RelatedPostsData }) => {
   return (
     <div className="p-4">
       <div className="striped-frame-small p-4 rounded-lg bg-postcard-beige flex flex-col h-full sm:min-h-[300px] sm:max-h-[370px] max-h-[260px]  overflow-hidden">
-        <div className="flex justify-between gap-[0.5rem] sm:gap-8">
+        <div className="flex justify-between gap-2 sm:gap-8">
           <div className="flex flex-col h-full">
             <h3 className="text-base sm:text-lg font-semibold mt-2 mb-4">{item.name}</h3>
             <div className="text-xs sm:text-base">
@@ -123,7 +123,7 @@ const RelatedPostcard = ({ item }: { item: RelatedPostsData }) => {
               <Border />
             </div>
           </div>
-          <PostStamp image={item.coverImage} size=" w-[3rem] h-[64.2px]  sm:h-21.4 sm:w-16" />
+          <PostStamp image={item.coverImage} size=" w-12 h-[64.2px]  sm:h-21.4 sm:w-16" />
         </div>
         {item.summary && <p className=" mt-4 text-xs sm:text-base">{item.summary}</p>}
       </div>

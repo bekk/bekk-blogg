@@ -106,7 +106,7 @@ export default function AuthorRoute() {
         <Spinner />
       ) : (
         <div className="flex xl:flex-row flex-col xl:gap-16 mt-10">
-          <section className="flex xl:flex-[1] flex-col text-red-berry mb-12 xl:items-end xl:ml-8">
+          <section className="flex xl:flex-1 flex-col text-red-berry mb-12 xl:items-end xl:ml-8">
             <div>
               <div className="flex flex-col justify-center">
                 {author?.image && (
@@ -148,7 +148,7 @@ export default function AuthorRoute() {
               </div>
             </div>
           </section>
-          <section className="flex xl:flex-[2] flex-col md:mr-4 xl:items-start">
+          <section className="flex xl:flex-2 flex-col md:mr-4 xl:items-start">
             <PostPreviewList posts={posts} />
           </section>
         </div>
