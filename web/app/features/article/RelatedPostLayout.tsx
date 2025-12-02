@@ -21,13 +21,14 @@ interface RelatedPostsData {
 }
 
 export const RelatedPostsLayout = ({ items }: { items: RelatedPostsData[] }) => {
+  const isSmallScreen = window.innerWidth <= 640
+  const isMediumScreen = window.innerWidth <= 768
   return (
     <div>
-      <div className="flex flex-wrap justify-center gap-x-8 gap-y-24 md:gap-16">
+      <div className="flex flex-wrap justify-center gap-x-8 gap-y-8 md:gap-y-24 md:gap-x-16">
         {items.map((item) => {
           if (!item || !item.availableFrom) return null
           const date = parseDate(item.availableFrom)
-          const isSmallScreen = window.innerWidth <= 640
 
           return (
             <Link
@@ -57,7 +58,7 @@ export const RelatedPostsLayout = ({ items }: { items: RelatedPostsData[] }) => 
                   variants={{
                     rest: { y: 0 },
                     hover: {
-                      y: -100,
+                      y: isMediumScreen ? -50 : -100,
                       transition: {
                         type: 'spring',
                         stiffness: 100,
