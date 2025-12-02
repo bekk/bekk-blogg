@@ -1,9 +1,9 @@
-import { Form, useActionData, useNavigation } from 'react-router'
 import { Files, Heart } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { trackEvent } from 'utils/analytics'
 
 import { action } from '~/routes/post.$year.$date.$slug'
+import { useFetcher } from 'react-router'
 
 type LikeContent = {
   id: string
@@ -11,15 +11,18 @@ type LikeContent = {
 }
 
 export const LikeContent = ({ id, language }: LikeContent) => {
-  const actionResponse = useActionData<typeof action>()
-  const { state } = useNavigation()
+  const fetcher = useFetcher<typeof action>()
   const texts = translate[language] || translate['nb-NO']
-  const isOptimisticallySuccessful = state === 'submitting' || actionResponse?.status === 'success'
+  const isOptimisticallySuccessful = fetcher.state === 'submitting' || fetcher.data?.status === 'success'
 
   return (
     <>
       <div className="mb-8 mt-12 border-b border-bekk-night pb-1 text-body-mobile md:text-body-desktop" />
-      <Form method="post" className="p-4 mx-auto w-full text-center items-center flex flex-col" aria-live="polite">
+      <fetcher.Form
+        method="post"
+        className="p-4 mx-auto w-full text-center items-center flex flex-col"
+        aria-live="polite"
+      >
         <input type="hidden" name="id" value={id} />
         <h1 className="mb-4 text-[26px]">{texts.header}</h1>
         <div className="mb-8 text-[18px]">{texts.description}</div>
@@ -42,7 +45,7 @@ export const LikeContent = ({ id, language }: LikeContent) => {
             {isOptimisticallySuccessful ? texts.likeButtonClicked : texts.likeButton}
           </button>
         </div>
-      </Form>
+      </fetcher.Form>
     </>
   )
 }
