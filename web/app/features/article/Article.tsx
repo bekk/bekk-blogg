@@ -45,7 +45,7 @@ export const Article = ({ post }: ArticleProps) => {
             Del av en serie
           </div>
         )}
-        <h1 className="sm:mb-4 text-3xl sm:text-4xl overflow-auto">{post.title}</h1>
+        <h1 className="sm:mb-4 text-3xl sm:text-4xl">{post.title}</h1>
         {post.tags && (
           <div>
             {post.tags.filter(Boolean).map((tag, index) => (
