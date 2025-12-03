@@ -32,6 +32,7 @@ export default {
         'soft-green': '#AEB7AB',
         'soft-red': '#ED7E87',
         'dark-red': '#6D0D22',
+        'calendar-door-fill-green': '#232F20',
       },
       textColor: {
         base: '#000000',
@@ -95,6 +96,7 @@ export default {
         'santa-red': '#D0332E',
         'red-berry': '#A7060E',
         'mid-green': '#32432D',
+        'calendar-door-border-green': '#293825',
       },
       ringColor: {
         'red-berry': '#A7060E',
