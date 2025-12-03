@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import { ClosedDoorSvg } from './doorsSVG/ClosedDoorSVG'
-import { TodaysDoor } from './doorsSVG/TodaysDoorSVG'
 import { Link } from 'react-router'
 import { motion, Variants } from 'framer-motion'
 
 import useMediaQuery from '~/hooks/useMediaQuery'
-import { OpenDoorSvg } from './doorsSVG/OpenDoorSVG'
+import { OpenDoor } from './doorsSVG/OpenDoor'
 
 const today = new Date()
 
@@ -49,27 +48,17 @@ export const Door = ({ date, year }: DoorProps) => {
       <Link
         to={`/post/${year}/${date.toString().padStart(2, '0')}`}
         key={date}
-        className="flex justify-center items-center"
+        className="flex justify-center items-center isolated"
         aria-label={`Luke ${date}`}
       >
         <div className={`relative z-10`}>
-          <motion.div
-            whileHover={{
-              scale: 1.1,
-              transition: { duration: 0.2 },
-            }}
-          >
-            {isToday ? (
-              <TodaysDoor date={date} {...doorSize} />
-            ) : (
-              <OpenDoorSvg
-                giftWrappingColor={giftWrappingPalette[colorIndex]}
-                giftRibbonColor={giftRibbonPalette[colorIndex]}
-                date={date}
-                {...doorSize}
-              />
-            )}
-          </motion.div>
+          <OpenDoor
+            giftWrappingColor={giftWrappingPalette[colorIndex]}
+            giftRibbonColor={giftRibbonPalette[colorIndex]}
+            date={date}
+            isToday={isToday}
+            {...doorSize}
+          />
         </div>
       </Link>
     )
