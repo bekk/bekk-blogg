@@ -314,7 +314,7 @@ export const TodaysDoorSVG = ({ date, width, height }: { date: number; height: n
     />
     <text
       x="90"
-      y="126"
+      y="114"
       fontSize="48"
       dominantBaseline="middle"
       textAnchor="middle"

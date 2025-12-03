@@ -25,10 +25,10 @@ export const OpenDoor = ({
       >
         <motion.div
           variants={{
-            rest: { scale: 1, x: '-50%' },
-            hover: { scale: 1.1, x: '-50%', transition: { duration: 0.2 } },
+            rest: { scale: 1, x: '-50%', y: 0 },
+            hover: { scale: 1.1, x: '-50%', y: 0, transition: { duration: 0.2 } },
           }}
-          className="absolute bottom-[-10px] sm:bottom-[-15px] left-[50%]"
+          className="absolute bottom-[-10px] sm:bottom-[-15px] left-[50%] origin-bottom"
         >
           {isToday ? (
             <TodaysDoorSVG date={date} width={width} height={height} />
