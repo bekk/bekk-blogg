@@ -28,9 +28,7 @@ export const ArticleHeader = () => {
           })}
         </ol>
       )}
-      <Link to="/" aria-label="Gå til forsiden">
-        <PostStamp />
-      </Link>
+      <PostStamp />
     </div>
   )
 }
