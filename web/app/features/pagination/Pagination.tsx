@@ -97,6 +97,7 @@ export const Pagination = ({ currentPage, totalPages, baseUrl, className = '' }:
             }`}
             aria-current={page === currentPage ? 'page' : undefined}
             prefetch="intent"
+            aria-label={page === currentPage ? `Side ${page}, nåværende side` : `Gå til side ${page}`}
           >
             {page}
           </Link>

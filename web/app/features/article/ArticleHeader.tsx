@@ -18,8 +18,12 @@ export const ArticleHeader = () => {
             const isLast = index === breadcrumbs.length - 1
 
             return (
-              <li key={index} className="flex-none min-w-0 flex items-center whitespace-nowrap">
-                <Link to={`${breadcrumb.href}`} className={`text-black ${isLast ? 'truncate' : ''}`}>
+              <li key={index} className="flex-none min-w-0 flex items-center whitespace-nowrap" aria-label="Brødsmuler">
+                <Link
+                  to={`${breadcrumb.href}`}
+                  className={`text-black ${isLast ? 'truncate' : ''}`}
+                  aria-current={isLast ? 'page' : undefined}
+                >
                   {breadcrumb.title}
                 </Link>
                 {!isLast && <p className={`shrink-0 px-2 text-black`}>/</p>}
