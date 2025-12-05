@@ -122,7 +122,7 @@ export default function AuthorRoute() {
                 {author?.description && (
                   <p className="text-center md:text-center text-red-berry">{author.description}</p>
                 )}
-                <ul className="flex flex-wrap gap-2 justify-center">
+                <ul className="flex flex-wrap gap-2 justify-center" aria-label="Lenker til sosiale medier">
                   {author?.socialMediaLinks?.map((link) => (
                     <li key={link._key}>
                       <a
