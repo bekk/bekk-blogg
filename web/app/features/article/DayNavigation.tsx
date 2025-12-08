@@ -12,7 +12,7 @@ export const DayNavigation = ({ day, year }: DayNavigationProps) => {
   return (
     <div className="flex justify-center gap-4 my-8">
       {day > 1 && (
-        <div className="rounded-lg inline-block focus-within:ring-1 focus-within:ring-red-berry">
+        <div className="rounded-lg focus-within:ring-1 focus-within:ring-offset-4 focus-within:ring-red-berry">
           <Link
             to={`/post/${year}/${String(day - 1).padStart(2, '0')}`}
             prefetch="intent"
@@ -25,7 +25,7 @@ export const DayNavigation = ({ day, year }: DayNavigationProps) => {
         </div>
       )}
       {day < 24 && canShowNextDay && (
-        <div className="rounded-lg inline-block focus-within:ring-1 focus-within:ring-red-berry">
+        <div className="rounded-lg focus-within:ring-1 focus-within:ring-offset-4 focus-within:ring-red-berry">
           <Link
             to={`/post/${year}/${String(day + 1).padStart(2, '0')}`}
             prefetch="intent"
