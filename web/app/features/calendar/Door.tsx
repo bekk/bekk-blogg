@@ -43,6 +43,14 @@ export const Door = ({ date, year }: DoorProps) => {
       setTimeout(() => setIsShaking(false), 500)
     }
   }
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if ((e.key === 'Enter' || e.key === ' ') && !isOpenable) {
+      e.preventDefault()
+      setIsShaking(true)
+      setTimeout(() => setIsShaking(false), 500)
+    }
+  }
   if (isOpenable) {
     return (
       <Link
@@ -65,7 +73,15 @@ export const Door = ({ date, year }: DoorProps) => {
   }
 
   return (
-    <Link to={'#'} key={date} className="flex justify-center items-center" aria-label={`Luke ${date} er lukket`}>
+    <Link
+      to={'#'}
+      key={date}
+      className="flex justify-center items-center"
+      aria-label={`Luke ${date} er lukket`}
+      aria-disabled="true"
+      aria-hidden="true"
+      onKeyDown={handleKeyDown}
+    >
       <div className={`relative z-10`}>
         <motion.div
           onClick={handleClick}
