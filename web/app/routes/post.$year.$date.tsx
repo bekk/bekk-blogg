@@ -119,14 +119,14 @@ export default function DateRoute() {
       </h1>
       <p className="self-start sm:self-center pl-4 mb-8 sm:mb-12 text-red-berry ">Totalt {posts.length} innlegg</p>
       <div className="flex justify-center items-end">
-        <div className="hidden xl:block w-[300px]">
+        <div className="hidden xl:block w-[300px]" aria-hidden="true">
           <GiftsLeftSideArticle />
         </div>
         <div>
           <PostPreviewList posts={posts} />
           <DayNavigation day={Number(date)} year={Number(year)} />
         </div>
-        <div className="hidden xl:block w-[300px]">
+        <div className="hidden xl:block w-[300px]" aria-hidden="true">
           <GiftRightSideArticle />
         </div>
       </div>
