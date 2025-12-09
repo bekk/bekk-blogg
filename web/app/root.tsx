@@ -23,6 +23,7 @@ import { JumpToContent } from './features/jump-to-content/JumpToContent'
 import styles from '~/styles/main.css?url'
 import { Route } from './+types/root'
 import { Toaster } from './components/ui/toaster'
+import Header from './features/header/Header'
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
@@ -131,6 +132,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <JumpToContent />
         <div>
           <Scripts />
+          <header className="relative bg-soft-pink ">
+            <Header />
+          </header>
           <main id="content" tabIndex={-1} className="focus:outline-hidden">
             {children}
           </main>

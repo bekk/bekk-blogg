@@ -9,7 +9,7 @@ type GameBoardProps = {
 
 export function GameBoard({ board, onCellClick, onCellRightClick }: GameBoardProps) {
   return (
-    <div className="grid gap-1 p-4 bg-green-200 rounded-lg shadow-lg text-reindeer-brown">
+    <div className="grid gap-1 p-4 bg-red-berry rounded-lg shadow-lg text-reindeer-brown">
       {board.map((row, rowIndex) => (
         <div key={rowIndex} className="flex gap-1">
           {row.map((cell, colIndex) => (

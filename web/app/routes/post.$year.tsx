@@ -4,7 +4,6 @@ import { z } from 'zod'
 import { CalendarWithDoors } from '~/features/calendar/CalendarWithDoors'
 import { CalendarPageFooter } from '~/features/calendar/CalendarPageFooter'
 import { ErrorPage } from '~/features/error-boundary/ErrorPage'
-import Header from '~/features/header/Header'
 
 const ParamsSchema = z.object({
   year: z.string().min(4).max(4),
@@ -70,17 +69,14 @@ export const meta: MetaFunction = ({ data }) => {
 export default function YearRoute() {
   const data = useLoaderData<{ year: string }>()
   return (
-    <div className="bg-soft-pink min-h-screen">
-      <div className="relative min-height-package-placement">
-        <Header withBreadcrumbs={false} />
-        <div className="flex flex-col gap-6">
-          <h1 className="flex justify-center text-headline-desktop text-red-berry">{data.year}</h1>
-          <div className="2lg:h-auto flex justify-center relative z-0">
-            <CalendarWithDoors />
-          </div>
+    <div className="relative min-h-screen min-height-package-placement">
+      <div className="flex flex-col gap-6">
+        <div className="flex justify-center text-headline-desktop text-red-berry">{data.year}</div>
+        <div className="2lg:h-auto flex justify-center relative z-0">
+          <CalendarWithDoors />
         </div>
-        <CalendarPageFooter />
       </div>
+      <CalendarPageFooter />
     </div>
   )
 }
