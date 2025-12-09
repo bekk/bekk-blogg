@@ -1,8 +1,8 @@
 import { Link } from 'react-router'
 
-export const GiftsLeftSideCalendar = () => {
+export const GiftsLeftSideCalendar = ({ width = 644, height = 171 }: { width?: number; height?: number }) => {
   return (
-    <svg width="644" height="171" viewBox="0 0 654 181" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width={width} height={height} viewBox="0 0 654 181" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M234.69 65.3753C219.255 67.7177 198.385 64.4393 209.649 58.6657C218.661 54.0469 230.098 61.2142 234.69 65.3753Z"
         stroke="#ED7E87"
