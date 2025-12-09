@@ -130,9 +130,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <JumpToContent />
-        <div>
+        <div className="min-h-screen bg-soft-pink flex flex-col">
           <Scripts />
-          <header className="relative bg-soft-pink ">
+          <header>
             <Header />
           </header>
           <main id="content" tabIndex={-1} className="focus:outline-hidden">

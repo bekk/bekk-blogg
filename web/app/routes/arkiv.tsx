@@ -2,7 +2,6 @@ import { Link, MetaFunction } from 'react-router'
 import { GiftsWithBadge } from '~/features/archive/svgs/GiftsWithBadge'
 import { motion } from 'framer-motion'
 
-import Header from '~/features/header/Header'
 import { useTextZoomScale } from '~/hooks/useTextZoomScale'
 
 export const meta: MetaFunction = () => {
@@ -43,43 +42,38 @@ export default function ArchiveRoute() {
   }
 
   return (
-    <div className="bg-soft-pink min-h-screen">
-      <header className="relative">
-        <Header />
-      </header>
-      <div className="flex flex-col justify-center items-center">
-        <h1 className="text-red-berry text-center">Arkiv</h1>
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-10 md:gap-y-40 md:px-24 w-full max-w-[1800px] mb-12">
-          {availableYears.map((_, index) => {
-            const colorRibbonBigPackage = index % 2 ? '#32432D' : '#AEB7AB'
-            const colorWrappingBigPackage = index % 2 ? '#AEB7AB' : '#32432D'
+    <div className="flex flex-col justify-center items-center">
+      <h1 className="text-red-berry text-center">Arkiv</h1>
+      <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-10 md:gap-y-40 md:px-24 w-full max-w-[1800px] mb-12">
+        {availableYears.map((_, index) => {
+          const colorRibbonBigPackage = index % 2 ? '#32432D' : '#AEB7AB'
+          const colorWrappingBigPackage = index % 2 ? '#AEB7AB' : '#32432D'
 
-            const colorRibbonSmallPackage = index % 2 ? '#ED7E87' : '#6D0D22'
-            const colorWrappingSmallPackage = index % 2 ? '#A7060E' : '#ED7E87'
-            return (
-              <div className="grid justify-items-center w-full pt-8" key={index}>
-                <motion.div
-                  whileHover={{
-                    scale: 1.1,
-                    transition: { duration: 0.2 },
-                  }}
-                >
-                  <Link to={`/post/${availableYears[index]}`} aria-label={`Julekalender fra ${availableYears[index]}`}>
-                    <GiftsWithBadge
-                      year={availableYears[index]}
-                      width={giftWidth}
-                      height={giftHeight}
-                      colorRibbonBigPackage={colorRibbonBigPackage}
-                      colorWrappingBigPackage={colorWrappingBigPackage}
-                      colorRibbonSmallPackage={colorRibbonSmallPackage}
-                      colorWrappingSmallPackage={colorWrappingSmallPackage}
-                    />
-                  </Link>
-                </motion.div>
-              </div>
-            )
-          })}
-        </div>
+          const colorRibbonSmallPackage = index % 2 ? '#ED7E87' : '#6D0D22'
+          const colorWrappingSmallPackage = index % 2 ? '#A7060E' : '#ED7E87'
+          return (
+            <div className="grid justify-items-center w-full pt-8" key={index}>
+              <motion.div
+                whileHover={{
+                  scale: 1.1,
+                  transition: { duration: 0.2 },
+                }}
+              >
+                <Link to={`/post/${availableYears[index]}`} aria-label={`Julekalender fra ${availableYears[index]}`}>
+                  <GiftsWithBadge
+                    year={availableYears[index]}
+                    width={giftWidth}
+                    height={giftHeight}
+                    colorRibbonBigPackage={colorRibbonBigPackage}
+                    colorWrappingBigPackage={colorWrappingBigPackage}
+                    colorRibbonSmallPackage={colorRibbonSmallPackage}
+                    colorWrappingSmallPackage={colorWrappingSmallPackage}
+                  />
+                </Link>
+              </motion.div>
+            </div>
+          )
+        })}
       </div>
     </div>
   )

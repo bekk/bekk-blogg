@@ -4,7 +4,6 @@ import { PostPreview } from '../post-preview/PostPreview'
 
 import { Link } from 'lucide-react'
 import { useHydrated } from '~/hooks/useHydrated'
-import { BekkLogo } from '../article/BekkLogo'
 import { TeaserPageFooter } from './TeaserPageFooter'
 
 interface CountdownRendererFnProps {
@@ -48,15 +47,9 @@ export const TeaserPage = () => {
   const launchDate = new Date(new Date().getFullYear(), 11, 1, 0, 0, 0, 0) // Første desember kl 00:00:00
 
   return (
-    <div className="flex flex-col justify-between items-center overflow-y-auto min-h-screen bg-soft-pink">
-      <div className="self-start p-6">
-        <BekkLogo className="text-red-berry relative lg:absolute" />
-      </div>
-      <div className="w-full flex flex-col items-center sm:max-w-4xl grow justify-center mt-6">
-        {isClientSide && (
-          <Countdown date={`${new Date('2025-11-11').getFullYear()}/12/01`} renderer={CountdownRenderer} />
-        )}
-
+    <div className="flex flex-col justify-between items-center">
+      <div className="w-full flex flex-col items-center sm:max-w-4xl flex-grow justify-center mt-6">
+        {isClientSide && <Countdown date={`${new Date().getFullYear()}/12/01`} renderer={CountdownRenderer} />}
         <div className="mb-12 lg:mb-0">
           <Link to={`post/${new Date() > launchDate ? '2025' : '2024'}`}>
             <PostPreview
