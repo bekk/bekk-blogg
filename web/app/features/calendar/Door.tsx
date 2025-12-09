@@ -4,6 +4,7 @@ import { Link } from 'react-router'
 import { motion, Variants } from 'framer-motion'
 
 import useMediaQuery from '~/hooks/useMediaQuery'
+import { useTextZoomScale } from '~/hooks/useTextZoomScale'
 import { OpenDoor } from './doorsSVG/OpenDoor'
 
 const today = new Date()
@@ -21,11 +22,16 @@ export const Door = ({ date, year }: DoorProps) => {
   const [colorIndex] = useState(() => Math.floor(Math.random() * giftWrappingPalette.length))
 
   const smallScreen = useMediaQuery('(max-width: 640px)')
+  const textZoomScale = useTextZoomScale()
 
   const isOpenable = new Date(year, 11, date) <= today
   const isToday = new Date(year, 11, date).toDateString() === today.toDateString()
 
-  const doorSize = smallScreen ? { width: 90, height: 90 } : { width: 140, height: 140 }
+  const baseSize = smallScreen ? { width: 90, height: 90 } : { width: 140, height: 140 }
+  const doorSize = {
+    width: Math.round(baseSize.width * textZoomScale),
+    height: Math.round(baseSize.height * textZoomScale),
+  }
 
   const shakeAnimation: Variants = {
     shaking: {

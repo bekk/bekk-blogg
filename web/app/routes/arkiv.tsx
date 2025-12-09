@@ -3,6 +3,7 @@ import { GiftsWithBadge } from '~/features/archive/svgs/GiftsWithBadge'
 import { motion } from 'framer-motion'
 
 import Header from '~/features/header/Header'
+import { useTextZoomScale } from '~/hooks/useTextZoomScale'
 
 export const meta: MetaFunction = () => {
   const title = `Julekalendere fra Bekk Christmas`
@@ -31,6 +32,10 @@ export default function ArchiveRoute() {
 
   const startYear = 2017
   const availableYears: number[] = []
+
+  const textZoomScale = useTextZoomScale()
+  const giftWidth = Math.round(340 * textZoomScale)
+  const giftHeight = Math.round(160 * textZoomScale)
 
   for (let i = currentYear; i >= startYear; i--) {
     availableYears.push(i)
@@ -61,6 +66,8 @@ export default function ArchiveRoute() {
                   <Link to={`/post/${availableYears[index]}`} aria-label={`Julekalender fra ${availableYears[index]}`}>
                     <GiftsWithBadge
                       year={availableYears[index]}
+                      width={giftWidth}
+                      height={giftHeight}
                       colorRibbonBigPackage={colorRibbonBigPackage}
                       colorWrappingBigPackage={colorWrappingBigPackage}
                       colorRibbonSmallPackage={colorRibbonSmallPackage}
