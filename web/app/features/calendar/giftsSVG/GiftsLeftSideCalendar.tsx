@@ -37,7 +37,7 @@ export const GiftsLeftSideCalendar = () => {
           fill="#ED7E87"
         />
       </g>
-      <Link to="/arkiv" className="pointer-events-auto">
+      <Link to="/arkiv" className="pointer-events-auto" aria-label="Se tidligere julekalendere">
         <path
           d="M485.664 50.6161H267.998L247.075 28.7157L267.998 6.81435H485.664V50.6161ZM256.015 26.4804C254.534 26.4804 253.332 27.681 253.332 29.162C253.332 30.6431 254.533 31.8436 256.015 31.8436C257.495 31.8434 258.696 30.643 258.696 29.162C258.696 27.6812 257.495 26.4806 256.015 26.4804Z"
           fill="#F7F3EE"

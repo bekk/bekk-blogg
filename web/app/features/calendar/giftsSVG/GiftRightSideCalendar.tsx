@@ -78,7 +78,7 @@ export const GiftRightSideCalendar = () => {
           fill="#32432D"
         />
       </g>
-      <Link to="/kategori" className="pointer-events-auto">
+      <Link to="/kategori" className="pointer-events-auto" aria-label="Se kategorier">
         <path
           d="M35.5 49H166.595L190 24.5L166.595 0H35.5V49ZM180 22C181.657 22 183 23.3431 183 25C183 26.6569 181.657 28 180 28C178.343 28 177 26.6569 177 25C177 23.3431 178.343 22 180 22Z"
           fill="#F7F3EE"
