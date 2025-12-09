@@ -22,7 +22,7 @@ export function useTextZoomScale(): number {
       window.removeEventListener('resize', calculateScale)
       resizeObserver.disconnect()
     }
-  }, [])
+  }, [scale])
 
   return scale
 }

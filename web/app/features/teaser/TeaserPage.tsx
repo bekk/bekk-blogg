@@ -1,20 +1,11 @@
-import { Link } from 'react-router'
-import { useEffect, useState } from 'react'
 import Countdown, { CountdownRendererFn } from 'react-countdown'
 
 import { PostPreview } from '../post-preview/PostPreview'
 
+import { Link } from 'lucide-react'
+import { useHydrated } from '~/hooks/useHydrated'
 import { BekkLogo } from '../article/BekkLogo'
 import { TeaserPageFooter } from './TeaserPageFooter'
-
-const useClientSideOnly = () => {
-  const [isClientSide, setIsClientSide] = useState(false)
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setIsClientSide(true)
-  }, [])
-  return isClientSide
-}
 
 interface CountdownRendererFnProps {
   days: number
@@ -53,7 +44,7 @@ const NumberWithLabel = ({ number, label }: { number: number; label: string }) =
 )
 
 export const TeaserPage = () => {
-  const isClientSide = useClientSideOnly()
+  const isClientSide = useHydrated()
   const launchDate = new Date(new Date().getFullYear(), 11, 1, 0, 0, 0, 0) // Første desember kl 00:00:00
 
   return (
@@ -62,7 +53,9 @@ export const TeaserPage = () => {
         <BekkLogo className="text-red-berry relative lg:absolute" />
       </div>
       <div className="w-full flex flex-col items-center sm:max-w-4xl grow justify-center mt-6">
-        {isClientSide && <Countdown date={`${new Date().getFullYear()}/12/01`} renderer={CountdownRenderer} />}
+        {isClientSide && (
+          <Countdown date={`${new Date('2025-11-11').getFullYear()}/12/01`} renderer={CountdownRenderer} />
+        )}
 
         <div className="mb-12 lg:mb-0">
           <Link to={`post/${new Date() > launchDate ? '2025' : '2024'}`}>

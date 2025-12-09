@@ -5,12 +5,12 @@ import { trackEvent } from 'utils/analytics'
 import { action } from '~/routes/post.$year.$date.$slug'
 import { useFetcher } from 'react-router'
 
-type LikeContent = {
+type LikeContentProps = {
   id: string
   language: Language
 }
 
-export const LikeContent = ({ id, language }: LikeContent) => {
+export const LikeContent = ({ id, language }: LikeContentProps) => {
   const fetcher = useFetcher<typeof action>()
   const texts = translate[language] || translate['nb-NO']
   const isOptimisticallySuccessful = fetcher.state === 'submitting' || fetcher.data?.status === 'success'
