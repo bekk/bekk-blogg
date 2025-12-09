@@ -1,3 +1,4 @@
+import React from 'react'
 import { lazy, Suspense } from 'react'
 import {
   data,
@@ -152,6 +153,7 @@ const LiveVisualEditing = lazy(() => import('utils/sanity/LiveVisualEditing'))
 
 export default function App() {
   const { ENV, isPreview } = useLoaderData<typeof loader>()
+
   return (
     <>
       <Outlet />

@@ -20,8 +20,7 @@ export const Search = ({ transparent = true }: SearchProps) => {
         future={{ persistHierarchicalRootCount: true, preserveSharedStateOnUnmount: true }}
       >
         <SearchBoxWithDropdown transparent={transparent} />
-        {/* eslint-disable-next-line react-hooks/purity */}
-        <Configure hitsPerPage={20} filters={`availableFromMillis <=  ${Date.now()}`} />
+        <Configure hitsPerPage={20} filters={`availableFromMillis <=  ${new Date().getTime()}`} />
       </InstantSearch>
     </InstantSearchSSRProvider>
   )

@@ -1,27 +1,21 @@
-import { useEffect, useState } from 'react'
+import { useSyncExternalStore } from 'react'
 
-// Define the hook with 'query' parameter typed as a string
-const useMediaQuery = (query: string): boolean => {
-  const [matches, setMatches] = useState<boolean>(false)
+function useMediaQuery(query: string) {
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
-  useEffect(() => {
-    const media = window.matchMedia(query)
-    if (media.matches !== matches) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setMatches(media.matches)
-    }
+  function subscribe(callback: () => void) {
+    const mediaQueryList = window.matchMedia(query)
+    mediaQueryList.addEventListener('change', callback)
+    return () => mediaQueryList.removeEventListener('change', callback)
+  }
 
-    // Define the listener as a separate function to avoid recreating it on each render
-    const listener = () => setMatches(media.matches)
+  function getSnapshot() {
+    return window.matchMedia(query).matches
+  }
 
-    // Use 'change' instead of 'resize' for better performance
-    media.addEventListener('change', listener)
-
-    // Cleanup function to remove the event listener
-    return () => media.removeEventListener('change', listener)
-  }, [matches, query]) // Only recreate the listener when 'matches' or 'query' changes
-
-  return matches
+  function getServerSnapshot() {
+    return false
+  }
 }
 
 export default useMediaQuery

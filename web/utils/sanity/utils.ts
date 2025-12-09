@@ -2,10 +2,10 @@
  *
  * Borrowed from https://www.sanity.io/docs/presenting-block-text#ac67a867dd69
  */
-/* eslint-disable  @typescript-eslint/no-explicit-any */
 import { createImageUrlBuilder, SanityImageSource } from '@sanity/image-url'
+import { DescriptionText } from './types/sanity.types'
 
-export function toPlainText(blocks: any[] | null = []) {
+export function toPlainText(blocks: DescriptionText | null = []) {
   if (!blocks || !blocks.length) {
     return ''
   }
@@ -21,7 +21,7 @@ export function toPlainText(blocks: any[] | null = []) {
         // loop through the children spans, and join the
         // text strings
 
-        return block.children.map((child: any) => child.text).join('')
+        return block.children.map((child) => child.text).join('')
       })
       // join the paragraphs leaving split by two linebreaks
       .join('\n\n')

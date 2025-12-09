@@ -34,6 +34,7 @@ export default function ArchiveRoute() {
   const availableYears: number[] = []
 
   const textZoomScale = useTextZoomScale()
+
   const giftWidth = Math.round(340 * textZoomScale)
   const giftHeight = Math.round(160 * textZoomScale)
 
