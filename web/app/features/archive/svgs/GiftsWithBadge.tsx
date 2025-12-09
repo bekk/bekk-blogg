@@ -1,18 +1,22 @@
 export const GiftsWithBadge = ({
   year,
+  width = 340,
+  height = 160,
   colorRibbonBigPackage,
   colorWrappingBigPackage,
   colorRibbonSmallPackage,
   colorWrappingSmallPackage,
 }: {
   year: number
+  width?: number
+  height?: number
   colorRibbonBigPackage: string
   colorWrappingBigPackage: string
   colorRibbonSmallPackage: string
   colorWrappingSmallPackage: string
 }) => {
   return (
-    <svg width="340" height="160" viewBox="0 0 354 174" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width={width} height={height} viewBox="0 0 354 174" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M102.036 58.561C86.6015 60.9034 65.7318 57.6251 76.9961 51.8515C86.0075 47.2327 97.4444 54.4 102.036 58.561Z"
         stroke={colorRibbonSmallPackage}
