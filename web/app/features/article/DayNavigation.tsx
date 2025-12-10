@@ -12,26 +12,30 @@ export const DayNavigation = ({ day, year }: DayNavigationProps) => {
   return (
     <div className="flex justify-center gap-4 my-8">
       {day > 1 && (
-        <Link
-          to={`/post/${year}/${String(day - 1).padStart(2, '0')}`}
-          prefetch="intent"
-          className="group text-bekk-night hover:text-reindeer-brown styled-box-navigation px-4 py-1"
-          aria-label={`Gå til ${day - 1}. desember`}
-        >
-          <span className="group-hover:-translate-x-1 group-hover:transition-all inline-block ">&larr;</span> {day - 1}.
-          desember
-        </Link>
+        <div className="rounded-lg focus-within:ring-1 focus-within:ring-offset-4 focus-within:ring-red-berry">
+          <Link
+            to={`/post/${year}/${String(day - 1).padStart(2, '0')}`}
+            prefetch="intent"
+            className="group text-bekk-night hover:text-reindeer-brown styled-box-navigation px-4 py-1"
+            aria-label={`Gå til ${day - 1}. desember`}
+          >
+            <span className="group-hover:-translate-x-1 group-hover:transition-all inline-block ">&larr;</span>{' '}
+            {day - 1}. desember
+          </Link>
+        </div>
       )}
       {day < 24 && canShowNextDay && (
-        <Link
-          to={`/post/${year}/${String(day + 1).padStart(2, '0')}`}
-          prefetch="intent"
-          className="group text-bekk-night hover:text-reindeer-brown styled-box-navigation px-4 py-1"
-          aria-label={`Gå til ${day + 1}. desember`}
-        >
-          {day + 1}. desember{' '}
-          <span className="group-hover:translate-x-1 group-hover:transition-all inline-block">&rarr;</span>
-        </Link>
+        <div className="rounded-lg focus-within:ring-1 focus-within:ring-offset-4 focus-within:ring-red-berry">
+          <Link
+            to={`/post/${year}/${String(day + 1).padStart(2, '0')}`}
+            prefetch="intent"
+            className="group text-bekk-night hover:text-reindeer-brown styled-box-navigation px-4 py-1"
+            aria-label={`Gå til ${day + 1}. desember`}
+          >
+            {day + 1}. desember{' '}
+            <span className="group-hover:translate-x-1 group-hover:transition-all inline-block">&rarr;</span>
+          </Link>
+        </div>
       )}
     </div>
   )
