@@ -102,12 +102,8 @@ export default function ScreenPreviewRoute() {
 
   return (
     <>
-      <div className="landscape:hidden">
-        {PortraitView(visiblePosts, year, date, currentPage)}
-      </div>
-      <div className="hidden landscape:block">
-        {LandscapeView(visiblePosts, year, date, currentPage)}
-      </div>
+      <div className="landscape:hidden">{PortraitView(visiblePosts, year, date, currentPage)}</div>
+      <div className="hidden landscape:block">{LandscapeView(visiblePosts, year, date, currentPage)}</div>
     </>
   )
 }
