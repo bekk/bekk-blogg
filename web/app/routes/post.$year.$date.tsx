@@ -127,12 +127,14 @@ export default function DateRoute() {
           <div className="hidden xl:block w-[300px]">
             <GiftsLeftSideArticle />
           </div>
-          <PostPreviewList posts={posts} />
+          <div>
+            <PostPreviewList posts={posts} />
+            <DayNavigation day={Number(date)} year={Number(year)} />
+          </div>
           <div className="hidden xl:block w-[300px]">
             <GiftRightSideArticle />
           </div>
         </div>
-        <DayNavigation day={Number(date)} year={Number(year)} />
       </div>
       <div className="flex justify-between absolute inset-x-0 bottom-0 z-10"></div>
     </div>

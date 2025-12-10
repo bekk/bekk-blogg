@@ -71,7 +71,7 @@ export default function YearRoute() {
   const data = useLoaderData<{ year: string }>()
   return (
     <div className="bg-soft-pink min-h-screen">
-      <div className="relative min-h-screen sm:min-h-[960px]">
+      <div className="relative min-height-package-placement">
         <Header withBreadcrumbs={false} />
         <div className="flex flex-col gap-6">
           <h1 className="flex justify-center text-headline-desktop text-red-berry">{data.year}</h1>
