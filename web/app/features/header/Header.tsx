@@ -9,9 +9,9 @@ export const Header = () => {
   const error = useRouteError()
   const location = useLocation()
 
-  // Hide breadcrumbs on post.$year route and. post.$year.$date.$slug route
-  const isPostYearRoute = /^\/post\/\d{4}\/??$/.test(location.pathname)
-  const isPostYearDateSlugRoute = /^\/post\/\d{4}\/\d{1,2}\/[^\/]+\/?$/.test(location.pathname)
+  // Hide breadcrumbs on post.$year route and post.$year.$date.$slug route
+  const isPostYearRoute = new RegExp('^/post/\\d{4}/?$').test(location.pathname)
+  const isPostYearDateSlugRoute = new RegExp('^/post/\\d{4}/\\d{1,2}/[^/]+/?$').test(location.pathname)
   const expandedHeader = !error && !isPostYearRoute && !isPostYearDateSlugRoute
 
   return (
