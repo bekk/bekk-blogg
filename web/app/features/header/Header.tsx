@@ -4,18 +4,14 @@ import { Search } from '~/components/Search'
 import { BekkLogo } from '~/features/article/BekkLogo'
 import { useBreadcrumbs } from '~/hooks/useBreadcrumbs'
 
-interface HeaderProps {
-  withBreadcrumbs?: boolean
-}
-
-export const Header = ({ withBreadcrumbs = true }: HeaderProps) => {
+export const Header = () => {
   const breadcrumbs = useBreadcrumbs()
   const error = useRouteError()
   const location = useLocation()
 
   // Hide breadcrumbs on post.$year route
   const isPostYearRoute = /^\/post\/\d{4}\/?$/.test(location.pathname)
-  const expandedHeader = withBreadcrumbs && !error && !isPostYearRoute
+  const expandedHeader = !error && !isPostYearRoute
 
   return (
     <div className={`flex flex-col gap-8 p-4 md:pb-8 px-4 md:px-10 md:pt-8`}>
