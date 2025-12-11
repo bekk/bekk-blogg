@@ -69,9 +69,9 @@ export const meta: MetaFunction = ({ data }) => {
 export default function YearRoute() {
   const data = useLoaderData<{ year: string }>()
   return (
-    <div className="relative min-h-screen min-height-package-placement">
+    <div className="relative min-height-package-placement">
       <div className="flex flex-col gap-6">
-        <div className="flex justify-center text-headline-desktop text-red-berry">{data.year}</div>
+        <h1 className="flex justify-center text-headline-desktop text-red-berry">{data.year}</h1>
         <div className="2lg:h-auto flex justify-center relative z-0">
           <CalendarWithDoors />
         </div>

@@ -113,7 +113,7 @@ export default function DateRoute() {
   const { date, year, posts } = useLoaderData<typeof loader>()
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col">
       <h1 className="mb-4 sm:mb-12 self-start pl-4 md:pl-0 text-4xl md:text-5xl text-red-berry sm:self-center">
         {parseInt(date) < 10 ? date.replace('0', '') : date}. desember
       </h1>
@@ -122,12 +122,14 @@ export default function DateRoute() {
         <div className="hidden xl:block w-[300px]">
           <GiftsLeftSideArticle />
         </div>
-        <PostPreviewList posts={posts} />
+        <div>
+          <PostPreviewList posts={posts} />
+          <DayNavigation day={Number(date)} year={Number(year)} />
+        </div>
         <div className="hidden xl:block w-[300px]">
           <GiftRightSideArticle />
         </div>
       </div>
-      <DayNavigation day={Number(date)} year={Number(year)} />
     </div>
   )
 }
