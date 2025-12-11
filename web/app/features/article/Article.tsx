@@ -80,6 +80,19 @@ export const Article = ({ post }: ArticleProps) => {
         )}
         <Border />
         {post.availableFrom && formatDate(post.availableFrom)}
+        {post.canonicalUrl && (
+          <>
+            <Border />
+            <a
+              href={post.canonicalUrl}
+              className="hover:text-reindeer-brown underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Originallenke
+            </a>
+          </>
+        )}
         <Border />
         {points > 0 && (
           <>
