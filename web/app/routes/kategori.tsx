@@ -5,7 +5,6 @@ import { Tag } from '../../utils/sanity/types/sanity.types'
 
 import { Spinner } from '~/components/Spinner'
 import { ErrorPage } from '~/features/error-boundary/ErrorPage'
-import Header from '~/features/header/Header'
 
 export async function loader() {
   try {
@@ -41,10 +40,7 @@ export default function TagsRoute() {
   const data = useLoaderData<typeof loader>() // Safely use the loader's data
   const state = useNavigation()
   return (
-    <div className="bg-soft-pink min-h-screen pb-8">
-      <header className="relative">
-        <Header />
-      </header>
+    <div className="pb-8">
       {state.state === 'loading' ? (
         <Spinner />
       ) : (

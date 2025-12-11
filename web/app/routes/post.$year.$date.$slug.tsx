@@ -29,7 +29,6 @@ import { Article } from '~/features/article/Article'
 import { RelatedPosts } from '~/features/article/RelatedPosts'
 import Series, { shouldShowSeries } from '~/features/article/Series'
 import { ArticleHeader } from '~/features/article/ArticleHeader'
-import Header from '~/features/header/Header'
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const post = data?.initial.data
@@ -222,10 +221,7 @@ export default function ArticleRoute() {
   }
 
   return (
-    <div className="bg-soft-pink wrap-break-word min-h-screen pb-20">
-      <header className="relative">
-        <Header withBreadcrumbs={false} />
-      </header>
+    <div className="wrap-break-word min-h-screen pb-20">
       {isNavigating ? (
         <div className="flex items-center justify-center py-20">
           <Spinner />

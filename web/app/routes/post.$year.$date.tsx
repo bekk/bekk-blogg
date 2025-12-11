@@ -17,7 +17,6 @@ import { POSTS_BY_YEAR_AND_DATE } from '../../utils/sanity/queries/postQueries'
 import { loadQuery } from 'utils/sanity/loader.server'
 import { DayNavigation } from '~/features/article/DayNavigation'
 import { ErrorPage } from '~/features/error-boundary/ErrorPage'
-import Header from '~/features/header/Header'
 import { PostPreviewList } from '~/features/post-preview/PostPreview'
 import { GiftsLeftSideArticle } from '~/features/article/svgs/GiftsLeftSideArticle'
 import { GiftRightSideArticle } from '~/features/article/svgs/GiftRightSideArticle'
@@ -114,29 +113,23 @@ export default function DateRoute() {
   const { date, year, posts } = useLoaderData<typeof loader>()
 
   return (
-    <div className="bg-soft-pink min-h-screen">
-      <header className="relative">
-        <Header />
-      </header>
-      <div className="flex flex-col">
-        <h1 className="mb-4 sm:mb-12 self-start pl-4 md:pl-0 text-4xl md:text-5xl text-red-berry sm:self-center">
-          {parseInt(date) < 10 ? date.replace('0', '') : date}. desember
-        </h1>
-        <p className="self-start sm:self-center pl-4 mb-8 sm:mb-12 text-red-berry ">Totalt {posts.length} innlegg</p>
-        <div className="flex justify-center items-end">
-          <div className="hidden xl:block w-[300px]">
-            <GiftsLeftSideArticle />
-          </div>
-          <div>
-            <PostPreviewList posts={posts} />
-            <DayNavigation day={Number(date)} year={Number(year)} />
-          </div>
-          <div className="hidden xl:block w-[300px]">
-            <GiftRightSideArticle />
-          </div>
+    <div className="flex flex-col">
+      <h1 className="mb-4 sm:mb-12 self-start pl-4 md:pl-0 text-4xl md:text-5xl text-red-berry sm:self-center">
+        {parseInt(date) < 10 ? date.replace('0', '') : date}. desember
+      </h1>
+      <p className="self-start sm:self-center pl-4 mb-8 sm:mb-12 text-red-berry ">Totalt {posts.length} innlegg</p>
+      <div className="flex justify-center items-end">
+        <div className="hidden xl:block w-[300px]">
+          <GiftsLeftSideArticle />
+        </div>
+        <div>
+          <PostPreviewList posts={posts} />
+          <DayNavigation day={Number(date)} year={Number(year)} />
+        </div>
+        <div className="hidden xl:block w-[300px]">
+          <GiftRightSideArticle />
         </div>
       </div>
-      <div className="flex justify-between absolute inset-x-0 bottom-0 z-10"></div>
     </div>
   )
 }

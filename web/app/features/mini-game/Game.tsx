@@ -60,8 +60,8 @@ export function ChristmasMinesweeper() {
   }
 
   return (
-    <div className="min-h-screen bg-[#d0332e] text-white flex flex-col items-center justify-center p-4">
-      <h1 className="text-4xl font-bold text-green-300 mb-4">Julesveiper</h1>
+    <div className="text-red-berry flex flex-col items-center">
+      <h1 className="text-4xl font-bold mb-4">Julesveiper</h1>
       <GameHeader
         gameStatus={gameStatus}
         onReset={initializeBoard}

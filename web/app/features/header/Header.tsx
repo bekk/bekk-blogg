@@ -1,17 +1,18 @@
-import { Link, useRouteError } from 'react-router'
+import { Link, useLocation, useRouteError } from 'react-router'
 
 import { Search } from '~/components/Search'
 import { BekkLogo } from '~/features/article/BekkLogo'
 import { useBreadcrumbs } from '~/hooks/useBreadcrumbs'
 
-interface HeaderProps {
-  withBreadcrumbs?: boolean
-}
-
-export const Header = ({ withBreadcrumbs = true }: HeaderProps) => {
+export const Header = () => {
   const breadcrumbs = useBreadcrumbs()
   const error = useRouteError()
-  const expandedHeader = withBreadcrumbs && !error
+  const location = useLocation()
+
+  // Hide breadcrumbs on post.$year route and post.$year.$date.$slug route
+  const isPostYearRoute = new RegExp('^/post/\\d{4}/?$').test(location.pathname)
+  const isPostYearDateSlugRoute = new RegExp('^/post/\\d{4}/\\d{1,2}/[^/]+/?$').test(location.pathname)
+  const expandedHeader = !error && !isPostYearRoute && !isPostYearDateSlugRoute
 
   return (
     <div className={`flex flex-col gap-8 p-4 md:pb-8 px-4 md:px-10 md:pt-8`}>

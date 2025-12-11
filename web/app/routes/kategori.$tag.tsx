@@ -8,7 +8,6 @@ import { TAG_WITH_POSTS_QUERYResult } from '../../utils/sanity/types/sanity.type
 import { LoaderFunctionArgs } from 'react-router'
 import { Spinner } from '~/components/Spinner'
 import { ErrorPage } from '~/features/error-boundary/ErrorPage'
-import Header from '~/features/header/Header'
 import { Pagination } from '~/features/pagination/Pagination'
 import { PostPreviewList } from '~/features/post-preview/PostPreview'
 
@@ -78,10 +77,7 @@ export default function TagRoute() {
   const navigation = useNavigation()
 
   return (
-    <div className="bg-soft-pink min-h-screen">
-      <header className="relative">
-        <Header />
-      </header>
+    <>
       {!tag && (
         <div className="flex flex-col items-center lg:mb-12">
           <h1 className="md:text-center mb-0">Fant ikke den kategorien</h1>
@@ -104,7 +100,7 @@ export default function TagRoute() {
           <Pagination {...pagination} baseUrl={`/kategori/${tag.slug}`} />
         </div>
       )}
-    </div>
+    </>
   )
 }
 

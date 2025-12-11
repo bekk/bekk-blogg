@@ -17,7 +17,6 @@ import { GithubIcon, GlobeIcon, InstagramIcon, LinkedinIcon, MailIcon, TwitterIc
 import { urlFor } from 'utils/sanity/utils'
 import { Spinner } from '~/components/Spinner'
 import { ErrorPage } from '~/features/error-boundary/ErrorPage'
-import Header from '~/features/header/Header'
 import { Pagination } from '~/features/pagination/Pagination'
 import { PostPreviewList } from '~/features/post-preview/PostPreview'
 
@@ -91,10 +90,7 @@ export default function AuthorRoute() {
   const navigation = useNavigation()
   const isSomethingWrong = !author || !posts || posts.length === 0
   return (
-    <div className="bg-soft-pink pb-8 min-h-screen">
-      <header className="relative">
-        <Header withBreadcrumbs={false} />
-      </header>
+    <div className="pb-8">
       {isSomethingWrong && (
         <div className="flex flex-col items-center xl:mb-12">
           <h1 className="md:text-center mb-0">
