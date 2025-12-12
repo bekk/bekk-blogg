@@ -1,4 +1,6 @@
 import { Link, MetaFunction, useLoaderData, useNavigation } from 'react-router'
+import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { loadQuery } from 'utils/sanity/loader.server'
 import { ALL_CATEGORIES } from '../../utils/sanity/queries/postQueries'
 import { Tag } from '../../utils/sanity/types/sanity.types'
@@ -16,6 +18,8 @@ export async function loader() {
     throw new Response('Failed to load categories', { status: 500 })
   }
 }
+
+const MotionLink = motion(Link)
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const title = `Innhold fra ${data?.length} kategorier | Bekk Christmas`
@@ -36,6 +40,24 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   ]
 }
 
+function TagItem({ category }: { category: Tag }) {
+  const [isFocused, setIsFocused] = useState(false)
+
+  return (
+    <MotionLink
+      to={`/kategori/${category.slug}`}
+      className="rounded hover:text-soft-pink text-white md:text-subtitle-desktop focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-red-berry"
+      whileHover={{ scale: 1.04, y: -3 }}
+      transition={{ duration: 0.18, ease: 'easeInOut' }}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      animate={isFocused ? { scale: 1.04, y: -3 } : { scale: 1, y: 0 }}
+    >
+      <span className="bg-dark-red rounded sm:text-2xl py-2 px-6 inline-block">{category.name}</span>
+    </MotionLink>
+  )
+}
+
 export default function TagsRoute() {
   const data = useLoaderData<typeof loader>() // Safely use the loader's data
   const state = useNavigation()
@@ -48,13 +70,7 @@ export default function TagsRoute() {
           <h1 className="text-center text-3xl sm:text-4xl text-red-berry pt-4">Kategorier</h1>
           <div className="flex flex-wrap justify-center gap-2 md:gap-4">
             {data.map((category: Tag, index: number) => (
-              <Link
-                to={`/kategori/${category.slug}`}
-                className="hover:text-soft-pink text-white md:text-subtitle-desktop hover:animate-wiggle"
-                key={index}
-              >
-                <p className="bg-dark-red rounded sm:text-2xl py-2 px-6">{category.name}</p>
-              </Link>
+              <TagItem key={index} category={category} />
             ))}
           </div>
         </div>
