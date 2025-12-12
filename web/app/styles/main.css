@@ -148,9 +148,6 @@
     transform: rotate(2deg);
   }
 }
-@utility animate-wiggle {
-  animation: wiggle 0.4s ease-in-out;
-}
 
 /*
   The default border color has changed to `currentcolor` in Tailwind CSS v4,
