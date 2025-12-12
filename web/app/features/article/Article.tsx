@@ -83,14 +83,17 @@ export const Article = ({ post }: ArticleProps) => {
         {post.canonicalUrl && (
           <>
             <Border />
-            <a
-              href={post.canonicalUrl}
-              className="hover:text-reindeer-brown underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Originallenke
-            </a>
+            <p>
+              Opprinnelig publisert{' '}
+              <a
+                href={post.canonicalUrl}
+                className="hover:text-reindeer-brown underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                her
+              </a>
+            </p>
           </>
         )}
         <Border />
