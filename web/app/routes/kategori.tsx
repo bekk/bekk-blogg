@@ -66,7 +66,7 @@ export default function TagsRoute() {
       {state.state === 'loading' ? (
         <Spinner />
       ) : (
-        <div className="px-2 sm:px-8 mb-8 flex flex-col">
+        <div className="px-2 sm:px-8 mb-8 flex flex-col max-w-[1800px] mx-auto">
           <h1 className="text-center text-3xl sm:text-4xl text-red-berry pt-4">Kategorier</h1>
           <div className="flex flex-wrap justify-center gap-2 md:gap-4">
             {data.map((category: Tag, index: number) => (
