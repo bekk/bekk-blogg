@@ -3,6 +3,7 @@ import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'
 
 import { PostScreenPreview } from '~/features/post-preview/PostScreenPreview'
 import { getPostUrl, qrColors } from './utils'
+import { stableRandomIndex } from 'utils/random'
 
 export const LandscapeView = (posts: POSTS_BY_YEAR_AND_DATEResult, year: string, date: string, pageKey?: number) => {
   return (
@@ -21,7 +22,10 @@ export const LandscapeView = (posts: POSTS_BY_YEAR_AND_DATEResult, year: string,
               className="h-full flex flex-col"
             >
               <PostScreenPreview
-                qr={{ url: getPostUrl(post, year, date), qrColors: qrColors[index % qrColors.length] }}
+                qr={{
+                  url: getPostUrl(post, year, date),
+                  qrColors: qrColors[stableRandomIndex(post._id, qrColors.length)],
+                }}
                 {...post}
               />
             </motion.div>
