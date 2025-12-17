@@ -14,6 +14,7 @@ import {
   useLoaderData,
   useMatches,
   useRouteError,
+  useLocation,
 } from 'react-router'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
@@ -112,10 +113,13 @@ export function ErrorBoundary() {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const matches = useMatches()
+  const { pathname } = useLocation()
 
   type PotentialPostData = { initial: { data: { language?: string; canonicalUrl?: string } } } | undefined
   const postData = (matches.find((match) => match.id === 'routes/post.$year.$date.$slug')?.data as PotentialPostData)
     ?.initial?.data
+
+  const hideHeader = pathname === '/skjerm'
 
   return (
     <html lang={postData?.language ?? 'nb-NO'}>
@@ -132,9 +136,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <JumpToContent />
         <div className="min-h-screen bg-soft-pink flex flex-col">
           <Scripts />
-          <header>
-            <Header />
-          </header>
+          {!hideHeader ? (
+            <header>
+              <Header />
+            </header>
+          ) : null}
           <main id="content" tabIndex={-1} className="focus:outline-hidden">
             {children}
           </main>
