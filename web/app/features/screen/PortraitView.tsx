@@ -7,6 +7,7 @@ import { BekkLogo } from '../article/BekkLogo'
 import { GiftRightSideArticle } from '../article/svgs/GiftRightSideArticle'
 import { GiftsLeftSideArticle } from '../article/svgs/GiftsLeftSideArticle'
 import { getPostUrl, qrColors } from './utils'
+import { stableRandomIndex } from 'utils/random'
 
 export const PortraitView = (posts: POSTS_BY_YEAR_AND_DATEResult, year: string, date: string, pageKey?: number) => {
   return (
@@ -35,7 +36,10 @@ export const PortraitView = (posts: POSTS_BY_YEAR_AND_DATEResult, year: string, 
                 className="w-full flex flex-row justify-center"
               >
                 <PostScreenPreview
-                  qr={{ url: getPostUrl(post, year, date), qrColors: qrColors[index % qrColors.length] }}
+                  qr={{
+                    url: getPostUrl(post, year, date),
+                    qrColors: qrColors[stableRandomIndex(post._id, qrColors.length)],
+                  }}
                   {...post}
                 />
               </motion.div>
