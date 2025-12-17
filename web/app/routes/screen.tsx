@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import {
   isRouteErrorResponse,
   LoaderFunctionArgs,
@@ -5,6 +6,8 @@ import {
   redirect,
   useLoaderData,
   useRouteError,
+  useLocation,
+  useRevalidator,
 } from 'react-router'
 import { combinedHeaders } from 'utils/headers'
 import { isNumericString } from 'utils/numbers'
@@ -17,8 +20,19 @@ import { ErrorPage } from '~/features/error-boundary/ErrorPage'
 import { useScreenPagination } from '../hooks/useScreenPagination'
 import { LandscapeView } from '~/features/screen/LandscapeView'
 import { PortraitView } from '~/features/screen/PortraitView'
+import { useMidnightRevalidate } from '~/hooks/useMidnightRevalidate'
 
 const ROTATION_INTERVAL_DEFAULT = 30
+
+type ScreenLoaderData = {
+  posts: POSTS_BY_YEAR_AND_DATEResult
+  year: string
+  date: string
+  articleAmount?: number
+  articlePage: number
+  rotationIntervalMs: number
+  hasDateOverride: boolean
+}
 
 export const meta: MetaFunction = () => {
   const title = `Forhåndsvisning av årets Bekk Christmas`
@@ -80,14 +94,24 @@ export async function loader({ request }: LoaderFunctionArgs) {
       ? Math.max(5000, Number(rotationIntervalParam) * 1000)
       : ROTATION_INTERVAL_DEFAULT * 1000
 
-    return {
+    const data: ScreenLoaderData = {
       posts,
       year,
       date,
       articleAmount,
       articlePage,
       rotationIntervalMs,
+      hasDateOverride: Boolean(dateOverrideParam),
     }
+
+    // When dateOverride is not present, the same URL should not be cached across days.
+    const headers: HeadersInit | undefined = dateOverrideParam
+      ? undefined
+      : {
+          'Cache-Control': 'no-store',
+        }
+
+    return Response.json(data, { headers })
   } catch (error) {
     console.error('Error loading posts:', error)
     throw new Response('Error loading posts', { status: 500 })
@@ -97,8 +121,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export const headers = combinedHeaders
 
 export default function ScreenPreviewRoute() {
-  const { posts, year, date, articleAmount, articlePage, rotationIntervalMs } = useLoaderData<typeof loader>()
+  const { posts, year, date, articleAmount, articlePage, rotationIntervalMs, hasDateOverride } =
+    useLoaderData<ScreenLoaderData>()
   const { visiblePosts, currentPage } = useScreenPagination(posts, articleAmount, articlePage, rotationIntervalMs)
+  useMidnightRevalidate(hasDateOverride)
 
   return (
     <>
