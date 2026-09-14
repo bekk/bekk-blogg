@@ -18,7 +18,7 @@
     "test:e2e:debug": "playwright test --debug"
   },
   "dependencies": {
-    "@getbrevo/brevo": "3.0.1",
+    "@getbrevo/brevo": "6.0.3",
     "@opengraphninja/react": "0.2.2",
     "@portabletext/react": "8.0.1",
     "@portabletext/types": "4.0.2",
