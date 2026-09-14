@@ -9,8 +9,16 @@ Tre uavhengige npm-prosjekter: `web` (React Router 7, Vercel), `sanity` (Studio)
 |---|---|---|---|
 | Sårbarheter før | 60 *(1 kritisk, 31 høy)* | 39 *(1 kritisk, 21 høy)* | 11 *(1 kritisk, 8 høy)* |
 | Sårbarheter etter | **0** | **0** | **0** |
-| Pakker i treet | 1717 → **996** | 1209 | 318 |
+| Pakker i treet | **996** *(se under)* | 1209 | 318 |
 | typecheck / lint / build | ✅ ✅ ✅ | ✅ ✅ ✅ | ✅ ✅ ✅ |
+
+Tallet for `web` er ikke en ren før/etter: den committede lockfilen hadde 1717 pakker, en ren
+regenerering av samme `package.json` ga 1772, og 996 er resultatet av regenerering *pluss* fjerning
+av `sanity` *pluss* alle versjonsbumpene. Fjerningen av `sanity` alene sto for det meste av fallet.
+
+Sårbarhetstallene har samme nyanse: bare å regenerere lockfilene — uten å endre én versjon — tok
+`web` fra 60 til 35, `sanity` fra 39 til 11 og `tts` fra 11 til 3. Lockfilene var altså mer
+utdaterte enn pakkene.
 
 `web` kunne ikke bygges lokalt på `main` (`ENOENT ... build/client/.vite` i `cleanViteManifests`,
 i grensesnittet mellom `@vercel/react-router@1.2.4` og `@react-router/dev@7.10.1`). Bygget er nå grønt.
