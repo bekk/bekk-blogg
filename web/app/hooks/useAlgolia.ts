@@ -4,7 +4,7 @@ import { useRef } from 'react'
 
 export const useAlgoliaConfig = () => {
   const rootMatch = useMatches().find((match) => match.id === 'root')
-  return (rootMatch?.data as { algolia: { app: string; key: string; index: string } })?.algolia
+  return (rootMatch?.loaderData as { algolia: { app: string; key: string; index: string } })?.algolia
 }
 
 export const useAlgoliaClient = () => {

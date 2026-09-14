@@ -21,7 +21,7 @@ import { PostPreviewList } from '~/features/post-preview/PostPreview'
 import { GiftsLeftSideArticle } from '~/features/article/svgs/GiftsLeftSideArticle'
 import { GiftRightSideArticle } from '~/features/article/svgs/GiftRightSideArticle'
 
-export const meta: MetaFunction<typeof loader> = ({ data: postsByDate }) => {
+export const meta: MetaFunction<typeof loader> = ({ loaderData: postsByDate }) => {
   if (!postsByDate) {
     return []
   }

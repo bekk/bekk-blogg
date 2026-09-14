@@ -42,7 +42,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return { year }
 }
 
-export const meta: MetaFunction = ({ data }) => {
+export const meta: MetaFunction = ({ loaderData: data }) => {
   if (!data) {
     return []
   }

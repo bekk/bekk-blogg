@@ -64,7 +64,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   }
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta: MetaFunction<typeof loader> = ({ loaderData: data }) => {
   const authorName = cleanControlCharacters(data?.author?.fullName)
   const title = `Innhold fra ${authorName} | Bekk Christmas`
   const description = `Utforsk ${data?.pagination.totalPosts} innlegg fra ${authorName} på Bekk Christmas`

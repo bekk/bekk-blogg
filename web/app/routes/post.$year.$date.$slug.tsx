@@ -30,7 +30,7 @@ import { RelatedPosts } from '~/features/article/RelatedPosts'
 import Series, { shouldShowSeries } from '~/features/article/Series'
 import { ArticleHeader } from '~/features/article/ArticleHeader'
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta: MetaFunction<typeof loader> = ({ loaderData: data }) => {
   const post = data?.initial.data
 
   if (!post) {
