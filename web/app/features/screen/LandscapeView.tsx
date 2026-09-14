@@ -1,11 +1,11 @@
-import { AnimatePresence, motion } from 'framer-motion'
-import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'
+import { AnimatePresence, motion } from 'motion/react'
+import { POSTS_BY_YEAR_AND_DATE_RESULT } from 'utils/sanity/types/sanity.types'
 
 import { PostScreenPreview } from '~/features/post-preview/PostScreenPreview'
 import { getPostUrl, qrColors } from './utils'
 import { stableRandomIndex } from 'utils/random'
 
-export const LandscapeView = (posts: POSTS_BY_YEAR_AND_DATEResult, year: string, date: string, pageKey?: number) => {
+export const LandscapeView = (posts: POSTS_BY_YEAR_AND_DATE_RESULT, year: string, date: string, pageKey?: number) => {
   return (
     <div className="bg-mid-green min-h-screen flex flex-col items-center gap-16 overflow-hidden p-4 pt-16">
       <h1 className="text-5xl text-soft-pink text-center m-0">{date}. desember</h1>

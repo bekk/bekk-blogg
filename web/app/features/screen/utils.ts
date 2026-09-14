@@ -1,6 +1,6 @@
-import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'
+import { POSTS_BY_YEAR_AND_DATE_RESULT } from 'utils/sanity/types/sanity.types'
 
-export const getPostUrl = (post: POSTS_BY_YEAR_AND_DATEResult[number], year: string, date: string) => {
+export const getPostUrl = (post: POSTS_BY_YEAR_AND_DATE_RESULT[number], year: string, date: string) => {
   return `https://www.bekk.christmas/post/${year}/${date}/${post.slug.current}`
 }
 

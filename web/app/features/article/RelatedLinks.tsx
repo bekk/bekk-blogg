@@ -1,10 +1,10 @@
-import { POST_BY_SLUGResult } from 'utils/sanity/types/sanity.types'
+import { POST_BY_SLUG_RESULT } from 'utils/sanity/types/sanity.types'
 
 import { RelatedLinkElement } from '~/components/RelatedLink'
 
 type RelatedLinksProps = {
-  links: NonNullable<NonNullable<POST_BY_SLUGResult>['relatedLinks']>
-  language: NonNullable<POST_BY_SLUGResult>['language']
+  links: NonNullable<NonNullable<POST_BY_SLUG_RESULT>['relatedLinks']>
+  language: NonNullable<POST_BY_SLUG_RESULT>['language']
 }
 
 export const RelatedLinks = ({ links, language }: RelatedLinksProps) => {

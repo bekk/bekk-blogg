@@ -17,7 +17,7 @@ import { z } from 'zod'
 
 import { loadQuery, setServerClient } from 'utils/sanity/loader.server'
 import { POST_BY_SLUG } from 'utils/sanity/queries/postQueries'
-import { Post, POST_BY_SLUGResult } from 'utils/sanity/types/sanity.types'
+import { Post, POST_BY_SLUG_RESULT } from 'utils/sanity/types/sanity.types'
 import { toPlainText, urlFor } from 'utils/sanity/utils'
 import { ErrorPage } from '../features/error-boundary/ErrorPage'
 
@@ -111,7 +111,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   if (options) {
     setServerClient(options)
   }
-  const initial = await loadQuery<POST_BY_SLUGResult>(POST_BY_SLUG, { slug: decodedSlug }, options)
+  const initial = await loadQuery<POST_BY_SLUG_RESULT>(POST_BY_SLUG, { slug: decodedSlug }, options)
 
   const formatDate = `${year}-12-${date.padStart(2, '0')}`
   const currentDate = new Date(new Date().getTime() + 1000 * 60 * 60)

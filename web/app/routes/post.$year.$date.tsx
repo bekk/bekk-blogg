@@ -9,7 +9,7 @@ import {
 
 import { combinedHeaders } from 'utils/headers'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
-import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'
+import { POSTS_BY_YEAR_AND_DATE_RESULT } from 'utils/sanity/types/sanity.types'
 import { z } from 'zod'
 
 import { POSTS_BY_YEAR_AND_DATE } from '../../utils/sanity/queries/postQueries'
@@ -92,7 +92,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   }
 
   try {
-    const { data: posts } = await loadQuery<POSTS_BY_YEAR_AND_DATEResult>(POSTS_BY_YEAR_AND_DATE, {
+    const { data: posts } = await loadQuery<POSTS_BY_YEAR_AND_DATE_RESULT>(POSTS_BY_YEAR_AND_DATE, {
       date: formatDate,
     })
 

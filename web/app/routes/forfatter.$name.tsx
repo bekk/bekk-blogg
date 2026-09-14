@@ -9,11 +9,12 @@ import {
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { combinedHeaders } from 'utils/headers'
 import { AUTHOR_WITH_POSTS_QUERY } from 'utils/sanity/queries/postQueries'
-import { Author, AUTHOR_WITH_POSTS_QUERYResult } from 'utils/sanity/types/sanity.types'
+import { Author, AUTHOR_WITH_POSTS_QUERY_RESULT } from 'utils/sanity/types/sanity.types'
 
 import { loadQuery } from 'utils/sanity/loader.server'
 
-import { GithubIcon, GlobeIcon, InstagramIcon, LinkedinIcon, MailIcon, TwitterIcon } from 'lucide-react'
+import { GlobeIcon, MailIcon } from 'lucide-react'
+import { GithubIcon, InstagramIcon, LinkedinIcon, TwitterIcon } from '~/components/BrandIcons'
 import { urlFor } from 'utils/sanity/utils'
 import { Spinner } from '~/components/Spinner'
 import { ErrorPage } from '~/features/error-boundary/ErrorPage'
@@ -37,7 +38,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const perPage = 15
   const offset = (page - 1) * perPage
 
-  const response = await loadQuery<AUTHOR_WITH_POSTS_QUERYResult>(AUTHOR_WITH_POSTS_QUERY, {
+  const response = await loadQuery<AUTHOR_WITH_POSTS_QUERY_RESULT>(AUTHOR_WITH_POSTS_QUERY, {
     slug: name,
     start: offset,
     end: offset + perPage,

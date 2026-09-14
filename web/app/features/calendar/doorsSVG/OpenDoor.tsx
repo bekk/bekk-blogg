@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import { OpenDoorSvg } from './OpenDoorSVG'
 import { TodaysDoorSVG } from './TodaysDoorSVG'
 

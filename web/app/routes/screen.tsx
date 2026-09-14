@@ -11,7 +11,7 @@ import { isNumericString } from 'utils/numbers'
 import { loadQuery } from 'utils/sanity/loader.server'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { POSTS_BY_YEAR_AND_DATE } from 'utils/sanity/queries/postQueries'
-import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'
+import { POSTS_BY_YEAR_AND_DATE_RESULT } from 'utils/sanity/types/sanity.types'
 
 import { ErrorPage } from '~/features/error-boundary/ErrorPage'
 import { useScreenPagination } from '../hooks/useScreenPagination'
@@ -22,7 +22,7 @@ import { useMidnightRevalidate } from '~/hooks/useMidnightRevalidate'
 const ROTATION_INTERVAL_DEFAULT = 30
 
 type ScreenLoaderData = {
-  posts: POSTS_BY_YEAR_AND_DATEResult
+  posts: POSTS_BY_YEAR_AND_DATE_RESULT
   year: string
   date: string
   articleAmount?: number
@@ -81,7 +81,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   }
 
   try {
-    const { data: posts } = await loadQuery<POSTS_BY_YEAR_AND_DATEResult>(POSTS_BY_YEAR_AND_DATE, {
+    const { data: posts } = await loadQuery<POSTS_BY_YEAR_AND_DATE_RESULT>(POSTS_BY_YEAR_AND_DATE, {
       date: formatDate,
     })
 

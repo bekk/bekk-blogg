@@ -1,10 +1,10 @@
 import { Link } from 'react-router'
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 
 import { trackEvent } from '../../../utils/analytics'
 import { parseDate } from '../../../utils/date'
 import { PostStamp } from './PostStamp'
-import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'
+import { POSTS_BY_YEAR_AND_DATE_RESULT } from 'utils/sanity/types/sanity.types'
 import { readingTime } from 'utils/readingTime'
 
 interface RelatedPostsData {
@@ -15,7 +15,7 @@ interface RelatedPostsData {
   slug?: string
   availableFrom?: string
   summary: string | null
-  coverImage: POSTS_BY_YEAR_AND_DATEResult[number]['coverImage'] | null
+  coverImage: POSTS_BY_YEAR_AND_DATE_RESULT[number]['coverImage'] | null
   podcastLength: number | null
   wordCount: number | null
 }

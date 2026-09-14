@@ -23,9 +23,11 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "rootDirs": [".", "./.react-router/types"],
-    "baseUrl": ".",
+    // baseUrl er deprecated i TypeScript 6. De bare importene (utils/...) er
+    // derfor flyttet til eksplisitte paths-oppslag i stedet.
     "paths": {
-      "~/*": ["./app/*"]
+      "~/*": ["./app/*"],
+      "utils/*": ["./utils/*"]
     },
 
     // Vite takes care of building everything, not tsc.

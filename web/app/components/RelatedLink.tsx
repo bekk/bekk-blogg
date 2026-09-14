@@ -1,10 +1,10 @@
 import { usePreviewData } from '@opengraphninja/react'
 import { Link } from 'react-router'
-import { POST_BY_SLUGResult } from 'utils/sanity/types/sanity.types'
+import { POST_BY_SLUG_RESULT } from 'utils/sanity/types/sanity.types'
 
 type RelatedLinkElementProps = {
-  link: NonNullable<NonNullable<POST_BY_SLUGResult>['relatedLinks']>[number]
-  language: NonNullable<POST_BY_SLUGResult>['language']
+  link: NonNullable<NonNullable<POST_BY_SLUG_RESULT>['relatedLinks']>[number]
+  language: NonNullable<POST_BY_SLUG_RESULT>['language']
 }
 
 export const RelatedLinkElement = ({ link, language }: RelatedLinkElementProps) => {

@@ -1,19 +1,19 @@
-import { POST_BY_SLUGResult } from 'utils/sanity/types/sanity.types'
+import { POST_BY_SLUG_RESULT } from 'utils/sanity/types/sanity.types'
 import { TextLink } from '~/components/TextLink'
 import { postUrl } from '~/lib/format'
 import { StampBorder } from '../StampBorder'
 
 type SeriesProps = {
   postId: string
-  series: NonNullable<NonNullable<POST_BY_SLUGResult>['series']>
+  series: NonNullable<NonNullable<POST_BY_SLUG_RESULT>['series']>
   mobileOnly: boolean
 }
 
-const visiblePosts = (series: NonNullable<NonNullable<POST_BY_SLUGResult>['series']>) => {
+const visiblePosts = (series: NonNullable<NonNullable<POST_BY_SLUG_RESULT>['series']>) => {
   return series.posts.filter((post) => series.shouldListNonPublishedContent || post.isAvailable)
 }
 
-export const shouldShowSeries = (post: NonNullable<POST_BY_SLUGResult>) => {
+export const shouldShowSeries = (post: NonNullable<POST_BY_SLUG_RESULT>) => {
   return post.series && visiblePosts(post.series).length >= 2
 }
 

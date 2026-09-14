@@ -1,6 +1,6 @@
 import { Link, MetaFunction, useLoaderData, useNavigation } from 'react-router'
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import { loadQuery } from 'utils/sanity/loader.server'
 import { ALL_CATEGORIES } from '../../utils/sanity/queries/postQueries'
 import { Tag } from '../../utils/sanity/types/sanity.types'
@@ -19,7 +19,7 @@ export async function loader() {
   }
 }
 
-const MotionLink = motion(Link)
+const MotionLink = motion.create(Link)
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const title = `Innhold fra ${data?.length} kategorier | Bekk Christmas`
