@@ -10,41 +10,49 @@
     "build": "sanity build -y",
     "deploy": "sanity deploy",
     "deploy-graphql": "sanity graphql deploy",
-    "typegen": "sanity schema extract --enforce-required-fields && sanity typegen generate"
+    "typegen": "sanity schema extract --enforce-required-fields --force && sanity typegen generate",
+    "lint": "eslint"
   },
   "keywords": [
     "sanity"
   ],
   "dependencies": {
-    "@opengraphninja/react": "0.2.1",
-    "@sanity/code-input": "6.0.1",
-    "@sanity/locale-nb-no": "1.1.26",
-    "@sanity/table": "2.0.0",
-    "@sanity/vision": "4.20.3",
+    "@opengraphninja/react": "0.2.2",
+    "@sanity/code-input": "7.3.8",
+    "@sanity/locale-nb-no": "1.1.39",
+    "@sanity/table": "3.1.16",
+    "@sanity/vision": "6.13.2",
     "get-youtube-id": "1.0.1",
-    "react": "19.2.1",
-    "react-dom": "19.2.1",
-    "react-icons": "5.3.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-icons": "5.7.0",
     "react-twitter-embed": "4.0.4",
     "react-youtube": "10.1.0",
-    "sanity": "4.20.3",
-    "sanity-plugin-documents-pane": "3.0.0",
-    "sanity-plugin-iframe-pane": "4.0.0",
-    "sanity-plugin-media": "4.0.0",
-    "slugify": "1.6.6",
-    "styled-components": "6.1.19"
+    "sanity": "6.13.2",
+    "sanity-plugin-documents-pane": "4.1.19",
+    "sanity-plugin-iframe-pane": "5.0.35",
+    "sanity-plugin-media": "6.1.8",
+    "slugify": "1.6.9",
+    "styled-components": "6.5.3"
   },
   "devDependencies": {
-    "@sanity/eslint-config-studio": "5.0.2",
-    "eslint": "9.37.0",
-    "prettier": "3.6.2",
-    "typescript": "5.9.3"
+    "@sanity/eslint-config-studio": "7.0.0",
+    "@types/node": "26.5.1",
+    "eslint": "10.10.0",
+    "prettier": "3.9.6",
+    "typescript": "6.0.3"
   },
   "overrides": {
     "react-twitter-embed": {
-      "react": "19.2.1",
-      "react-dom": "19.2.1"
-    }
+      "react": "19.3.0",
+      "react-dom": "19.3.0"
+    },
+    "@vercel/frameworks": {
+      "js-yaml": "^3.15.2",
+      "smol-toml": "^1.8.0"
+    },
+    "adm-zip": "^0.6.1",
+    "uuid": "^11.1.1"
   },
   "prettier": {
     "semi": false,
@@ -53,6 +61,6 @@
     "singleQuote": true
   },
   "engines": {
-    "node": "22.12.0"
+    "node": ">=22.12"
   }
 }

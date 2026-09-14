@@ -10,7 +10,7 @@ const Preview = (props: PreviewProps) => {
   try {
     new URL(href);
     return <PreviewLink href={href} />;
-  } catch (e) {
+  } catch {
     // not a valid URL, render nothing
     return null;
   }

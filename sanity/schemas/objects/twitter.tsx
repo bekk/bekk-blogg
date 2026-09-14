@@ -1,6 +1,6 @@
 import React from "react";
 import { TwitterTweetEmbed } from "react-twitter-embed";
-import { PreviewProps, SchemaTypeDefinition, defineType } from "sanity";
+import { PreviewProps, defineType } from "sanity";
 
 const getTweetId = (url?: string) => {
   if (!url) {
