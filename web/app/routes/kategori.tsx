@@ -21,7 +21,7 @@ export async function loader() {
 
 const MotionLink = motion.create(Link)
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta: MetaFunction<typeof loader> = ({ loaderData: data }) => {
   const title = `Innhold fra ${data?.length} kategorier | Bekk Christmas`
   const description = `Utforsk ${data?.length} kategorier på Bekk Christmas`
   return [

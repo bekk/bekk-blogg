@@ -53,7 +53,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 
 export const headers = combinedHeaders
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta: MetaFunction<typeof loader> = ({ loaderData: data }) => {
   const description = `Utforsk ${data?.pagination.totalPosts} innlegg om ${data?.tag?.name} på Bekk Christmas`
   const title = `Innhold om ${data?.tag?.name} | Bekk Christmas`
   return [

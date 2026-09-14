@@ -39,8 +39,8 @@ export function useBreadcrumbs(): Breadcrumb[] {
           date = date.replace('0', '')
         }
         title = `${date}. desember`
-      } else if (key === 'slug' && currRoute.data) {
-        const postTitle = (currRoute.data as { initial: { data: Post } }).initial.data?.title
+      } else if (key === 'slug' && currRoute.loaderData) {
+        const postTitle = (currRoute.loaderData as { initial: { data: Post } }).initial.data?.title
         title = `${postTitle ?? ' Innlegg'}`
       }
 
@@ -56,14 +56,14 @@ export function useBreadcrumbs(): Breadcrumb[] {
     })
     addBreadcrumb('/kategori', 'Kategorier')
     Object.entries(currRoute.params).forEach(([key, value]) => {
-      if (key === 'tag' && value && currRoute.data) {
-        const tagName = (currRoute.data as { tag: { name: string } }).tag.name
+      if (key === 'tag' && value && currRoute.loaderData) {
+        const tagName = (currRoute.loaderData as { tag: { name: string } }).tag.name
         addBreadcrumb(`/${value}`, `${tagName.charAt(0).toUpperCase() + tagName.slice(1)}`)
       }
     })
   } else if (currRoute.pathname.includes('/forfatter')) {
     addBreadcrumb('/post/2025', 'Postkontoret')
-    const match = matches[matches.length - 1]?.data as { author: Author }
+    const match = matches[matches.length - 1]?.loaderData as { author: Author }
     if (match?.author?.fullName) {
       addBreadcrumb('', `${match?.author?.fullName}`)
     }

@@ -115,8 +115,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const { pathname } = useLocation()
 
   type PotentialPostData = { initial: { data: { language?: string; canonicalUrl?: string } } } | undefined
-  const postData = (matches.find((match) => match.id === 'routes/post.$year.$date.$slug')?.data as PotentialPostData)
-    ?.initial?.data
+  const postData = (
+    matches.find((match) => match.id === 'routes/post.$year.$date.$slug')?.loaderData as PotentialPostData
+  )?.initial?.data
 
   const hideHeader = pathname === '/skjerm'
 
