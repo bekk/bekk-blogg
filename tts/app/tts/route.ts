@@ -130,10 +130,6 @@ function chunkText(text: string, chunkSize: number = 500): string[] {
   return chunks;
 }
 
-export const config = {
-  runtime: "edge",
-};
-
 type GetVoiceArgs = {
   name: string | null;
   preferredVoice?: "onyx" | "nova" | "none" | "shimmer" | null;
@@ -173,7 +169,6 @@ const sanityClient = createClient({
   token: process.env.SANITY_SECRET_TOKEN,
 });
 
-// eslint-disable-next-line no-control-regex
 const controlCharactersRegex =
   /[\u200B-\u200D\uFEFF\u0000-\u001F\u007F-\u009F\u2000-\u200F\u2028-\u202F]/g;
 /**
