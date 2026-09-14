@@ -12,7 +12,7 @@ export const LandscapeView = (posts: POSTS_BY_YEAR_AND_DATEResult, year: string,
 
       <AnimatePresence mode="popLayout">
         <div key={pageKey} className="grid grid-cols-3 gap-8 p-4 h-full items-stretch auto-rows-fr">
-          {posts.map((post, index) => (
+          {posts.map((post) => (
             <motion.div
               key={post._id}
               initial={{ opacity: 0, x: 400 }}

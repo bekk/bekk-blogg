@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react'
 import {
   isRouteErrorResponse,
   LoaderFunctionArgs,
@@ -6,8 +5,6 @@ import {
   redirect,
   useLoaderData,
   useRouteError,
-  useLocation,
-  useRevalidator,
 } from 'react-router'
 import { combinedHeaders } from 'utils/headers'
 import { isNumericString } from 'utils/numbers'

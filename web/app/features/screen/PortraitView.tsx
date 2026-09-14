@@ -26,7 +26,7 @@ export const PortraitView = (posts: POSTS_BY_YEAR_AND_DATEResult, year: string, 
 
         <AnimatePresence mode="popLayout">
           <div key={pageKey} className="flex flex-col gap-8 p-4 w-full items-center">
-            {posts.map((post, index) => (
+            {posts.map((post) => (
               <motion.div
                 key={post._id}
                 initial={{ opacity: 0, x: 400 }}

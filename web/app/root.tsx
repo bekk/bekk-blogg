@@ -6,7 +6,6 @@ import {
   isRouteErrorResponse,
   Links,
   LinksFunction,
-  LoaderFunction,
   Meta,
   Outlet,
   Scripts,
@@ -28,7 +27,7 @@ import Header from './features/header/Header'
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
-export const loader: LoaderFunction = async ({ request }: Route.LoaderArgs) => {
+export const loader = async ({ request }: Route.LoaderArgs) => {
   const { preview } = await loadQueryOptions(request.headers)
   return data(
     {
