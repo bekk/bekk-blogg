@@ -87,7 +87,8 @@ const config = defineConfig({
   auth: createAuthStore({
     projectId: process.env.SANITY_STUDIO_PROJECT_ID ?? '',
     dataset: process.env.SANITY_STUDIO_DATASET ?? '',
-    mode: 'replace',
+    // `mode` ble fjernet i Studio v6 — å erstatte de innebygde providerne
+    // er nå standardoppførselen for en statisk providers-array.
     providers: [
       {
         name: 'saml',

@@ -3,7 +3,7 @@ import { Fragment } from 'react'
 import { Link, useActionData, useNavigation } from 'react-router'
 import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readingTime'
-import { POST_BY_SLUGResult, SanityImageAsset } from 'utils/sanity/types/sanity.types'
+import { POST_BY_SLUG_RESULT, SanityImageAsset } from 'utils/sanity/types/sanity.types'
 import { urlFor } from 'utils/sanity/utils'
 
 import { AudioPlayer } from './AudioPlayer'
@@ -17,7 +17,7 @@ import { action } from '~/routes/post.$year.$date.$slug'
 import Series, { shouldShowSeries } from './Series'
 
 type ArticleProps = {
-  post: POST_BY_SLUGResult
+  post: POST_BY_SLUG_RESULT
 }
 
 export const Article = ({ post }: ArticleProps) => {
@@ -177,7 +177,7 @@ export const Article = ({ post }: ArticleProps) => {
 
 export const Border = () => <div className="mb-8 border-b border-bekk-night pb-1" />
 
-const formatType = (type: NonNullable<POST_BY_SLUGResult>['type']) => {
+const formatType = (type: NonNullable<POST_BY_SLUG_RESULT>['type']) => {
   switch (type) {
     case 'article':
       return 'denne artikkelen'

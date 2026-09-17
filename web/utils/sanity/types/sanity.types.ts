@@ -12,62 +12,9 @@
  * ---------------------------------------------------------------------------------
  */
 
+export declare const internalGroqTypeReferenceTo: unique symbol
+
 // Source: schema.json
-export type SanityImagePaletteSwatch = {
-  _type: 'sanity.imagePaletteSwatch'
-  background?: string
-  foreground?: string
-  population?: number
-  title?: string
-}
-
-export type SanityImagePalette = {
-  _type: 'sanity.imagePalette'
-  darkMuted?: SanityImagePaletteSwatch
-  lightVibrant?: SanityImagePaletteSwatch
-  darkVibrant?: SanityImagePaletteSwatch
-  vibrant?: SanityImagePaletteSwatch
-  dominant?: SanityImagePaletteSwatch
-  lightMuted?: SanityImagePaletteSwatch
-  muted?: SanityImagePaletteSwatch
-}
-
-export type SanityImageDimensions = {
-  _type: 'sanity.imageDimensions'
-  height?: number
-  width?: number
-  aspectRatio?: number
-}
-
-export type SanityFileAsset = {
-  _id: string
-  _type: 'sanity.fileAsset'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  originalFilename?: string
-  label?: string
-  title?: string
-  description?: string
-  altText?: string
-  sha1hash?: string
-  extension?: string
-  mimeType?: string
-  size?: number
-  assetId?: string
-  uploadId?: string
-  path?: string
-  url?: string
-  source?: SanityAssetSourceData
-}
-
-export type Geopoint = {
-  _type: 'geopoint'
-  lat?: number
-  lng?: number
-  alt?: number
-}
-
 export type Quote = {
   _type: 'quote'
   content: string
@@ -90,6 +37,9 @@ export type Twitter = {
 }
 
 export type PortableText = Array<
+  | ({
+      _key: string
+    } & Table)
   | {
       children?: Array<{
         marks?: Array<string>
@@ -108,22 +58,9 @@ export type PortableText = Array<
       _type: 'block'
       _key: string
     }
-  | {
-      asset?: {
-        _ref: string
-        _type: 'reference'
-        _weak?: boolean
-        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
-      }
-      hotspot?: SanityImageHotspot
-      crop?: SanityImageCrop
-      src?: string
-      caption?: string
-      maxWidth?: number
-      alt: string
-      _type: 'imageWithMetadata'
+  | ({
       _key: string
-    }
+    } & ImageWithMetadata)
   | ({
       _key: string
     } & Code)
@@ -153,14 +90,17 @@ export type PortableText = Array<
     } & Quote)
 >
 
+export type SanityImageAssetReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+}
+
 export type ImageWithMetadata = {
   _type: 'imageWithMetadata'
-  asset?: {
-    _ref: string
-    _type: 'reference'
-    _weak?: boolean
-    [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
-  }
+  asset?: SanityImageAssetReference
+  media?: unknown
   hotspot?: SanityImageHotspot
   crop?: SanityImageCrop
   src?: string
@@ -253,12 +193,8 @@ export type Author = {
   description?: string
   slug: Slug
   image?: {
-    asset?: {
-      _ref: string
-      _type: 'reference'
-      _weak?: boolean
-      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
-    }
+    asset?: SanityImageAssetReference
+    media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     _type: 'image'
@@ -273,6 +209,49 @@ export type Author = {
   >
 }
 
+export type SanityImageCrop = {
+  _type: 'sanity.imageCrop'
+  top: number
+  bottom: number
+  left: number
+  right: number
+}
+
+export type SanityImageHotspot = {
+  _type: 'sanity.imageHotspot'
+  x: number
+  y: number
+  height: number
+  width: number
+}
+
+export type Slug = {
+  _type: 'slug'
+  current: string
+  source?: string
+}
+
+export type AuthorReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'author'
+}
+
+export type TagReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'tag'
+}
+
+export type SeriesReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'series'
+}
+
 export type Post = {
   _id: string
   _type: 'post'
@@ -282,18 +261,15 @@ export type Post = {
   type: 'article' | 'video' | 'podcast'
   title: string
   slug: Slug
+  language: 'en-US' | 'nb-NO' | 'nn-NO'
   embedUrl?: string
   podcastLength?: number
   description?: DescriptionText
   previewText?: string
   content: PortableText
   coverImage?: {
-    asset?: {
-      _ref: string
-      _type: 'reference'
-      _weak?: boolean
-      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
-    }
+    asset?: SanityImageAssetReference
+    media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     alt?: string
@@ -301,26 +277,17 @@ export type Post = {
     hideFromPost?: boolean
     _type: 'image'
   }
-  authors: Array<{
-    _ref: string
-    _type: 'reference'
-    _weak?: boolean
-    _key: string
-    [internalGroqTypeReferenceTo]?: 'author'
-  }>
-  tags?: Array<{
-    _ref: string
-    _type: 'reference'
-    _weak?: boolean
-    _key: string
-    [internalGroqTypeReferenceTo]?: 'tag'
-  }>
-  series?: {
-    _ref: string
-    _type: 'reference'
-    _weak?: boolean
-    [internalGroqTypeReferenceTo]?: 'series'
-  }
+  authors: Array<
+    {
+      _key: string
+    } & AuthorReference
+  >
+  tags?: Array<
+    {
+      _key: string
+    } & TagReference
+  >
+  series?: SeriesReference
   keywords?: Array<string>
   relatedLinks?: Array<{
     title?: string
@@ -330,7 +297,6 @@ export type Post = {
     _key: string
   }>
   canonicalUrl?: string
-  language: 'en-US' | 'nb-NO' | 'nn-NO'
   availableFrom: string
   priority?: number
   points?: number
@@ -348,20 +314,119 @@ export type Series = {
   shouldListNonPublishedContent?: boolean
 }
 
-export type SanityImageCrop = {
-  _type: 'sanity.imageCrop'
-  top?: number
-  bottom?: number
-  left?: number
-  right?: number
+export type Table = {
+  _type: 'table'
+  rows?: Array<
+    {
+      _key: string
+    } & TableRow
+  >
 }
 
-export type SanityImageHotspot = {
-  _type: 'sanity.imageHotspot'
-  x?: number
-  y?: number
-  height?: number
-  width?: number
+export type TableRow = {
+  _type: 'tableRow'
+  cells?: Array<string>
+}
+
+export type Code = {
+  _type: 'code'
+  language?: string
+  filename?: string
+  code?: string
+  highlightedLines?: Array<number>
+}
+
+export type MediaFolderReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'media.folder'
+}
+
+export type MediaFolder = {
+  _id: string
+  _type: 'media.folder'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  name?: string
+  parent?: MediaFolderReference
+}
+
+export type MediaTag = {
+  _id: string
+  _type: 'media.tag'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  name?: Slug
+}
+
+export type SanityImagePaletteSwatch = {
+  _type: 'sanity.imagePaletteSwatch'
+  background?: string
+  foreground?: string
+  population?: number
+  title?: string
+}
+
+export type SanityImagePalette = {
+  _type: 'sanity.imagePalette'
+  darkMuted?: SanityImagePaletteSwatch
+  lightVibrant?: SanityImagePaletteSwatch
+  darkVibrant?: SanityImagePaletteSwatch
+  vibrant?: SanityImagePaletteSwatch
+  dominant?: SanityImagePaletteSwatch
+  lightMuted?: SanityImagePaletteSwatch
+  muted?: SanityImagePaletteSwatch
+}
+
+export type SanityImageDimensions = {
+  _type: 'sanity.imageDimensions'
+  height: number
+  width: number
+  aspectRatio: number
+}
+
+export type SanityImageMetadata = {
+  _type: 'sanity.imageMetadata'
+  location?: Geopoint
+  dimensions?: SanityImageDimensions
+  palette?: SanityImagePalette
+  lqip?: string
+  blurHash?: string
+  thumbHash?: string
+  hasAlpha?: boolean
+  isOpaque?: boolean
+}
+
+export type SanityFileAsset = {
+  _id: string
+  _type: 'sanity.fileAsset'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  originalFilename?: string
+  label?: string
+  title?: string
+  description?: string
+  altText?: string
+  sha1hash: string
+  extension: string
+  mimeType: string
+  size: number
+  assetId: string
+  uploadId?: string
+  path: string
+  url: string
+  source?: SanityAssetSourceData
+}
+
+export type SanityAssetSourceData = {
+  _type: 'sanity.assetSourceData'
+  name?: string
+  id?: string
+  url?: string
 }
 
 export type SanityImageAsset = {
@@ -375,70 +440,32 @@ export type SanityImageAsset = {
   title?: string
   description?: string
   altText?: string
-  sha1hash?: string
-  extension?: string
-  mimeType?: string
-  size?: number
-  assetId?: string
+  sha1hash: string
+  extension: string
+  mimeType: string
+  size: number
+  assetId: string
   uploadId?: string
-  path?: string
-  url?: string
+  path: string
+  url: string
   metadata?: SanityImageMetadata
   source?: SanityAssetSourceData
 }
 
-export type SanityAssetSourceData = {
-  _type: 'sanity.assetSourceData'
-  name?: string
-  id?: string
-  url?: string
-}
-
-export type SanityImageMetadata = {
-  _type: 'sanity.imageMetadata'
-  location?: Geopoint
-  dimensions?: SanityImageDimensions
-  palette?: SanityImagePalette
-  lqip?: string
-  blurHash?: string
-  hasAlpha?: boolean
-  isOpaque?: boolean
-}
-
-export type Code = {
-  _type: 'code'
-  language?: string
-  filename?: string
-  code?: string
-  highlightedLines?: Array<number>
-}
-
-export type MediaTag = {
-  _id: string
-  _type: 'media.tag'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  name?: Slug
-}
-
-export type Slug = {
-  _type: 'slug'
-  current: string
-  source?: string
+export type Geopoint = {
+  _type: 'geopoint'
+  lat?: number
+  lng?: number
+  alt?: number
 }
 
 export type AllSanitySchemaTypes =
-  | SanityImagePaletteSwatch
-  | SanityImagePalette
-  | SanityImageDimensions
-  | SanityFileAsset
-  | Geopoint
   | Quote
   | UnfurledUrl
   | Youtube
   | Twitter
   | PortableText
+  | SanityImageAssetReference
   | ImageWithMetadata
   | DescriptionText
   | CodeSandbox
@@ -448,21 +475,33 @@ export type AllSanitySchemaTypes =
   | SocialMediaLink
   | Tag
   | Author
-  | Post
-  | Series
   | SanityImageCrop
   | SanityImageHotspot
-  | SanityImageAsset
-  | SanityAssetSourceData
-  | SanityImageMetadata
-  | Code
-  | MediaTag
   | Slug
-export declare const internalGroqTypeReferenceTo: unique symbol
+  | AuthorReference
+  | TagReference
+  | SeriesReference
+  | Post
+  | Series
+  | Table
+  | TableRow
+  | Code
+  | MediaFolderReference
+  | MediaFolder
+  | MediaTag
+  | SanityImagePaletteSwatch
+  | SanityImagePalette
+  | SanityImageDimensions
+  | SanityImageMetadata
+  | SanityFileAsset
+  | SanityAssetSourceData
+  | SanityImageAsset
+  | Geopoint
+
 // Source: ../web/utils/sanity/queries/postQueries.ts
 // Variable: COVER_IMAGE_WITH_METADATA_PROJECTION
 // Query: {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost}
-export type COVER_IMAGE_WITH_METADATA_PROJECTIONResult = {
+export type COVER_IMAGE_WITH_METADATA_PROJECTION_RESULT = {
   _type: never
   asset: never
   hotspot: never
@@ -471,9 +510,11 @@ export type COVER_IMAGE_WITH_METADATA_PROJECTIONResult = {
   alt: never
   hideFromPost: never
 }
+
+// Source: ../web/utils/sanity/queries/postQueries.ts
 // Variable: POST_PREVIEW_PROJECTION
 // Query: {  _id,  title,  slug,  coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  availableFrom,  "tags": tags[]->.name,  "authors": authors[]->.fullName,  "summary": coalesce(previewText, pt::text(description)),  "wordCount": length(string::split(pt::text(content), ' ')),  podcastLength,  type,}
-export type POST_PREVIEW_PROJECTIONResult = {
+export type POST_PREVIEW_PROJECTION_RESULT = {
   _id: never
   title: never
   slug: never
@@ -486,9 +527,11 @@ export type POST_PREVIEW_PROJECTIONResult = {
   podcastLength: never
   type: never
 }
+
+// Source: ../web/utils/sanity/queries/postQueries.ts
 // Variable: ALL_POSTS
 // Query: *[_type == "post"]
-export type ALL_POSTSResult = Array<{
+export type ALL_POSTS_RESULT = Array<{
   _id: string
   _type: 'post'
   _createdAt: string
@@ -497,18 +540,15 @@ export type ALL_POSTSResult = Array<{
   type: 'article' | 'podcast' | 'video'
   title: string
   slug: Slug
+  language: 'en-US' | 'nb-NO' | 'nn-NO'
   embedUrl?: string
   podcastLength?: number
   description?: DescriptionText
   previewText?: string
   content: PortableText
   coverImage?: {
-    asset?: {
-      _ref: string
-      _type: 'reference'
-      _weak?: boolean
-      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
-    }
+    asset?: SanityImageAssetReference
+    media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     alt?: string
@@ -516,26 +556,17 @@ export type ALL_POSTSResult = Array<{
     hideFromPost?: boolean
     _type: 'image'
   }
-  authors: Array<{
-    _ref: string
-    _type: 'reference'
-    _weak?: boolean
-    _key: string
-    [internalGroqTypeReferenceTo]?: 'author'
-  }>
-  tags?: Array<{
-    _ref: string
-    _type: 'reference'
-    _weak?: boolean
-    _key: string
-    [internalGroqTypeReferenceTo]?: 'tag'
-  }>
-  series?: {
-    _ref: string
-    _type: 'reference'
-    _weak?: boolean
-    [internalGroqTypeReferenceTo]?: 'series'
-  }
+  authors: Array<
+    {
+      _key: string
+    } & AuthorReference
+  >
+  tags?: Array<
+    {
+      _key: string
+    } & TagReference
+  >
+  series?: SeriesReference
   keywords?: Array<string>
   relatedLinks?: Array<{
     title?: string
@@ -545,14 +576,15 @@ export type ALL_POSTSResult = Array<{
     _key: string
   }>
   canonicalUrl?: string
-  language: 'en-US' | 'nb-NO' | 'nn-NO'
   availableFrom: string
   priority?: number
   points?: number
 }>
+
+// Source: ../web/utils/sanity/queries/postQueries.ts
 // Variable: POST_PROJECTION
 // Query: {  _id,  _type,  _createdAt,  _updatedAt,  _rev,  type,  language,  embedUrl,  podcastLength,  title,  slug,  canonicalUrl,  description,  previewText,  availableFrom,  keywords,  points,  "wordCount": length(string::split(pt::text(content), ' ')),  content[] {    ...,    _type == 'imageWithMetadata' => {      ...,      asset->{        _id,        url,        metadata {          dimensions {            aspectRatio,            width,            height          }        }      }    }  },  priority,    authors[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    fullName,    slug,    companyName,    profilePicture,    socialMediaLinks  },    coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  tags[]->{    _id,    slug,    name  },  relatedLinks,  series->{    _id,     title,     description,    slug,    shouldListNonPublishedContent,    "posts": *[_type == "post" && references(^._id)] | order(availableFrom asc) {      _id,      title,      availableFrom,      slug,      "isAvailable": availableFrom < now()    }  }}
-export type POST_PROJECTIONResult = {
+export type POST_PROJECTION_RESULT = {
   _id: never
   _type: never
   _createdAt: never
@@ -579,9 +611,11 @@ export type POST_PROJECTIONResult = {
   relatedLinks: never
   series: never
 }
+
+// Source: ../web/utils/sanity/queries/postQueries.ts
 // Variable: POST_SEARCH_PROJECTION
 // Query: {  _id,  _type,  _rev,  "objectID": _id,  title,  slug,  coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  availableFrom,  "tags": tags[]->.name,  "authors": authors[]->.fullName,  "summary": coalesce(previewText, pt::text(description)),  "wordCount": length(string::split(pt::text(content), ' ')),  podcastLength,}
-export type POST_SEARCH_PROJECTIONResult = {
+export type POST_SEARCH_PROJECTION_RESULT = {
   _id: never
   _type: never
   _rev: never
@@ -596,9 +630,11 @@ export type POST_SEARCH_PROJECTIONResult = {
   wordCount: number
   podcastLength: never
 }
+
+// Source: ../web/utils/sanity/queries/postQueries.ts
 // Variable: POST_BY_SLUG
 // Query: *[_type == "post" && slug.current == $slug][0]{  _id,  _type,  _createdAt,  _updatedAt,  _rev,  type,  language,  embedUrl,  podcastLength,  title,  slug,  canonicalUrl,  description,  previewText,  availableFrom,  keywords,  points,  "wordCount": length(string::split(pt::text(content), ' ')),  content[] {    ...,    _type == 'imageWithMetadata' => {      ...,      asset->{        _id,        url,        metadata {          dimensions {            aspectRatio,            width,            height          }        }      }    }  },  priority,    authors[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    fullName,    slug,    companyName,    profilePicture,    socialMediaLinks  },    coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  tags[]->{    _id,    slug,    name  },  relatedLinks,  series->{    _id,     title,     description,    slug,    shouldListNonPublishedContent,    "posts": *[_type == "post" && references(^._id)] | order(availableFrom asc) {      _id,      title,      availableFrom,      slug,      "isAvailable": availableFrom < now()    }  }}
-export type POST_BY_SLUGResult = {
+export type POST_BY_SLUG_RESULT = {
   _id: string
   _type: 'post'
   _createdAt: string
@@ -661,25 +697,26 @@ export type POST_BY_SLUGResult = {
         height?: number
       }
     | {
+        _key: string
+        _type: 'imageWithMetadata'
         asset: {
           _id: string
-          url: string | null
+          url: string
           metadata: {
             dimensions: {
-              aspectRatio: number | null
-              width: number | null
-              height: number | null
+              aspectRatio: number
+              width: number
+              height: number
             } | null
           } | null
         } | null
+        media?: unknown
         hotspot?: SanityImageHotspot
         crop?: SanityImageCrop
         src?: string
         caption?: string
         maxWidth?: number
         alt: string
-        _type: 'imageWithMetadata'
-        _key: string
       }
     | {
         _key: string
@@ -708,6 +745,15 @@ export type POST_BY_SLUGResult = {
         _type: 'quote'
         content: string
         author?: string
+      }
+    | {
+        _key: string
+        _type: 'table'
+        rows?: Array<
+          {
+            _key: string
+          } & TableRow
+        >
       }
     | {
         _key: string
@@ -747,12 +793,12 @@ export type POST_BY_SLUGResult = {
     asset: {
       _id: string
       _type: 'sanity.imageAsset'
-      url: string | null
+      url: string
       metadata: {
         dimensions: {
-          aspectRatio: number | null
-          width: number | null
-          height: number | null
+          aspectRatio: number
+          width: number
+          height: number
         } | null
       } | null
     } | null
@@ -789,9 +835,11 @@ export type POST_BY_SLUGResult = {
     }>
   } | null
 } | null
+
+// Source: ../web/utils/sanity/queries/postQueries.ts
 // Variable: POSTS_BY_YEAR_AND_DATE
 // Query: *[_type == "post" && availableFrom == $date && (length(string::split(pt::text(content), ' ')) > 0 || podcastLength != null)] | order(priority desc) {  _id,  title,  slug,  coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  availableFrom,  "tags": tags[]->.name,  "authors": authors[]->.fullName,  "summary": coalesce(previewText, pt::text(description)),  "wordCount": length(string::split(pt::text(content), ' ')),  podcastLength,  type,}
-export type POSTS_BY_YEAR_AND_DATEResult = Array<{
+export type POSTS_BY_YEAR_AND_DATE_RESULT = Array<{
   _id: string
   title: string
   slug: Slug
@@ -800,12 +848,12 @@ export type POSTS_BY_YEAR_AND_DATEResult = Array<{
     asset: {
       _id: string
       _type: 'sanity.imageAsset'
-      url: string | null
+      url: string
       metadata: {
         dimensions: {
-          aspectRatio: number | null
-          width: number | null
-          height: number | null
+          aspectRatio: number
+          width: number
+          height: number
         } | null
       } | null
     } | null
@@ -823,9 +871,11 @@ export type POSTS_BY_YEAR_AND_DATEResult = Array<{
   podcastLength: number | null
   type: 'article' | 'podcast' | 'video'
 }>
+
+// Source: ../web/utils/sanity/queries/postQueries.ts
 // Variable: ALL_CATEGORIES
 // Query: *[  _type == "tag" &&  count(*[_type == "post" && references(^._id)]) > 1] | order(name asc)
-export type ALL_CATEGORIESResult = Array<{
+export type ALL_CATEGORIES_RESULT = Array<{
   _id: string
   _type: 'tag'
   _createdAt: string
@@ -835,9 +885,11 @@ export type ALL_CATEGORIESResult = Array<{
   slug: string
   synonyms?: Array<string>
 }>
+
+// Source: ../web/utils/sanity/queries/postQueries.ts
 // Variable: TAG_WITH_POSTS_QUERY
-// Query: {  "posts": *[    _type == "post" &&     $t in tags[]->.slug &&    availableFrom < now() &&     !(availableFrom match "*25")  ] | order(availableFrom desc)[$start...$end] {  _id,  title,  slug,  coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  availableFrom,  "tags": tags[]->.name,  "authors": authors[]->.fullName,  "summary": coalesce(previewText, pt::text(description)),  "wordCount": length(string::split(pt::text(content), ' ')),  podcastLength,  type,},  "totalCount": count(*[    _type == "post" &&     $t in tags[]->.slug &&    availableFrom < now()&&     !(availableFrom match "*25")  ]),  "tag": *[_type == "tag" && slug == $t][0] {    name,    slug  }}
-export type TAG_WITH_POSTS_QUERYResult = {
+// Query: {  "posts": *[    _type == "post" &&     $t in tags[]->.slug &&    availableFrom < now()  ] | order(availableFrom desc)[$start...$end] {  _id,  title,  slug,  coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  availableFrom,  "tags": tags[]->.name,  "authors": authors[]->.fullName,  "summary": coalesce(previewText, pt::text(description)),  "wordCount": length(string::split(pt::text(content), ' ')),  podcastLength,  type,},  "totalCount": count(*[    _type == "post" &&     $t in tags[]->.slug &&    availableFrom < now()  ]),  "tag": *[_type == "tag" && slug == $t][0] {    name,    slug  }}
+export type TAG_WITH_POSTS_QUERY_RESULT = {
   posts: Array<{
     _id: string
     title: string
@@ -847,12 +899,12 @@ export type TAG_WITH_POSTS_QUERYResult = {
       asset: {
         _id: string
         _type: 'sanity.imageAsset'
-        url: string | null
+        url: string
         metadata: {
           dimensions: {
-            aspectRatio: number | null
-            width: number | null
-            height: number | null
+            aspectRatio: number
+            width: number
+            height: number
           } | null
         } | null
       } | null
@@ -876,9 +928,11 @@ export type TAG_WITH_POSTS_QUERYResult = {
     slug: string
   } | null
 }
+
+// Source: ../web/utils/sanity/queries/postQueries.ts
 // Variable: AUTHOR_WITH_POSTS_QUERY
-// Query: {  "posts": *[    _type == "post" &&     $slug in authors[]->slug.current &&     availableFrom < now() &&     !(availableFrom match "*25")  ] | order(availableFrom desc)[$start...$end] {  _id,  title,  slug,  coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  availableFrom,  "tags": tags[]->.name,  "authors": authors[]->.fullName,  "summary": coalesce(previewText, pt::text(description)),  "wordCount": length(string::split(pt::text(content), ' ')),  podcastLength,  type,},  "totalCount": count(*[    _type == "post" &&     $slug in authors[]->slug.current &&     availableFrom < now() &&     !(availableFrom match "*25")  ]),  "author": *[_type == "author" && slug.current == $slug][0] {    fullName,    description,    image,    slug,    companyName,    socialMediaLinks  }}
-export type AUTHOR_WITH_POSTS_QUERYResult = {
+// Query: {  "posts": *[    _type == "post" &&     $slug in authors[]->slug.current &&     availableFrom < now()  ] | order(availableFrom desc)[$start...$end] {  _id,  title,  slug,  coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  availableFrom,  "tags": tags[]->.name,  "authors": authors[]->.fullName,  "summary": coalesce(previewText, pt::text(description)),  "wordCount": length(string::split(pt::text(content), ' ')),  podcastLength,  type,},  "totalCount": count(*[    _type == "post" &&     $slug in authors[]->slug.current &&     availableFrom < now()  ]),  "author": *[_type == "author" && slug.current == $slug][0] {    fullName,    description,    image,    slug,    companyName,    socialMediaLinks  }}
+export type AUTHOR_WITH_POSTS_QUERY_RESULT = {
   posts: Array<{
     _id: string
     title: string
@@ -888,12 +942,12 @@ export type AUTHOR_WITH_POSTS_QUERYResult = {
       asset: {
         _id: string
         _type: 'sanity.imageAsset'
-        url: string | null
+        url: string
         metadata: {
           dimensions: {
-            aspectRatio: number | null
-            width: number | null
-            height: number | null
+            aspectRatio: number
+            width: number
+            height: number
           } | null
         } | null
       } | null
@@ -916,12 +970,8 @@ export type AUTHOR_WITH_POSTS_QUERYResult = {
     fullName: string
     description: string | null
     image: {
-      asset?: {
-        _ref: string
-        _type: 'reference'
-        _weak?: boolean
-        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
-      }
+      asset?: SanityImageAssetReference
+      media?: unknown
       hotspot?: SanityImageHotspot
       crop?: SanityImageCrop
       _type: 'image'
@@ -935,9 +985,11 @@ export type AUTHOR_WITH_POSTS_QUERYResult = {
     > | null
   } | null
 }
+
+// Source: ../web/utils/sanity/queries/postQueries.ts
 // Variable: RSS_FEED_QUERY
-// Query: *[  _type == "post" &&   availableFrom < now() &&   !(availableFrom match "*25")][0...250] | order(availableFrom desc) {  _id,  title,  slug,  language,  "description": coalesce(previewText, pt::text(description)),  availableFrom,  "authors": authors[]->.fullName,  type,  "content": pt::text(content)}
-export type RSS_FEED_QUERYResult = Array<{
+// Query: *[  _type == "post" &&   availableFrom < now()][0...250] | order(availableFrom desc) {  _id,  title,  slug,  language,  "description": coalesce(previewText, pt::text(description)),  availableFrom,  "authors": authors[]->.fullName,  type,  "content": pt::text(content)}
+export type RSS_FEED_QUERY_RESULT = Array<{
   _id: string
   title: string
   slug: Slug
@@ -948,9 +1000,11 @@ export type RSS_FEED_QUERYResult = Array<{
   type: 'article' | 'podcast' | 'video'
   content: string
 }>
+
+// Source: ../web/utils/sanity/queries/postQueries.ts
 // Variable: SITEMAP_QUERY
-// Query: {  "posts": *[_type == "post" && defined(slug.current) && availableFrom < now() && !(availableFrom match "*25")] {    "slug": slug.current,    availableFrom,    _updatedAt  },  "authors": *[_type == "author" && defined(slug.current)] {    "slug": slug.current,    _updatedAt  },  "tags": *[_type == "tag" && defined(slug)] {    slug,    _updatedAt  }}
-export type SITEMAP_QUERYResult = {
+// Query: {  "posts": *[_type == "post" && defined(slug.current) && availableFrom < now()] {    "slug": slug.current,    availableFrom,    _updatedAt  },  "authors": *[_type == "author" && defined(slug.current)] {    "slug": slug.current,    _updatedAt  },  "tags": *[_type == "tag" && defined(slug)] {    slug,    _updatedAt  }}
+export type SITEMAP_QUERY_RESULT = {
   posts: Array<{
     slug: string
     availableFrom: string
@@ -967,20 +1021,23 @@ export type SITEMAP_QUERYResult = {
 }
 
 // Query TypeMap
-import '@sanity/client'
-declare module '@sanity/client' {
+declare global {
   interface SanityQueries {
-    '{\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n}': COVER_IMAGE_WITH_METADATA_PROJECTIONResult
-    '{\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n  type,\n}': POST_PREVIEW_PROJECTIONResult
-    '*[_type == "post"]': ALL_POSTSResult
-    '{\n  _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  title,\n  slug,\n  canonicalUrl,\n  description,\n  previewText,\n  availableFrom,\n  keywords,\n  points,\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  content[] {\n    ...,\n    _type == \'imageWithMetadata\' => {\n      ...,\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions {\n            aspectRatio,\n            width,\n            height\n          }\n        }\n      }\n    }\n  },\n  priority,\n  \n  authors[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    fullName,\n    slug,\n    companyName,\n    profilePicture,\n    socialMediaLinks\n  },\n  \n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n\n  tags[]->{\n    _id,\n    slug,\n    name\n  },\n  relatedLinks,\n  series->{\n    _id, \n    title, \n    description,\n    slug,\n    shouldListNonPublishedContent,\n    "posts": *[_type == "post" && references(^._id)] | order(availableFrom asc) {\n      _id,\n      title,\n      availableFrom,\n      slug,\n      "isAvailable": availableFrom < now()\n    }\n  }\n}': POST_PROJECTIONResult
-    '{\n  _id,\n  _type,\n  _rev,\n  "objectID": _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n}': POST_SEARCH_PROJECTIONResult
-    '*[_type == "post" && slug.current == $slug][0]{\n  _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  title,\n  slug,\n  canonicalUrl,\n  description,\n  previewText,\n  availableFrom,\n  keywords,\n  points,\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  content[] {\n    ...,\n    _type == \'imageWithMetadata\' => {\n      ...,\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions {\n            aspectRatio,\n            width,\n            height\n          }\n        }\n      }\n    }\n  },\n  priority,\n  \n  authors[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    fullName,\n    slug,\n    companyName,\n    profilePicture,\n    socialMediaLinks\n  },\n  \n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n\n  tags[]->{\n    _id,\n    slug,\n    name\n  },\n  relatedLinks,\n  series->{\n    _id, \n    title, \n    description,\n    slug,\n    shouldListNonPublishedContent,\n    "posts": *[_type == "post" && references(^._id)] | order(availableFrom asc) {\n      _id,\n      title,\n      availableFrom,\n      slug,\n      "isAvailable": availableFrom < now()\n    }\n  }\n}': POST_BY_SLUGResult
-    '*[_type == "post" && availableFrom == $date && (length(string::split(pt::text(content), \' \')) > 0 || podcastLength != null)] | order(priority desc) {\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n  type,\n}': POSTS_BY_YEAR_AND_DATEResult
-    '*[\n  _type == "tag" &&\n  count(*[_type == "post" && references(^._id)]) > 1\n] | order(name asc)': ALL_CATEGORIESResult
-    '{\n  "posts": *[\n    _type == "post" && \n    $t in tags[]->.slug &&\n    availableFrom < now() && \n    !(availableFrom match "*25")\n  ] | order(availableFrom desc)[$start...$end] {\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n  type,\n},\n  "totalCount": count(*[\n    _type == "post" && \n    $t in tags[]->.slug &&\n    availableFrom < now()&& \n    !(availableFrom match "*25")\n  ]),\n  "tag": *[_type == "tag" && slug == $t][0] {\n    name,\n    slug\n  }\n}': TAG_WITH_POSTS_QUERYResult
-    '{\n  "posts": *[\n    _type == "post" && \n    $slug in authors[]->slug.current && \n    availableFrom < now() && \n    !(availableFrom match "*25")\n  ] | order(availableFrom desc)[$start...$end] {\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n  type,\n},\n  "totalCount": count(*[\n    _type == "post" && \n    $slug in authors[]->slug.current && \n    availableFrom < now() && \n    !(availableFrom match "*25")\n  ]),\n  "author": *[_type == "author" && slug.current == $slug][0] {\n    fullName,\n    description,\n    image,\n    slug,\n    companyName,\n    socialMediaLinks\n  }\n}': AUTHOR_WITH_POSTS_QUERYResult
-    '*[\n  _type == "post" && \n  availableFrom < now() && \n  !(availableFrom match "*25")\n][0...250] | order(availableFrom desc) {\n  _id,\n  title,\n  slug,\n  language,\n  "description": coalesce(previewText, pt::text(description)),\n  availableFrom,\n  "authors": authors[]->.fullName,\n  type,\n  "content": pt::text(content)\n}': RSS_FEED_QUERYResult
-    '{\n  "posts": *[_type == "post" && defined(slug.current) && availableFrom < now() && !(availableFrom match "*25")] {\n    "slug": slug.current,\n    availableFrom,\n    _updatedAt\n  },\n  "authors": *[_type == "author" && defined(slug.current)] {\n    "slug": slug.current,\n    _updatedAt\n  },\n  "tags": *[_type == "tag" && defined(slug)] {\n    slug,\n    _updatedAt\n  }\n}': SITEMAP_QUERYResult
+    '{\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n}': COVER_IMAGE_WITH_METADATA_PROJECTION_RESULT
+    '{\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n  type,\n}': POST_PREVIEW_PROJECTION_RESULT
+    '*[_type == "post"]': ALL_POSTS_RESULT
+    '{\n  _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  title,\n  slug,\n  canonicalUrl,\n  description,\n  previewText,\n  availableFrom,\n  keywords,\n  points,\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  content[] {\n    ...,\n    _type == \'imageWithMetadata\' => {\n      ...,\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions {\n            aspectRatio,\n            width,\n            height\n          }\n        }\n      }\n    }\n  },\n  priority,\n  \n  authors[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    fullName,\n    slug,\n    companyName,\n    profilePicture,\n    socialMediaLinks\n  },\n  \n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n\n  tags[]->{\n    _id,\n    slug,\n    name\n  },\n  relatedLinks,\n  series->{\n    _id, \n    title, \n    description,\n    slug,\n    shouldListNonPublishedContent,\n    "posts": *[_type == "post" && references(^._id)] | order(availableFrom asc) {\n      _id,\n      title,\n      availableFrom,\n      slug,\n      "isAvailable": availableFrom < now()\n    }\n  }\n}': POST_PROJECTION_RESULT
+    '{\n  _id,\n  _type,\n  _rev,\n  "objectID": _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n}': POST_SEARCH_PROJECTION_RESULT
+    '*[_type == "post" && slug.current == $slug][0]{\n  _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  title,\n  slug,\n  canonicalUrl,\n  description,\n  previewText,\n  availableFrom,\n  keywords,\n  points,\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  content[] {\n    ...,\n    _type == \'imageWithMetadata\' => {\n      ...,\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions {\n            aspectRatio,\n            width,\n            height\n          }\n        }\n      }\n    }\n  },\n  priority,\n  \n  authors[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    fullName,\n    slug,\n    companyName,\n    profilePicture,\n    socialMediaLinks\n  },\n  \n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n\n  tags[]->{\n    _id,\n    slug,\n    name\n  },\n  relatedLinks,\n  series->{\n    _id, \n    title, \n    description,\n    slug,\n    shouldListNonPublishedContent,\n    "posts": *[_type == "post" && references(^._id)] | order(availableFrom asc) {\n      _id,\n      title,\n      availableFrom,\n      slug,\n      "isAvailable": availableFrom < now()\n    }\n  }\n}': POST_BY_SLUG_RESULT
+    '*[_type == "post" && availableFrom == $date && (length(string::split(pt::text(content), \' \')) > 0 || podcastLength != null)] | order(priority desc) {\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n  type,\n}': POSTS_BY_YEAR_AND_DATE_RESULT
+    '*[\n  _type == "tag" &&\n  count(*[_type == "post" && references(^._id)]) > 1\n] | order(name asc)': ALL_CATEGORIES_RESULT
+    '{\n  "posts": *[\n    _type == "post" && \n    $t in tags[]->.slug &&\n    availableFrom < now()\n  ] | order(availableFrom desc)[$start...$end] {\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n  type,\n},\n  "totalCount": count(*[\n    _type == "post" && \n    $t in tags[]->.slug &&\n    availableFrom < now()\n  ]),\n  "tag": *[_type == "tag" && slug == $t][0] {\n    name,\n    slug\n  }\n}': TAG_WITH_POSTS_QUERY_RESULT
+    '{\n  "posts": *[\n    _type == "post" && \n    $slug in authors[]->slug.current && \n    availableFrom < now()\n  ] | order(availableFrom desc)[$start...$end] {\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n  type,\n},\n  "totalCount": count(*[\n    _type == "post" && \n    $slug in authors[]->slug.current && \n    availableFrom < now()\n  ]),\n  "author": *[_type == "author" && slug.current == $slug][0] {\n    fullName,\n    description,\n    image,\n    slug,\n    companyName,\n    socialMediaLinks\n  }\n}': AUTHOR_WITH_POSTS_QUERY_RESULT
+    '*[\n  _type == "post" && \n  availableFrom < now()\n][0...250] | order(availableFrom desc) {\n  _id,\n  title,\n  slug,\n  language,\n  "description": coalesce(previewText, pt::text(description)),\n  availableFrom,\n  "authors": authors[]->.fullName,\n  type,\n  "content": pt::text(content)\n}': RSS_FEED_QUERY_RESULT
+    '{\n  "posts": *[_type == "post" && defined(slug.current) && availableFrom < now()] {\n    "slug": slug.current,\n    availableFrom,\n    _updatedAt\n  },\n  "authors": *[_type == "author" && defined(slug.current)] {\n    "slug": slug.current,\n    _updatedAt\n  },\n  "tags": *[_type == "tag" && defined(slug)] {\n    slug,\n    _updatedAt\n  }\n}': SITEMAP_QUERY_RESULT
   }
+}
+// Lets @sanity/client releases that predate the global registry read it too
+declare module '@sanity/client' {
+  interface SanityQueries extends globalThis.SanityQueries {}
 }

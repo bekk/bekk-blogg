@@ -10,4 +10,10 @@ export default defineCliConfig({
    * Learn more at https://www.sanity.io/docs/cli#auto-updates
    */
   deployment: {autoUpdates: true},
+  typegen: {
+    path: '../web/utils/sanity/queries/*.ts',
+    schema: 'schema.json',
+    generates: '../web/utils/sanity/types/sanity.types.ts',
+    overloadClientMethods: true,
+  },
 })

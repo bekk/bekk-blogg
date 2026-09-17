@@ -3,7 +3,7 @@ import { combinedHeaders } from 'utils/headers'
 
 import { loadQuery } from 'utils/sanity/loader.server'
 import { TAG_WITH_POSTS_QUERY } from '../../utils/sanity/queries/postQueries'
-import { TAG_WITH_POSTS_QUERYResult } from '../../utils/sanity/types/sanity.types'
+import { TAG_WITH_POSTS_QUERY_RESULT } from '../../utils/sanity/types/sanity.types'
 
 import { LoaderFunctionArgs } from 'react-router'
 import { Spinner } from '~/components/Spinner'
@@ -25,7 +25,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const perPage = 15
   const offset = (page - 1) * perPage
 
-  const response = await loadQuery<TAG_WITH_POSTS_QUERYResult>(TAG_WITH_POSTS_QUERY, {
+  const response = await loadQuery<TAG_WITH_POSTS_QUERY_RESULT>(TAG_WITH_POSTS_QUERY, {
     t: decodedTag,
     start: offset,
     end: offset + perPage,
@@ -53,7 +53,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 
 export const headers = combinedHeaders
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta: MetaFunction<typeof loader> = ({ loaderData: data }) => {
   const description = `Utforsk ${data?.pagination.totalPosts} innlegg om ${data?.tag?.name} på Bekk Christmas`
   const title = `Innhold om ${data?.tag?.name} | Bekk Christmas`
   return [

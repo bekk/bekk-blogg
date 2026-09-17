@@ -6,7 +6,6 @@ import {
   isRouteErrorResponse,
   Links,
   LinksFunction,
-  LoaderFunction,
   Meta,
   Outlet,
   Scripts,
@@ -28,7 +27,7 @@ import Header from './features/header/Header'
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
-export const loader: LoaderFunction = async ({ request }: Route.LoaderArgs) => {
+export const loader = async ({ request }: Route.LoaderArgs) => {
   const { preview } = await loadQueryOptions(request.headers)
   return data(
     {
@@ -116,8 +115,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const { pathname } = useLocation()
 
   type PotentialPostData = { initial: { data: { language?: string; canonicalUrl?: string } } } | undefined
-  const postData = (matches.find((match) => match.id === 'routes/post.$year.$date.$slug')?.data as PotentialPostData)
-    ?.initial?.data
+  const postData = (
+    matches.find((match) => match.id === 'routes/post.$year.$date.$slug')?.loaderData as PotentialPostData
+  )?.initial?.data
 
   const hideHeader = pathname === '/skjerm'
 

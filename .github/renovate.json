@@ -1,0 +1,74 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "timezone": "Europe/Oslo",
+  "schedule": ["before 6am on monday"],
+  "labels": ["avhengigheter"],
+  "prConcurrentLimit": 5,
+  "rangeStrategy": "pin",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 6am on monday"]
+  },
+  "packageRules": [
+    {
+      "description": "Én samle-PR per prosjekt for patch og minor.",
+      "matchFileNames": ["web/package.json"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "web (patch/minor)"
+    },
+    {
+      "matchFileNames": ["sanity/package.json"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "sanity (patch/minor)"
+    },
+    {
+      "matchFileNames": ["tts/package.json"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "tts (patch/minor)"
+    },
+    {
+      "description": "Majors får alltid egen PR, aldri automerge.",
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "addLabels": ["major"]
+    },
+    {
+      "description": "React og react-dom må følges ad.",
+      "matchPackageNames": [
+        "react",
+        "react-dom",
+        "@types/react",
+        "@types/react-dom"
+      ],
+      "groupName": "react"
+    },
+    {
+      "description": "React Router-pakkene må følges ad.",
+      "matchPackageNames": ["react-router", "@react-router/**"],
+      "groupName": "react-router"
+    },
+    {
+      "description": "Blokkert: sanity-algolia avhenger av algoliasearch ^4.",
+      "matchPackageNames": ["algoliasearch"],
+      "allowedVersions": "<5"
+    },
+    {
+      "description": "Blokkert: @vercel/react-router støtter kun React Router 7.",
+      "matchPackageNames": ["react-router", "@react-router/**"],
+      "allowedVersions": "<8"
+    },
+    {
+      "description": "Blokkert: typescript-eslint peer-er typescript <6.1.",
+      "matchPackageNames": ["typescript"],
+      "matchFileNames": ["web/package.json"],
+      "allowedVersions": "<7"
+    },
+    {
+      "description": "Blokkert i web: eslint 10 knekker eslint-plugin-react.",
+      "matchPackageNames": ["eslint", "@eslint/js"],
+      "matchFileNames": ["web/package.json"],
+      "allowedVersions": "<10"
+    }
+  ]
+}

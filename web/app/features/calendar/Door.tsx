@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ClosedDoorSvg } from './doorsSVG/ClosedDoorSVG'
 import { Link } from 'react-router'
-import { motion, Variants } from 'framer-motion'
+import { motion, Variants } from 'motion/react'
 
 import useMediaQuery from '~/hooks/useMediaQuery'
 import { useTextZoomScale } from '~/hooks/useTextZoomScale'

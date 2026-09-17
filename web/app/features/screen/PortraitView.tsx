@@ -1,5 +1,5 @@
-import { AnimatePresence, motion } from 'framer-motion'
-import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'
+import { AnimatePresence, motion } from 'motion/react'
+import { POSTS_BY_YEAR_AND_DATE_RESULT } from 'utils/sanity/types/sanity.types'
 import { SpinningText } from '~/components/SpinningText'
 
 import { PostScreenPreview } from '~/features/post-preview/PostScreenPreview'
@@ -9,7 +9,7 @@ import { GiftsLeftSideArticle } from '../article/svgs/GiftsLeftSideArticle'
 import { getPostUrl, qrColors } from './utils'
 import { stableRandomIndex } from 'utils/random'
 
-export const PortraitView = (posts: POSTS_BY_YEAR_AND_DATEResult, year: string, date: string, pageKey?: number) => {
+export const PortraitView = (posts: POSTS_BY_YEAR_AND_DATE_RESULT, year: string, date: string, pageKey?: number) => {
   return (
     <div className="bg-soft-pink min-h-screen flex flex-col items-center justify-between overflow-hidden">
       <div className="flex flex-col items-center p-4 w-full">
@@ -26,7 +26,7 @@ export const PortraitView = (posts: POSTS_BY_YEAR_AND_DATEResult, year: string, 
 
         <AnimatePresence mode="popLayout">
           <div key={pageKey} className="flex flex-col gap-8 p-4 w-full items-center">
-            {posts.map((post, index) => (
+            {posts.map((post) => (
               <motion.div
                 key={post._id}
                 initial={{ opacity: 0, x: 400 }}

@@ -2,11 +2,11 @@ import { LoaderFunctionArgs } from 'react-router'
 import { cleanControlCharacters } from 'utils/controlCharacters'
 import { loadQuery } from 'utils/sanity/loader.server'
 import { RSS_FEED_QUERY } from 'utils/sanity/queries/postQueries'
-import { RSS_FEED_QUERYResult } from 'utils/sanity/types/sanity.types'
+import { RSS_FEED_QUERY_RESULT } from 'utils/sanity/types/sanity.types'
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { data: posts } = await loadQuery<RSS_FEED_QUERYResult>(RSS_FEED_QUERY)
-  const baseUrl = new URL(request.url).origin
+export const loader = async ({ url }: LoaderFunctionArgs) => {
+  const { data: posts } = await loadQuery<RSS_FEED_QUERY_RESULT>(RSS_FEED_QUERY)
+  const baseUrl = url.origin
 
   const rssString = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">

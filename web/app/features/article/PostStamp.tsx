@@ -1,16 +1,16 @@
 import { SanityAsset } from '@sanity/image-url'
 import { useEffect, useState } from 'react'
-import { POST_BY_SLUGResult } from 'utils/sanity/types/sanity.types'
+import { POST_BY_SLUG_RESULT } from 'utils/sanity/types/sanity.types'
 import { urlFor } from 'utils/sanity/utils'
 
 import { BekkLogo } from '~/features/article/BekkLogo'
 
 type PostStampProps = {
   size?: string
-  image?: NonNullable<POST_BY_SLUGResult>['coverImage'] | null
+  image?: NonNullable<POST_BY_SLUG_RESULT>['coverImage'] | null
 }
 
-const useValidatedImageUrl = (image: NonNullable<POST_BY_SLUGResult>['coverImage'] | null): string | null => {
+const useValidatedImageUrl = (image: NonNullable<POST_BY_SLUG_RESULT>['coverImage'] | null): string | null => {
   const [validatedUrl, setValidatedUrl] = useState<string | null>(null)
 
   useEffect(() => {

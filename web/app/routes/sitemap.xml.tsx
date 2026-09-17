@@ -1,11 +1,11 @@
 import { LoaderFunctionArgs } from 'react-router'
 import { loadQuery } from 'utils/sanity/loader.server'
 import { SITEMAP_QUERY } from 'utils/sanity/queries/postQueries'
-import { SITEMAP_QUERYResult } from 'utils/sanity/types/sanity.types'
+import { SITEMAP_QUERY_RESULT } from 'utils/sanity/types/sanity.types'
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { data } = await loadQuery<SITEMAP_QUERYResult>(SITEMAP_QUERY)
-  const baseUrl = new URL(request.url).origin
+export const loader = async ({ url }: LoaderFunctionArgs) => {
+  const { data } = await loadQuery<SITEMAP_QUERY_RESULT>(SITEMAP_QUERY)
+  const baseUrl = url.origin
 
   const years = new Set(data.posts.map((post) => new Date(post.availableFrom).getFullYear()))
   const days = new Set(data.posts.map((post) => new Date(post.availableFrom).getDate()))

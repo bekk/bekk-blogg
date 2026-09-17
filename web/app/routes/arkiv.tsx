@@ -1,6 +1,6 @@
 import { Link, MetaFunction } from 'react-router'
 import { GiftsWithBadge } from '~/features/archive/svgs/GiftsWithBadge'
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 
 import { useTextZoomScale } from '~/hooks/useTextZoomScale'
 

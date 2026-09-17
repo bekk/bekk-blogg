@@ -1,7 +1,7 @@
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import { Link, useLocation } from 'react-router'
 import { readingTime } from 'utils/readingTime'
-import { POSTS_BY_YEAR_AND_DATEResult } from 'utils/sanity/types/sanity.types'
+import { POSTS_BY_YEAR_AND_DATE_RESULT } from 'utils/sanity/types/sanity.types'
 
 import { PostStamp } from '../article/PostStamp'
 
@@ -12,7 +12,7 @@ type PostPreviewType = {
   _id: string
   title: string | null
   slug: { current?: string | null } | null
-  coverImage: POSTS_BY_YEAR_AND_DATEResult[number]['coverImage'] | null // TODO: Rename the type
+  coverImage: POSTS_BY_YEAR_AND_DATE_RESULT[number]['coverImage'] | null // TODO: Rename the type
   tags: string[] | null
   authors: string[] | null
   summary: string | null
