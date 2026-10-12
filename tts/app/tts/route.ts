@@ -60,9 +60,10 @@ export async function GET(request: NextRequest) {
             }
             const mp3 = await openai.audio.speech.create(
               {
-                model: "tts-1",
+                model: "gpt-4o-mini-tts",
                 voice,
                 input: chunk,
+                instructions: getInstructions(post.language),
                 response_format: "mp3",
               },
               {
@@ -130,17 +131,37 @@ function chunkText(text: string, chunkSize: number = 500): string[] {
   return chunks;
 }
 
+const TTS_INSTRUCTIONS = {
+  "nb-NO":
+    "Teksten er skrevet på norsk bokmål. Les den høyt på naturlig norsk, med norsk uttale. Bruk et rolig, engasjert og tydelig tempo, slik man leser en fagartikkel høyt. Engelske fagbegreper og kodenavn uttales på engelsk.",
+  "nn-NO":
+    "Teksten er skriven på nynorsk. Les han høgt på naturleg norsk, med norsk uttale. Bruk eit roleg, engasjert og tydeleg tempo, slik ein les ein fagartikkel høgt. Engelske faguttrykk og kodenamn blir uttalte på engelsk.",
+  "en-US":
+    "The text is written in English. Read it aloud in natural, clear English. Use a calm, engaged and steady pace, like reading a technical article aloud.",
+} as const;
+
+const getInstructions = (language: ArticleLanguage | null) =>
+  TTS_INSTRUCTIONS[language ?? "nb-NO"] ?? TTS_INSTRUCTIONS["nb-NO"];
+
+// Stemmene i Sanity er fra den gamle tts-1-modellen. Vi mapper dem til de nye,
+// bedre stemmene marin og cedar, som OpenAI anbefaler for gpt-4o-mini-tts.
+const voiceMap = {
+  onyx: "cedar",
+  nova: "marin",
+  shimmer: "shimmer",
+} as const;
+
 type GetVoiceArgs = {
   name: string | null;
   preferredVoice?: "onyx" | "nova" | "none" | "shimmer" | null;
 };
 const getVoice = async ({ name, preferredVoice }: GetVoiceArgs) => {
   if (!name) {
-    return "nova"; // Burde ikke skje, men i tilfeller der man ikke har fyllt ut navn enda, vil man bruke denne stemmen
+    return voiceMap.nova; // Burde ikke skje, men i tilfeller der man ikke har fyllt ut navn enda, vil man bruke denne stemmen
   }
   // Hvis brukeren har valgt en stemme, returner den
-  if (preferredVoice && ["onyx", "nova", "shimmer"].includes(preferredVoice)) {
-    return preferredVoice as "onyx" | "nova" | "shimmer";
+  if (preferredVoice && preferredVoice !== "none" && preferredVoice in voiceMap) {
+    return voiceMap[preferredVoice];
   }
   // Hvis brukeren ikke har valgt en stemme, bestemmer vi stemmen ut fra navnet
   const response = await openai.chat.completions.create({
@@ -158,7 +179,7 @@ const getVoice = async ({ name, preferredVoice }: GetVoiceArgs) => {
     ],
   });
   const gender = response.choices[0].message.content;
-  return gender === "male" ? "onyx" : "nova";
+  return gender === "male" ? voiceMap.onyx : voiceMap.nova;
 };
 
 const sanityClient = createClient({
@@ -182,8 +203,11 @@ const ARTICLE_CONTENT_BY_ID = `*[_type == "post" && type == "article" && _id == 
   "description": pt::text(description), 
   "content": pt::text(content), 
   "mainAuthor": authors[0]->fullName,
-  "preferredVoice": authors[0]->preferredVoice
+  "preferredVoice": authors[0]->preferredVoice,
+  language
   }`;
+
+type ArticleLanguage = "nb-NO" | "nn-NO" | "en-US";
 
 type ARTICLE_CONTENT_BY_IDResult = {
   title: string;
@@ -191,4 +215,5 @@ type ARTICLE_CONTENT_BY_IDResult = {
   content: string;
   mainAuthor: string | null;
   preferredVoice: "none" | "nova" | "onyx" | "shimmer" | null;
+  language: ArticleLanguage | null;
 } | null;
