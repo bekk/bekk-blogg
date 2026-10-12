@@ -68,7 +68,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     return redirect(`/post/${year}/${date.padStart(2, '0')}`, { status: 301 })
   }
 
-  const { preview } = await loadQueryOptions(request.headers)
+  const { options, preview } = await loadQueryOptions(request.headers)
   const formatDate = getDoorDate(year, date)
 
   const dateNumber = Number(date)
@@ -91,9 +91,11 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   }
 
   try {
-    const { data: posts } = await loadQuery<POSTS_BY_YEAR_AND_DATE_RESULT>(POSTS_BY_YEAR_AND_DATE, {
-      date: formatDate,
-    })
+    const { data: posts } = await loadQuery<POSTS_BY_YEAR_AND_DATE_RESULT>(
+      POSTS_BY_YEAR_AND_DATE,
+      { date: formatDate },
+      options
+    )
 
     return {
       posts: posts ?? [],

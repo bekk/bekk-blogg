@@ -11,5 +11,7 @@ export const writeClient = createClient({
 export const readClient = createClient({
   ...sanityConfig,
   useCdn: true,
+  // Klienten har token, så uten dette kan den lese utkast
+  perspective: 'published',
   token: process.env.SANITY_READ_API_TOKEN,
 })

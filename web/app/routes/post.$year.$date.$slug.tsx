@@ -15,7 +15,7 @@ import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { writeClient } from 'utils/sanity/sanity.server'
 import { z } from 'zod'
 
-import { loadQuery, setServerClient } from 'utils/sanity/loader.server'
+import { loadQuery } from 'utils/sanity/loader.server'
 import { POST_BY_SLUG } from 'utils/sanity/queries/postQueries'
 import { Post, POST_BY_SLUG_RESULT } from 'utils/sanity/types/sanity.types'
 import { toPlainText, urlFor } from 'utils/sanity/utils'
@@ -109,9 +109,6 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const decodedSlug = decodeURIComponent(slug)
 
   const { options, preview } = await loadQueryOptions(request.headers)
-  if (options) {
-    setServerClient(options)
-  }
   const queryParams = { slug: decodedSlug, today: getOsloDate() }
   const initial = await loadQuery<POST_BY_SLUG_RESULT>(POST_BY_SLUG, queryParams, options)
 

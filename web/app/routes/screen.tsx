@@ -65,7 +65,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const year = target.year.toString()
   const date = (target.month === 12 ? target.day : 0).toString()
 
-  const { preview } = await loadQueryOptions(request.headers)
+  const { options, preview } = await loadQueryOptions(request.headers)
 
   const formatDate = getDoorDate(year, date)
 
@@ -85,9 +85,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
   }
 
   try {
-    const { data: posts } = await loadQuery<POSTS_BY_YEAR_AND_DATE_RESULT>(POSTS_BY_YEAR_AND_DATE, {
-      date: formatDate,
-    })
+    const { data: posts } = await loadQuery<POSTS_BY_YEAR_AND_DATE_RESULT>(
+      POSTS_BY_YEAR_AND_DATE,
+      { date: formatDate },
+      options
+    )
 
     const articleAmount = isNumericString(amountParam) ? Math.max(1, Number(amountParam)) : undefined
     const articlePage = isNumericString(pageParam) ? Math.max(0, Number(pageParam)) : 0
