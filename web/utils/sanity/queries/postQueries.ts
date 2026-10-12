@@ -173,10 +173,10 @@ export const AUTHOR_WITH_POSTS_QUERY = defineQuery(`{
 export const RSS_FEED_QUERY = defineQuery(`*[
   _type == "post" && 
   availableFrom <= $today
-][0...250] | order(availableFrom desc) {
+] | order(availableFrom desc)[0...250] {
   _id,
   title,
-  slug,
+  "slug": slug.current,
   language,
   "description": coalesce(previewText, pt::text(description)),
   availableFrom,

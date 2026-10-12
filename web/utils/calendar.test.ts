@@ -5,6 +5,7 @@ import {
   getLatestCalendarYear,
   getOsloDate,
   getSecondsUntilOsloMidnight,
+  isDoorDate,
   isDoorOpen,
   isTeaserPeriod,
 } from './calendar'
@@ -70,5 +71,14 @@ describe('getSecondsUntilOsloMidnight', () => {
   it('håndterer overgang til vintertid', () => {
     // 25. oktober 2026 er 25 timer lang i Norge
     expect(getSecondsUntilOsloMidnight(new Date('2026-10-24T22:00:00Z'))).toBe(25 * 3600)
+  })
+})
+
+describe('isDoorDate', () => {
+  it('gjelder bare 1.–24. desember', () => {
+    expect(isDoorDate('2025-12-01')).toBe(true)
+    expect(isDoorDate('2025-12-24')).toBe(true)
+    expect(isDoorDate('2025-12-25')).toBe(false)
+    expect(isDoorDate('2025-11-30')).toBe(false)
   })
 })

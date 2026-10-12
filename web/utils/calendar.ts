@@ -36,6 +36,12 @@ export function isDoorOpen(year: number | string, day: number | string, today: s
   return getDoorDate(year, day) <= today
 }
 
+/** Om en dato tilsvarer en luke (1.–24. desember), og dermed har en side */
+export function isDoorDate(isoDate: string): boolean {
+  const { month, day } = parseIsoDate(isoDate)
+  return month === 12 && day >= 1 && day <= 24
+}
+
 /** Det siste året der kalenderen har startet (altså 1. desember har passert) */
 export function getLatestCalendarYear(today: string): number {
   const { year, month } = parseIsoDate(today)
