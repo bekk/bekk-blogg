@@ -17,7 +17,7 @@ import { z } from 'zod'
 
 import { loadQuery } from 'utils/sanity/loader.server'
 import { POST_BY_SLUG } from 'utils/sanity/queries/postQueries'
-import { Post, POST_BY_SLUG_RESULT } from 'utils/sanity/types/sanity.types'
+import { POST_BY_SLUG_RESULT } from 'utils/sanity/types/sanity.types'
 import { toPlainText, urlFor } from 'utils/sanity/utils'
 import { ErrorPage } from '../features/error-boundary/ErrorPage'
 
@@ -187,11 +187,20 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const { id } = formData.data
 
   try {
-    const doc = await writeClient.getDocument<Post>(id)
-    const initialPoints = doc?.points ?? 0
+    // Kun publiserte poster som har åpnet kan få poeng – ikke utkast eller andre dokumenter
+    const post = await writeClient.fetch<{ _id: string } | null>(
+      `*[_type == "post" && _id == $id && availableFrom <= $today][0]{ _id }`,
+      { id, today: getOsloDate() },
+      { perspective: 'published' }
+    )
+    if (!post) {
+      return { status: 'error', error: 'Fant ikke innlegget' } as const
+    }
+    // `inc` er atomisk, så samtidige likes overskriver ikke hverandre
     const { points } = await writeClient
-      .patch(id)
-      .set({ points: initialPoints + 1 })
+      .patch(post._id)
+      .setIfMissing({ points: 0 })
+      .inc({ points: 1 })
       .commit<{ points: number }>()
     console.info(`Registered a point for post ${id}, now totalling ${points} points`)
     return { status: 'success', points } as const

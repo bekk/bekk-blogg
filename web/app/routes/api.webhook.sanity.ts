@@ -7,6 +7,9 @@ import indexer from 'sanity-algolia'
 import { POST_SEARCH_PROJECTION } from '../../utils/sanity/queries/postQueries'
 import { readClient } from '../../utils/sanity/sanity.server'
 
+// Webhooken kommer rett etter publisering, så CDN-en kan ha gammelt innhold
+const syncClient = readClient.withConfig({ useCdn: false })
+
 /**
  *  This function receives webhook POSTs from Sanity and updates, creates or
  *  deletes records in the corresponding Algolia indices.
@@ -24,8 +27,15 @@ export const action: ActionFunction = async ({ request }) => {
     return new Response('Missing body', { status: 400 })
   }
 
+  const secret = process.env.SANITY_WEBHOOK_SECRET
+  if (!secret) {
+    // Uten hemmelighet kan hvem som helst signere med en tom nøkkel, så avvis alt
+    console.error('SANITY_WEBHOOK_SECRET is not set, rejecting webhook')
+    return new Response('Webhook not configured', { status: 500 })
+  }
+
   const body = await request.text()
-  if (!(await isValidSignature(body, signature, process.env.SANITY_WEBHOOK_SECRET ?? ''))) {
+  if (!(await isValidSignature(body, signature, secret))) {
     return new Response('Invalid signature', { status: 401 })
   }
 
@@ -42,7 +52,7 @@ export const action: ActionFunction = async ({ request }) => {
     (post) => ({ ...post, availableFromMillis: new Date(post.availableFrom).getTime() })
   )
   try {
-    await sanityAlgolia.webhookSync(readClient, JSON.parse(body))
+    await sanityAlgolia.webhookSync(syncClient, JSON.parse(body))
     return new Response('OK', { status: 200 })
   } catch (e) {
     console.error('Error sending data to algolia', e)
