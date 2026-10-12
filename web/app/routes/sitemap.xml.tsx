@@ -1,10 +1,11 @@
 import { LoaderFunctionArgs } from 'react-router'
+import { getOsloDate } from 'utils/calendar'
 import { loadQuery } from 'utils/sanity/loader.server'
 import { SITEMAP_QUERY } from 'utils/sanity/queries/postQueries'
 import { SITEMAP_QUERY_RESULT } from 'utils/sanity/types/sanity.types'
 
 export const loader = async ({ url }: LoaderFunctionArgs) => {
-  const { data } = await loadQuery<SITEMAP_QUERY_RESULT>(SITEMAP_QUERY)
+  const { data } = await loadQuery<SITEMAP_QUERY_RESULT>(SITEMAP_QUERY, { today: getOsloDate() })
   const baseUrl = url.origin
 
   const years = new Set(data.posts.map((post) => new Date(post.availableFrom).getFullYear()))

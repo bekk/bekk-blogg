@@ -23,6 +23,7 @@ import { ErrorPage } from '../features/error-boundary/ErrorPage'
 
 import '../portable-text/prism-theme.css'
 
+import { getDoorDate, getOsloDate, isDoorOpen } from 'utils/calendar'
 import { useQuery } from 'utils/sanity/loader'
 import { Spinner } from '~/components/Spinner'
 import { Article } from '~/features/article/Article'
@@ -111,11 +112,9 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   if (options) {
     setServerClient(options)
   }
-  const initial = await loadQuery<POST_BY_SLUG_RESULT>(POST_BY_SLUG, { slug: decodedSlug }, options)
+  const queryParams = { slug: decodedSlug, today: getOsloDate() }
+  const initial = await loadQuery<POST_BY_SLUG_RESULT>(POST_BY_SLUG, queryParams, options)
 
-  const formatDate = `${year}-12-${date.padStart(2, '0')}`
-  const currentDate = new Date(new Date().getTime() + 1000 * 60 * 60)
-  const targetDate = new Date(formatDate)
   const yearNumber = Number(year)
   const dateNumber = Number(date)
 
@@ -128,7 +127,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     })
   }
 
-  if (!preview && currentDate < targetDate) {
+  if (!preview && !isDoorOpen(year, date, getOsloDate())) {
     throw new Response('Date not yet available', {
       status: 425,
       headers: {
@@ -144,7 +143,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       },
     })
   }
-  if (!preview && initial.data.availableFrom !== formatDate) {
+  if (!preview && initial.data.availableFrom !== getDoorDate(year, date)) {
     throw new Response('Post date and date in url do not match', {
       status: 404,
       headers: {
@@ -161,7 +160,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     {
       initial,
       query: POST_BY_SLUG,
-      params: parsedParams.data,
+      params: queryParams,
       imageUrl,
     },
     {

@@ -1,4 +1,5 @@
 import { isRouteErrorResponse, LoaderFunctionArgs, MetaFunction, useLoaderData, useRouteError } from 'react-router'
+import { FIRST_CALENDAR_YEAR, getOsloDate, parseIsoDate } from 'utils/calendar'
 import { z } from 'zod'
 
 import { CalendarWithDoors } from '~/features/calendar/CalendarWithDoors'
@@ -20,10 +21,11 @@ export async function loader({ params }: LoaderFunctionArgs) {
     })
   }
   const { year } = parsedParams.data
-  const currentYear = new Date().getFullYear()
+  const today = getOsloDate()
+  const currentYear = parseIsoDate(today).year
   const paramsYearAsNumber = Number(year)
 
-  if (isNaN(paramsYearAsNumber) || paramsYearAsNumber < 2017) {
+  if (isNaN(paramsYearAsNumber) || paramsYearAsNumber < FIRST_CALENDAR_YEAR) {
     throw new Response('Invalid year', {
       status: 404,
       headers: {
@@ -39,7 +41,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
       },
     })
   }
-  return { year }
+  return { year, today }
 }
 
 export const meta: MetaFunction = ({ loaderData: data }) => {
@@ -67,13 +69,13 @@ export const meta: MetaFunction = ({ loaderData: data }) => {
 }
 
 export default function YearRoute() {
-  const data = useLoaderData<{ year: string }>()
+  const data = useLoaderData<typeof loader>()
   return (
     <div className="relative min-height-package-placement">
       <div className="flex flex-col gap-6">
         <h1 className="flex justify-center text-headline-desktop text-red-berry">{data.year}</h1>
         <div className="2lg:h-auto flex justify-center relative z-0">
-          <CalendarWithDoors />
+          <CalendarWithDoors year={Number(data.year)} today={data.today} />
         </div>
       </div>
       <CalendarPageFooter />

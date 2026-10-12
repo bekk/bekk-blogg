@@ -14,6 +14,7 @@ import { z } from 'zod'
 
 import { POSTS_BY_YEAR_AND_DATE } from '../../utils/sanity/queries/postQueries'
 
+import { getDoorDate, getOsloDate, isDoorOpen } from 'utils/calendar'
 import { loadQuery } from 'utils/sanity/loader.server'
 import { DayNavigation } from '~/features/article/DayNavigation'
 import { ErrorPage } from '~/features/error-boundary/ErrorPage'
@@ -68,8 +69,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   }
 
   const { preview } = await loadQueryOptions(request.headers)
-  const formatDate = year + '-' + '12' + '-' + date.padStart(2, '0')
-  const currentDate = new Date(new Date().getTime() + 1000 * 60 * 60)
+  const formatDate = getDoorDate(year, date)
 
   const dateNumber = Number(date)
   if (!preview && (isNaN(dateNumber) || dateNumber < 1 || dateNumber > 24)) {
@@ -81,8 +81,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     })
   }
 
-  const targetDate = new Date(formatDate)
-  if (!preview && currentDate < targetDate) {
+  if (!preview && !isDoorOpen(year, date, getOsloDate())) {
     throw new Response('Date not yet available', {
       status: 425,
       headers: {

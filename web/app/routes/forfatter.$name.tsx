@@ -11,6 +11,7 @@ import { combinedHeaders } from 'utils/headers'
 import { AUTHOR_WITH_POSTS_QUERY } from 'utils/sanity/queries/postQueries'
 import { Author, AUTHOR_WITH_POSTS_QUERY_RESULT } from 'utils/sanity/types/sanity.types'
 
+import { getOsloDate } from 'utils/calendar'
 import { loadQuery } from 'utils/sanity/loader.server'
 
 import { GlobeIcon, MailIcon } from 'lucide-react'
@@ -40,6 +41,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 
   const response = await loadQuery<AUTHOR_WITH_POSTS_QUERY_RESULT>(AUTHOR_WITH_POSTS_QUERY, {
     slug: name,
+    today: getOsloDate(),
     start: offset,
     end: offset + perPage,
   })

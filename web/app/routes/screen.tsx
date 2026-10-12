@@ -6,6 +6,7 @@ import {
   useLoaderData,
   useRouteError,
 } from 'react-router'
+import { getDoorDate, getOsloDate, isDoorOpen, parseIsoDate } from 'utils/calendar'
 import { combinedHeaders } from 'utils/headers'
 import { isNumericString } from 'utils/numbers'
 import { loadQuery } from 'utils/sanity/loader.server'
@@ -57,21 +58,24 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const rotationIntervalParam = url.searchParams.get('rotationInterval')
   const dateOverrideParam = url.searchParams.get('dateOverride')
 
-  const today = new Date()
-  const targetDate = dateOverrideParam ? new Date(dateOverrideParam) : today
-  const year = targetDate.getFullYear().toString()
-  const date = (targetDate.getMonth() === 11 ? targetDate.getDate() : 0).toString()
+  const today = getOsloDate()
+  const target = parseIsoDate(
+    dateOverrideParam && /^\d{4}-\d{2}-\d{2}/.test(dateOverrideParam) ? dateOverrideParam.slice(0, 10) : today
+  )
+  const year = target.year.toString()
+  const date = (target.month === 12 ? target.day : 0).toString()
 
   const { preview } = await loadQueryOptions(request.headers)
 
-  const formatDate = year + '-' + '12' + '-' + date.padStart(2, '0')
+  const formatDate = getDoorDate(year, date)
 
   const dateNumber = Number(date)
   if (!preview && (isNaN(dateNumber) || dateNumber < 1 || dateNumber > 24)) {
-    return redirect(`/`, { status: 301 })
+    // Midlertidig redirect: skjermer som settes opp før 1. desember skal ikke huske denne
+    return redirect(`/`, { status: 302 })
   }
 
-  if (!preview && today < targetDate) {
+  if (!preview && !isDoorOpen(year, date, today)) {
     throw new Response('Date not yet available', {
       status: 425,
       headers: {

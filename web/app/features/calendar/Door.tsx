@@ -5,27 +5,28 @@ import { motion, Variants } from 'motion/react'
 
 import useMediaQuery from '~/hooks/useMediaQuery'
 import { useTextZoomScale } from '~/hooks/useTextZoomScale'
+import { getDoorDate, isDoorOpen } from 'utils/calendar'
 import { OpenDoor } from './doorsSVG/OpenDoor'
-
-const today = new Date()
 
 type DoorProps = {
   date: number
   year: number
+  /** Dagens dato i norsk tid (YYYY-MM-DD). Må komme fra loaderen, så server og klient er enige. */
+  today: string
 }
 
 const giftWrappingPalette = ['#A7060E', '#6D0D22', '#AEB7AB']
 const giftRibbonPalette = ['#ED7E87', '#ED7E87', '#D9DCCF']
 
-export const Door = ({ date, year }: DoorProps) => {
+export const Door = ({ date, year, today }: DoorProps) => {
   const [isShaking, setIsShaking] = useState(false)
   const [colorIndex] = useState(() => Math.floor(Math.random() * giftWrappingPalette.length))
 
   const smallScreen = useMediaQuery('(max-width: 640px)')
   const textZoomScale = useTextZoomScale()
 
-  const isOpenable = new Date(year, 11, date) <= today
-  const isToday = new Date(year, 11, date).toDateString() === today.toDateString()
+  const isOpenable = isDoorOpen(year, date, today)
+  const isToday = getDoorDate(year, date) === today
 
   const baseSize = smallScreen ? { width: 90, height: 90 } : { width: 140, height: 140 }
   const doorSize = {

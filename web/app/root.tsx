@@ -15,6 +15,7 @@ import {
   useRouteError,
   useLocation,
 } from 'react-router'
+import { getLatestCalendarYear, getOsloDate, getSecondsUntilOsloMidnight } from 'utils/calendar'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
 import { ErrorPage } from './features/error-boundary/ErrorPage'
@@ -29,9 +30,16 @@ export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const { preview } = await loadQueryOptions(request.headers)
+  const now = new Date()
+  const today = getOsloDate(now)
+  // Alt som caches må utløpe senest ved midnatt norsk tid, ellers kan nye luker vises som lukket
+  const secondsUntilMidnight = getSecondsUntilOsloMidnight(now)
+  const maxAge = Math.min(3600, secondsUntilMidnight)
+  const sMaxAge = Math.min(7200, secondsUntilMidnight)
   return data(
     {
       isPreview: preview,
+      latestCalendarYear: getLatestCalendarYear(today),
       ENV: {
         SANITY_STUDIO_PROJECT_ID: process.env.SANITY_STUDIO_PROJECT_ID,
         SANITY_STUDIO_DATASET: process.env.SANITY_STUDIO_DATASET,
@@ -48,8 +56,8 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
       headers: {
         'Cache-Control': preview
           ? 'no-cache, no-store'
-          : // 1 hour max-age, 2 hours s-maxage, 1 month stale-while-revalidate, 1 month stale-if-error
-            'public, max-age=3600, s-maxage=7200, stale-while-revalidate=2592000, stale-if-error=2592000',
+          : // Maks 1 time i nettleser og 2 timer i CDN (men aldri forbi midnatt), 1 måned stale-while-revalidate og stale-if-error
+            `public, max-age=${maxAge}, s-maxage=${sMaxAge}, stale-while-revalidate=2592000, stale-if-error=2592000`,
         Vary: 'X-Sanity-Preview',
         'X-Sanity-Preview': preview ? 'true' : 'false',
       },

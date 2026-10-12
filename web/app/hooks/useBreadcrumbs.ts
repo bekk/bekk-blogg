@@ -1,4 +1,6 @@
-import { useMatches } from 'react-router'
+import { useMatches, useRouteLoaderData } from 'react-router'
+
+import type { loader as rootLoader } from '~/root'
 
 import { Author, Post } from '../../utils/sanity/types/sanity.types'
 
@@ -8,6 +10,9 @@ export type Breadcrumb = {
 }
 
 export function useBreadcrumbs(): Breadcrumb[] {
+  const rootData = useRouteLoaderData<typeof rootLoader>('root')
+  const latestCalendarYear = rootData?.latestCalendarYear
+  const mailroomHref = latestCalendarYear ? `/post/${latestCalendarYear}` : '/'
   const matches = useMatches().filter((match) => match.id !== 'root')
   if (matches.length === 0) {
     return []
@@ -28,7 +33,7 @@ export function useBreadcrumbs(): Breadcrumb[] {
 
       let title = ''
       if (key === 'year') {
-        if (currRoute.params.year && new Date(new Date().setFullYear(parseInt(currRoute.params.year))) < new Date()) {
+        if (currRoute.params.year && latestCalendarYear && parseInt(currRoute.params.year) <= latestCalendarYear) {
           title = `${currRoute.params.year}`
         } else {
           title = 'Postkontoret'
@@ -51,7 +56,7 @@ export function useBreadcrumbs(): Breadcrumb[] {
     })
   } else if (currRoute.pathname.includes('/kategori')) {
     breadcrumbs.unshift({
-      href: '/post/2025',
+      href: mailroomHref,
       title: 'Postkontoret',
     })
     addBreadcrumb('/kategori', 'Kategorier')
@@ -62,7 +67,7 @@ export function useBreadcrumbs(): Breadcrumb[] {
       }
     })
   } else if (currRoute.pathname.includes('/forfatter')) {
-    addBreadcrumb('/post/2025', 'Postkontoret')
+    addBreadcrumb(mailroomHref, 'Postkontoret')
     const match = matches[matches.length - 1]?.loaderData as { author: Author }
     if (match?.author?.fullName) {
       addBreadcrumb('', `${match?.author?.fullName}`)

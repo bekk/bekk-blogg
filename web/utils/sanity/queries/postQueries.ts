@@ -104,7 +104,7 @@ const POST_PROJECTION = groq`{
       title,
       availableFrom,
       slug,
-      "isAvailable": availableFrom < now()
+      "isAvailable": availableFrom <= $today
     }
   }
 }`
@@ -136,12 +136,12 @@ export const TAG_WITH_POSTS_QUERY = defineQuery(`{
   "posts": *[
     _type == "post" && 
     $t in tags[]->.slug &&
-    availableFrom < now()
+    availableFrom <= $today
   ] | order(availableFrom desc)[$start...$end] ${POST_PREVIEW_PROJECTION},
   "totalCount": count(*[
     _type == "post" && 
     $t in tags[]->.slug &&
-    availableFrom < now()
+    availableFrom <= $today
   ]),
   "tag": *[_type == "tag" && slug == $t][0] {
     name,
@@ -153,12 +153,12 @@ export const AUTHOR_WITH_POSTS_QUERY = defineQuery(`{
   "posts": *[
     _type == "post" && 
     $slug in authors[]->slug.current && 
-    availableFrom < now()
+    availableFrom <= $today
   ] | order(availableFrom desc)[$start...$end] ${POST_PREVIEW_PROJECTION},
   "totalCount": count(*[
     _type == "post" && 
     $slug in authors[]->slug.current && 
-    availableFrom < now()
+    availableFrom <= $today
   ]),
   "author": *[_type == "author" && slug.current == $slug][0] {
     fullName,
@@ -172,7 +172,7 @@ export const AUTHOR_WITH_POSTS_QUERY = defineQuery(`{
 
 export const RSS_FEED_QUERY = defineQuery(`*[
   _type == "post" && 
-  availableFrom < now()
+  availableFrom <= $today
 ][0...250] | order(availableFrom desc) {
   _id,
   title,
@@ -186,7 +186,7 @@ export const RSS_FEED_QUERY = defineQuery(`*[
 }`)
 
 export const SITEMAP_QUERY = defineQuery(`{
-  "posts": *[_type == "post" && defined(slug.current) && availableFrom < now()] {
+  "posts": *[_type == "post" && defined(slug.current) && availableFrom <= $today] {
     "slug": slug.current,
     availableFrom,
     _updatedAt
