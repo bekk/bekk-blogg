@@ -60,9 +60,10 @@ export async function GET(request: NextRequest) {
             }
             const mp3 = await openai.audio.speech.create(
               {
-                model: "tts-1",
+                model: "gpt-4o-mini-tts",
                 voice,
                 input: chunk,
+                instructions: TTS_INSTRUCTIONS,
                 response_format: "mp3",
               },
               {
@@ -130,17 +131,28 @@ function chunkText(text: string, chunkSize: number = 500): string[] {
   return chunks;
 }
 
+const TTS_INSTRUCTIONS =
+  "Les teksten høyt på naturlig norsk, med norsk uttale. Bruk et rolig, engasjert og tydelig tempo, slik man leser en fagartikkel høyt. Engelske fagbegreper og kodenavn uttales på engelsk.";
+
+// Stemmene i Sanity er fra den gamle tts-1-modellen. Vi mapper dem til de nye,
+// bedre stemmene marin og cedar, som OpenAI anbefaler for gpt-4o-mini-tts.
+const voiceMap = {
+  onyx: "cedar",
+  nova: "marin",
+  shimmer: "shimmer",
+} as const;
+
 type GetVoiceArgs = {
   name: string | null;
   preferredVoice?: "onyx" | "nova" | "none" | "shimmer" | null;
 };
 const getVoice = async ({ name, preferredVoice }: GetVoiceArgs) => {
   if (!name) {
-    return "nova"; // Burde ikke skje, men i tilfeller der man ikke har fyllt ut navn enda, vil man bruke denne stemmen
+    return voiceMap.nova; // Burde ikke skje, men i tilfeller der man ikke har fyllt ut navn enda, vil man bruke denne stemmen
   }
   // Hvis brukeren har valgt en stemme, returner den
-  if (preferredVoice && ["onyx", "nova", "shimmer"].includes(preferredVoice)) {
-    return preferredVoice as "onyx" | "nova" | "shimmer";
+  if (preferredVoice && preferredVoice !== "none" && preferredVoice in voiceMap) {
+    return voiceMap[preferredVoice];
   }
   // Hvis brukeren ikke har valgt en stemme, bestemmer vi stemmen ut fra navnet
   const response = await openai.chat.completions.create({
@@ -158,7 +170,7 @@ const getVoice = async ({ name, preferredVoice }: GetVoiceArgs) => {
     ],
   });
   const gender = response.choices[0].message.content;
-  return gender === "male" ? "onyx" : "nova";
+  return gender === "male" ? voiceMap.onyx : voiceMap.nova;
 };
 
 const sanityClient = createClient({
