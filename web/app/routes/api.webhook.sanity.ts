@@ -1,18 +1,56 @@
 // serverless function for handling webhooks
 
 import { isValidSignature, SIGNATURE_HEADER_NAME } from '@sanity/webhook'
+import { waitUntil } from '@vercel/functions'
 import algoliasearch from 'algoliasearch'
+import OpenAI from 'openai'
 import { ActionFunction } from 'react-router'
 import indexer from 'sanity-algolia'
 import { POST_SEARCH_PROJECTION } from '../../utils/sanity/queries/postQueries'
-import { readClient } from '../../utils/sanity/sanity.server'
+import { readClient, writeClient } from '../../utils/sanity/sanity.server'
+import { deletePostAudio, generatePostAudio } from '../../utils/tts/postAudio.server'
+import { mapWithConcurrency } from '../../utils/tts/synthesize'
 
 // Webhooken kommer rett etter publisering, så CDN-en kan ha gammelt innhold
 const syncClient = readClient.withConfig({ useCdn: false })
 
+type WebhookBody = { ids: { created: string[]; updated: string[]; deleted: string[] } }
+
+/**
+ * Genererer opplesninger for publiserte artikler som er endret, og sletter dem for
+ * slettede innlegg. Hashen gjør at innlegg der teksten er uendret (f.eks. etter et
+ * like-klikk) hoppes over, så det er trygt å kalle for alle endringer.
+ */
+async function syncPostAudio({ ids }: WebhookBody) {
+  if (!process.env.OPENAI_API_KEY) {
+    console.warn('OPENAI_API_KEY is not set, skipping audio generation')
+    return
+  }
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY, maxRetries: 4 })
+  const published = (id: string) => !id.startsWith('drafts.') && !id.startsWith('versions.')
+  const changed = [...ids.created, ...ids.updated].filter(published)
+
+  await mapWithConcurrency(changed, 2, async (id) => {
+    try {
+      const result = await generatePostAudio(id, { sanity: writeClient, openai })
+      if (!['not-article', 'not-eligible', 'unchanged'].includes(result.status)) {
+        console.info('Audio for post', id, result)
+      }
+    } catch (error) {
+      console.error('Could not generate audio for post', id, error)
+    }
+  })
+  for (const id of ids.deleted.filter(published)) {
+    await deletePostAudio(id, writeClient).catch((error) => {
+      console.error('Could not delete audio for post', id, error)
+    })
+  }
+}
+
 /**
  *  This function receives webhook POSTs from Sanity and updates, creates or
- *  deletes records in the corresponding Algolia indices.
+ *  deletes records in the corresponding Algolia indices, and generates
+ *  pre-recorded audio for articles.
  */
 export const action: ActionFunction = async ({ request }) => {
   if (request.method !== 'POST') {
@@ -51,8 +89,12 @@ export const action: ActionFunction = async ({ request }) => {
     },
     (post) => ({ ...post, availableFromMillis: new Date(post.availableFrom).getTime() })
   )
+  const payload: WebhookBody = JSON.parse(body)
+  // Svarer før lyden er ferdig, så Sanity ikke gir opp og sender webhooken på nytt
+  waitUntil(syncPostAudio(payload))
+
   try {
-    await sanityAlgolia.webhookSync(syncClient, JSON.parse(body))
+    await sanityAlgolia.webhookSync(syncClient, payload)
     return new Response('OK', { status: 200 })
   } catch (e) {
     console.error('Error sending data to algolia', e)

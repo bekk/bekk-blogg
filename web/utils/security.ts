@@ -75,7 +75,7 @@ export function generateSecurityHeaders() {
       'frame-src': [SELF, ...EMBED_FRAME_HOSTS, 'vercel.live'],
       'font-src': [SELF],
       'object-src': [NONE],
-      'media-src': [SELF, 'bekk-blogg-tts.vercel.app'],
+      'media-src': [SELF, 'cdn.sanity.io'],
       'child-src': [SELF, '*.youtube.com'],
       'frame-ancestors': ['bekk-blogg-sanity.vercel.app', 'localhost:3333'],
     },
