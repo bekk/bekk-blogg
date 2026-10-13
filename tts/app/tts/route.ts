@@ -1,4 +1,4 @@
-import { createClient } from "@sanity/client";
+import { createClient, type SanityClient } from "@sanity/client";
 import { NextRequest } from "next/server";
 import OpenAI from "openai";
 
@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
 
   let post: ARTICLE_CONTENT_BY_IDResult;
   try {
-    post = await sanityClient.fetch<ARTICLE_CONTENT_BY_IDResult>(
+    post = await getSanityClient().fetch<ARTICLE_CONTENT_BY_IDResult>(
       ARTICLE_CONTENT_BY_ID,
       { id, today: getOsloDate() }
     );
@@ -67,7 +67,7 @@ export async function GET(request: NextRequest) {
             if (chunk.length < 1) {
               continue;
             }
-            const mp3 = await openai.audio.speech.create(
+            const mp3 = await getOpenAI().audio.speech.create(
               {
                 model: "gpt-4o-mini-tts",
                 voice,
@@ -114,9 +114,10 @@ export async function GET(request: NextRequest) {
   }
 }
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Klientene opprettes ved første bruk, så bygget ikke krever hemmeligheter
+let openaiClient: OpenAI | undefined;
+const getOpenAI = () =>
+  (openaiClient ??= new OpenAI({ apiKey: process.env.OPENAI_API_KEY }));
 
 function chunkText(text: string, chunkSize: number = 500): string[] {
   const chunks: string[] = [];
@@ -175,7 +176,7 @@ const getVoice = async ({ name, preferredVoice }: GetVoiceArgs) => {
     return voiceMap[preferredVoice];
   }
   // Hvis brukeren ikke har valgt en stemme, bestemmer vi stemmen ut fra navnet
-  const response = await openai.chat.completions.create({
+  const response = await getOpenAI().chat.completions.create({
     model: "gpt-4o-mini",
     messages: [
       {
@@ -193,7 +194,9 @@ const getVoice = async ({ name, preferredVoice }: GetVoiceArgs) => {
   return gender === "male" ? voiceMap.onyx : voiceMap.nova;
 };
 
-const sanityClient = createClient({
+let sanityClient: SanityClient | undefined;
+const getSanityClient = () =>
+  (sanityClient ??= createClient({
   projectId: process.env.SANITY_PROJECT_ID,
   dataset: process.env.SANITY_DATASET,
   useCdn: true,
@@ -201,7 +204,7 @@ const sanityClient = createClient({
   token: process.env.SANITY_SECRET_TOKEN,
   // Klienten har token, så uten dette kan den lese utkast
   perspective: "published",
-});
+}));
 
 /** Dagens dato i norsk tid (YYYY-MM-DD), samme format som `availableFrom` */
 const getOsloDate = () =>

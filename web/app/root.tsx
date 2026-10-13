@@ -37,7 +37,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   const secondsUntilMidnight = getSecondsUntilOsloMidnight(now)
   const maxAge = Math.min(3600, secondsUntilMidnight)
   const sMaxAge = Math.min(7200, secondsUntilMidnight)
-  const { key: algoliaKey, availableUntilMillis } = getSecuredSearchKey(today)
+  const securedSearchKey = getSecuredSearchKey(today)
   return data(
     {
       isPreview: preview,
@@ -48,11 +48,11 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
         SANITY_STUDIO_URL: process.env.SANITY_STUDIO_URL,
         SANITY_STUDIO_API_VERSION: process.env.SANITY_API_VERSION,
       },
-      algolia: {
+      algolia: securedSearchKey && {
         app: process.env.ALGOLIA_APP_ID!,
-        key: algoliaKey,
+        key: securedSearchKey.key,
         index: process.env.ALGOLIA_INDEX!,
-        availableUntilMillis,
+        availableUntilMillis: securedSearchKey.availableUntilMillis,
       },
     },
     {
