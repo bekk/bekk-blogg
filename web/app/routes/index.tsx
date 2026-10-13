@@ -1,4 +1,5 @@
-import { LoaderFunctionArgs, MetaFunction, redirect } from 'react-router'
+import { LoaderFunctionArgs, MetaFunction, redirect, useLoaderData } from 'react-router'
+import { getCalendarStart, getLatestCalendarYear, getOsloDate, isTeaserPeriod, parseIsoDate } from 'utils/calendar'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 
 import { TeaserPage } from '~/features/teaser/TeaserPage'
@@ -18,15 +19,24 @@ export const meta: MetaFunction = () => {
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { preview } = await loadQueryOptions(request.headers)
-  const liveDate = new Date('2025-12-01')
-  const now = new Date(new Date().getTime() + 1000 * 60 * 60)
-  const isLive = now > liveDate
-  if (preview || isLive) {
-    return redirect('/post/2025')
+  const today = getOsloDate()
+  const { year } = parseIsoDate(today)
+
+  // I ukene før 1. desember vises en nedtelling til årets kalender. Ellers sendes man til
+  // den siste kalenderen som har startet. I preview går man rett til årets kalender.
+  if (preview) {
+    return redirect(`/post/${year}`)
   }
-  return null
+  if (!isTeaserPeriod(today)) {
+    return redirect(`/post/${getLatestCalendarYear(today)}`)
+  }
+  return {
+    launchDate: getCalendarStart(year).toISOString(),
+    previousYear: getLatestCalendarYear(today),
+  }
 }
 
 export default function Index() {
-  return <TeaserPage />
+  const { launchDate, previousYear } = useLoaderData<typeof loader>()
+  return <TeaserPage launchDate={launchDate} previousYear={previousYear} />
 }

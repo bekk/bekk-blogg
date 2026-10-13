@@ -33,7 +33,6 @@ const POST_PREVIEW_PROJECTION = groq`{
   podcastLength,
   type,
 }`
-export const ALL_POSTS = groq`*[_type == "post"]`
 const POST_PROJECTION = groq`{
   _id,
   _type,
@@ -99,12 +98,17 @@ const POST_PROJECTION = groq`{
     description,
     slug,
     shouldListNonPublishedContent,
-    "posts": *[_type == "post" && references(^._id)] | order(availableFrom asc) {
+    // Uåpnede poster tas bare med hvis serien skal vise dem, og aldri med slug
+    "posts": *[
+      _type == "post" &&
+      references(^._id) &&
+      (availableFrom <= $today || ^.shouldListNonPublishedContent == true)
+    ] | order(availableFrom asc) {
       _id,
       title,
       availableFrom,
-      slug,
-      "isAvailable": availableFrom < now()
+      "slug": select(availableFrom <= $today => slug),
+      "isAvailable": availableFrom <= $today
     }
   }
 }`
@@ -128,20 +132,22 @@ export const POST_BY_SLUG = defineQuery(`*[_type == "post" && slug.current == $s
 export const POSTS_BY_YEAR_AND_DATE = defineQuery(
   `*[_type == "post" && availableFrom == $date && (length(string::split(pt::text(content), ' ')) > 0 || podcastLength != null)] | order(priority desc) ${POST_PREVIEW_PROJECTION}`
 )
-export const ALL_CATEGORIES = defineQuery(`*[
-  _type == "tag" &&
-  count(*[_type == "post" && references(^._id)]) > 1
-] | order(name asc)`)
+// Henter alle tag-referanser én gang i stedet for å telle per kategori, som tok
+// over tre sekunder. Antallet filtreres i loaderen.
+export const ALL_CATEGORIES = defineQuery(`{
+  "tags": *[_type == "tag"] | order(name asc),
+  "tagRefs": *[_type == "post" && defined(tags)].tags[]._ref
+}`)
 export const TAG_WITH_POSTS_QUERY = defineQuery(`{
   "posts": *[
     _type == "post" && 
     $t in tags[]->.slug &&
-    availableFrom < now()
+    availableFrom <= $today
   ] | order(availableFrom desc)[$start...$end] ${POST_PREVIEW_PROJECTION},
   "totalCount": count(*[
     _type == "post" && 
     $t in tags[]->.slug &&
-    availableFrom < now()
+    availableFrom <= $today
   ]),
   "tag": *[_type == "tag" && slug == $t][0] {
     name,
@@ -153,12 +159,12 @@ export const AUTHOR_WITH_POSTS_QUERY = defineQuery(`{
   "posts": *[
     _type == "post" && 
     $slug in authors[]->slug.current && 
-    availableFrom < now()
+    availableFrom <= $today
   ] | order(availableFrom desc)[$start...$end] ${POST_PREVIEW_PROJECTION},
   "totalCount": count(*[
     _type == "post" && 
     $slug in authors[]->slug.current && 
-    availableFrom < now()
+    availableFrom <= $today
   ]),
   "author": *[_type == "author" && slug.current == $slug][0] {
     fullName,
@@ -172,11 +178,11 @@ export const AUTHOR_WITH_POSTS_QUERY = defineQuery(`{
 
 export const RSS_FEED_QUERY = defineQuery(`*[
   _type == "post" && 
-  availableFrom < now()
-][0...250] | order(availableFrom desc) {
+  availableFrom <= $today
+] | order(availableFrom desc)[0...250] {
   _id,
   title,
-  slug,
+  "slug": slug.current,
   language,
   "description": coalesce(previewText, pt::text(description)),
   availableFrom,
@@ -186,7 +192,7 @@ export const RSS_FEED_QUERY = defineQuery(`*[
 }`)
 
 export const SITEMAP_QUERY = defineQuery(`{
-  "posts": *[_type == "post" && defined(slug.current) && availableFrom < now()] {
+  "posts": *[_type == "post" && defined(slug.current) && availableFrom <= $today] {
     "slug": slug.current,
     availableFrom,
     _updatedAt

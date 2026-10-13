@@ -1,7 +1,7 @@
 # Avhengighetsoppgradering — bekk-blogg
 
 Gjennomført 2026-09-14 på branchen `oppgrader-avhengigheter`.
-Tre uavhengige npm-prosjekter: `web` (React Router 7, Vercel), `sanity` (Studio), `tts` (Next.js).
+Tre uavhengige npm-prosjekter: `web` (React Router 8, Vercel), `sanity` (Studio), `tts` (Next.js).
 
 ## Resultat
 
@@ -76,14 +76,22 @@ fordi `sanity` hoistet dem. Uten dem feiler bygget på
 
 ## Tak vi ikke kom over, og hvorfor
 
-Alle fire er verifisert empirisk, ikke antatt. De er kodet inn i `.github/renovate.json`.
+Alle fire er verifisert empirisk, ikke antatt. De ble kodet inn i `.github/renovate.json`, som senere er fjernet.
 
 | Pakke | Holdt på | Blokkering |
 |---|---|---|
-| `react-router` + `@react-router/*` | 7.18.3 | **`@vercel/react-router` har ingen versjon som støtter RR8.** Nyeste (1.3.6) peer-er `@react-router/dev: "7"`. Appen deployes med `vercelPreset()`, så RR8 ville brekke deployet. 7.18.3 fikser uansett alle 13 høy-advisoryene. |
 | `eslint` + `@eslint/js` (i `web`) | 9.39.1 | `eslint-plugin-react`, `jsx-a11y` og `eslint-plugin-import` peer-er maks `^9`. Testet: eslint 10 kaster `contextOrFilename.getFilename is not a function`. `sanity` og `tts` kjører eslint 10, siden `@sanity/eslint-config-studio` 7 og `eslint-config-next` 16 bruker de moderne pluginene. |
 | `typescript` (i `web`) | 6.0.3 | `typescript-eslint@8.70` peer-er `typescript <6.1.0`. TS 7 ville brekke linting. |
 | `algoliasearch` | 4.25.3 | `sanity-algolia@1.1.0` avhenger av `algoliasearch: ^4`, er sist oppdatert feb. 2025 og har ingen etterfølger. Se under. |
+
+### Oppdatering: React Router 8 ble likevel tatt inn
+
+*Lagt til 2026-10-13.* Tabellen over sa først at React Router ble holdt på 7.18.3. Det
+stemmer ikke lenger: RR8 ble tatt inn i #364 (merget inn i #363), etter at preview-deployet
+viste at `vercelPreset()` virker med RR8. `@vercel/react-router` 1.3.6 peer-er fortsatt
+`@react-router/dev: "7"`, så den tvinges over på RR8 med en `overrides`-blokk i
+`web/package.json`. Peer-rangen er konservativ, ikke en reell inkompatibilitet, men
+**overriden må fjernes når Vercel slipper en versjon med `"8"`**.
 
 ### Hvorfor `sanity-algolia` ble stående
 

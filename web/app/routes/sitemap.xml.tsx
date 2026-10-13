@@ -1,14 +1,22 @@
 import { LoaderFunctionArgs } from 'react-router'
+import { getOsloDate, isDoorDate, parseIsoDate } from 'utils/calendar'
 import { loadQuery } from 'utils/sanity/loader.server'
 import { SITEMAP_QUERY } from 'utils/sanity/queries/postQueries'
 import { SITEMAP_QUERY_RESULT } from 'utils/sanity/types/sanity.types'
 
 export const loader = async ({ url }: LoaderFunctionArgs) => {
-  const { data } = await loadQuery<SITEMAP_QUERY_RESULT>(SITEMAP_QUERY)
+  const { data } = await loadQuery<SITEMAP_QUERY_RESULT>(SITEMAP_QUERY, { today: getOsloDate() })
+  // Poster utenfor 1.–24. desember har ingen side
+  const posts = data.posts.filter((post) => isDoorDate(post.availableFrom))
   const baseUrl = url.origin
 
-  const years = new Set(data.posts.map((post) => new Date(post.availableFrom).getFullYear()))
-  const days = new Set(data.posts.map((post) => new Date(post.availableFrom).getDate()))
+  const postPath = (availableFrom: string) => {
+    const { year, day } = parseIsoDate(availableFrom)
+    return `/post/${year}/${String(day).padStart(2, '0')}`
+  }
+  const years = new Set(posts.map((post) => parseIsoDate(post.availableFrom).year))
+  // Bare dager som faktisk har innhold, ikke alle kombinasjoner av år og dag
+  const dayPaths = new Set(posts.map((post) => postPath(post.availableFrom)))
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -28,27 +36,22 @@ export const loader = async ({ url }: LoaderFunctionArgs) => {
       `
         )
         .join('')}
-      ${Array.from(years)
-        .map((year) =>
-          Array.from(days)
-            .map(
-              (day) => `
+      ${Array.from(dayPaths)
+        .map(
+          (path) => `
         <url>
-          <loc>${baseUrl}/post/${year}/${day.toString().padStart(2, '0')}</loc>
+          <loc>${baseUrl}${path}</loc>
           <changefreq>weekly</changefreq>
           <priority>0.7</priority>
         </url>
       `
-            )
-            .join('')
         )
         .join('')}
-      ${data.posts
+      ${posts
         .map((post) => {
-          const date = new Date(post.availableFrom)
           return `
         <url>
-          <loc>${baseUrl}/post/${date.getFullYear()}/${date.getDate().toString().padStart(2, '0')}/${post.slug}</loc>
+          <loc>${baseUrl}${postPath(post.availableFrom)}/${encodeURIComponent(post.slug ?? '')}</loc>
           <lastmod>${new Date(post._updatedAt).toISOString()}</lastmod>
           <changefreq>weekly</changefreq>
           <priority>0.8</priority>
@@ -59,7 +62,7 @@ export const loader = async ({ url }: LoaderFunctionArgs) => {
         .map(
           (author) => `
         <url>
-          <loc>${baseUrl}/forfatter/${author.slug}</loc>
+          <loc>${baseUrl}/forfatter/${encodeURIComponent(author.slug ?? '')}</loc>
           <lastmod>${new Date(author._updatedAt).toISOString()}</lastmod>
           <changefreq>weekly</changefreq>
           <priority>0.6</priority>
@@ -70,7 +73,7 @@ export const loader = async ({ url }: LoaderFunctionArgs) => {
         .map(
           (tag) => `
         <url>
-          <loc>${baseUrl}/kategori/${tag.slug}</loc>
+          <loc>${baseUrl}/kategori/${encodeURIComponent(tag.slug ?? '')}</loc>
           <lastmod>${new Date(tag._updatedAt).toISOString()}</lastmod>
           <changefreq>weekly</changefreq>
           <priority>0.6</priority>

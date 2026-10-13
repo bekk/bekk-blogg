@@ -16,12 +16,15 @@ import {structure} from './structure'
 const schemaTypes = schemas as SchemaTypeDefinition[]
 
 // Create the configuration with explicit typing
+const projectId = 'ah2n1vfr'
+const dataset = process.env.SANITY_STUDIO_DATASET ?? 'bekk-blogg-prod'
+
 const config = defineConfig({
   basePath: '/',
   name: 'default',
   title: 'Bekk Christmas',
-  projectId: 'ah2n1vfr',
-  dataset: process.env.SANITY_STUDIO_DATASET ?? 'bekk-blogg-prod',
+  projectId,
+  dataset,
 
   plugins: [
     nbNOLocale(),
@@ -42,7 +45,7 @@ const config = defineConfig({
       resolve: {
         mainDocuments: defineDocuments([
           {
-            route: '/:year/:day/:slug',
+            route: '/post/:year/:date/:slug',
             resolve: (ctx) => ({
               filter: '_type == "post" && slug.current == $slug',
               params: {
@@ -60,9 +63,9 @@ const config = defineConfig({
               availableFrom: 'availableFrom',
             },
             resolve: (doc) => {
-              const availableFrom = new Date(doc?.availableFrom ?? null)
-              const day = availableFrom.getDate()
-              const year = availableFrom.getFullYear()
+              // `availableFrom` er en dato (YYYY-MM-DD). Les den som tekst, så
+              // tidssonen til den som redigerer ikke gir feil dag.
+              const [year, , day] = (doc?.availableFrom ?? '').split('-')
               return {
                 locations: [
                   {
@@ -85,8 +88,8 @@ const config = defineConfig({
     types: schemaTypes,
   },
   auth: createAuthStore({
-    projectId: process.env.SANITY_STUDIO_PROJECT_ID ?? '',
-    dataset: process.env.SANITY_STUDIO_DATASET ?? '',
+    projectId,
+    dataset,
     // `mode` ble fjernet i Studio v6 — å erstatte de innebygde providerne
     // er nå standardoppførselen for en statisk providers-array.
     providers: [

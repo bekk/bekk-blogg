@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useRevalidator } from 'react-router'
+import { getSecondsUntilOsloMidnight } from 'utils/calendar'
 
 export function useMidnightRevalidate(hasDateOverride: boolean) {
   const revalidator = useRevalidator()
@@ -12,7 +13,7 @@ export function useMidnightRevalidate(hasDateOverride: boolean) {
       timeoutRef.current = setTimeout(() => {
         revalidator.revalidate()
         schedule()
-      }, msUntilNextUtcMidnightWithBuffer(30_000))
+      }, msUntilNextOsloMidnightWithBuffer(30_000))
     }
 
     schedule()
@@ -26,9 +27,4 @@ export function useMidnightRevalidate(hasDateOverride: boolean) {
   }, [hasDateOverride, revalidator])
 }
 
-const msUntilNextUtcMidnightWithBuffer = (bufferMs = 30_000) => {
-  const now = new Date()
-  const next = new Date(now)
-  next.setUTCHours(24, 0, 0, 0)
-  return Math.max(0, next.getTime() - now.getTime() + bufferMs)
-}
+const msUntilNextOsloMidnightWithBuffer = (bufferMs = 30_000) => getSecondsUntilOsloMidnight() * 1000 + bufferMs

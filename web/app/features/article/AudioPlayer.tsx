@@ -19,7 +19,12 @@ export const AudioPlayer = ({ src, slug }: { src: string; slug: string }) => {
       if (isPlaying) {
         audioRef.current.pause()
       } else {
-        audioRef.current.play()
+        // play() avvises f.eks. hvis nettleseren blokkerer avspilling eller lyden feiler
+        audioRef.current.play().catch((error) => {
+          console.error('Could not play audio', error)
+          setIsLoading(false)
+          setIsPlaying(false)
+        })
         trackEvent('article_audio_played', { slug })
       }
     }

@@ -1,6 +1,8 @@
 import { isRouteErrorResponse, MetaFunction, useLoaderData, useNavigation, useRouteError } from 'react-router'
 import { combinedHeaders } from 'utils/headers'
 
+import { getOsloDate } from 'utils/calendar'
+import { getPageParam } from 'utils/numbers'
 import { loadQuery } from 'utils/sanity/loader.server'
 import { TAG_WITH_POSTS_QUERY } from '../../utils/sanity/queries/postQueries'
 import { TAG_WITH_POSTS_QUERY_RESULT } from '../../utils/sanity/types/sanity.types'
@@ -17,16 +19,18 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     throw new Response('Missing tag', { status: 404 })
   }
 
-  const decodedTag = decodeURIComponent(tag)
+  // Parametrene er allerede dekodet av React Router
+  const decodedTag = tag
 
   // Get page from URL search params
   const url = new URL(request.url)
-  const page = parseInt(url.searchParams.get('page') || '1')
+  const page = getPageParam(url)
   const perPage = 15
   const offset = (page - 1) * perPage
 
   const response = await loadQuery<TAG_WITH_POSTS_QUERY_RESULT>(TAG_WITH_POSTS_QUERY, {
     t: decodedTag,
+    today: getOsloDate(),
     start: offset,
     end: offset + perPage,
   })

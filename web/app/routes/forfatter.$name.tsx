@@ -11,6 +11,8 @@ import { combinedHeaders } from 'utils/headers'
 import { AUTHOR_WITH_POSTS_QUERY } from 'utils/sanity/queries/postQueries'
 import { Author, AUTHOR_WITH_POSTS_QUERY_RESULT } from 'utils/sanity/types/sanity.types'
 
+import { getOsloDate } from 'utils/calendar'
+import { getPageParam } from 'utils/numbers'
 import { loadQuery } from 'utils/sanity/loader.server'
 
 import { GlobeIcon, MailIcon } from 'lucide-react'
@@ -34,12 +36,13 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 
   // Get page from URL search params
   const url = new URL(request.url)
-  const page = parseInt(url.searchParams.get('page') || '1')
+  const page = getPageParam(url)
   const perPage = 15
   const offset = (page - 1) * perPage
 
   const response = await loadQuery<AUTHOR_WITH_POSTS_QUERY_RESULT>(AUTHOR_WITH_POSTS_QUERY, {
     slug: name,
+    today: getOsloDate(),
     start: offset,
     end: offset + perPage,
   })

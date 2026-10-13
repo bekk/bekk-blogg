@@ -1,8 +1,11 @@
-import { createClient } from "@sanity/client";
+import { createClient, type SanityClient } from "@sanity/client";
 import { NextRequest } from "next/server";
 import OpenAI from "openai";
 
-export const runtime = "edge";
+// Edge-runtimen mangler `DOMException`-konstruktøren som @sanity/client 8 bruker,
+// så ruten må kjøre på Node.js. Det gir også lengre tidsgrense for lange artikler.
+export const runtime = "nodejs";
+export const maxDuration = 300;
 
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
@@ -12,10 +15,16 @@ export async function GET(request: NextRequest) {
     return new Response("Missing id parameter", { status: 400 });
   }
 
-  const post = await sanityClient.fetch<ARTICLE_CONTENT_BY_IDResult>(
-    ARTICLE_CONTENT_BY_ID,
-    { id }
-  );
+  let post: ARTICLE_CONTENT_BY_IDResult;
+  try {
+    post = await getSanityClient().fetch<ARTICLE_CONTENT_BY_IDResult>(
+      ARTICLE_CONTENT_BY_ID,
+      { id, today: getOsloDate() }
+    );
+  } catch (error) {
+    console.error("Could not fetch post from Sanity:", id, error);
+    return new Response("Error fetching post", { status: 500 });
+  }
 
   if (!post) {
     return new Response("Post not found", { status: 404 });
@@ -58,7 +67,7 @@ export async function GET(request: NextRequest) {
             if (chunk.length < 1) {
               continue;
             }
-            const mp3 = await openai.audio.speech.create(
+            const mp3 = await getOpenAI().audio.speech.create(
               {
                 model: "gpt-4o-mini-tts",
                 voice,
@@ -81,6 +90,7 @@ export async function GET(request: NextRequest) {
             controller.close();
             return;
           }
+          console.error("TTS generation failed for post:", id, error);
           controller.error(error);
         }
       },
@@ -100,32 +110,34 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error("OpenAI TTS error:", error);
-    throw new Response("Error generating audio", { status: 500 });
+    return new Response("Error generating audio", { status: 500 });
   }
 }
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Klientene opprettes ved første bruk, så bygget ikke krever hemmeligheter
+let openaiClient: OpenAI | undefined;
+const getOpenAI = () =>
+  (openaiClient ??= new OpenAI({ apiKey: process.env.OPENAI_API_KEY }));
 
 function chunkText(text: string, chunkSize: number = 500): string[] {
   const chunks: string[] = [];
   let currentChunk = "";
 
-  // Split by sentences to avoid cutting words/sentences
-  const sentences = text.split(/[.!?]+\s/);
+  // Del opp i setninger, men behold tegnsettingen, slik at spørsmål og utrop
+  // leses med riktig intonasjon
+  const sentences = text.match(/[^.!?]+(?:[.!?]+|$)\s*/g) ?? [];
 
   for (const sentence of sentences) {
-    if ((currentChunk + sentence).length > chunkSize) {
-      chunks.push(currentChunk);
+    if (currentChunk && (currentChunk + sentence).length > chunkSize) {
+      chunks.push(currentChunk.trim());
       currentChunk = sentence;
     } else {
-      currentChunk += (currentChunk ? ". " : "") + sentence;
+      currentChunk += sentence;
     }
   }
 
-  if (currentChunk) {
-    chunks.push(currentChunk);
+  if (currentChunk.trim()) {
+    chunks.push(currentChunk.trim());
   }
 
   return chunks;
@@ -164,7 +176,7 @@ const getVoice = async ({ name, preferredVoice }: GetVoiceArgs) => {
     return voiceMap[preferredVoice];
   }
   // Hvis brukeren ikke har valgt en stemme, bestemmer vi stemmen ut fra navnet
-  const response = await openai.chat.completions.create({
+  const response = await getOpenAI().chat.completions.create({
     model: "gpt-4o-mini",
     messages: [
       {
@@ -182,13 +194,26 @@ const getVoice = async ({ name, preferredVoice }: GetVoiceArgs) => {
   return gender === "male" ? voiceMap.onyx : voiceMap.nova;
 };
 
-const sanityClient = createClient({
+let sanityClient: SanityClient | undefined;
+const getSanityClient = () =>
+  (sanityClient ??= createClient({
   projectId: process.env.SANITY_PROJECT_ID,
   dataset: process.env.SANITY_DATASET,
   useCdn: true,
   apiVersion: "2024-12-04",
   token: process.env.SANITY_SECRET_TOKEN,
-});
+  // Klienten har token, så uten dette kan den lese utkast
+  perspective: "published",
+}));
+
+/** Dagens dato i norsk tid (YYYY-MM-DD), samme format som `availableFrom` */
+const getOsloDate = () =>
+  new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Oslo",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
 
 const controlCharactersRegex =
   /[\u200B-\u200D\uFEFF\u0000-\u001F\u007F-\u009F\u2000-\u200F\u2028-\u202F]/g;
@@ -198,7 +223,8 @@ const controlCharactersRegex =
 const cleanControlCharacters = (text?: string) =>
   text?.replace(controlCharactersRegex, "") ?? "";
 
-const ARTICLE_CONTENT_BY_ID = `*[_type == "post" && type == "article" && _id == $id][0] { 
+// Kun publiserte artikler som har åpnet, så man ikke kan lytte seg til fremtidige luker
+const ARTICLE_CONTENT_BY_ID = `*[_type == "post" && type == "article" && _id == $id && availableFrom <= $today][0] { 
   title, 
   "description": pt::text(description), 
   "content": pt::text(content), 

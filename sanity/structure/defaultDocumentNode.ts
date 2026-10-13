@@ -11,7 +11,7 @@ export const defaultDocumentNode: DefaultDocumentNodeResolver = (S, {schemaType}
           .options({
             query: `*[_type == "post" && references($id)]`,
             params: {id: `_id`},
-            options: {perspective: 'previewDrafts'},
+            options: {perspective: 'drafts'},
           })
           .title('Innlegg av denne forfatteren'),
       ])
@@ -23,7 +23,7 @@ export const defaultDocumentNode: DefaultDocumentNodeResolver = (S, {schemaType}
           .options({
             query: `*[_type == "post" && references($id)]`,
             params: {id: `_id`},
-            options: {perspective: 'previewDrafts'},
+            options: {perspective: 'drafts'},
           })
           .title('Innlegg i denne kategorien'),
       ])

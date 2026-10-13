@@ -13,10 +13,11 @@ Applikasjonen hostes i Vercel:
 
 ## Teknologier
 
-- Applikasjonen er utviklet med frontendrammeverket [Remix](https://remix.run/) sammen med [TypeScript](https://www.typescriptlang.org/)
+- Applikasjonen er utviklet med [React Router](https://reactrouter.com/) (framework mode) sammen med [TypeScript](https://www.typescriptlang.org/)
 - [Sanity CMS](https://www.sanity.io/) er brukt som publiseringsløsning til redigering og organisering av innhold
 - [Tailwind](https://tailwindcss.com/) er brukt til styling og som CSS-rammeverk
-- [Next.js](https://nextjs.org/) er brukt til Text to Speech-APIet
+- [Next.js](https://nextjs.org/) er brukt til Text to Speech-APIet (`tts`-mappen)
+- [Algolia](https://www.algolia.com/) er brukt til søk
 
 ## Oppsett
 
@@ -42,12 +43,23 @@ Når du har fått tilgang, gjør følgende:
 For å kjøre opp applikasjonen:
 
 ```
-cd app
+cd web
 npm install
 npm run dev
 ```
 
 Applikasjonen kjører på [http://localhost:5173](http://localhost:5173)
+
+Før du lager en PR bør disse være grønne (de kjøres også i CI):
+
+```
+npm run typecheck
+npm run lint
+npm test          # enhetstester (Vitest)
+npm run test:e2e  # ende-til-ende-tester (Playwright)
+```
+
+All logikk som avgjør hvilke luker som er åpne ligger i `web/utils/calendar.ts`, og regner i norsk tid.
 
 For å kjøre opp Sanity Studio:
 

@@ -19,6 +19,7 @@ import {
 import { CodeBlock } from './CodeBlock'
 import { CodePenBlock } from './CodePenBlock'
 import { CodeSandboxBlock } from './CodeSandboxBlock'
+import { IframeBlock } from './IframeBlock'
 import ImageBlock from './ImageBlock'
 import { InfoBlock } from './InfoBlock'
 import { QuoteBlock } from './Quote'
@@ -42,7 +43,7 @@ export const components: Partial<PortableTextReactComponents> = {
     youtube: (props: { value: Youtube }) => withSpacing(<YouTubeBlock youtube={props.value} />),
     twitter: (props: { value: Twitter }) => withSpacing(<TwitterBlock twitter={props.value} />),
     unfurledUrl: (props: { value: UnfurledUrl }) => withSpacing(<UnfurledUrlBlock unfurledUrl={props.value} />),
-    iframe: () => null, // TODO: Implement iframe
+    iframe: (props: { value: { src?: string; height?: number } }) => withSpacing(<IframeBlock iframe={props.value} />),
     image: (props: { value: ImageWithMetadata }) => withSpacing(<ImageBlock image={props.value} />),
     infoBlock: (props: { value: InfoBlockType }) =>
       withSpacing(<InfoBlock content={props.value.content as PortableText} />),
@@ -55,15 +56,17 @@ export const components: Partial<PortableTextReactComponents> = {
     h2: ({ children }: { children?: React.ReactNode }) => <h2 className="mb-6 mt-12">{children}</h2>,
     h3: ({ children }: { children?: React.ReactNode }) => <h3 className="mb-6 mt-10">{children}</h3>,
     h4: ({ children }: { children?: React.ReactNode }) => <h4 className="mb-6 mt-10">{children}</h4>,
-    normal: ({ children }: { children?: React.ReactNode }) => {
-      const arrayChildren = React.Children.toArray(children)
-      arrayChildren.forEach((segment) => cleanControlCharacters(segment.toString()))
-      const regex = /[A-Za-z']+/gm
-      const matches = [...arrayChildren.join('').matchAll(regex)]
-      if (!arrayChildren.length || arrayChildren.join('') === '' || matches.length == 0) {
+    normal: ({ children, value }) => {
+      // Hopp over tomme avsnitt (bare mellomrom eller usynlige tegn), men behold
+      // avsnitt med f.eks. æøå, tall, emoji eller bare en lenke
+      const text = value.children
+        .map((child) => (child._type === 'span' && typeof child.text === 'string' ? child.text : ''))
+        .join('')
+      const hasNonTextChildren = value.children.some((child) => child._type !== 'span')
+      if (!hasNonTextChildren && cleanControlCharacters(text).trim() === '') {
         return null
       }
-      return <p className="mb-4 mt-6">{arrayChildren}</p>
+      return <p className="mb-4 mt-6">{children}</p>
     },
   },
   list: {

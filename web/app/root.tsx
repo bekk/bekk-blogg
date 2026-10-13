@@ -15,6 +15,8 @@ import {
   useRouteError,
   useLocation,
 } from 'react-router'
+import { getLatestCalendarYear, getOsloDate, getSecondsUntilOsloMidnight } from 'utils/calendar'
+import { getSecuredSearchKey } from 'utils/algolia.server'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
 import { ErrorPage } from './features/error-boundary/ErrorPage'
@@ -29,28 +31,36 @@ export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const { preview } = await loadQueryOptions(request.headers)
+  const now = new Date()
+  const today = getOsloDate(now)
+  // Alt som caches må utløpe senest ved midnatt norsk tid, ellers kan nye luker vises som lukket
+  const secondsUntilMidnight = getSecondsUntilOsloMidnight(now)
+  const maxAge = Math.min(3600, secondsUntilMidnight)
+  const sMaxAge = Math.min(7200, secondsUntilMidnight)
+  const securedSearchKey = getSecuredSearchKey(today)
   return data(
     {
       isPreview: preview,
+      latestCalendarYear: getLatestCalendarYear(today),
       ENV: {
         SANITY_STUDIO_PROJECT_ID: process.env.SANITY_STUDIO_PROJECT_ID,
         SANITY_STUDIO_DATASET: process.env.SANITY_STUDIO_DATASET,
         SANITY_STUDIO_URL: process.env.SANITY_STUDIO_URL,
         SANITY_STUDIO_API_VERSION: process.env.SANITY_API_VERSION,
       },
-      algolia: {
+      algolia: securedSearchKey && {
         app: process.env.ALGOLIA_APP_ID!,
-        key: process.env.ALGOLIA_SEARCH_KEY!,
+        key: securedSearchKey.key,
         index: process.env.ALGOLIA_INDEX!,
+        availableUntilMillis: securedSearchKey.availableUntilMillis,
       },
     },
     {
       headers: {
         'Cache-Control': preview
           ? 'no-cache, no-store'
-          : // 1 hour max-age, 2 hours s-maxage, 1 month stale-while-revalidate, 1 month stale-if-error
-            'public, max-age=3600, s-maxage=7200, stale-while-revalidate=2592000, stale-if-error=2592000',
-        Vary: 'X-Sanity-Preview',
+          : // Maks 1 time i nettleser og 2 timer i CDN (men aldri forbi midnatt), 1 måned stale-while-revalidate og stale-if-error
+            `public, max-age=${maxAge}, s-maxage=${sMaxAge}, stale-while-revalidate=2592000, stale-if-error=2592000`,
         'X-Sanity-Preview': preview ? 'true' : 'false',
       },
     }
@@ -114,7 +124,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const matches = useMatches()
   const { pathname } = useLocation()
 
-  type PotentialPostData = { initial: { data: { language?: string; canonicalUrl?: string } } } | undefined
+  type PotentialPostData = { initial: { data: { language?: string } } } | undefined
   const postData = (
     matches.find((match) => match.id === 'routes/post.$year.$date.$slug')?.loaderData as PotentialPostData
   )?.initial?.data
@@ -128,14 +138,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
-        {postData?.canonicalUrl && <link rel="canonical" href={postData.canonicalUrl} />}
         <link rel="alternate" type="application/rss+xml" title="Bekk Christmas RSS Feed" href="/rss.xml" />
         <script defer data-domain="bekk.christmas" src="https://plausible.io/js/plausible.js" />
       </head>
       <body>
         <JumpToContent />
         <div className="min-h-screen bg-soft-pink flex flex-col">
-          <Scripts />
           {!hideHeader ? (
             <header>
               <Header />

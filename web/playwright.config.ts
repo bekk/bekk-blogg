@@ -1,5 +1,9 @@
 import { defineConfig, devices } from '@playwright/test'
 
+// Sett BASE_URL for å teste mot en server som allerede kjører (f.eks. en preview-deploy).
+// Ellers startes dev-serveren automatisk.
+const baseURL = process.env.BASE_URL ?? 'http://localhost:5173'
+
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
@@ -9,7 +13,7 @@ export default defineConfig({
   reporter: 'html',
   timeout: 60_000,
   use: {
-    baseURL: 'http://localhost:5173',
+    baseURL,
     trace: 'on-first-retry',
   },
 
@@ -24,9 +28,11 @@ export default defineConfig({
     },
   ],
 
-  webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:5173',
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: process.env.BASE_URL
+    ? undefined
+    : {
+        command: 'npm run dev -- --port 5173 --strictPort',
+        url: baseURL,
+        reuseExistingServer: !process.env.CI,
+      },
 })

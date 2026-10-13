@@ -47,9 +47,13 @@ const post = defineType({
       type: 'slug',
       options: {
         source: 'title',
+        maxLength: 96,
       },
       group: 'author',
-      validation: (rule) => rule.required(),
+      validation: (rule) => [
+        rule.required(),
+        rule.max(96).warning('Lange slugs gir lange og uleselige URL-er'),
+      ],
     },
     {
       title: 'Språk',
@@ -95,12 +99,15 @@ const post = defineType({
       type: 'number',
       group: 'author',
       validation: (rule) =>
-        rule.custom((length, context) => {
-          if (context.document?._type !== 'podcast') {
-            return true
-          }
-          return length ? true : 'Vennligst oppgi lengden på podkasten'
-        }),
+        rule
+          .custom((length, context) => {
+            if (context.document?.type !== 'podcast') {
+              return true
+            }
+            return length ? true : 'Vennligst oppgi lengden på podkasten'
+          })
+          // Advarsel, ikke feil, så eldre podkaster uten lengde fortsatt kan redigeres
+          .warning(),
       hidden: ({document}) => {
         return document?.type !== 'podcast'
       },
@@ -138,6 +145,13 @@ const post = defineType({
           type: 'string',
           title: 'Alternativ tekst',
           description: 'Viktig for SEO og tilgjengelighet.',
+          validation: (rule) =>
+            rule
+              .custom((alt, context) => {
+                const hasImage = Boolean((context.parent as {asset?: unknown} | undefined)?.asset)
+                return hasImage && !alt ? 'Legg inn en alternativ tekst for bildet' : true
+              })
+              .warning(),
         },
         {
           title: 'Bildekilde',
@@ -253,7 +267,20 @@ const post = defineType({
       description: 'Når innlegget skal publiseres',
       type: 'date',
       group: 'admin',
-      validation: (rule) => rule.required(),
+      validation: (rule) => [
+        rule.required(),
+        rule
+          .custom((date?: string) => {
+            if (!date) return true
+            const [, month, day] = date.split('-').map(Number)
+            return month === 12 && day >= 1 && day <= 24
+              ? true
+              : 'Innlegg utenfor 1.–24. desember får ingen side i kalenderen'
+          })
+          .warning(),
+      ],
+      // Bevisst en dato uten luke, så nye innlegg ikke havner i kalenderen før
+      // noen har valgt en dag
       initialValue: `${new Date().getUTCFullYear()}-12-25`,
     },
     {

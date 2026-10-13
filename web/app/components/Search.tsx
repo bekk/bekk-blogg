@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Configure, Hits, InstantSearch, InstantSearchSSRProvider, useSearchBox } from 'react-instantsearch'
 import { Link } from 'react-router'
-import { useAlgoliaClient, useAlgoliaConfig } from '~/hooks/useAlgolia'
+import { useAlgoliaClient, useAlgoliaConfig, useAvailableFilter } from '~/hooks/useAlgolia'
 import { postUrl } from '~/lib/format'
 
 type SearchProps = {
@@ -11,16 +11,22 @@ type SearchProps = {
 export const Search = ({ transparent = true }: SearchProps) => {
   const algoliaConfig = useAlgoliaConfig()
   const client = useAlgoliaClient()
+  const availableFilter = useAvailableFilter()
+
+  // Mangler konfigurasjonen (f.eks. når root-loaderen har feilet), viser vi ikke søk
+  if (!algoliaConfig || !client) {
+    return null
+  }
 
   return (
     <InstantSearchSSRProvider>
       <InstantSearch
-        searchClient={client.current}
+        searchClient={client}
         indexName={algoliaConfig.index}
         future={{ persistHierarchicalRootCount: true, preserveSharedStateOnUnmount: true }}
       >
         <SearchBoxWithDropdown transparent={transparent} />
-        <Configure hitsPerPage={20} filters={`availableFromMillis <=  ${new Date().getTime()}`} />
+        <Configure hitsPerPage={20} filters={availableFilter} />
       </InstantSearch>
     </InstantSearchSSRProvider>
   )

@@ -1,5 +1,36 @@
 import { getCSP, NONE, SELF, UNSAFE_EVAL, UNSAFE_INLINE } from 'csp-header'
 
+/**
+ * Verter vi tillater innebygd i iframes. Brukes både i CSP-en og av `IframeBlock`,
+ * så de alltid er enige. Andre verter vises som en lenke.
+ */
+export const EMBED_FRAME_HOSTS = [
+  '*.youtube.com',
+  'www.youtube-nocookie.com',
+  'codesandbox.io',
+  'codepen.io',
+  'player.vimeo.com',
+  'embed.ted.com',
+  'anchor.fm',
+  '*.spotify.com',
+  // Twitter/X-innbygginger rendres i en iframe fra platform.twitter.com
+  'platform.twitter.com',
+  'syndication.twitter.com',
+]
+
+export function isAllowedEmbedHost(hostname: string) {
+  return EMBED_FRAME_HOSTS.some((host) =>
+    host.startsWith('*.') ? hostname.endsWith(host.slice(1)) : hostname === host
+  )
+}
+
+// Om CSP-en:
+// - `unsafe-eval` trengs fordi @opengraphninja/react (lenkeforhåndsvisninger) har en
+//   gammel regenerator-runtime som kaller `Function(...)`. Uten den kaster alle
+//   artikkelsider en feil. Kan fjernes når den avhengigheten er byttet ut.
+// - `unsafe-inline` trengs for React Router sine inline-skript. Nonce hjelper lite så
+//   lenge HTML-en caches i CDN-en, siden samme nonce da gjenbrukes.
+// - `img-src *` trengs fordi lenkeforhåndsvisninger viser bilder fra vilkårlige nettsteder.
 export function generateSecurityHeaders() {
   const csp = getCSP({
     directives: {
@@ -41,16 +72,7 @@ export function generateSecurityHeaders() {
         '*.algolia.io',
         '*.algolianet.com',
       ],
-      'frame-src': [
-        SELF,
-        '*.youtube.com',
-        'codesandbox.io',
-        'codepen.io',
-        'player.vimeo.com',
-        'anchor.fm',
-        '*.spotify.com',
-        'vercel.live',
-      ],
+      'frame-src': [SELF, ...EMBED_FRAME_HOSTS, 'vercel.live'],
       'font-src': [SELF],
       'object-src': [NONE],
       'media-src': [SELF, 'bekk-blogg-tts.vercel.app'],
@@ -77,6 +99,5 @@ export function generateSecurityHeaders() {
       'payment=()',
       'usb=()',
     ].join(', '),
-    'X-XSS-Protection': '1; mode=block',
   }
 }

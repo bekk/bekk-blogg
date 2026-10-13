@@ -13,7 +13,7 @@ import { RelatedLinks } from './RelatedLinks'
 import { components } from '~/portable-text/Components'
 import PodcastBlock from '~/portable-text/PodcastBlock'
 import VimeoBlock from '~/portable-text/VimeoBlock'
-import { action } from '~/routes/post.$year.$date.$slug'
+import type { action } from '~/routes/post.$year.$date.$slug'
 import Series, { shouldShowSeries } from './Series'
 
 type ArticleProps = {

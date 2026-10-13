@@ -1,8 +1,8 @@
 import Countdown, { CountdownRendererFn } from 'react-countdown'
+import { Link } from 'react-router'
 
 import { PostPreview } from '../post-preview/PostPreview'
 
-import { Link } from 'lucide-react'
 import { useHydrated } from '~/hooks/useHydrated'
 import { TeaserPageFooter } from './TeaserPageFooter'
 
@@ -42,16 +42,22 @@ const NumberWithLabel = ({ number, label }: { number: number; label: string }) =
   </div>
 )
 
-export const TeaserPage = () => {
+type TeaserPageProps = {
+  /** Når årets kalender starter, som ISO-tidspunkt */
+  launchDate: string
+  /** Fjorårets kalender, som teaseren lenker til mens man venter */
+  previousYear: number
+}
+
+export const TeaserPage = ({ launchDate, previousYear }: TeaserPageProps) => {
   const isClientSide = useHydrated()
-  const launchDate = new Date(new Date().getFullYear(), 11, 1, 0, 0, 0, 0) // Første desember kl 00:00:00
 
   return (
     <div className="flex flex-col justify-between items-center">
       <div className="w-full flex flex-col items-center sm:max-w-4xl flex-grow justify-center mt-6">
-        {isClientSide && <Countdown date={`${new Date().getFullYear()}/12/01`} renderer={CountdownRenderer} />}
+        {isClientSide && <Countdown date={launchDate} renderer={CountdownRenderer} />}
         <div className="mb-12 lg:mb-0">
-          <Link to={`post/${new Date() > launchDate ? '2025' : '2024'}`}>
+          <Link to={`/post/${previousYear}`}>
             <PostPreview
               title="bekk.christmas"
               authors={['Bekk']}

@@ -15,14 +15,15 @@ import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { writeClient } from 'utils/sanity/sanity.server'
 import { z } from 'zod'
 
-import { loadQuery, setServerClient } from 'utils/sanity/loader.server'
+import { loadQuery } from 'utils/sanity/loader.server'
 import { POST_BY_SLUG } from 'utils/sanity/queries/postQueries'
-import { Post, POST_BY_SLUG_RESULT } from 'utils/sanity/types/sanity.types'
+import { POST_BY_SLUG_RESULT } from 'utils/sanity/types/sanity.types'
 import { toPlainText, urlFor } from 'utils/sanity/utils'
 import { ErrorPage } from '../features/error-boundary/ErrorPage'
 
 import '../portable-text/prism-theme.css'
 
+import { getDoorDate, getOsloDate, isDoorOpen, parseIsoDate } from 'utils/calendar'
 import { useQuery } from 'utils/sanity/loader'
 import { Spinner } from '~/components/Spinner'
 import { Article } from '~/features/article/Article'
@@ -37,7 +38,10 @@ export const meta: MetaFunction<typeof loader> = ({ loaderData: data }) => {
     return []
   }
 
-  const availableFrom = post.availableFrom ? new Date(post.availableFrom) : undefined
+  const { year, day } = parseIsoDate(post.availableFrom ?? '')
+  const postUrl = `https://www.bekk.christmas/post/${year}/${String(day).padStart(2, '0')}/${post.slug?.current}`
+  // Peker på originalen hvis innlegget er publisert et annet sted først
+  const canonicalUrl = post.canonicalUrl ?? postUrl
   const title = cleanControlCharacters(post.title ?? 'Innlegg')
   const description = cleanControlCharacters(post.previewText ?? toPlainText(post.description))
   const authors = cleanControlCharacters(
@@ -61,7 +65,7 @@ export const meta: MetaFunction<typeof loader> = ({ loaderData: data }) => {
     {
       tagName: 'link',
       rel: 'canonical',
-      href: `https://bekk.christmas/post/${availableFrom?.getFullYear()}/${availableFrom?.getDate().toString().padStart(2, '0')}/${post.slug?.current}`,
+      href: canonicalUrl,
     },
   ]
 
@@ -73,11 +77,8 @@ export const meta: MetaFunction<typeof loader> = ({ loaderData: data }) => {
     meta.push({ name: 'twitter:image', content: 'https://www.bekk.christmas/og-image.jpg' })
   }
 
-  if (availableFrom) {
-    meta.push({
-      property: 'og:url',
-      content: `https://bekk.christmas/post/${availableFrom.getFullYear()}/${availableFrom.getDate().toString().padStart(2, '0')}/${post.slug?.current}`,
-    })
+  if (post.availableFrom) {
+    meta.push({ property: 'og:url', content: postUrl })
   }
 
   return meta
@@ -105,17 +106,13 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     return redirect(`/post/${year}/${date.padStart(2, '0')}/${encodeURIComponent(slug)}`, { status: 301 })
   }
 
-  const decodedSlug = decodeURIComponent(slug)
+  // Parametrene er allerede dekodet av React Router
+  const decodedSlug = slug
 
   const { options, preview } = await loadQueryOptions(request.headers)
-  if (options) {
-    setServerClient(options)
-  }
-  const initial = await loadQuery<POST_BY_SLUG_RESULT>(POST_BY_SLUG, { slug: decodedSlug }, options)
+  const queryParams = { slug: decodedSlug, today: getOsloDate() }
+  const initial = await loadQuery<POST_BY_SLUG_RESULT>(POST_BY_SLUG, queryParams, options)
 
-  const formatDate = `${year}-12-${date.padStart(2, '0')}`
-  const currentDate = new Date(new Date().getTime() + 1000 * 60 * 60)
-  const targetDate = new Date(formatDate)
   const yearNumber = Number(year)
   const dateNumber = Number(date)
 
@@ -128,7 +125,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     })
   }
 
-  if (!preview && currentDate < targetDate) {
+  if (!preview && !isDoorOpen(year, date, getOsloDate())) {
     throw new Response('Date not yet available', {
       status: 425,
       headers: {
@@ -144,7 +141,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       },
     })
   }
-  if (!preview && initial.data.availableFrom !== formatDate) {
+  if (!preview && initial.data.availableFrom !== getDoorDate(year, date)) {
     throw new Response('Post date and date in url do not match', {
       status: 404,
       headers: {
@@ -161,7 +158,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     {
       initial,
       query: POST_BY_SLUG,
-      params: parsedParams.data,
+      params: queryParams,
       imageUrl,
     },
     {
@@ -191,13 +188,22 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const { id } = formData.data
 
   try {
-    const doc = await writeClient.getDocument<Post>(id)
-    const initialPoints = doc?.points ?? 0
+    // Kun publiserte poster som har åpnet kan få poeng – ikke utkast eller andre dokumenter
+    const post = await writeClient.fetch<{ _id: string } | null>(
+      `*[_type == "post" && _id == $id && availableFrom <= $today][0]{ _id }`,
+      { id, today: getOsloDate() },
+      { perspective: 'published' }
+    )
+    if (!post) {
+      return { status: 'error', error: 'Fant ikke innlegget' } as const
+    }
+    // `inc` er atomisk, så samtidige likes overskriver ikke hverandre
     const { points } = await writeClient
-      .patch(id)
-      .set({ points: initialPoints + 1 })
+      .patch(post._id)
+      .setIfMissing({ points: 0 })
+      .inc({ points: 1 })
       .commit<{ points: number }>()
-    console.info(`Registered a point for post ${id}, now totalling ${points} points`)
+    console.info('Registered a point for post', id, 'now totalling', points)
     return { status: 'success', points } as const
   } catch {
     console.error('Something went wrong while increasing points for post ', id)

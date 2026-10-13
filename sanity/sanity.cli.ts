@@ -3,13 +3,13 @@ import {defineCliConfig} from 'sanity/cli'
 export default defineCliConfig({
   api: {
     projectId: 'ah2n1vfr',
-    dataset: process.env.SANITY_STUDIO_DATASET ?? 'bekk-blogg',
+    dataset: process.env.SANITY_STUDIO_DATASET ?? 'bekk-blogg-prod',
   },
   /**
-   * Enable auto-updates for studios.
-   * Learn more at https://www.sanity.io/docs/cli#auto-updates
+   * Auto-oppdateringer er skrudd av, så Studio ikke bytter versjon av seg selv
+   * (f.eks. midt i desember). Versjonen styres av package.json.
    */
-  deployment: {autoUpdates: true},
+  deployment: {autoUpdates: false},
   typegen: {
     path: '../web/utils/sanity/queries/*.ts',
     schema: 'schema.json',

@@ -2,7 +2,7 @@ import { Files, Heart } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { trackEvent } from 'utils/analytics'
 
-import { action } from '~/routes/post.$year.$date.$slug'
+import type { action } from '~/routes/post.$year.$date.$slug'
 import { useFetcher } from 'react-router'
 
 type LikeContentProps = {

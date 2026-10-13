@@ -1,13 +1,32 @@
-import { ClientConfig } from '@sanity/client'
 import { queryStore } from './loader'
 import { readClient } from './sanity.server'
 
-queryStore.setServerClient(
-  readClient.withConfig({ stega: { enabled: true, studioUrl: process.env.SANITY_STUDIO_URL } })
-)
+type LoadQueryOptions = NonNullable<Parameters<typeof queryStore.loadQuery>[2]>
 
-export const setServerClient = (config: Partial<ClientConfig>) => {
-  queryStore.setServerClient(readClient.withConfig(config))
+/**
+ * Standardvalg for offentlige sider: kun publisert innhold, via CDN, uten stega.
+ * Preview-valgene hentes fra `loadQueryOptions` og sendes eksplisitt inn.
+ */
+export const publishedQueryOptions: LoadQueryOptions = {
+  perspective: 'published',
+  useCdn: true,
+  stega: false,
 }
 
-export const { loadQuery } = queryStore
+// Serverklienten settes én gang. Den skal aldri endres per request, siden den deles
+// mellom alle requests på samme serverinstans. Stega er av som standard, men studioUrl
+// må ligge her for at preview skal kunne slå det på per kall.
+queryStore.setServerClient(
+  readClient.withConfig({
+    perspective: 'published',
+    stega: { enabled: false, studioUrl: process.env.SANITY_STUDIO_URL },
+  })
+)
+
+export function loadQuery<QueryResponseResult>(
+  query: string,
+  params: Parameters<typeof queryStore.loadQuery>[1] = {},
+  options: LoadQueryOptions = publishedQueryOptions
+) {
+  return queryStore.loadQuery<QueryResponseResult>(query, params, options)
+}
