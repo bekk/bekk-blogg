@@ -33,7 +33,6 @@ const POST_PREVIEW_PROJECTION = groq`{
   podcastLength,
   type,
 }`
-export const ALL_POSTS = groq`*[_type == "post"]`
 const POST_PROJECTION = groq`{
   _id,
   _type,

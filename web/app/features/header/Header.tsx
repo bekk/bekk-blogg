@@ -25,24 +25,30 @@ export const Header = () => {
       </div>
 
       {expandedHeader && (
-        <ol className="scrollbar-none flex overflow-x-auto mt-4 md:mt-0">
-          {breadcrumbs.map((breadcrumb, index) => {
-            const isLast = index === breadcrumbs.length - 1
+        <nav aria-label="Brødsmuler">
+          <ol className="scrollbar-none flex overflow-x-auto mt-4 md:mt-0">
+            {breadcrumbs.map((breadcrumb, index) => {
+              const isLast = index === breadcrumbs.length - 1
 
-            return (
-              <li key={index} className="flex-none min-w-0 flex items-center whitespace-nowrap" aria-label="Brødsmuler">
-                <Link
-                  to={`${breadcrumb.href}`}
-                  className={`text-red-berry ${isLast ? 'truncate' : ''}`}
-                  aria-current={isLast ? 'page' : undefined}
-                >
-                  {breadcrumb.title}
-                </Link>
-                {!isLast && <p className={`shrink-0 px-2 text-red-berry`}>/</p>}
-              </li>
-            )
-          })}
-        </ol>
+              return (
+                <li key={index} className="flex-none min-w-0 flex items-center whitespace-nowrap">
+                  <Link
+                    to={`${breadcrumb.href}`}
+                    className={`text-red-berry ${isLast ? 'truncate' : ''}`}
+                    aria-current={isLast ? 'page' : undefined}
+                  >
+                    {breadcrumb.title}
+                  </Link>
+                  {!isLast && (
+                    <span aria-hidden="true" className={`shrink-0 px-2 text-red-berry`}>
+                      /
+                    </span>
+                  )}
+                </li>
+              )
+            })}
+          </ol>
+        </nav>
       )}
     </div>
   )

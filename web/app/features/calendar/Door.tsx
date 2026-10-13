@@ -51,13 +51,6 @@ export const Door = ({ date, year, today }: DoorProps) => {
     }
   }
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if ((e.key === 'Enter' || e.key === ' ') && !isOpenable) {
-      e.preventDefault()
-      setIsShaking(true)
-      setTimeout(() => setIsShaking(false), 500)
-    }
-  }
   if (isOpenable) {
     return (
       <Link
@@ -80,27 +73,19 @@ export const Door = ({ date, year, today }: DoorProps) => {
   }
 
   return (
-    <Link
-      to={'#'}
-      key={date}
+    <button
+      type="button"
       className="flex justify-center items-center"
       aria-label={`Luke ${date} er lukket`}
       aria-disabled="true"
-      aria-hidden="true"
-      onKeyDown={handleKeyDown}
+      // En knapp håndterer Enter og mellomrom selv
+      onClick={handleClick}
     >
       <div className={`relative z-10`}>
-        <motion.div
-          onClick={handleClick}
-          animate={isShaking ? 'shaking' : ''}
-          variants={shakeAnimation}
-          initial={{ x: 0 }}
-          exit={{ x: 0 }}
-          aria-label={`Luke ${date}${isOpenable ? '' : ' er lukket'}`}
-        >
+        <motion.div animate={isShaking ? 'shaking' : ''} variants={shakeAnimation} initial={{ x: 0 }} exit={{ x: 0 }}>
           <ClosedDoorSvg date={date} {...doorSize} />
         </motion.div>
       </div>
-    </Link>
+    </button>
   )
 }
