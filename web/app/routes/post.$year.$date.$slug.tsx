@@ -23,7 +23,7 @@ import { ErrorPage } from '../features/error-boundary/ErrorPage'
 
 import '../portable-text/prism-theme.css'
 
-import { getDoorDate, getOsloDate, isDoorOpen } from 'utils/calendar'
+import { getDoorDate, getOsloDate, isDoorOpen, parseIsoDate } from 'utils/calendar'
 import { useQuery } from 'utils/sanity/loader'
 import { Spinner } from '~/components/Spinner'
 import { Article } from '~/features/article/Article'
@@ -38,7 +38,10 @@ export const meta: MetaFunction<typeof loader> = ({ loaderData: data }) => {
     return []
   }
 
-  const availableFrom = post.availableFrom ? new Date(post.availableFrom) : undefined
+  const { year, day } = parseIsoDate(post.availableFrom ?? '')
+  const postUrl = `https://www.bekk.christmas/post/${year}/${String(day).padStart(2, '0')}/${post.slug?.current}`
+  // Peker på originalen hvis innlegget er publisert et annet sted først
+  const canonicalUrl = post.canonicalUrl ?? postUrl
   const title = cleanControlCharacters(post.title ?? 'Innlegg')
   const description = cleanControlCharacters(post.previewText ?? toPlainText(post.description))
   const authors = cleanControlCharacters(
@@ -62,7 +65,7 @@ export const meta: MetaFunction<typeof loader> = ({ loaderData: data }) => {
     {
       tagName: 'link',
       rel: 'canonical',
-      href: `https://bekk.christmas/post/${availableFrom?.getFullYear()}/${availableFrom?.getDate().toString().padStart(2, '0')}/${post.slug?.current}`,
+      href: canonicalUrl,
     },
   ]
 
@@ -74,11 +77,8 @@ export const meta: MetaFunction<typeof loader> = ({ loaderData: data }) => {
     meta.push({ name: 'twitter:image', content: 'https://www.bekk.christmas/og-image.jpg' })
   }
 
-  if (availableFrom) {
-    meta.push({
-      property: 'og:url',
-      content: `https://bekk.christmas/post/${availableFrom.getFullYear()}/${availableFrom.getDate().toString().padStart(2, '0')}/${post.slug?.current}`,
-    })
+  if (post.availableFrom) {
+    meta.push({ property: 'og:url', content: postUrl })
   }
 
   return meta
@@ -106,7 +106,8 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     return redirect(`/post/${year}/${date.padStart(2, '0')}/${encodeURIComponent(slug)}`, { status: 301 })
   }
 
-  const decodedSlug = decodeURIComponent(slug)
+  // Parametrene er allerede dekodet av React Router
+  const decodedSlug = slug
 
   const { options, preview } = await loadQueryOptions(request.headers)
   const queryParams = { slug: decodedSlug, today: getOsloDate() }

@@ -61,7 +61,6 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
           ? 'no-cache, no-store'
           : // Maks 1 time i nettleser og 2 timer i CDN (men aldri forbi midnatt), 1 måned stale-while-revalidate og stale-if-error
             `public, max-age=${maxAge}, s-maxage=${sMaxAge}, stale-while-revalidate=2592000, stale-if-error=2592000`,
-        Vary: 'X-Sanity-Preview',
         'X-Sanity-Preview': preview ? 'true' : 'false',
       },
     }
@@ -125,7 +124,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const matches = useMatches()
   const { pathname } = useLocation()
 
-  type PotentialPostData = { initial: { data: { language?: string; canonicalUrl?: string } } } | undefined
+  type PotentialPostData = { initial: { data: { language?: string } } } | undefined
   const postData = (
     matches.find((match) => match.id === 'routes/post.$year.$date.$slug')?.loaderData as PotentialPostData
   )?.initial?.data
@@ -139,14 +138,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
-        {postData?.canonicalUrl && <link rel="canonical" href={postData.canonicalUrl} />}
         <link rel="alternate" type="application/rss+xml" title="Bekk Christmas RSS Feed" href="/rss.xml" />
         <script defer data-domain="bekk.christmas" src="https://plausible.io/js/plausible.js" />
       </head>
       <body>
         <JumpToContent />
         <div className="min-h-screen bg-soft-pink flex flex-col">
-          <Scripts />
           {!hideHeader ? (
             <header>
               <Header />
