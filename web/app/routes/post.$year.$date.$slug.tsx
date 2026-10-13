@@ -203,7 +203,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       .setIfMissing({ points: 0 })
       .inc({ points: 1 })
       .commit<{ points: number }>()
-    console.info(`Registered a point for post ${id}, now totalling ${points} points`)
+    console.info('Registered a point for post', id, 'now totalling', points)
     return { status: 'success', points } as const
   } catch {
     console.error('Something went wrong while increasing points for post ', id)

@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
       { id, today: getOsloDate() }
     );
   } catch (error) {
-    console.error(`Could not fetch post ${id} from Sanity:`, error);
+    console.error("Could not fetch post from Sanity:", id, error);
     return new Response("Error fetching post", { status: 500 });
   }
 
@@ -90,7 +90,7 @@ export async function GET(request: NextRequest) {
             controller.close();
             return;
           }
-          console.error(`TTS generation failed for post ${id}:`, error);
+          console.error("TTS generation failed for post:", id, error);
           controller.error(error);
         }
       },
