@@ -13,6 +13,9 @@ export const EMBED_FRAME_HOSTS = [
   'embed.ted.com',
   'anchor.fm',
   '*.spotify.com',
+  // Twitter/X-innbygginger rendres i en iframe fra platform.twitter.com
+  'platform.twitter.com',
+  'syndication.twitter.com',
 ]
 
 export function isAllowedEmbedHost(hostname: string) {
@@ -21,6 +24,13 @@ export function isAllowedEmbedHost(hostname: string) {
   )
 }
 
+// Om CSP-en:
+// - `unsafe-eval` trengs fordi @opengraphninja/react (lenkeforhåndsvisninger) har en
+//   gammel regenerator-runtime som kaller `Function(...)`. Uten den kaster alle
+//   artikkelsider en feil. Kan fjernes når den avhengigheten er byttet ut.
+// - `unsafe-inline` trengs for React Router sine inline-skript. Nonce hjelper lite så
+//   lenge HTML-en caches i CDN-en, siden samme nonce da gjenbrukes.
+// - `img-src *` trengs fordi lenkeforhåndsvisninger viser bilder fra vilkårlige nettsteder.
 export function generateSecurityHeaders() {
   const csp = getCSP({
     directives: {
@@ -89,6 +99,5 @@ export function generateSecurityHeaders() {
       'payment=()',
       'usb=()',
     ].join(', '),
-    'X-XSS-Protection': '1; mode=block',
   }
 }
