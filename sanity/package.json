@@ -30,7 +30,6 @@
     "react-youtube": "10.1.0",
     "sanity": "6.13.2",
     "sanity-plugin-documents-pane": "4.1.19",
-    "sanity-plugin-iframe-pane": "5.0.35",
     "sanity-plugin-media": "6.1.8",
     "slugify": "1.6.9",
     "styled-components": "6.5.3"
