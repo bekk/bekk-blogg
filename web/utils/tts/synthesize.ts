@@ -16,9 +16,9 @@ export type PreferredVoice = 'onyx' | 'nova' | 'shimmer' | 'none'
 
 const TTS_INSTRUCTIONS: Record<ArticleLanguage, string> = {
   'nb-NO':
-    'Teksten er skrevet på norsk bokmål. Les den høyt på naturlig norsk, med norsk uttale. Bruk et rolig, engasjert og tydelig tempo, slik man leser en fagartikkel høyt. Engelske fagbegreper og kodenavn uttales på engelsk.',
+    'Teksten er skrevet på norsk bokmål. Les den høyt slik en innfødt nordmann fra Østlandet ville gjort, med norsk uttale, norske vokaler og norsk satsmelodi. Unngå amerikansk eller engelsk aksent. Bruk et rolig, engasjert og tydelig tempo, slik man leser en fagartikkel høyt. Bare engelske fagbegreper og kodenavn uttales på engelsk.',
   'nn-NO':
-    'Teksten er skriven på nynorsk. Les han høgt på naturleg norsk, med norsk uttale. Bruk eit roleg, engasjert og tydeleg tempo, slik ein les ein fagartikkel høgt. Engelske faguttrykk og kodenamn blir uttalte på engelsk.',
+    'Teksten er skriven på nynorsk. Les han høgt slik ein innfødd nordmann ville gjort, med norsk uttale, norske vokalar og norsk setningsmelodi. Unngå amerikansk eller engelsk aksent. Bruk eit roleg, engasjert og tydeleg tempo, slik ein les ein fagartikkel høgt. Berre engelske faguttrykk og kodenamn blir uttalte på engelsk.',
   'en-US':
     'The text is written in English. Read it aloud in natural, clear English. Use a calm, engaged and steady pace, like reading a technical article aloud.',
 }
