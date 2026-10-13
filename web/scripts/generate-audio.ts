@@ -5,7 +5,7 @@
  * må genereres og hva det omtrent vil koste. Artikler der teksten er uendret siden
  * forrige generering hoppes over, så skriptet kan stoppes og startes på nytt.
  *
- *   npm run audio:generate                        # tørrkjøring for alt fra 2025
+ *   npm run audio:generate                        # tørrkjøring for alt fra 2024
  *   npm run audio:generate -- --execute --limit 5 # generer de fem første
  *   npm run audio:generate -- --only <post-id> --out-dir ./tmp-audio  # til lokal fil, uten Sanity
  *
