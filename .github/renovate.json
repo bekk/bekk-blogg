@@ -1,37 +1,64 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
+  "extends": [
+    "config:recommended"
+  ],
   "timezone": "Europe/Oslo",
-  "schedule": ["before 6am on monday"],
-  "labels": ["avhengigheter"],
+  "schedule": [
+    "before 6am on monday"
+  ],
+  "labels": [
+    "avhengigheter"
+  ],
   "prConcurrentLimit": 5,
   "rangeStrategy": "pin",
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": ["before 6am on monday"]
+    "schedule": [
+      "before 6am on monday"
+    ]
   },
   "packageRules": [
     {
       "description": "Én samle-PR per prosjekt for patch og minor.",
-      "matchFileNames": ["web/package.json"],
-      "matchUpdateTypes": ["patch", "minor"],
+      "matchFileNames": [
+        "web/package.json"
+      ],
+      "matchUpdateTypes": [
+        "patch",
+        "minor"
+      ],
       "groupName": "web (patch/minor)"
     },
     {
-      "matchFileNames": ["sanity/package.json"],
-      "matchUpdateTypes": ["patch", "minor"],
+      "matchFileNames": [
+        "sanity/package.json"
+      ],
+      "matchUpdateTypes": [
+        "patch",
+        "minor"
+      ],
       "groupName": "sanity (patch/minor)"
     },
     {
-      "matchFileNames": ["tts/package.json"],
-      "matchUpdateTypes": ["patch", "minor"],
+      "matchFileNames": [
+        "tts/package.json"
+      ],
+      "matchUpdateTypes": [
+        "patch",
+        "minor"
+      ],
       "groupName": "tts (patch/minor)"
     },
     {
       "description": "Majors får alltid egen PR, aldri automerge.",
-      "matchUpdateTypes": ["major"],
+      "matchUpdateTypes": [
+        "major"
+      ],
       "automerge": false,
-      "addLabels": ["major"]
+      "addLabels": [
+        "major"
+      ]
     },
     {
       "description": "React og react-dom må følges ad.",
@@ -45,29 +72,48 @@
     },
     {
       "description": "React Router-pakkene må følges ad.",
-      "matchPackageNames": ["react-router", "@react-router/**"],
+      "matchPackageNames": [
+        "react-router",
+        "@react-router/**"
+      ],
       "groupName": "react-router"
     },
     {
+      "description": "@vercel/react-router peer-er React Router 7, men tvinges over på RR8 med en override i web/package.json. Når Vercel slipper en versjon med RR8-støtte, må overriden fjernes manuelt.",
+      "matchPackageNames": [
+        "@vercel/react-router"
+      ],
+      "automerge": false,
+      "addLabels": [
+        "sjekk-override"
+      ]
+    },
+    {
       "description": "Blokkert: sanity-algolia avhenger av algoliasearch ^4.",
-      "matchPackageNames": ["algoliasearch"],
+      "matchPackageNames": [
+        "algoliasearch"
+      ],
       "allowedVersions": "<5"
     },
     {
-      "description": "Blokkert: @vercel/react-router støtter kun React Router 7.",
-      "matchPackageNames": ["react-router", "@react-router/**"],
-      "allowedVersions": "<8"
-    },
-    {
       "description": "Blokkert: typescript-eslint peer-er typescript <6.1.",
-      "matchPackageNames": ["typescript"],
-      "matchFileNames": ["web/package.json"],
+      "matchPackageNames": [
+        "typescript"
+      ],
+      "matchFileNames": [
+        "web/package.json"
+      ],
       "allowedVersions": "<7"
     },
     {
       "description": "Blokkert i web: eslint 10 knekker eslint-plugin-react.",
-      "matchPackageNames": ["eslint", "@eslint/js"],
-      "matchFileNames": ["web/package.json"],
+      "matchPackageNames": [
+        "eslint",
+        "@eslint/js"
+      ],
+      "matchFileNames": [
+        "web/package.json"
+      ],
       "allowedVersions": "<10"
     }
   ]
