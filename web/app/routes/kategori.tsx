@@ -3,15 +3,20 @@ import { useState } from 'react'
 import { motion } from 'motion/react'
 import { loadQuery } from 'utils/sanity/loader.server'
 import { ALL_CATEGORIES } from '../../utils/sanity/queries/postQueries'
-import { Tag } from '../../utils/sanity/types/sanity.types'
+import { ALL_CATEGORIES_RESULT, Tag } from '../../utils/sanity/types/sanity.types'
 
 import { Spinner } from '~/components/Spinner'
 import { ErrorPage } from '~/features/error-boundary/ErrorPage'
 
 export async function loader() {
   try {
-    const { data } = await loadQuery<Tag[]>(ALL_CATEGORIES)
-    return data
+    const { data } = await loadQuery<ALL_CATEGORIES_RESULT>(ALL_CATEGORIES)
+    const postsPerTag = new Map<string, number>()
+    for (const ref of data.tagRefs) {
+      if (ref) postsPerTag.set(ref, (postsPerTag.get(ref) ?? 0) + 1)
+    }
+    // Bare kategorier med mer enn ett innlegg
+    return data.tags.filter((tag) => (postsPerTag.get(tag._id) ?? 0) > 1)
   } catch (error) {
     console.error(error)
     // Return an error response for the client

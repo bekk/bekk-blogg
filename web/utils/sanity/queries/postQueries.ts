@@ -132,10 +132,12 @@ export const POST_BY_SLUG = defineQuery(`*[_type == "post" && slug.current == $s
 export const POSTS_BY_YEAR_AND_DATE = defineQuery(
   `*[_type == "post" && availableFrom == $date && (length(string::split(pt::text(content), ' ')) > 0 || podcastLength != null)] | order(priority desc) ${POST_PREVIEW_PROJECTION}`
 )
-export const ALL_CATEGORIES = defineQuery(`*[
-  _type == "tag" &&
-  count(*[_type == "post" && references(^._id)]) > 1
-] | order(name asc)`)
+// Henter alle tag-referanser én gang i stedet for å telle per kategori, som tok
+// over tre sekunder. Antallet filtreres i loaderen.
+export const ALL_CATEGORIES = defineQuery(`{
+  "tags": *[_type == "tag"] | order(name asc),
+  "tagRefs": *[_type == "post" && defined(tags)].tags[]._ref
+}`)
 export const TAG_WITH_POSTS_QUERY = defineQuery(`{
   "posts": *[
     _type == "post" && 

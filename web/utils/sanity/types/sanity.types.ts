@@ -529,59 +529,6 @@ export type POST_PREVIEW_PROJECTION_RESULT = {
 }
 
 // Source: ../web/utils/sanity/queries/postQueries.ts
-// Variable: ALL_POSTS
-// Query: *[_type == "post"]
-export type ALL_POSTS_RESULT = Array<{
-  _id: string
-  _type: 'post'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  type: 'article' | 'podcast' | 'video'
-  title: string
-  slug: Slug
-  language: 'en-US' | 'nb-NO' | 'nn-NO'
-  embedUrl?: string
-  podcastLength?: number
-  description?: DescriptionText
-  previewText?: string
-  content: PortableText
-  coverImage?: {
-    asset?: SanityImageAssetReference
-    media?: unknown
-    hotspot?: SanityImageHotspot
-    crop?: SanityImageCrop
-    alt?: string
-    src?: string
-    hideFromPost?: boolean
-    _type: 'image'
-  }
-  authors: Array<
-    {
-      _key: string
-    } & AuthorReference
-  >
-  tags?: Array<
-    {
-      _key: string
-    } & TagReference
-  >
-  series?: SeriesReference
-  keywords?: Array<string>
-  relatedLinks?: Array<{
-    title?: string
-    description?: string
-    url?: string
-    _type: 'relatedLink'
-    _key: string
-  }>
-  canonicalUrl?: string
-  availableFrom: string
-  priority?: number
-  points?: number
-}>
-
-// Source: ../web/utils/sanity/queries/postQueries.ts
 // Variable: POST_PROJECTION
 // Query: {  _id,  _type,  _createdAt,  _updatedAt,  _rev,  type,  language,  embedUrl,  podcastLength,  title,  slug,  canonicalUrl,  description,  previewText,  availableFrom,  keywords,  points,  "wordCount": length(string::split(pt::text(content), ' ')),  content[] {    ...,    _type == 'imageWithMetadata' => {      ...,      asset->{        _id,        url,        metadata {          dimensions {            aspectRatio,            width,            height          }        }      }    }  },  priority,    authors[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    fullName,    slug,    companyName,    profilePicture,    socialMediaLinks  },    coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  tags[]->{    _id,    slug,    name  },  relatedLinks,  series->{    _id,     title,     description,    slug,    shouldListNonPublishedContent,    // Uåpnede poster tas bare med hvis serien skal vise dem, og aldri med slug    "posts": *[      _type == "post" &&      references(^._id) &&      (availableFrom <= $today || ^.shouldListNonPublishedContent == true)    ] | order(availableFrom asc) {      _id,      title,      availableFrom,      "slug": select(availableFrom <= $today => slug),      "isAvailable": availableFrom <= $today    }  }}
 export type POST_PROJECTION_RESULT = {
@@ -874,17 +821,20 @@ export type POSTS_BY_YEAR_AND_DATE_RESULT = Array<{
 
 // Source: ../web/utils/sanity/queries/postQueries.ts
 // Variable: ALL_CATEGORIES
-// Query: *[  _type == "tag" &&  count(*[_type == "post" && references(^._id)]) > 1] | order(name asc)
-export type ALL_CATEGORIES_RESULT = Array<{
-  _id: string
-  _type: 'tag'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  name: string
-  slug: string
-  synonyms?: Array<string>
-}>
+// Query: {  "tags": *[_type == "tag"] | order(name asc),  "tagRefs": *[_type == "post" && defined(tags)].tags[]._ref}
+export type ALL_CATEGORIES_RESULT = {
+  tags: Array<{
+    _id: string
+    _type: 'tag'
+    _createdAt: string
+    _updatedAt: string
+    _rev: string
+    name: string
+    slug: string
+    synonyms?: Array<string>
+  }>
+  tagRefs: Array<string>
+}
 
 // Source: ../web/utils/sanity/queries/postQueries.ts
 // Variable: TAG_WITH_POSTS_QUERY
@@ -1025,12 +975,11 @@ declare global {
   interface SanityQueries {
     '{\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n}': COVER_IMAGE_WITH_METADATA_PROJECTION_RESULT
     '{\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n  type,\n}': POST_PREVIEW_PROJECTION_RESULT
-    '*[_type == "post"]': ALL_POSTS_RESULT
     '{\n  _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  title,\n  slug,\n  canonicalUrl,\n  description,\n  previewText,\n  availableFrom,\n  keywords,\n  points,\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  content[] {\n    ...,\n    _type == \'imageWithMetadata\' => {\n      ...,\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions {\n            aspectRatio,\n            width,\n            height\n          }\n        }\n      }\n    }\n  },\n  priority,\n  \n  authors[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    fullName,\n    slug,\n    companyName,\n    profilePicture,\n    socialMediaLinks\n  },\n  \n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n\n  tags[]->{\n    _id,\n    slug,\n    name\n  },\n  relatedLinks,\n  series->{\n    _id, \n    title, \n    description,\n    slug,\n    shouldListNonPublishedContent,\n    // U\xE5pnede poster tas bare med hvis serien skal vise dem, og aldri med slug\n    "posts": *[\n      _type == "post" &&\n      references(^._id) &&\n      (availableFrom <= $today || ^.shouldListNonPublishedContent == true)\n    ] | order(availableFrom asc) {\n      _id,\n      title,\n      availableFrom,\n      "slug": select(availableFrom <= $today => slug),\n      "isAvailable": availableFrom <= $today\n    }\n  }\n}': POST_PROJECTION_RESULT
     '{\n  _id,\n  _type,\n  _rev,\n  "objectID": _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n}': POST_SEARCH_PROJECTION_RESULT
     '*[_type == "post" && slug.current == $slug][0]{\n  _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  title,\n  slug,\n  canonicalUrl,\n  description,\n  previewText,\n  availableFrom,\n  keywords,\n  points,\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  content[] {\n    ...,\n    _type == \'imageWithMetadata\' => {\n      ...,\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions {\n            aspectRatio,\n            width,\n            height\n          }\n        }\n      }\n    }\n  },\n  priority,\n  \n  authors[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    fullName,\n    slug,\n    companyName,\n    profilePicture,\n    socialMediaLinks\n  },\n  \n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n\n  tags[]->{\n    _id,\n    slug,\n    name\n  },\n  relatedLinks,\n  series->{\n    _id, \n    title, \n    description,\n    slug,\n    shouldListNonPublishedContent,\n    // U\xE5pnede poster tas bare med hvis serien skal vise dem, og aldri med slug\n    "posts": *[\n      _type == "post" &&\n      references(^._id) &&\n      (availableFrom <= $today || ^.shouldListNonPublishedContent == true)\n    ] | order(availableFrom asc) {\n      _id,\n      title,\n      availableFrom,\n      "slug": select(availableFrom <= $today => slug),\n      "isAvailable": availableFrom <= $today\n    }\n  }\n}': POST_BY_SLUG_RESULT
     '*[_type == "post" && availableFrom == $date && (length(string::split(pt::text(content), \' \')) > 0 || podcastLength != null)] | order(priority desc) {\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n  type,\n}': POSTS_BY_YEAR_AND_DATE_RESULT
-    '*[\n  _type == "tag" &&\n  count(*[_type == "post" && references(^._id)]) > 1\n] | order(name asc)': ALL_CATEGORIES_RESULT
+    '{\n  "tags": *[_type == "tag"] | order(name asc),\n  "tagRefs": *[_type == "post" && defined(tags)].tags[]._ref\n}': ALL_CATEGORIES_RESULT
     '{\n  "posts": *[\n    _type == "post" && \n    $t in tags[]->.slug &&\n    availableFrom <= $today\n  ] | order(availableFrom desc)[$start...$end] {\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n  type,\n},\n  "totalCount": count(*[\n    _type == "post" && \n    $t in tags[]->.slug &&\n    availableFrom <= $today\n  ]),\n  "tag": *[_type == "tag" && slug == $t][0] {\n    name,\n    slug\n  }\n}': TAG_WITH_POSTS_QUERY_RESULT
     '{\n  "posts": *[\n    _type == "post" && \n    $slug in authors[]->slug.current && \n    availableFrom <= $today\n  ] | order(availableFrom desc)[$start...$end] {\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n  type,\n},\n  "totalCount": count(*[\n    _type == "post" && \n    $slug in authors[]->slug.current && \n    availableFrom <= $today\n  ]),\n  "author": *[_type == "author" && slug.current == $slug][0] {\n    fullName,\n    description,\n    image,\n    slug,\n    companyName,\n    socialMediaLinks\n  }\n}': AUTHOR_WITH_POSTS_QUERY_RESULT
     '*[\n  _type == "post" && \n  availableFrom <= $today\n] | order(availableFrom desc)[0...250] {\n  _id,\n  title,\n  "slug": slug.current,\n  language,\n  "description": coalesce(previewText, pt::text(description)),\n  availableFrom,\n  "authors": authors[]->.fullName,\n  type,\n  "content": pt::text(content)\n}': RSS_FEED_QUERY_RESULT
