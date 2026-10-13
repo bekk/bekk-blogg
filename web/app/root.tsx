@@ -16,6 +16,7 @@ import {
   useLocation,
 } from 'react-router'
 import { getLatestCalendarYear, getOsloDate, getSecondsUntilOsloMidnight } from 'utils/calendar'
+import { getSecuredSearchKey } from 'utils/algolia.server'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
 import { ErrorPage } from './features/error-boundary/ErrorPage'
@@ -36,6 +37,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   const secondsUntilMidnight = getSecondsUntilOsloMidnight(now)
   const maxAge = Math.min(3600, secondsUntilMidnight)
   const sMaxAge = Math.min(7200, secondsUntilMidnight)
+  const { key: algoliaKey, availableUntilMillis } = getSecuredSearchKey(today)
   return data(
     {
       isPreview: preview,
@@ -48,8 +50,9 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
       },
       algolia: {
         app: process.env.ALGOLIA_APP_ID!,
-        key: process.env.ALGOLIA_SEARCH_KEY!,
+        key: algoliaKey,
         index: process.env.ALGOLIA_INDEX!,
+        availableUntilMillis,
       },
     },
     {

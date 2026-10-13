@@ -99,11 +99,16 @@ const POST_PROJECTION = groq`{
     description,
     slug,
     shouldListNonPublishedContent,
-    "posts": *[_type == "post" && references(^._id)] | order(availableFrom asc) {
+    // Uåpnede poster tas bare med hvis serien skal vise dem, og aldri med slug
+    "posts": *[
+      _type == "post" &&
+      references(^._id) &&
+      (availableFrom <= $today || ^.shouldListNonPublishedContent == true)
+    ] | order(availableFrom asc) {
       _id,
       title,
       availableFrom,
-      slug,
+      "slug": select(availableFrom <= $today => slug),
       "isAvailable": availableFrom <= $today
     }
   }
