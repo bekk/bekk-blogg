@@ -133,29 +133,58 @@ export async function mapWithConcurrency<T, R>(
 }
 
 /**
+ * Prøver på nytt med økende ventetid. OpenAI-klienten prøver selv på nytt når
+ * forespørselen feiler, men ikke når forbindelsen brytes mens lyden lastes ned
+ * ("terminated"), så det håndteres her.
+ */
+export async function withRetries<T>(fn: () => Promise<T>, attempts = 3, delayMs = 2000): Promise<T> {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return await fn()
+    } catch (error) {
+      if (attempt >= attempts) {
+        throw error
+      }
+      await new Promise((resolve) => setTimeout(resolve, delayMs * 2 ** (attempt - 1)))
+    }
+  }
+}
+
+/**
  * Genererer hele opplesningen som én MP3. Bitene genereres parallelt og settes
  * sammen i riktig rekkefølge. Feiler én bit (etter klientens egne forsøk på
  * nytt), feiler hele opplesningen – vi lagrer aldri halve artikler.
  */
 export async function synthesize(
   openai: OpenAI,
-  { text, voice, language }: { text: string; voice: Voice; language: string | null | undefined }
+  {
+    text,
+    voice,
+    language,
+    retryDelayMs = 2000,
+  }: { text: string; voice: Voice; language: string | null | undefined; retryDelayMs?: number }
 ): Promise<Buffer> {
   const chunks = chunkText(text)
   if (chunks.length === 0) {
     throw new Error('Nothing to read aloud')
   }
   const instructions = getInstructions(language)
-  const parts = await mapWithConcurrency(chunks, TTS_CONCURRENCY, async (input) => {
-    const response = await openai.audio.speech.create({
-      model: TTS_MODEL,
-      voice,
-      input,
-      instructions,
-      response_format: 'mp3',
-    })
-    return Buffer.from(await response.arrayBuffer())
-  })
+  const parts = await mapWithConcurrency(chunks, TTS_CONCURRENCY, (input) =>
+    withRetries(
+      async () => {
+        const response = await openai.audio.speech.create({
+          model: TTS_MODEL,
+          voice,
+          input,
+          instructions,
+          response_format: 'mp3',
+        })
+        return Buffer.from(await response.arrayBuffer())
+      },
+      3,
+      retryDelayMs
+    )
+  )
   // MP3 består av selvstendige rammer, så filene kan settes sammen direkte
   return Buffer.concat(parts)
 }

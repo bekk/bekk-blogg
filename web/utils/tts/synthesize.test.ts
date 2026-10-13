@@ -2,7 +2,7 @@ import type OpenAI from 'openai'
 import { describe, expect, it } from 'vitest'
 
 import { getSourceHash, isAudioEligible } from './postAudio.server'
-import { chunkText, getSpokenText, mapWithConcurrency, synthesize } from './synthesize'
+import { chunkText, getSpokenText, mapWithConcurrency, synthesize, withRetries } from './synthesize'
 
 describe('getSpokenText', () => {
   it('fjerner usynlige tegn, men beholder avsnitt', () => {
@@ -92,7 +92,9 @@ describe('synthesize', () => {
       if (input.includes('Siste')) throw new Error('OpenAI er nede')
       return 'lyd'
     })
-    await expect(synthesize(openai, { text, voice: 'marin', language: 'nb-NO' })).rejects.toThrow('OpenAI er nede')
+    await expect(synthesize(openai, { text, voice: 'marin', language: 'nb-NO', retryDelayMs: 1 })).rejects.toThrow(
+      'OpenAI er nede'
+    )
   })
 })
 
@@ -132,5 +134,26 @@ describe('isAudioEligible', () => {
     expect(isAudioEligible('2024-12-24')).toBe(false)
     expect(isAudioEligible('2025-12-25')).toBe(false)
     expect(isAudioEligible(null)).toBe(false)
+  })
+})
+
+describe('withRetries', () => {
+  it('prøver på nytt til det lykkes', async () => {
+    let calls = 0
+    const result = await withRetries(
+      async () => {
+        calls++
+        if (calls < 3) throw new Error('terminated')
+        return 'ok'
+      },
+      3,
+      1
+    )
+    expect(result).toBe('ok')
+    expect(calls).toBe(3)
+  })
+
+  it('gir opp etter siste forsøk', async () => {
+    await expect(withRetries(async () => Promise.reject(new Error('terminated')), 2, 1)).rejects.toThrow('terminated')
   })
 })
