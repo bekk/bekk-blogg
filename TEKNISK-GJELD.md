@@ -31,7 +31,7 @@ Kartlagt 2026-10-12, og ryddet 2026-10-13 på branchen `teknisk-gjeld`.
 |---|---|---|
 | 6 | RSS lenket til `/[object Object]` og plukket 250 vilkårlige poster. Sitemapen lagde URL-er som ga 404. | ✅ |
 | 7 | Like-knappen mistet stemmer og kunne patche hvilket som helst dokument. | ✅ `inc()`, og bare publiserte, åpnede poster. Selve økningen er ikke testet lokalt, fordi `.env` peker på prod. |
-| 8 | Webhooken godtok signatur med tom nøkkel hvis hemmeligheten manglet. | ✅ Avviser alt når hemmeligheten mangler. 👤 Sjekk at `SANITY_WEBHOOK_SECRET` er satt i Vercel. |
+| 8 | Webhooken godtok signatur med tom nøkkel hvis hemmeligheten manglet. | ✅ Avviser alt når hemmeligheten mangler. Lagring og sletting er testet ende-til-ende mot dev-indeksen med en signert webhook. Mistanken i `AVHENGIGHETSANALYSE.md` om at lagring er en no-op, stemmer ikke. 👤 Sjekk at `SANITY_WEBHOOK_SECRET` er satt i Vercel. |
 | 9 | `/skjerm` svarte 301 utenfor desember, og brukte UTC. | ✅ 302 og norsk tid. |
 | 10 | TTS: 500 på alt i prod (`DOMException is not a constructor` på edge-runtimen med @sanity/client 8), utkast og uåpnede luker kunne leses opp, og feil ble ikke logget. | ✅ Kjører på Node.js. Verifisert på preview-deploy (MP3 tilbake, 404 for ukjent id og for utkast). |
 | 11 | Nyhetsbrev-endepunktet tok imot hva som helst. | ✅ Origin-sjekk, validering og double opt-in bak env-variabel. **Merk:** skjemaet ble fjernet i november 2025, så ingenting bruker endepunktet. 👤 Vurder å slette det. |
@@ -54,7 +54,7 @@ Kartlagt 2026-10-12, og ryddet 2026-10-13 på branchen `teknisk-gjeld`.
 | Bundle | ✅ `algoliasearch/lite` i klienten. ⏸️ Søket lazy-lastes ikke, siden søkefeltet er synlig på alle sider. Refractor-språkene lastes bare på artikkelsider. |
 | Queries | ✅ Kategorioversikten gikk fra ~3,5 s til ~0,5 s. ⏸️ Dagsspørringen bruker 30 ms og er ikke endret. |
 | Død kode, Studio v2-migreringer, ubrukt plugin | ✅ |
-| Valideringshull i schemaet | ✅ Lagt inn som advarsler, så eldre innhold fortsatt kan redigeres |
+| Valideringshull i schemaet | ✅ Podkastlengde, alt-tekst, slug-lengde og datoer utenfor lukene, som advarsler, så eldre innhold fortsatt kan redigeres. ⏸️ `tags` («Hovedkategori») er fortsatt verken påkrevd eller begrenset til én. |
 | A11y (lukkede luker, brødsmuler, `audio.play()`) | ✅ |
 | README, `vite-tsconfig-paths`, pakkenavn, `apiVersion` | ✅ |
 | **Nytt:** 89 iframe-innbygginger (CodePen, CodeSandbox, YouTube …) ble ikke vist | ✅ Vises nå |
