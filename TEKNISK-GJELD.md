@@ -35,7 +35,7 @@ Kartlagt 2026-10-12, og ryddet 2026-10-13 på branchen `teknisk-gjeld`.
 | 9 | `/skjerm` svarte 301 utenfor desember, og brukte UTC. | ✅ 302 og norsk tid. |
 | 10 | TTS: 500 på alt i prod (`DOMException is not a constructor` på edge-runtimen med @sanity/client 8), utkast og uåpnede luker kunne leses opp, og feil ble ikke logget. | ✅ Kjører på Node.js. Verifisert på preview-deploy (MP3 tilbake, 404 for ukjent id og for utkast). |
 | 11 | Nyhetsbrev-endepunktet tok imot hva som helst. | ✅ Origin-sjekk, validering og double opt-in bak env-variabel. **Merk:** skjemaet ble fjernet i november 2025, så ingenting bruker endepunktet. 👤 Vurder å slette det. |
-| 12 | Renovate sperret React Router 8, som allerede var tatt i bruk, og analysedokumentet var utdatert. | ✅ 👤 Renovate-appen ser ikke ut til å være installert. |
+| 12 | Renovate sperret React Router 8, som allerede var tatt i bruk, og analysedokumentet var utdatert. | ✅ Renovate er fjernet, siden det ikke trengs. Analysedokumentet er oppdatert. |
 | 13 | Studio auto-oppdaterte seg selv, og hadde ulike default-dataset. | ✅ `autoUpdates: false`. Studio hostes på Vercel, så `appId` trengs ikke. |
 | 14 | Uåpnede luker kunne leses via Algolia og serie-boksen. | ✅ Sikret søkenøkkel med datofilter, og serie-poster filtreres på serveren. 👤 Den gamle nøkkelen må roteres. Sanity-datasettet er fortsatt offentlig (akseptert). |
 
@@ -86,12 +86,11 @@ Kartlagt 2026-10-12, og ryddet 2026-10-13 på branchen `teknisk-gjeld`.
    Sett også en **kostnadsgrense på OpenAI-prosjektet**.
 4. **Sanity-webhook:** sjekk at `SANITY_WEBHOOK_SECRET` er satt i Vercel. Vurder et filter i
    webhooken, så like-klikk (`points`) ikke trigger reindeksering i Algolia.
-5. **Installer Renovate-appen** på repoet. Den har ikke laget én PR siden den ble konfigurert.
-6. **GitHub-hemmeligheter for e2e:** legg til `ALGOLIA_APP_ID`, `ALGOLIA_SEARCH_KEY` og
+5. **GitHub-hemmeligheter for e2e:** legg til `ALGOLIA_APP_ID`, `ALGOLIA_SEARCH_KEY` og
    `ALGOLIA_INDEX` (valgfritt; uten dem testes ikke søket).
-7. **Nyhetsbrev:** slett endepunktet, eller lag en DOI-mal i Brevo og sett
+6. **Nyhetsbrev:** slett endepunktet, eller lag en DOI-mal i Brevo og sett
    `BREVO_DOI_TEMPLATE_ID`.
-8. **Innhold:** det ligger publiserte poster på 25. desember, blant annet testposten `oj-test`
+7. **Innhold:** det ligger publiserte poster på 25. desember, blant annet testposten `oj-test`
    (2024). De har ingen side. Studio varsler nå om slike datoer.
 
 ## Sjekkliste siste uka i november

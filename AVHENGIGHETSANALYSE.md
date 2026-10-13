@@ -76,7 +76,7 @@ fordi `sanity` hoistet dem. Uten dem feiler bygget på
 
 ## Tak vi ikke kom over, og hvorfor
 
-Alle fire er verifisert empirisk, ikke antatt. De er kodet inn i `.github/renovate.json`.
+Alle fire er verifisert empirisk, ikke antatt. De ble kodet inn i `.github/renovate.json`, som senere er fjernet.
 
 | Pakke | Holdt på | Blokkering |
 |---|---|---|
@@ -91,8 +91,7 @@ stemmer ikke lenger: RR8 ble tatt inn i #364 (merget inn i #363), etter at previ
 viste at `vercelPreset()` virker med RR8. `@vercel/react-router` 1.3.6 peer-er fortsatt
 `@react-router/dev: "7"`, så den tvinges over på RR8 med en `overrides`-blokk i
 `web/package.json`. Peer-rangen er konservativ, ikke en reell inkompatibilitet, men
-**overriden må fjernes når Vercel slipper en versjon med `"8"`**. Renovate-regelen som sperret
-RR8 er fjernet, og erstattet med en regel som merker oppdateringer av `@vercel/react-router`.
+**overriden må fjernes når Vercel slipper en versjon med `"8"`**.
 
 ### Hvorfor `sanity-algolia` ble stående
 

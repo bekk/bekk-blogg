@@ -7,7 +7,7 @@ export default defineCliConfig({
   },
   /**
    * Auto-oppdateringer er skrudd av, så Studio ikke bytter versjon av seg selv
-   * (f.eks. midt i desember). Versjonen styres av package.json og Renovate.
+   * (f.eks. midt i desember). Versjonen styres av package.json.
    */
   deployment: {autoUpdates: false},
   typegen: {
