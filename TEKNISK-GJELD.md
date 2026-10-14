@@ -21,8 +21,8 @@ Kartlagt 2026-10-12, og ryddet 2026-10-13 på branchen `teknisk-gjeld`.
 |---|---|---|
 | 1 | Forsiden sendte alle til 2025 (hardkodet år). Teaseren lenket ikke noe sted. | ✅ `utils/calendar.ts`: nedtelling fra 1. oktober, ellers siste kalender. Enhetstestet. |
 | 2 | Lukene åpnet feil ved midnatt (UTC på serveren, `today` frosset per instans, låst luke cachet i CDN-en). GROQ `now()` slapp innhold først kl. 01. | ✅ Alt regnes i norsk tid per request. CDN-cachen utløper ved midnatt. `now()` er byttet med `$today`. |
-| 3 | TTS-endepunktet er åpent og caches ikke. | ⏸️ Utsatt etter avtale. Se 👤 for raske tiltak. |
-| 4 | CI testet ingenting. | ✅ `ci.yml` kjører typecheck, lint og bygg for alle tre prosjektene, og prettier og Vitest for `web`. E2E-testene er gjenopplivet og utvidet. |
+| 3 | TTS-endepunktet er åpent og caches ikke. | ✅ Opplesningene forhåndsgenereres ved publisering og lagres i Sanity (#367). Alle artikler fra 2023 har lyd. `tts`-appen og Vercel-prosjektet `bekk-blogg-tts` er slettet. |
+| 4 | CI testet ingenting. | ✅ `ci.yml` kjører typecheck, lint og bygg for `web` og `sanity`, og prettier og Vitest for `web`. E2E-testene er gjenopplivet og utvidet. |
 | 5 | Den delte Sanity-klienten ble endret per request. | ✅ Settes én gang, og preview-options sendes eksplisitt. Verifisert at preview viser utkast og at offentlige sider ikke gjør det. |
 
 ## 🟠 Burde fikses før desember
@@ -50,7 +50,7 @@ Kartlagt 2026-10-12, og ryddet 2026-10-13 på branchen `teknisk-gjeld`.
 | `?page=abc` og `%` i URL-er ga 500 | ✅ 400/404 |
 | Root-ErrorBoundary krasjet uten Algolia-config | ✅ |
 | `sanity-algolia` låser `algoliasearch` til v4 | ⏸️ Uendret, se `AVHENGIGHETSANALYSE.md` |
-| TTS: skjøter mellom chunkene og ekstra LLM-kall for å gjette kjønn | ⏸️ Løses best av #3 (forhåndsgenerering). `!`/`?` beholdes nå. |
+| TTS: skjøter mellom chunkene og ekstra LLM-kall for å gjette kjønn | ✅ Løst av #3: stemmen gjettes én gang per artikkel og lagres. |
 | Bundle | ✅ `algoliasearch/lite` i klienten. ⏸️ Søket lazy-lastes ikke, siden søkefeltet er synlig på alle sider. Refractor-språkene lastes bare på artikkelsider. |
 | Queries | ✅ Kategorioversikten gikk fra ~3,5 s til ~0,5 s. ⏸️ Dagsspørringen bruker 30 ms og er ikke endret. |
 | Død kode, Studio v2-migreringer, ubrukt plugin | ✅ |
@@ -68,12 +68,6 @@ Kartlagt 2026-10-12, og ryddet 2026-10-13 på branchen `teknisk-gjeld`.
    offentlig HTML, så den sikrede nøkkelen har ingen effekt før den er rotert.
 3. **Rate limiting i Vercel Firewall.** Start i logg-modus, se på trafikken, og stram inn:
    ```bash
-   # i tts/ (prosjektet bekk-blogg-tts)
-   vercel firewall rules add "Rate limit TTS" \
-     --condition '{"type":"path","op":"pre","value":"/tts"}' \
-     --action rate_limit --rate-limit-window 60 --rate-limit-requests 20 \
-     --rate-limit-keys ip --rate-limit-action log --yes
-
    # i web/ (prosjektet bekk-blogg): like-knappen og nyhetsbrevet er POST
    vercel firewall rules add "Rate limit POST" \
      --condition '{"type":"method","op":"eq","value":"POST"}' \
@@ -98,5 +92,5 @@ Kartlagt 2026-10-12, og ryddet 2026-10-13 på branchen `teknisk-gjeld`.
 1. `curl -I https://www.bekk.christmas/` kl. 23:59 og 00:01 natt til 1. desember:
    teaser → redirect til `/post/2026`. Luke 1 skal være åpen kl. 00:01.
 2. Publiser en testpost og verifiser at den dukker opp i Algolia innen ett minutt.
-3. Spill av TTS på den lengste artikkelen.
+3. Sjekk at testposten fikk opplesning (avspilleren vises etter et minutt eller to).
 4. Sett opp `/skjerm` på kontorskjermene.

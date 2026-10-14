@@ -3,6 +3,8 @@
 Gjennomført 2026-09-14 på branchen `oppgrader-avhengigheter`.
 Tre uavhengige npm-prosjekter: `web` (React Router 8, Vercel), `sanity` (Studio), `tts` (Next.js).
 
+> **Merk:** `tts` er slettet etter at analysen ble skrevet. Opplesningene genereres nå i `web` og lagres i Sanity.
+
 ## Resultat
 
 | | `web` | `sanity` | `tts` |

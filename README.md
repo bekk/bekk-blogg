@@ -16,7 +16,7 @@ Applikasjonen hostes i Vercel:
 - Applikasjonen er utviklet med [React Router](https://reactrouter.com/) (framework mode) sammen med [TypeScript](https://www.typescriptlang.org/)
 - [Sanity CMS](https://www.sanity.io/) er brukt som publiseringsløsning til redigering og organisering av innhold
 - [Tailwind](https://tailwindcss.com/) er brukt til styling og som CSS-rammeverk
-- [Next.js](https://nextjs.org/) er brukt til Text to Speech-APIet (`tts`-mappen)
+- [OpenAI](https://platform.openai.com/docs/guides/text-to-speech) er brukt til opplesning av artiklene. Lyden genereres når en artikkel publiseres, og lagres i Sanity.
 - [Algolia](https://www.algolia.com/) er brukt til søk
 
 ## Oppsett
@@ -35,8 +35,7 @@ Når du har fått tilgang, gjør følgende:
 2. Kopier innholdet i notatet med samme navn i 1Password og lim det inn i filen din.
 3. Opprett en fil `.env.local` i sanity-mappen.
 4. Kopier innholdet i notatet med samme navn i 1Password og lim det inn i filen din.
-5. Opprett en fil `.env` i tts-mappen.
-6. Kopier innholdet i notatet med samme navn i 1Password og lim det inn i filen din.
+5. Legg til `OPENAI_API_KEY` i `.env` i web-mappen hvis du skal generere opplesninger (se under).
 
 ### Installasjon
 
@@ -74,3 +73,17 @@ Sanity Studio kjører på [http://localhost:3333](http://localhost:3333)
 ## Annet
 
 Team Las Vegas har utviklet applikasjonen.
+
+### Opplesninger
+
+Opplesningene genereres av Sanity-webhooken når en artikkel publiseres. For å generere for
+eksisterende artikler, f.eks. etter at instruksen til modellen er endret:
+
+```
+cd web
+npm run audio:generate                       # tørrkjøring: viser hva som må genereres og omtrent hva det koster
+npm run audio:generate -- --execute          # generer
+npm run audio:generate -- --only <id> --out-dir ./tmp-audio  # lytt på én artikkel uten å lagre i Sanity
+```
+
+Artikler der teksten er uendret, hoppes over, så skriptet kan stoppes og startes på nytt.
