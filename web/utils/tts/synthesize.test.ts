@@ -1,7 +1,8 @@
+import type { SanityClient } from '@sanity/client'
 import type OpenAI from 'openai'
 import { describe, expect, it } from 'vitest'
 
-import { getSourceHash, isAudioEligible } from './postAudio.server'
+import { generatePostAudio, getSourceHash, isAudioEligible } from './postAudio.server'
 import { chunkText, getSpokenText, mapWithConcurrency, synthesize, withRetries } from './synthesize'
 
 describe('getSpokenText', () => {
@@ -156,5 +157,36 @@ describe('withRetries', () => {
 
   it('gir opp etter siste forsøk', async () => {
     await expect(withRetries(async () => Promise.reject(new Error('terminated')), 2, 1)).rejects.toThrow('terminated')
+  })
+})
+
+describe('generatePostAudio', () => {
+  it('sletter den opplastede lydfila hvis dokumentet ikke kan lagres', async () => {
+    const deleted: string[] = []
+    const sanity = {
+      fetch: async (query: string) =>
+        query.includes('_type == "post"')
+          ? {
+              _id: 'post',
+              title: 'Tittel',
+              slug: 'tittel',
+              availableFrom: '2025-12-01',
+              description: null,
+              content: 'Innhold.',
+              language: 'nb-NO',
+              authorName: 'Kari Nordmann',
+              preferredVoice: 'nova',
+            }
+          : null,
+      assets: { upload: async () => ({ _id: 'file-ny-mp3' }) },
+      createOrReplace: async () => Promise.reject(new Error('fetch failed')),
+      delete: async (id: string) => {
+        deleted.push(id)
+      },
+    } as unknown as SanityClient
+    const openai = fakeOpenAI(async () => 'lyd')
+
+    await expect(generatePostAudio('post', { sanity, openai })).rejects.toThrow('fetch failed')
+    expect(deleted).toEqual(['file-ny-mp3'])
   })
 })

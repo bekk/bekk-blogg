@@ -156,17 +156,27 @@ export async function generatePostAudio(postId: string, options: Options): Promi
     filename: `${source.slug ?? postId}.mp3`,
     contentType: 'audio/mpeg',
   })
-  await sanity.createOrReplace({
-    _id: audioId,
-    _type: 'postAudio',
-    post: { _type: 'reference', _ref: postId, _weak: true },
-    audio: { _type: 'file', asset: { _type: 'reference', _ref: asset._id } },
-    voice,
-    voiceKey,
-    sourceHash,
-    characters: text.length,
-    generatedAt: new Date().toISOString(),
-  })
+  try {
+    await sanity.createOrReplace({
+      _id: audioId,
+      _type: 'postAudio',
+      post: { _type: 'reference', _ref: postId, _weak: true },
+      audio: { _type: 'file', asset: { _type: 'reference', _ref: asset._id } },
+      voice,
+      voiceKey,
+      sourceHash,
+      characters: text.length,
+      generatedAt: new Date().toISOString(),
+    })
+  } catch (error) {
+    // Ellers blir lydfila liggende i Sanity uten at noe peker på den
+    if (asset._id !== stored?.assetId) {
+      await sanity.delete(asset._id).catch((deleteError) => {
+        console.warn('Could not delete unused audio asset', asset._id, deleteError)
+      })
+    }
+    throw error
+  }
 
   // Den gamle lydfila slettes først når den nye er på plass
   if (stored?.assetId && stored.assetId !== asset._id) {
