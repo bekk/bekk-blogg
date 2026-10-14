@@ -23,7 +23,9 @@ import { ErrorPage } from '../features/error-boundary/ErrorPage'
 
 import '../portable-text/prism-theme.css'
 
-import { getDoorDate, getOsloDate, isDoorOpen, parseIsoDate } from 'utils/calendar'
+import { getOsloDate, getPostPath } from 'utils/calendar'
+import { SITE_URL } from 'utils/site'
+import { assertDoorIsOpen, assertPostBelongsToDoor } from 'utils/doors.server'
 import { useQuery } from 'utils/sanity/loader'
 import { Spinner } from '~/components/Spinner'
 import { Article } from '~/features/article/Article'
@@ -38,8 +40,7 @@ export const meta: MetaFunction<typeof loader> = ({ loaderData: data }) => {
     return []
   }
 
-  const { year, day } = parseIsoDate(post.availableFrom ?? '')
-  const postUrl = `https://www.bekk.christmas/post/${year}/${String(day).padStart(2, '0')}/${post.slug?.current}`
+  const postUrl = `${SITE_URL}${getPostPath(post.availableFrom ?? '', post.slug?.current ?? '')}`
   // Peker på originalen hvis innlegget er publisert et annet sted først
   const canonicalUrl = post.canonicalUrl ?? postUrl
   const title = cleanControlCharacters(post.title ?? 'Innlegg')
@@ -67,21 +68,59 @@ export const meta: MetaFunction<typeof loader> = ({ loaderData: data }) => {
       rel: 'canonical',
       href: canonicalUrl,
     },
+    // Ren tekst-versjon for språkmodeller og andre maskiner, se routes/post.markdown.ts
+    {
+      tagName: 'link',
+      rel: 'alternate',
+      type: 'text/markdown',
+      href: `${postUrl}.md`,
+    },
   ]
 
-  if (post.coverImage?.asset) {
-    meta.push({ property: 'og:image', content: urlFor(post.coverImage).width(1200).format('webp').url() })
-    meta.push({ name: 'twitter:image', content: urlFor(post.coverImage).width(1200).format('webp').url() })
-  } else {
-    meta.push({ property: 'og:image', content: 'https://www.bekk.christmas/og-image.jpg' })
-    meta.push({ name: 'twitter:image', content: 'https://www.bekk.christmas/og-image.jpg' })
-  }
+  const imageUrl = post.coverImage?.asset
+    ? urlFor(post.coverImage).width(1200).format('webp').url()
+    : `${SITE_URL}/og-image.jpg`
+  meta.push({ property: 'og:image', content: imageUrl })
+  meta.push({ name: 'twitter:image', content: imageUrl })
 
   if (post.availableFrom) {
     meta.push({ property: 'og:url', content: postUrl })
   }
 
-  return meta
+  return [
+    ...meta,
+    {
+      'script:ld+json': {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: title,
+        description,
+        url: postUrl,
+        mainEntityOfPage: canonicalUrl,
+        image: imageUrl,
+        datePublished: post.availableFrom,
+        dateModified: post._updatedAt,
+        inLanguage: post.language ?? 'nb-NO',
+        keywords: post.keywords?.join(', '),
+        wordCount: post.wordCount,
+        author: post.authors?.map((author) => ({
+          '@type': 'Person',
+          name: cleanControlCharacters(author.fullName),
+          url: author.slug?.current ? `${SITE_URL}/forfatter/${encodeURIComponent(author.slug.current)}` : undefined,
+        })),
+        publisher: {
+          '@type': 'Organization',
+          name: 'Bekk',
+          url: 'https://www.bekk.no',
+        },
+        isPartOf: {
+          '@type': 'Blog',
+          name: 'Bekk Christmas',
+          url: SITE_URL,
+        },
+      },
+    },
+  ]
 }
 
 const ParamsSchema = z.object({
@@ -113,25 +152,8 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const queryParams = { slug: decodedSlug, today: getOsloDate() }
   const initial = await loadQuery<POST_BY_SLUG_RESULT>(POST_BY_SLUG, queryParams, options)
 
-  const yearNumber = Number(year)
-  const dateNumber = Number(date)
-
-  if (!preview && (isNaN(dateNumber) || isNaN(yearNumber) || dateNumber < 1 || dateNumber > 24)) {
-    throw new Response('Date not found', {
-      status: 404,
-      headers: {
-        'Cache-Control': 'no-cache, no-store',
-      },
-    })
-  }
-
-  if (!preview && !isDoorOpen(year, date, getOsloDate())) {
-    throw new Response('Date not yet available', {
-      status: 425,
-      headers: {
-        'Cache-Control': 'no-cache, no-store',
-      },
-    })
+  if (!preview) {
+    assertDoorIsOpen(year, date, getOsloDate())
   }
   if (!initial.data) {
     throw new Response('Post not found', {
@@ -141,13 +163,8 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       },
     })
   }
-  if (!preview && initial.data.availableFrom !== getDoorDate(year, date)) {
-    throw new Response('Post date and date in url do not match', {
-      status: 404,
-      headers: {
-        'Cache-Control': 'no-cache, no-store',
-      },
-    })
+  if (!preview) {
+    assertPostBelongsToDoor(initial.data, year, date)
   }
 
   const imageUrl = initial.data.coverImage?.asset

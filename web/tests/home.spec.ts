@@ -57,3 +57,35 @@ test('RSS-feeden har gyldige lenker', async ({ request }) => {
   const article = await request.get(new URL(firstLink!).pathname)
   expect(article.status()).toBe(200)
 })
+
+test('artikler finnes som markdown, og lenkes til fra HTML-versjonen', async ({ request }) => {
+  const feed = await (await request.get('/rss.xml')).text()
+  const firstLink = feed.match(/<item>[\s\S]*?<link>([^<]+)<\/link>/)?.[1]
+  expect(firstLink).toBeDefined()
+  const path = new URL(firstLink!).pathname
+
+  const markdown = await request.get(`${path}.md`)
+  expect(markdown.status()).toBe(200)
+  expect(markdown.headers()['content-type']).toContain('text/markdown')
+  expect(markdown.headers()['link']).toContain('rel="canonical"')
+  expect(await markdown.text()).toMatch(/^---\ntitle: /)
+
+  const html = await (await request.get(path)).text()
+  expect(html).toContain(`type="text/markdown" href="https://www.bekk.christmas${path}.md"`)
+})
+
+test('markdown-versjoner av uåpnede luker er låst', async ({ request }) => {
+  const nextYear = parseIsoDate(getOsloDate()).year + 1
+  const response = await request.get(`/post/${nextYear}/01/hva-som-helst.md`)
+  expect(response.status()).toBe(425)
+})
+
+test('llms.txt lenker til markdown-versjonene', async ({ request }) => {
+  const response = await request.get('/llms.txt')
+  expect(response.ok()).toBe(true)
+
+  const firstLink = (await response.text()).match(/\]\((https?:[^)]+\.md)\)/)?.[1]
+  expect(firstLink).toBeDefined()
+  const markdown = await request.get(new URL(firstLink!).pathname)
+  expect(markdown.status()).toBe(200)
+})

@@ -1008,6 +1008,153 @@ export type SITEMAP_QUERY_RESULT = {
   }>
 }
 
+// Source: ../web/utils/sanity/queries/postQueries.ts
+// Variable: POST_MARKDOWN_BY_SLUG
+// Query: *[_type == "post" && slug.current == $slug][0] {  title,  "slug": slug.current,  type,  language,  embedUrl,  podcastLength,  description,  previewText,  availableFrom,  _updatedAt,  canonicalUrl,  keywords,  "authors": authors[]->fullName,  "tags": tags[]->name,  "series": series->title,  relatedLinks,  content[] {    ...,    _type == 'imageWithMetadata' => {      ...,      "assetUrl": asset->url    }  }}
+export type POST_MARKDOWN_BY_SLUG_RESULT = {
+  title: string
+  slug: string
+  type: 'article' | 'podcast' | 'video'
+  language: 'en-US' | 'nb-NO' | 'nn-NO'
+  embedUrl: string | null
+  podcastLength: number | null
+  description: DescriptionText | null
+  previewText: string | null
+  availableFrom: string
+  _updatedAt: string
+  canonicalUrl: string | null
+  keywords: Array<string> | null
+  authors: Array<string>
+  tags: Array<string> | null
+  series: string | null
+  relatedLinks: Array<{
+    title?: string
+    description?: string
+    url?: string
+    _type: 'relatedLink'
+    _key: string
+  }> | null
+  content: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>
+          text?: string
+          _type: 'span'
+          _key: string
+        }>
+        style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+        listItem?: 'bullet' | 'number'
+        markDefs?: Array<{
+          href?: string
+          _type: 'link'
+          _key: string
+        }>
+        level?: number
+        _type: 'block'
+        _key: string
+      }
+    | {
+        _key: string
+        _type: 'code'
+        language?: string
+        filename?: string
+        code?: string
+        highlightedLines?: Array<number>
+      }
+    | {
+        _key: string
+        _type: 'codePen'
+        url: string
+      }
+    | {
+        _key: string
+        _type: 'codeSandbox'
+        url: string
+      }
+    | {
+        _key: string
+        _type: 'iframe'
+        src: string
+        height?: number
+      }
+    | {
+        _key: string
+        _type: 'imageWithMetadata'
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        src?: string
+        caption?: string
+        maxWidth?: number
+        alt: string
+        assetUrl: string | null
+      }
+    | {
+        _key: string
+        _type: 'infoBlock'
+        content: Array<{
+          children?: Array<{
+            marks?: Array<string>
+            text?: string
+            _type: 'span'
+            _key: string
+          }>
+          style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+          listItem?: 'bullet' | 'number'
+          markDefs?: Array<{
+            href?: string
+            _type: 'link'
+            _key: string
+          }>
+          level?: number
+          _type: 'block'
+          _key: string
+        }>
+      }
+    | {
+        _key: string
+        _type: 'quote'
+        content: string
+        author?: string
+      }
+    | {
+        _key: string
+        _type: 'table'
+        rows?: Array<
+          {
+            _key: string
+          } & TableRow
+        >
+      }
+    | {
+        _key: string
+        _type: 'twitter'
+        url: string
+      }
+    | {
+        _key: string
+        _type: 'unfurledUrl'
+        url: string
+      }
+    | {
+        _key: string
+        _type: 'youtube'
+        url: string
+      }
+  >
+} | null
+
+// Source: ../web/utils/sanity/queries/postQueries.ts
+// Variable: LLMS_TXT_QUERY
+// Query: *[  _type == "post" &&  defined(slug.current) &&  availableFrom <= $today &&  (length(string::split(pt::text(content), ' ')) > 0 || podcastLength != null)] | order(availableFrom desc) {  title,  "slug": slug.current,  availableFrom,  "summary": coalesce(previewText, pt::text(description))}
+export type LLMS_TXT_QUERY_RESULT = Array<{
+  title: string
+  slug: string
+  availableFrom: string
+  summary: string
+}>
+
 // Query TypeMap
 declare global {
   interface SanityQueries {
@@ -1022,6 +1169,8 @@ declare global {
     '{\n  "posts": *[\n    _type == "post" && \n    $slug in authors[]->slug.current && \n    availableFrom <= $today\n  ] | order(availableFrom desc)[$start...$end] {\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n  type,\n},\n  "totalCount": count(*[\n    _type == "post" && \n    $slug in authors[]->slug.current && \n    availableFrom <= $today\n  ]),\n  "author": *[_type == "author" && slug.current == $slug][0] {\n    fullName,\n    description,\n    image,\n    slug,\n    companyName,\n    socialMediaLinks\n  }\n}': AUTHOR_WITH_POSTS_QUERY_RESULT
     '*[\n  _type == "post" && \n  availableFrom <= $today\n] | order(availableFrom desc)[0...250] {\n  _id,\n  title,\n  "slug": slug.current,\n  language,\n  "description": coalesce(previewText, pt::text(description)),\n  availableFrom,\n  "authors": authors[]->.fullName,\n  type,\n  "content": pt::text(content)\n}': RSS_FEED_QUERY_RESULT
     '{\n  "posts": *[_type == "post" && defined(slug.current) && availableFrom <= $today] {\n    "slug": slug.current,\n    availableFrom,\n    _updatedAt\n  },\n  "authors": *[_type == "author" && defined(slug.current)] {\n    "slug": slug.current,\n    _updatedAt\n  },\n  "tags": *[_type == "tag" && defined(slug)] {\n    slug,\n    _updatedAt\n  }\n}': SITEMAP_QUERY_RESULT
+    '*[_type == "post" && slug.current == $slug][0] {\n  title,\n  "slug": slug.current,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  description,\n  previewText,\n  availableFrom,\n  _updatedAt,\n  canonicalUrl,\n  keywords,\n  "authors": authors[]->fullName,\n  "tags": tags[]->name,\n  "series": series->title,\n  relatedLinks,\n  content[] {\n    ...,\n    _type == \'imageWithMetadata\' => {\n      ...,\n      "assetUrl": asset->url\n    }\n  }\n}': POST_MARKDOWN_BY_SLUG_RESULT
+    '*[\n  _type == "post" &&\n  defined(slug.current) &&\n  availableFrom <= $today &&\n  (length(string::split(pt::text(content), \' \')) > 0 || podcastLength != null)\n] | order(availableFrom desc) {\n  title,\n  "slug": slug.current,\n  availableFrom,\n  "summary": coalesce(previewText, pt::text(description))\n}': LLMS_TXT_QUERY_RESULT
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too
