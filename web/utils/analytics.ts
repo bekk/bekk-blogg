@@ -1,5 +1,6 @@
 type CustomEvent =
   | 'article_audio_played'
+  | 'short_summary_expanded'
   | 'like_content_clicked'
   | 'copy_url_clicked'
   | 'related_post_clicked'

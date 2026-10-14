@@ -48,18 +48,24 @@ const labels = {
     audience: 'Passer for',
     prerequisites: 'Fint å kunne fra før',
     generated: 'Generert med KI',
+    showMore: 'Vis mer',
+    showLess: 'Vis mindre',
   },
   'nn-NO': {
     title: 'Kort fortalt',
     audience: 'Passar for',
     prerequisites: 'Fint å kunne frå før',
     generated: 'Generert med KI',
+    showMore: 'Vis meir',
+    showLess: 'Vis mindre',
   },
   'en-US': {
     title: 'In short',
     audience: 'For',
     prerequisites: 'Good to know beforehand',
     generated: 'AI-generated',
+    showMore: 'Show more',
+    showLess: 'Show less',
   },
 }
 

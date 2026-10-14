@@ -119,7 +119,9 @@ export const Article = ({ post }: ArticleProps) => {
             <PortableText value={post.description} components={components} />
           </div>
         ) : null}
-        {shortSummary && <ShortSummary summary={shortSummary} language={post.language} />}
+        {shortSummary && (
+          <ShortSummary summary={shortSummary} language={post.language} slug={post.slug?.current ?? 'unknown'} />
+        )}
         {post.type === 'podcast' && post.embedUrl && (
           <PodcastBlock podcast={{ src: post.embedUrl, title: post.title ?? 'podcast' }} />
         )}
