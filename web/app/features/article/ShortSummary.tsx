@@ -9,8 +9,8 @@ type ShortSummaryProps = {
   slug: string
 }
 
-/** Høyden på det sammenslåtte panelet: to hele linjer og en tredje som fades ut */
-const COLLAPSED_HEIGHT = '5.25rem'
+/** Høyden på det sammenslåtte panelet i rem: to hele linjer og en tredje som fades ut */
+const COLLAPSED_HEIGHT_REM = 5.25
 
 /** «Kort fortalt» øverst i artikkelen, se utils/summary */
 export const ShortSummary = ({ summary, language, slug }: ShortSummaryProps) => {
@@ -28,15 +28,19 @@ export const ShortSummary = ({ summary, language, slug }: ShortSummaryProps) => 
     if (!content) {
       return
     }
+    // Sammenligner med den faste sammenslåtte høyden, ikke med høyden akkurat nå.
+    // Midt i animasjonen er panelet fortsatt høyt, og da ville det sett ut som om
+    // teksten fikk plass.
     const measure = () => {
+      const rem = parseFloat(getComputedStyle(document.documentElement).fontSize)
       setFullHeight(content.scrollHeight)
-      setIsCollapsible(content.scrollHeight > content.clientHeight + 1 || isExpanded)
+      setIsCollapsible(content.scrollHeight > COLLAPSED_HEIGHT_REM * rem + 1)
     }
     measure()
     const observer = new ResizeObserver(measure)
     observer.observe(content)
     return () => observer.disconnect()
-  }, [isExpanded])
+  }, [])
 
   const isCollapsed = isCollapsible && !isExpanded
 
@@ -58,7 +62,7 @@ export const ShortSummary = ({ summary, language, slug }: ShortSummaryProps) => 
         ref={contentRef}
         className="overflow-hidden transition-[max-height] duration-300 ease-out motion-reduce:transition-none"
         style={{
-          maxHeight: isCollapsed ? COLLAPSED_HEIGHT : fullHeight ? `${fullHeight}px` : undefined,
+          maxHeight: isCollapsed ? `${COLLAPSED_HEIGHT_REM}rem` : fullHeight ? `${fullHeight}px` : undefined,
           maskImage: isCollapsed ? 'linear-gradient(to bottom, black 55%, transparent)' : undefined,
         }}
         // Innholdet som er skjult, skal ikke kunne fokuseres eller leses opp før det vises
