@@ -1,0 +1,11 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "trailingComma": "es5",
+  "printWidth": 120,
+  "semi": false,
+  "singleQuote": true,
+  "sortPackageJson": false,
+  "ignorePatterns": [
+    "utils/sanity/types/sanity.types.ts"
+  ]
+}
