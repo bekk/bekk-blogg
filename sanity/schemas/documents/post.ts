@@ -267,6 +267,41 @@ const post = defineType({
       group: 'author',
     },
     {
+      title: 'Kort fortalt',
+      name: 'summaryOverride',
+      description:
+        'Artikler får et AI-generert sammendrag øverst, se fanen «Kort fortalt (AI)». Fyll inn feltene her for å overstyre det som er generert, eller skjul det helt.',
+      type: 'object',
+      options: {collapsible: true, collapsed: true},
+      fields: [
+        {
+          title: 'Skjul «Kort fortalt»',
+          name: 'hide',
+          type: 'boolean',
+          initialValue: false,
+        },
+        {
+          title: 'Kort fortalt',
+          description: 'To–tre setninger om hva artikkelen handler om',
+          name: 'tldr',
+          type: 'text',
+          rows: 3,
+        },
+        {
+          title: 'Passer for',
+          name: 'audience',
+          type: 'string',
+        },
+        {
+          title: 'Fint å kunne fra før',
+          name: 'prerequisites',
+          type: 'string',
+        },
+      ],
+      hidden: ({document}) => document?.type !== 'article',
+      group: 'author',
+    },
+    {
       title: 'Publiseringsdato',
       name: 'availableFrom',
       description: 'Når innlegget skal publiseres',

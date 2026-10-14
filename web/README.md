@@ -15,16 +15,17 @@ Siden kjører på [http://localhost:5173](http://localhost:5173).
 
 ## Kommandoer
 
-| Kommando                 | Hva den gjør                                                     |
-| ------------------------ | ---------------------------------------------------------------- |
-| `npm run dev`            | Starter utviklingsserveren                                       |
-| `npm run build`          | Bygger for produksjon                                            |
-| `npm run typecheck`      | Genererer rutetyper og sjekker TypeScript                        |
-| `npm run lint`           | Linter med oxlint (`lint:fix` for å fikse)                       |
-| `npm run format:check`   | Sjekker formatering med oxfmt (`format` for å fikse)             |
-| `npm test`               | Enhetstester med Vitest                                          |
-| `npm run test:e2e`       | Ende-til-ende-tester med Playwright (starter dev-serveren selv)  |
-| `npm run audio:generate` | Genererer opplesninger for eksisterende artikler (se rot-README) |
+| Kommando                   | Hva den gjør                                                       |
+| -------------------------- | ------------------------------------------------------------------ |
+| `npm run dev`              | Starter utviklingsserveren                                         |
+| `npm run build`            | Bygger for produksjon                                              |
+| `npm run typecheck`        | Genererer rutetyper og sjekker TypeScript                          |
+| `npm run lint`             | Linter med oxlint (`lint:fix` for å fikse)                         |
+| `npm run format:check`     | Sjekker formatering med oxfmt (`format` for å fikse)               |
+| `npm test`                 | Enhetstester med Vitest                                            |
+| `npm run test:e2e`         | Ende-til-ende-tester med Playwright (starter dev-serveren selv)    |
+| `npm run audio:generate`   | Genererer opplesninger for eksisterende artikler (se rot-README)   |
+| `npm run summary:generate` | Genererer «Kort fortalt» for eksisterende artikler (se rot-README) |
 
 Sett `BASE_URL` for å kjøre ende-til-ende-testene mot en server som allerede kjører, f.eks. en preview-deploy: `BASE_URL=https://... npm run test:e2e`.
 
@@ -38,6 +39,7 @@ Sett `BASE_URL` for å kjøre ende-til-ende-testene mot en server som allerede k
 - `utils/calendar.ts` – avgjør hvilke luker som er åpne, regnet i norsk tid
 - `utils/sanity/` – Sanity-klienter, GROQ-spørringer (`queries/`) og genererte typer (`types/`)
 - `utils/tts/` – opplesninger med OpenAI
+- `utils/summary/` – «Kort fortalt», AI-genererte sammendrag med OpenAI
 - `scripts/` – skript som kjøres manuelt
 - `tests/` – Playwright-tester
 
@@ -45,5 +47,5 @@ Sett `BASE_URL` for å kjøre ende-til-ende-testene mot en server som allerede k
 
 - **Sanity** – innhold, forhåndsvisning og visual editing fra Sanity Studio
 - **Algolia** – søk. Indeksen oppdateres av Sanity-webhooken (`/api/webhook/sanity`). Mangler Algolia-nøklene, skjules søket.
-- **OpenAI** – opplesninger, generert av samme webhook når en artikkel publiseres, og lagret i Sanity
+- **OpenAI** – opplesninger og sammendrag, generert av samme webhook når en artikkel publiseres, og lagret i Sanity
 - **Brevo** – påmelding til nyhetsbrevet (`/api/newsletter`)

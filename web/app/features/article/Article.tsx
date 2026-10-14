@@ -5,10 +5,12 @@ import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readingTime'
 import { POST_BY_SLUG_RESULT, SanityImageAsset } from 'utils/sanity/types/sanity.types'
 import { urlFor } from 'utils/sanity/utils'
+import { resolveShortSummary } from 'utils/summary/shortSummary'
 
 import { AudioPlayer } from './AudioPlayer'
 import { LikeContent } from './LikeContent'
 import { RelatedLinks } from './RelatedLinks'
+import { ShortSummary } from './ShortSummary'
 
 import { components } from '~/portable-text/Components'
 import PodcastBlock from '~/portable-text/PodcastBlock'
@@ -36,6 +38,7 @@ export const Article = ({ post }: ArticleProps) => {
         : (post?.points ?? 0)
 
   const shouldShowSeriesBlock = shouldShowSeries(post)
+  const shortSummary = post.type === 'article' ? resolveShortSummary(post) : null
 
   return (
     <section className="px-6 sm:grid-cols-[1fr_2fr] md:grid md:grid-rows-[auto_auto] md:gap-x-12 xl:gap-x-24 md:gap-y-6 md:pl-10 xl:pl-20 pb-8 md:pb-16">
@@ -116,6 +119,7 @@ export const Article = ({ post }: ArticleProps) => {
             <PortableText value={post.description} components={components} />
           </div>
         ) : null}
+        {shortSummary && <ShortSummary summary={shortSummary} language={post.language} />}
         {post.type === 'podcast' && post.embedUrl && (
           <PodcastBlock podcast={{ src: post.embedUrl, title: post.title ?? 'podcast' }} />
         )}

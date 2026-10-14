@@ -33,6 +33,13 @@ const POST_PREVIEW_PROJECTION = groq`{
   podcastLength,
   type,
 }`
+// «Kort fortalt» for artikler, se utils/summary. Det genererte sammendraget og
+// redaksjonens overstyring slås sammen med resolveShortSummary.
+const SHORT_SUMMARY_FIELDS = `
+  summaryOverride,
+  "generatedSummary": select(
+    type == "article" => *[_type == "postSummary" && _id == "summary-" + ^._id][0]{ tldr, audience, prerequisites }
+  )`
 const POST_PROJECTION = groq`{
   _id,
   _type,
@@ -72,6 +79,7 @@ const POST_PROJECTION = groq`{
   priority,
   // Forhåndsgenerert opplesning, se utils/tts. Mangler den, vises ikke avspilleren.
   "audioUrl": *[_type == "postAudio" && _id == "audio-" + ^._id][0].audio.asset->url,
+  ${SHORT_SUMMARY_FIELDS},
   
   authors[]->{
     _id,
@@ -227,6 +235,7 @@ export const POST_MARKDOWN_BY_SLUG = defineQuery(`*[_type == "post" && slug.curr
   "tags": tags[]->name,
   "series": series->title,
   relatedLinks,
+  ${SHORT_SUMMARY_FIELDS},
   content[] {
     ...,
     _type == 'imageWithMetadata' => {
@@ -246,5 +255,13 @@ export const LLMS_TXT_QUERY = defineQuery(`*[
   title,
   "slug": slug.current,
   availableFrom,
-  "summary": coalesce(previewText, pt::text(description))
+  // Forfatterens egen tekst først, så sammendraget fra «Kort fortalt» hvis det ikke er skjult
+  "summary": coalesce(
+    previewText,
+    select(summaryOverride.hide != true => coalesce(
+      summaryOverride.tldr,
+      *[_type == "postSummary" && _id == "summary-" + ^._id][0].tldr
+    )),
+    pt::text(description)
+  )
 }`)

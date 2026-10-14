@@ -17,7 +17,7 @@ Prinsipper uansett hva vi gjør:
       brukt til «les også». Sanity har innebygde embeddings-indekser. Grunnmuren for #2, #5 og #10.
 - [ ] **2. Semantisk søk / «Spør julekalenderen»** – søk på mening, evt. korte svar med kildehenvisninger.
 - [ ] **3. Oversettelse norsk ↔ engelsk** – merket som maskinoversatt, med opplesning. Forfatter kan reservere seg.
-- [ ] **4. «Kort fortalt» og forkunnskaper** – TL;DR, målgruppe og hva du bør kunne fra før.
+- [x] **4. «Kort fortalt» og forkunnskaper** – TL;DR, målgruppe og hva du bør kunne fra før.
       Generert ved publisering, redigerbart i Studio.
 - [ ] **5. Din personlige julekalender** – velg interesser, få 24 luker fra arkivet. Kan kobles på nyhetsbrevet.
 - [ ] **6. Dagens luker som podcast** – kort samtale med to stemmer som oppsummerer dagens innhold.

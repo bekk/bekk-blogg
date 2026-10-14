@@ -59,7 +59,7 @@ All logikk som avgjør hvilke luker som er åpne, ligger i `web/utils/calendar.t
 
 ### Sanity-webhook
 
-`web/app/routes/api.webhook.sanity.ts` mottar Sanity-webhooks ved publisering og gjør to ting: oppdaterer Algolia-indeksen (søk) og genererer/sletter opplesninger med OpenAI TTS (`web/utils/tts/`) i bakgrunnen via `waitUntil`. Lyden lagres i Sanity (`postAudio`-dokumenter), og en hash av teksten gjør at uendrede artikler hoppes over. Stemmen avhenger av første forfatter, så forfatterendringer trigger regenerering av forfatterens innlegg. `web/scripts/generate-audio.ts` gjenbruker samme logikk for batch-generering.
+`web/app/routes/api.webhook.sanity.ts` mottar Sanity-webhooks ved publisering og gjør to ting: oppdaterer Algolia-indeksen (søk) og genererer/sletter opplesninger med OpenAI TTS (`web/utils/tts/`) og «Kort fortalt»-sammendrag (`web/utils/summary/`) i bakgrunnen via `waitUntil`. Lyden lagres i Sanity (`postAudio`-dokumenter), og en hash av teksten gjør at uendrede artikler hoppes over. Stemmen avhenger av første forfatter, så forfatterendringer trigger regenerering av forfatterens innlegg. `web/scripts/generate-audio.ts` gjenbruker samme logikk for batch-generering.
 
 ### Innhold for maskiner
 

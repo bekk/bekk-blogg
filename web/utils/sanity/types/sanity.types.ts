@@ -238,6 +238,21 @@ export type PostReference = {
   [internalGroqTypeReferenceTo]?: 'post'
 }
 
+export type PostSummary = {
+  _id: string
+  _type: 'postSummary'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  post?: PostReference
+  tldr?: string
+  audience?: string
+  prerequisites?: string
+  model?: string
+  sourceHash?: string
+  generatedAt?: string
+}
+
 export type SanityFileAssetReference = {
   _ref: string
   _type: 'reference'
@@ -330,6 +345,12 @@ export type Post = {
     _key: string
   }>
   canonicalUrl?: string
+  summaryOverride?: {
+    hide?: boolean
+    tldr?: string
+    audience?: string
+    prerequisites?: string
+  }
   availableFrom: string
   priority?: number
   points?: number
@@ -512,6 +533,7 @@ export type AllSanitySchemaTypes =
   | SanityImageHotspot
   | Slug
   | PostReference
+  | PostSummary
   | SanityFileAssetReference
   | PostAudio
   | AuthorReference
@@ -566,7 +588,7 @@ export type POST_PREVIEW_PROJECTION_RESULT = {
 
 // Source: ../web/utils/sanity/queries/postQueries.ts
 // Variable: POST_PROJECTION
-// Query: {  _id,  _type,  _createdAt,  _updatedAt,  _rev,  type,  language,  embedUrl,  podcastLength,  title,  slug,  canonicalUrl,  description,  previewText,  availableFrom,  keywords,  points,  "wordCount": length(string::split(pt::text(content), ' ')),  content[] {    ...,    _type == 'imageWithMetadata' => {      ...,      asset->{        _id,        url,        metadata {          dimensions {            aspectRatio,            width,            height          }        }      }    }  },  priority,  // Forhåndsgenerert opplesning, se utils/tts. Mangler den, vises ikke avspilleren.  "audioUrl": *[_type == "postAudio" && _id == "audio-" + ^._id][0].audio.asset->url,    authors[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    fullName,    slug,    companyName,    profilePicture,    socialMediaLinks  },    coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  tags[]->{    _id,    slug,    name  },  relatedLinks,  series->{    _id,     title,     description,    slug,    shouldListNonPublishedContent,    // Uåpnede poster tas bare med hvis serien skal vise dem, og aldri med slug    "posts": *[      _type == "post" &&      references(^._id) &&      (availableFrom <= $today || ^.shouldListNonPublishedContent == true)    ] | order(availableFrom asc) {      _id,      title,      availableFrom,      "slug": select(availableFrom <= $today => slug),      "isAvailable": availableFrom <= $today    }  }}
+// Query: {  _id,  _type,  _createdAt,  _updatedAt,  _rev,  type,  language,  embedUrl,  podcastLength,  title,  slug,  canonicalUrl,  description,  previewText,  availableFrom,  keywords,  points,  "wordCount": length(string::split(pt::text(content), ' ')),  content[] {    ...,    _type == 'imageWithMetadata' => {      ...,      asset->{        _id,        url,        metadata {          dimensions {            aspectRatio,            width,            height          }        }      }    }  },  priority,  // Forhåndsgenerert opplesning, se utils/tts. Mangler den, vises ikke avspilleren.  "audioUrl": *[_type == "postAudio" && _id == "audio-" + ^._id][0].audio.asset->url,    summaryOverride,  "generatedSummary": select(    type == "article" => *[_type == "postSummary" && _id == "summary-" + ^._id][0]{ tldr, audience, prerequisites }  ),    authors[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    fullName,    slug,    companyName,    profilePicture,    socialMediaLinks  },    coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  tags[]->{    _id,    slug,    name  },  relatedLinks,  series->{    _id,     title,     description,    slug,    shouldListNonPublishedContent,    // Uåpnede poster tas bare med hvis serien skal vise dem, og aldri med slug    "posts": *[      _type == "post" &&      references(^._id) &&      (availableFrom <= $today || ^.shouldListNonPublishedContent == true)    ] | order(availableFrom asc) {      _id,      title,      availableFrom,      "slug": select(availableFrom <= $today => slug),      "isAvailable": availableFrom <= $today    }  }}
 export type POST_PROJECTION_RESULT = {
   _id: never
   _type: never
@@ -589,6 +611,8 @@ export type POST_PROJECTION_RESULT = {
   content: never
   priority: never
   audioUrl: null
+  summaryOverride: never
+  generatedSummary: null
   authors: never
   coverImage: never
   tags: never
@@ -617,7 +641,7 @@ export type POST_SEARCH_PROJECTION_RESULT = {
 
 // Source: ../web/utils/sanity/queries/postQueries.ts
 // Variable: POST_BY_SLUG
-// Query: *[_type == "post" && slug.current == $slug][0]{  _id,  _type,  _createdAt,  _updatedAt,  _rev,  type,  language,  embedUrl,  podcastLength,  title,  slug,  canonicalUrl,  description,  previewText,  availableFrom,  keywords,  points,  "wordCount": length(string::split(pt::text(content), ' ')),  content[] {    ...,    _type == 'imageWithMetadata' => {      ...,      asset->{        _id,        url,        metadata {          dimensions {            aspectRatio,            width,            height          }        }      }    }  },  priority,  // Forhåndsgenerert opplesning, se utils/tts. Mangler den, vises ikke avspilleren.  "audioUrl": *[_type == "postAudio" && _id == "audio-" + ^._id][0].audio.asset->url,    authors[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    fullName,    slug,    companyName,    profilePicture,    socialMediaLinks  },    coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  tags[]->{    _id,    slug,    name  },  relatedLinks,  series->{    _id,     title,     description,    slug,    shouldListNonPublishedContent,    // Uåpnede poster tas bare med hvis serien skal vise dem, og aldri med slug    "posts": *[      _type == "post" &&      references(^._id) &&      (availableFrom <= $today || ^.shouldListNonPublishedContent == true)    ] | order(availableFrom asc) {      _id,      title,      availableFrom,      "slug": select(availableFrom <= $today => slug),      "isAvailable": availableFrom <= $today    }  }}
+// Query: *[_type == "post" && slug.current == $slug][0]{  _id,  _type,  _createdAt,  _updatedAt,  _rev,  type,  language,  embedUrl,  podcastLength,  title,  slug,  canonicalUrl,  description,  previewText,  availableFrom,  keywords,  points,  "wordCount": length(string::split(pt::text(content), ' ')),  content[] {    ...,    _type == 'imageWithMetadata' => {      ...,      asset->{        _id,        url,        metadata {          dimensions {            aspectRatio,            width,            height          }        }      }    }  },  priority,  // Forhåndsgenerert opplesning, se utils/tts. Mangler den, vises ikke avspilleren.  "audioUrl": *[_type == "postAudio" && _id == "audio-" + ^._id][0].audio.asset->url,    summaryOverride,  "generatedSummary": select(    type == "article" => *[_type == "postSummary" && _id == "summary-" + ^._id][0]{ tldr, audience, prerequisites }  ),    authors[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    fullName,    slug,    companyName,    profilePicture,    socialMediaLinks  },    coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  tags[]->{    _id,    slug,    name  },  relatedLinks,  series->{    _id,     title,     description,    slug,    shouldListNonPublishedContent,    // Uåpnede poster tas bare med hvis serien skal vise dem, og aldri med slug    "posts": *[      _type == "post" &&      references(^._id) &&      (availableFrom <= $today || ^.shouldListNonPublishedContent == true)    ] | order(availableFrom asc) {      _id,      title,      availableFrom,      "slug": select(availableFrom <= $today => slug),      "isAvailable": availableFrom <= $today    }  }}
 export type POST_BY_SLUG_RESULT = {
   _id: string
   _type: 'post'
@@ -757,6 +781,17 @@ export type POST_BY_SLUG_RESULT = {
   >
   priority: number | null
   audioUrl: string | null
+  summaryOverride: {
+    hide?: boolean
+    tldr?: string
+    audience?: string
+    prerequisites?: string
+  } | null
+  generatedSummary: {
+    tldr: string | null
+    audience: string | null
+    prerequisites: string | null
+  } | null
   authors: Array<{
     _id: string
     _type: 'author'
@@ -1010,7 +1045,7 @@ export type SITEMAP_QUERY_RESULT = {
 
 // Source: ../web/utils/sanity/queries/postQueries.ts
 // Variable: POST_MARKDOWN_BY_SLUG
-// Query: *[_type == "post" && slug.current == $slug][0] {  title,  "slug": slug.current,  type,  language,  embedUrl,  podcastLength,  description,  previewText,  availableFrom,  _updatedAt,  canonicalUrl,  keywords,  "authors": authors[]->fullName,  "tags": tags[]->name,  "series": series->title,  relatedLinks,  content[] {    ...,    _type == 'imageWithMetadata' => {      ...,      "assetUrl": asset->url    }  }}
+// Query: *[_type == "post" && slug.current == $slug][0] {  title,  "slug": slug.current,  type,  language,  embedUrl,  podcastLength,  description,  previewText,  availableFrom,  _updatedAt,  canonicalUrl,  keywords,  "authors": authors[]->fullName,  "tags": tags[]->name,  "series": series->title,  relatedLinks,    summaryOverride,  "generatedSummary": select(    type == "article" => *[_type == "postSummary" && _id == "summary-" + ^._id][0]{ tldr, audience, prerequisites }  ),  content[] {    ...,    _type == 'imageWithMetadata' => {      ...,      "assetUrl": asset->url    }  }}
 export type POST_MARKDOWN_BY_SLUG_RESULT = {
   title: string
   slug: string
@@ -1034,6 +1069,17 @@ export type POST_MARKDOWN_BY_SLUG_RESULT = {
     _type: 'relatedLink'
     _key: string
   }> | null
+  summaryOverride: {
+    hide?: boolean
+    tldr?: string
+    audience?: string
+    prerequisites?: string
+  } | null
+  generatedSummary: {
+    tldr: string | null
+    audience: string | null
+    prerequisites: string | null
+  } | null
   content: Array<
     | {
         children?: Array<{
@@ -1147,7 +1193,7 @@ export type POST_MARKDOWN_BY_SLUG_RESULT = {
 
 // Source: ../web/utils/sanity/queries/postQueries.ts
 // Variable: LLMS_TXT_QUERY
-// Query: *[  _type == "post" &&  defined(slug.current) &&  availableFrom <= $today &&  (length(string::split(pt::text(content), ' ')) > 0 || podcastLength != null)] | order(availableFrom desc) {  title,  "slug": slug.current,  availableFrom,  "summary": coalesce(previewText, pt::text(description))}
+// Query: *[  _type == "post" &&  defined(slug.current) &&  availableFrom <= $today &&  (length(string::split(pt::text(content), ' ')) > 0 || podcastLength != null)] | order(availableFrom desc) {  title,  "slug": slug.current,  availableFrom,  // Forfatterens egen tekst først, så sammendraget fra «Kort fortalt» hvis det ikke er skjult  "summary": coalesce(    previewText,    select(summaryOverride.hide != true => coalesce(      summaryOverride.tldr,      *[_type == "postSummary" && _id == "summary-" + ^._id][0].tldr    )),    pt::text(description)  )}
 export type LLMS_TXT_QUERY_RESULT = Array<{
   title: string
   slug: string
@@ -1160,17 +1206,17 @@ declare global {
   interface SanityQueries {
     '{\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n}': COVER_IMAGE_WITH_METADATA_PROJECTION_RESULT
     '{\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n  type,\n}': POST_PREVIEW_PROJECTION_RESULT
-    '{\n  _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  title,\n  slug,\n  canonicalUrl,\n  description,\n  previewText,\n  availableFrom,\n  keywords,\n  points,\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  content[] {\n    ...,\n    _type == \'imageWithMetadata\' => {\n      ...,\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions {\n            aspectRatio,\n            width,\n            height\n          }\n        }\n      }\n    }\n  },\n  priority,\n  // Forh\xE5ndsgenerert opplesning, se utils/tts. Mangler den, vises ikke avspilleren.\n  "audioUrl": *[_type == "postAudio" && _id == "audio-" + ^._id][0].audio.asset->url,\n  \n  authors[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    fullName,\n    slug,\n    companyName,\n    profilePicture,\n    socialMediaLinks\n  },\n  \n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n\n  tags[]->{\n    _id,\n    slug,\n    name\n  },\n  relatedLinks,\n  series->{\n    _id, \n    title, \n    description,\n    slug,\n    shouldListNonPublishedContent,\n    // U\xE5pnede poster tas bare med hvis serien skal vise dem, og aldri med slug\n    "posts": *[\n      _type == "post" &&\n      references(^._id) &&\n      (availableFrom <= $today || ^.shouldListNonPublishedContent == true)\n    ] | order(availableFrom asc) {\n      _id,\n      title,\n      availableFrom,\n      "slug": select(availableFrom <= $today => slug),\n      "isAvailable": availableFrom <= $today\n    }\n  }\n}': POST_PROJECTION_RESULT
+    '{\n  _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  title,\n  slug,\n  canonicalUrl,\n  description,\n  previewText,\n  availableFrom,\n  keywords,\n  points,\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  content[] {\n    ...,\n    _type == \'imageWithMetadata\' => {\n      ...,\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions {\n            aspectRatio,\n            width,\n            height\n          }\n        }\n      }\n    }\n  },\n  priority,\n  // Forh\xE5ndsgenerert opplesning, se utils/tts. Mangler den, vises ikke avspilleren.\n  "audioUrl": *[_type == "postAudio" && _id == "audio-" + ^._id][0].audio.asset->url,\n  \n  summaryOverride,\n  "generatedSummary": select(\n    type == "article" => *[_type == "postSummary" && _id == "summary-" + ^._id][0]{ tldr, audience, prerequisites }\n  ),\n  \n  authors[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    fullName,\n    slug,\n    companyName,\n    profilePicture,\n    socialMediaLinks\n  },\n  \n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n\n  tags[]->{\n    _id,\n    slug,\n    name\n  },\n  relatedLinks,\n  series->{\n    _id, \n    title, \n    description,\n    slug,\n    shouldListNonPublishedContent,\n    // U\xE5pnede poster tas bare med hvis serien skal vise dem, og aldri med slug\n    "posts": *[\n      _type == "post" &&\n      references(^._id) &&\n      (availableFrom <= $today || ^.shouldListNonPublishedContent == true)\n    ] | order(availableFrom asc) {\n      _id,\n      title,\n      availableFrom,\n      "slug": select(availableFrom <= $today => slug),\n      "isAvailable": availableFrom <= $today\n    }\n  }\n}': POST_PROJECTION_RESULT
     '{\n  _id,\n  _type,\n  _rev,\n  "objectID": _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n}': POST_SEARCH_PROJECTION_RESULT
-    '*[_type == "post" && slug.current == $slug][0]{\n  _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  title,\n  slug,\n  canonicalUrl,\n  description,\n  previewText,\n  availableFrom,\n  keywords,\n  points,\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  content[] {\n    ...,\n    _type == \'imageWithMetadata\' => {\n      ...,\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions {\n            aspectRatio,\n            width,\n            height\n          }\n        }\n      }\n    }\n  },\n  priority,\n  // Forh\xE5ndsgenerert opplesning, se utils/tts. Mangler den, vises ikke avspilleren.\n  "audioUrl": *[_type == "postAudio" && _id == "audio-" + ^._id][0].audio.asset->url,\n  \n  authors[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    fullName,\n    slug,\n    companyName,\n    profilePicture,\n    socialMediaLinks\n  },\n  \n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n\n  tags[]->{\n    _id,\n    slug,\n    name\n  },\n  relatedLinks,\n  series->{\n    _id, \n    title, \n    description,\n    slug,\n    shouldListNonPublishedContent,\n    // U\xE5pnede poster tas bare med hvis serien skal vise dem, og aldri med slug\n    "posts": *[\n      _type == "post" &&\n      references(^._id) &&\n      (availableFrom <= $today || ^.shouldListNonPublishedContent == true)\n    ] | order(availableFrom asc) {\n      _id,\n      title,\n      availableFrom,\n      "slug": select(availableFrom <= $today => slug),\n      "isAvailable": availableFrom <= $today\n    }\n  }\n}': POST_BY_SLUG_RESULT
+    '*[_type == "post" && slug.current == $slug][0]{\n  _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  title,\n  slug,\n  canonicalUrl,\n  description,\n  previewText,\n  availableFrom,\n  keywords,\n  points,\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  content[] {\n    ...,\n    _type == \'imageWithMetadata\' => {\n      ...,\n      asset->{\n        _id,\n        url,\n        metadata {\n          dimensions {\n            aspectRatio,\n            width,\n            height\n          }\n        }\n      }\n    }\n  },\n  priority,\n  // Forh\xE5ndsgenerert opplesning, se utils/tts. Mangler den, vises ikke avspilleren.\n  "audioUrl": *[_type == "postAudio" && _id == "audio-" + ^._id][0].audio.asset->url,\n  \n  summaryOverride,\n  "generatedSummary": select(\n    type == "article" => *[_type == "postSummary" && _id == "summary-" + ^._id][0]{ tldr, audience, prerequisites }\n  ),\n  \n  authors[]->{\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    _rev,\n    fullName,\n    slug,\n    companyName,\n    profilePicture,\n    socialMediaLinks\n  },\n  \n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n\n  tags[]->{\n    _id,\n    slug,\n    name\n  },\n  relatedLinks,\n  series->{\n    _id, \n    title, \n    description,\n    slug,\n    shouldListNonPublishedContent,\n    // U\xE5pnede poster tas bare med hvis serien skal vise dem, og aldri med slug\n    "posts": *[\n      _type == "post" &&\n      references(^._id) &&\n      (availableFrom <= $today || ^.shouldListNonPublishedContent == true)\n    ] | order(availableFrom asc) {\n      _id,\n      title,\n      availableFrom,\n      "slug": select(availableFrom <= $today => slug),\n      "isAvailable": availableFrom <= $today\n    }\n  }\n}': POST_BY_SLUG_RESULT
     '*[_type == "post" && availableFrom == $date && (length(string::split(pt::text(content), \' \')) > 0 || podcastLength != null)] | order(priority desc) {\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n  type,\n}': POSTS_BY_YEAR_AND_DATE_RESULT
     '{\n  "tags": *[_type == "tag"] | order(name asc),\n  "tagRefs": *[_type == "post" && defined(tags)].tags[]._ref\n}': ALL_CATEGORIES_RESULT
     '{\n  "posts": *[\n    _type == "post" && \n    $t in tags[]->.slug &&\n    availableFrom <= $today\n  ] | order(availableFrom desc)[$start...$end] {\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n  type,\n},\n  "totalCount": count(*[\n    _type == "post" && \n    $t in tags[]->.slug &&\n    availableFrom <= $today\n  ]),\n  "tag": *[_type == "tag" && slug == $t][0] {\n    name,\n    slug\n  }\n}': TAG_WITH_POSTS_QUERY_RESULT
     '{\n  "posts": *[\n    _type == "post" && \n    $slug in authors[]->slug.current && \n    availableFrom <= $today\n  ] | order(availableFrom desc)[$start...$end] {\n  _id,\n  title,\n  slug,\n  coverImage {\n  _type,\n  asset->{\n    _id,\n    _type,\n    url,\n    metadata {\n      dimensions {\n        aspectRatio,\n        width,\n        height\n      }\n    }\n  },\n  hotspot,\n  crop,\n  src,\n  alt,\n  hideFromPost\n},\n  availableFrom,\n  "tags": tags[]->.name,\n  "authors": authors[]->.fullName,\n  "summary": coalesce(previewText, pt::text(description)),\n  "wordCount": length(string::split(pt::text(content), \' \')),\n  podcastLength,\n  type,\n},\n  "totalCount": count(*[\n    _type == "post" && \n    $slug in authors[]->slug.current && \n    availableFrom <= $today\n  ]),\n  "author": *[_type == "author" && slug.current == $slug][0] {\n    fullName,\n    description,\n    image,\n    slug,\n    companyName,\n    socialMediaLinks\n  }\n}': AUTHOR_WITH_POSTS_QUERY_RESULT
     '*[\n  _type == "post" && \n  availableFrom <= $today\n] | order(availableFrom desc)[0...250] {\n  _id,\n  title,\n  "slug": slug.current,\n  language,\n  "description": coalesce(previewText, pt::text(description)),\n  availableFrom,\n  "authors": authors[]->.fullName,\n  type,\n  "content": pt::text(content)\n}': RSS_FEED_QUERY_RESULT
     '{\n  "posts": *[_type == "post" && defined(slug.current) && availableFrom <= $today] {\n    "slug": slug.current,\n    availableFrom,\n    _updatedAt\n  },\n  "authors": *[_type == "author" && defined(slug.current)] {\n    "slug": slug.current,\n    _updatedAt\n  },\n  "tags": *[_type == "tag" && defined(slug)] {\n    slug,\n    _updatedAt\n  }\n}': SITEMAP_QUERY_RESULT
-    '*[_type == "post" && slug.current == $slug][0] {\n  title,\n  "slug": slug.current,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  description,\n  previewText,\n  availableFrom,\n  _updatedAt,\n  canonicalUrl,\n  keywords,\n  "authors": authors[]->fullName,\n  "tags": tags[]->name,\n  "series": series->title,\n  relatedLinks,\n  content[] {\n    ...,\n    _type == \'imageWithMetadata\' => {\n      ...,\n      "assetUrl": asset->url\n    }\n  }\n}': POST_MARKDOWN_BY_SLUG_RESULT
-    '*[\n  _type == "post" &&\n  defined(slug.current) &&\n  availableFrom <= $today &&\n  (length(string::split(pt::text(content), \' \')) > 0 || podcastLength != null)\n] | order(availableFrom desc) {\n  title,\n  "slug": slug.current,\n  availableFrom,\n  "summary": coalesce(previewText, pt::text(description))\n}': LLMS_TXT_QUERY_RESULT
+    '*[_type == "post" && slug.current == $slug][0] {\n  title,\n  "slug": slug.current,\n  type,\n  language,\n  embedUrl,\n  podcastLength,\n  description,\n  previewText,\n  availableFrom,\n  _updatedAt,\n  canonicalUrl,\n  keywords,\n  "authors": authors[]->fullName,\n  "tags": tags[]->name,\n  "series": series->title,\n  relatedLinks,\n  \n  summaryOverride,\n  "generatedSummary": select(\n    type == "article" => *[_type == "postSummary" && _id == "summary-" + ^._id][0]{ tldr, audience, prerequisites }\n  ),\n  content[] {\n    ...,\n    _type == \'imageWithMetadata\' => {\n      ...,\n      "assetUrl": asset->url\n    }\n  }\n}': POST_MARKDOWN_BY_SLUG_RESULT
+    '*[\n  _type == "post" &&\n  defined(slug.current) &&\n  availableFrom <= $today &&\n  (length(string::split(pt::text(content), \' \')) > 0 || podcastLength != null)\n] | order(availableFrom desc) {\n  title,\n  "slug": slug.current,\n  availableFrom,\n  // Forfatterens egen tekst f\xF8rst, s\xE5 sammendraget fra \xABKort fortalt\xBB hvis det ikke er skjult\n  "summary": coalesce(\n    previewText,\n    select(summaryOverride.hide != true => coalesce(\n      summaryOverride.tldr,\n      *[_type == "postSummary" && _id == "summary-" + ^._id][0].tldr\n    )),\n    pt::text(description)\n  )\n}': LLMS_TXT_QUERY_RESULT
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too
