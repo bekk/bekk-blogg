@@ -8,6 +8,7 @@ import { ActionFunction } from 'react-router'
 import indexer from 'sanity-algolia'
 import { POST_SEARCH_PROJECTION } from '../../utils/sanity/queries/postQueries'
 import { readClient, writeClient } from '../../utils/sanity/sanity.server'
+import { deletePostSummary, generatePostSummary } from '../../utils/summary/postSummary.server'
 import { deletePostAudio, generatePostAudio } from '../../utils/tts/postAudio.server'
 import { mapWithConcurrency } from '../../utils/tts/synthesize'
 
@@ -16,14 +17,22 @@ const syncClient = readClient.withConfig({ useCdn: false })
 
 type WebhookBody = { ids: { created: string[]; updated: string[]; deleted: string[] } }
 
+const published = (id: string) => !id.startsWith('drafts.') && !id.startsWith('versions.')
+
+const createOpenAI = () => {
+  if (!process.env.OPENAI_API_KEY) {
+    console.warn('OPENAI_API_KEY is not set, skipping AI generation')
+    return null
+  }
+  return new OpenAI({ apiKey: process.env.OPENAI_API_KEY, maxRetries: 4 })
+}
+
 /**
  * Genererer opplesninger for publiserte artikler som er endret, og sletter dem for
  * slettede innlegg. Hashen gjør at innlegg der teksten er uendret (f.eks. etter et
  * like-klikk) hoppes over, så det er trygt å kalle for alle endringer.
  */
 async function syncPostAudio({ ids }: WebhookBody) {
-  const published = (id: string) => !id.startsWith('drafts.') && !id.startsWith('versions.')
-
   // Sletting trenger ikke OpenAI, så det gjøres uansett
   for (const id of ids.deleted.filter(published)) {
     await deletePostAudio(id, writeClient).catch((error) => {
@@ -31,11 +40,10 @@ async function syncPostAudio({ ids }: WebhookBody) {
     })
   }
 
-  if (!process.env.OPENAI_API_KEY) {
-    console.warn('OPENAI_API_KEY is not set, skipping audio generation')
+  const openai = createOpenAI()
+  if (!openai) {
     return
   }
-  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY, maxRetries: 4 })
   const changedIds = [...ids.created, ...ids.updated].filter(published)
   // Stemmen velges ut fra første forfatter, så endres en forfatter, må innleggene
   // deres sjekkes også. Hashen gjør at bare de der stemmegrunnlaget faktisk er endret,
@@ -60,9 +68,37 @@ async function syncPostAudio({ ids }: WebhookBody) {
 }
 
 /**
+ * Genererer «Kort fortalt» for publiserte artikler som er endret, og sletter det
+ * for slettede innlegg. Som for opplesningene hoppes uendrede innlegg over.
+ */
+async function syncPostSummaries({ ids }: WebhookBody) {
+  for (const id of ids.deleted.filter(published)) {
+    await deletePostSummary(id, writeClient).catch((error) => {
+      console.error('Could not delete summary for post', id, error)
+    })
+  }
+
+  const openai = createOpenAI()
+  if (!openai) {
+    return
+  }
+  const changed = [...ids.created, ...ids.updated].filter(published)
+  await mapWithConcurrency(changed, 4, async (id) => {
+    try {
+      const result = await generatePostSummary(id, { sanity: writeClient, openai })
+      if (!['not-article', 'not-eligible', 'unchanged'].includes(result.status)) {
+        console.info('Summary for post', id, result)
+      }
+    } catch (error) {
+      console.error('Could not generate summary for post', id, error)
+    }
+  })
+}
+
+/**
  *  This function receives webhook POSTs from Sanity and updates, creates or
  *  deletes records in the corresponding Algolia indices, and generates
- *  pre-recorded audio for articles.
+ *  pre-recorded audio and summaries for articles.
  */
 export const action: ActionFunction = async ({ request }) => {
   if (request.method !== 'POST') {
@@ -102,8 +138,10 @@ export const action: ActionFunction = async ({ request }) => {
     (post) => ({ ...post, availableFromMillis: new Date(post.availableFrom).getTime() })
   )
   const payload: WebhookBody = JSON.parse(body)
-  // Svarer før lyden er ferdig, så Sanity ikke gir opp og sender webhooken på nytt
+  // Svarer før lyden og sammendragene er ferdige, så Sanity ikke gir opp og sender
+  // webhooken på nytt. De kjøres hver for seg, så sammendragene ikke venter på lyden.
   waitUntil(syncPostAudio(payload))
+  waitUntil(syncPostSummaries(payload))
 
   try {
     await sanityAlgolia.webhookSync(syncClient, payload)

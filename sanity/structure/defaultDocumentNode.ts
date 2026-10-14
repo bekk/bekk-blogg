@@ -27,6 +27,17 @@ export const defaultDocumentNode: DefaultDocumentNodeResolver = (S, {schemaType}
           })
           .title('Innlegg i denne kategorien'),
       ])
+    case 'post':
+      return S.document().views([
+        S.view.form(),
+        S.view
+          .component(DocumentsPane)
+          .options({
+            query: `*[_type == "postSummary" && references($id)]`,
+            params: {id: `_id`},
+          })
+          .title('Kort fortalt (AI)'),
+      ])
     default:
       return S.document().views([S.view.form()])
   }

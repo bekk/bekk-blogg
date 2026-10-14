@@ -25,7 +25,7 @@ Hver mappe har sin egen README med mer om hva som ligger hvor. Oversikter over t
 - Applikasjonen er utviklet med [React Router](https://reactrouter.com/) (framework mode) sammen med [TypeScript](https://www.typescriptlang.org/)
 - [Sanity CMS](https://www.sanity.io/) er brukt som publiseringsløsning til redigering og organisering av innhold
 - [Tailwind](https://tailwindcss.com/) er brukt til styling og som CSS-rammeverk
-- [OpenAI](https://platform.openai.com/docs/guides/text-to-speech) er brukt til opplesning av artiklene. Lyden genereres når en artikkel publiseres, og lagres i Sanity.
+- [OpenAI](https://platform.openai.com/docs/guides/text-to-speech) er brukt til opplesning og sammendrag («Kort fortalt») av artiklene. Begge genereres når en artikkel publiseres, og lagres i Sanity.
 - [Algolia](https://www.algolia.com/) er brukt til søk
 
 ## Oppsett
@@ -97,3 +97,17 @@ npm run audio:generate -- --only <id> --out-dir ./tmp-audio  # lytt på én arti
 ```
 
 Artikler der teksten er uendret, hoppes over, så skriptet kan stoppes og startes på nytt.
+
+### Kort fortalt
+
+Artikler på minst 300 ord får et AI-generert sammendrag øverst, med målgruppe og
+forkunnskaper. Det genereres av den samme webhooken og lagres i egne `postSummary`-dokumenter.
+Redaksjonen kan overstyre eller skjule det fra feltet «Kort fortalt» på innlegget. For å
+generere for arkivet:
+
+```
+cd web
+npm run summary:generate                        # tørrkjøring: viser hva som må genereres
+npm run summary:generate -- --execute           # generer
+npm run summary:generate -- --only <id> --print # se sammendraget for én artikkel uten å lagre i Sanity
+```

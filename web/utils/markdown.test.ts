@@ -132,6 +132,8 @@ describe('postToMarkdown', () => {
     tags: ['Frontend'],
     series: null,
     relatedLinks: [{ _type: 'relatedLink', _key: 'r', title: 'Bekk', url: 'https://bekk.no', description: 'Hjem' }],
+    summaryOverride: null,
+    generatedSummary: null,
     content: [block('Brødtekst')],
   } as const
 
@@ -168,5 +170,47 @@ describe('postToMarkdown', () => {
         '',
       ].join('\n')
     )
+  })
+
+  it('tar med «Kort fortalt» for artikler, med redaksjonens overstyring først', () => {
+    const markdown = postToMarkdown(
+      {
+        ...post,
+        type: 'article',
+        embedUrl: null,
+        relatedLinks: null,
+        summaryOverride: { audience: 'Alle som liker jul' },
+        generatedSummary: { tldr: 'Om luker.', audience: 'Utviklere', prerequisites: null },
+      } as unknown as Parameters<typeof postToMarkdown>[0],
+      'https://www.bekk.christmas/post/2024/03/min-luke'
+    )
+    expect(markdown).toContain(
+      [
+        'Ingressen',
+        '',
+        '## Kort fortalt',
+        '',
+        'Om luker.',
+        '',
+        '- **Passer for:** Alle som liker jul',
+        '',
+        '_Generert med KI_',
+        '',
+        'Brødtekst',
+      ].join('\n')
+    )
+  })
+
+  it('utelater «Kort fortalt» når det er skjult', () => {
+    const markdown = postToMarkdown(
+      {
+        ...post,
+        type: 'article',
+        summaryOverride: { hide: true },
+        generatedSummary: { tldr: 'Om luker.', audience: null, prerequisites: null },
+      } as unknown as Parameters<typeof postToMarkdown>[0],
+      'https://www.bekk.christmas/post/2024/03/min-luke'
+    )
+    expect(markdown).not.toContain('Kort fortalt')
   })
 })

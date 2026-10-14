@@ -1,5 +1,6 @@
 import { cleanControlCharacters } from './controlCharacters'
 import { POST_MARKDOWN_BY_SLUG_RESULT } from './sanity/types/sanity.types'
+import { getShortSummaryLabels, resolveShortSummary } from './summary/shortSummary'
 
 // Gjør Portable Text fra Sanity om til markdown, til markdown-versjonen av postene.
 // Typene er bevisst løse: gammelt innhold følger ikke alltid dagens skjema, og ukjente
@@ -252,6 +253,27 @@ const labels = {
   },
 }
 
+/** «Kort fortalt» som egen seksjon, merket som KI-generert når det er det */
+function shortSummaryToMarkdown(post: MarkdownPost) {
+  const summary = resolveShortSummary(post)
+  if (!summary) {
+    return null
+  }
+  const text = getShortSummaryLabels(post.language)
+  const details = [
+    summary.audience ? `- **${text.audience}:** ${cleanControlCharacters(summary.audience)}` : null,
+    summary.prerequisites ? `- **${text.prerequisites}:** ${cleanControlCharacters(summary.prerequisites)}` : null,
+  ].filter(Boolean)
+  return [
+    `## ${text.title}`,
+    cleanControlCharacters(summary.tldr),
+    details.length ? details.join('\n') : null,
+    summary.isGenerated ? `_${text.generated}_` : null,
+  ]
+    .filter(Boolean)
+    .join('\n\n')
+}
+
 /** Hele posten som et markdown-dokument med metadata i frontmatter */
 export function postToMarkdown(post: MarkdownPost, url: string): string {
   const text = labels[post.language === 'en-US' ? 'english' : 'norwegian']
@@ -286,11 +308,14 @@ export function postToMarkdown(post: MarkdownPost, url: string): string {
         `- [${cleanControlCharacters(link.title ?? link.url)}](${link.url})${link.description ? `: ${cleanControlCharacters(link.description)}` : ''}`
     )
 
+  const shortSummary = post.type === 'article' ? shortSummaryToMarkdown(post) : null
+
   return [
     `---\n${frontmatter.join('\n')}\n---`,
     `# ${cleanControlCharacters(post.title ?? '')}`,
     description || (post.previewText ? cleanControlCharacters(post.previewText) : null),
     embed,
+    shortSummary,
     portableTextToMarkdown(post.content as Block[] | null),
     relatedLinks.length ? `## ${text.relatedLinks}\n\n${relatedLinks.join('\n')}` : null,
   ]
