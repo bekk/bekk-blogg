@@ -11,6 +11,15 @@ Applikasjonen hostes i Vercel:
 - Plausible: https://plausible.io/bekk.christmas
 - Google Search Console: https://search.google.com/search-console?resource_id=sc-domain:bekk.christmas (spør om tilgang)
 
+## Struktur
+
+Repoet består av to separate npm-prosjekter:
+
+- [`web/`](web) – nettsiden
+- [`sanity/`](sanity) – Sanity Studio, der innholdet skrives
+
+Hver mappe har sin egen README med mer om hva som ligger hvor. Oversikter over teknisk gjeld og avhengigheter finner du i [`TEKNISK-GJELD.md`](TEKNISK-GJELD.md) og [`AVHENGIGHETSANALYSE.md`](AVHENGIGHETSANALYSE.md).
+
 ## Teknologier
 
 - Applikasjonen er utviklet med [React Router](https://reactrouter.com/) (framework mode) sammen med [TypeScript](https://www.typescriptlang.org/)
@@ -54,6 +63,7 @@ Før du lager en PR bør disse være grønne (de kjøres også i CI):
 ```
 npm run typecheck
 npm run lint
+npm run format:check
 npm test          # enhetstester (Vitest)
 npm run test:e2e  # ende-til-ende-tester (Playwright)
 ```

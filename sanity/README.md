@@ -1,11 +1,39 @@
-# Sanity Blogging Content Studio
+# sanity – Sanity Studio for bekk.christmas
 
-Congratulations, you have now installed the Sanity Content Studio, an open-source real-time content editing environment connected to the Sanity backend.
+Publiseringsløsningen for [bekk.christmas](https://www.bekk.christmas). Her skriver og organiserer forfattere og redaksjonen artikler, forfattere, kategorier og serier. Studioet kjører på [bekk-blogg-sanity.vercel.app](https://bekk-blogg-sanity.vercel.app).
 
-Now you can do the following things:
+Du trenger tilgang til Sanity-prosjektet (`ah2n1vfr`) for å kjøre det lokalt. Be et teammedlem om tilgang, og se [README-en i rotmappa](../README.md) for miljøvariabler.
 
-- [Read “getting started” in the docs](https://www.sanity.io/docs/introduction/getting-started?utm_source=readme)
-- Check out the example frontend: [React/Next.js](https://github.com/sanity-io/tutorial-sanity-blog-react-next)
-- [Read the blog post about this template](https://www.sanity.io/blog/build-your-own-blog-with-sanity-and-next-js?utm_source=readme)
-- [Join the community Slack](https://slack.sanity.io/?utm_source=readme)
-- [Extend and build plugins](https://www.sanity.io/docs/content-studio/extending?utm_source=readme)
+## Kom i gang
+
+```
+npm install
+npm run dev
+```
+
+Studioet kjører på [http://localhost:3333](http://localhost:3333).
+
+## Kommandoer
+
+| Kommando               | Hva den gjør                                                   |
+| ---------------------- | -------------------------------------------------------------- |
+| `npm run dev`          | Starter studioet lokalt                                        |
+| `npm run build`        | Bygger studioet                                                |
+| `npm run typegen`      | Genererer TypeScript-typer for skjemaet og spørringene i `web` |
+| `npm run lint`         | Linter med oxlint (`lint:fix` for å fikse)                     |
+| `npm run format:check` | Sjekker formatering med oxfmt (`format` for å fikse)           |
+
+## Hvor ligger hva?
+
+- `schemas/documents/` – dokumenttypene: innlegg (`post`), forfattere, kategorier (`tag`), serier og opplesninger (`postAudio`, genereres automatisk)
+- `schemas/objects/` – blokker og felter som brukes i dokumentene, som kodeblokker, bilder og embeds
+- `structure/` – menyen i studioet og forhåndsvisningen av dokumenter
+- `migrations/` – engangsmigreringer av innhold, kjøres med `npx sanity migration run <navn>`
+- `sanity.config.ts` – plugins og oppsett av Presentation-verktøyet, som viser forhåndsvisning av artikler på nettsiden
+- `schema.json` – uttrekk av skjemaet, generert av `npm run typegen`
+
+## Når du endrer skjemaet
+
+Nettsiden bruker typer generert fra skjemaet og GROQ-spørringene i `web/utils/sanity/queries/`. Kjør `npm run typegen` etter endringer i skjemaet eller spørringene, og commit både `schema.json` og `web/utils/sanity/types/sanity.types.ts`.
+
+Legger du til en ny blokktype i artikkelinnholdet, må den også rendres i nettsiden: både som HTML i `web/app/portable-text/` og som markdown i `web/utils/markdown.ts`.

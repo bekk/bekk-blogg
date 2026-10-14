@@ -1,50 +1,49 @@
-# Remix with Tailwind CSS and Typography
+# web – bekk.christmas
 
-The missing starter template for Remix with Tailwind CSS and Typography configured, and absolutely nothing else.
+Nettsiden til [bekk.christmas](https://www.bekk.christmas), Bekks julekalender med fagartikler. Den er laget med [React Router](https://reactrouter.com/) i framework mode (server-rendret), [Tailwind](https://tailwindcss.com/) og TypeScript, og hostes på Vercel. Alt innhold hentes fra [Sanity](../sanity).
 
-```sh
-npx create-remix@latest --template SimeonGriggs/remix-tailwind-typography
+Se [README-en i rotmappa](../README.md) for oppsett av miljøvariabler.
+
+## Kom i gang
+
 ```
-
-- [Remix Docs](https://remix.run/docs)
-- [Tailwind CSS Docs](https://tailwindcss.com/docs)
-- [@tailwindcss/typography Docs](https://tailwindcss.com/docs/typography-plugin)
-
----
-
-# Welcome to Remix + Vite!
-
-📖 See the [Remix docs](https://remix.run/docs) and the [Remix Vite docs](https://remix.run/docs/en/main/guides/vite) for details on supported features.
-
-## Development
-
-Run the Vite dev server:
-
-```shellscript
+npm install
 npm run dev
 ```
 
-## Deployment
+Siden kjører på [http://localhost:5173](http://localhost:5173).
 
-First, build your app for production:
+## Kommandoer
 
-```sh
-npm run build
-```
+| Kommando                 | Hva den gjør                                                     |
+| ------------------------ | ---------------------------------------------------------------- |
+| `npm run dev`            | Starter utviklingsserveren                                       |
+| `npm run build`          | Bygger for produksjon                                            |
+| `npm run typecheck`      | Genererer rutetyper og sjekker TypeScript                        |
+| `npm run lint`           | Linter med oxlint (`lint:fix` for å fikse)                       |
+| `npm run format:check`   | Sjekker formatering med oxfmt (`format` for å fikse)             |
+| `npm test`               | Enhetstester med Vitest                                          |
+| `npm run test:e2e`       | Ende-til-ende-tester med Playwright (starter dev-serveren selv)  |
+| `npm run audio:generate` | Genererer opplesninger for eksisterende artikler (se rot-README) |
 
-Then run the app in production mode:
+Sett `BASE_URL` for å kjøre ende-til-ende-testene mot en server som allerede kjører, f.eks. en preview-deploy: `BASE_URL=https://... npm run test:e2e`.
 
-```sh
-npm start
-```
+## Hvor ligger hva?
 
-Now you'll need to pick a host to deploy it to.
+- `app/routes.ts` – alle rutene. Artiklene ligger på `/post/:år/:dato/:slug`, og hver luke på `/post/:år/:dato`.
+- `app/routes/` – sidene, inkludert RSS (`rss.xml`), `sitemap.xml`, `llms.txt`, markdown-versjoner av artiklene (`.md`) og API-endepunkter for nyhetsbrev og Sanity-webhooken
+- `app/features/` – funksjonsområdene: artikkel, kalender, arkiv, mini-spill, `/skjerm` med mer
+- `app/components/` – delte komponenter, med [shadcn](https://ui.shadcn.com/)-komponenter i `ui/`
+- `app/portable-text/` – rendering av artikkelinnholdet (kodeblokker, bilder, embeds osv.)
+- `utils/calendar.ts` – avgjør hvilke luker som er åpne, regnet i norsk tid
+- `utils/sanity/` – Sanity-klienter, GROQ-spørringer (`queries/`) og genererte typer (`types/`)
+- `utils/tts/` – opplesninger med OpenAI
+- `scripts/` – skript som kjøres manuelt
+- `tests/` – Playwright-tester
 
-### DIY
+## Integrasjoner
 
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-- `build/server`
-- `build/client`
+- **Sanity** – innhold, forhåndsvisning og visual editing fra Sanity Studio
+- **Algolia** – søk. Indeksen oppdateres av Sanity-webhooken (`/api/webhook/sanity`). Mangler Algolia-nøklene, skjules søket.
+- **OpenAI** – opplesninger, generert av samme webhook når en artikkel publiseres, og lagret i Sanity
+- **Brevo** – påmelding til nyhetsbrevet (`/api/newsletter`)
