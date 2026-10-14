@@ -22,13 +22,30 @@ type WebhookBody = { ids: { created: string[]; updated: string[]; deleted: strin
  * like-klikk) hoppes over, så det er trygt å kalle for alle endringer.
  */
 async function syncPostAudio({ ids }: WebhookBody) {
+  const published = (id: string) => !id.startsWith('drafts.') && !id.startsWith('versions.')
+
+  // Sletting trenger ikke OpenAI, så det gjøres uansett
+  for (const id of ids.deleted.filter(published)) {
+    await deletePostAudio(id, writeClient).catch((error) => {
+      console.error('Could not delete audio for post', id, error)
+    })
+  }
+
   if (!process.env.OPENAI_API_KEY) {
     console.warn('OPENAI_API_KEY is not set, skipping audio generation')
     return
   }
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY, maxRetries: 4 })
-  const published = (id: string) => !id.startsWith('drafts.') && !id.startsWith('versions.')
-  const changed = [...ids.created, ...ids.updated].filter(published)
+  const changedIds = [...ids.created, ...ids.updated].filter(published)
+  // Stemmen velges ut fra første forfatter, så endres en forfatter, må innleggene
+  // deres sjekkes også. Hashen gjør at bare de der stemmegrunnlaget faktisk er endret,
+  // genereres på nytt.
+  const postsByChangedAuthors = await writeClient.fetch<string[]>(
+    `*[_type == "post" && authors[0]._ref in *[_type == "author" && _id in $ids]._id]._id`,
+    { ids: changedIds },
+    { perspective: 'published', useCdn: false }
+  )
+  const changed = [...new Set([...changedIds, ...postsByChangedAuthors])]
 
   await mapWithConcurrency(changed, 2, async (id) => {
     try {
@@ -40,11 +57,6 @@ async function syncPostAudio({ ids }: WebhookBody) {
       console.error('Could not generate audio for post', id, error)
     }
   })
-  for (const id of ids.deleted.filter(published)) {
-    await deletePostAudio(id, writeClient).catch((error) => {
-      console.error('Could not delete audio for post', id, error)
-    })
-  }
 }
 
 /**

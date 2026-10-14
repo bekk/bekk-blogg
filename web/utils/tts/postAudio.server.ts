@@ -88,6 +88,7 @@ export function getSourceHash(source: AudioSource, text: string) {
 export type AudioResult =
   | { status: 'not-article' }
   | { status: 'not-eligible' }
+  | { status: 'removed' }
   | { status: 'empty' }
   | { status: 'unchanged' }
   | { status: 'stale' }
@@ -115,12 +116,14 @@ export async function generatePostAudio(postId: string, options: Options): Promi
   const audioId = getAudioDocumentId(postId)
 
   const source = await fetchAudioSource(sanity, postId)
-  if (!source) {
-    return { status: 'not-article' }
-  }
   // Datogrensa ligger her, så skriptet og webhooken alltid er enige
-  if (!isAudioEligible(source.availableFrom)) {
-    return { status: 'not-eligible' }
+  if (!source || !isAudioEligible(source.availableFrom)) {
+    // Er innlegget flyttet ut av datogrensa eller ikke lenger en artikkel, skal
+    // ikke den gamle opplesningen vises
+    if (!dryRun && (await deletePostAudio(postId, sanity))) {
+      return { status: 'removed' }
+    }
+    return { status: source ? 'not-eligible' : 'not-article' }
   }
   const text = getSpokenText(source)
   if (!text) {
@@ -188,12 +191,12 @@ export async function generatePostAudio(postId: string, options: Options): Promi
   return { status: 'generated', characters: text.length, bytes: audio.length, voice }
 }
 
-/** Sletter opplesningen og lydfila når et innlegg slettes */
+/** Sletter opplesningen og lydfila, f.eks. når et innlegg slettes. Gir `true` hvis det fantes en. */
 export async function deletePostAudio(postId: string, sanity: SanityClient) {
   const audioId = getAudioDocumentId(postId)
   const stored = await sanity.fetch<StoredAudio | null>(STORED_AUDIO_QUERY, { id: audioId }, { useCdn: false })
   if (!stored) {
-    return
+    return false
   }
   await sanity.delete(audioId)
   if (stored.assetId) {
@@ -201,4 +204,5 @@ export async function deletePostAudio(postId: string, sanity: SanityClient) {
       console.warn('Could not delete audio asset', stored.assetId, error)
     })
   }
+  return true
 }

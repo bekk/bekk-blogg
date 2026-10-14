@@ -190,4 +190,25 @@ describe('generatePostAudio', () => {
     await expect(generatePostAudio('post', { sanity, openai })).rejects.toThrow('fetch failed')
     expect(deleted).toEqual(['file-ny-mp3'])
   })
+
+  it('fjerner opplesningen når innlegget flyttes utenfor datogrensa', async () => {
+    const deleted: string[] = []
+    const sanity = {
+      fetch: async (query: string) =>
+        query.includes('_type == "post"')
+          ? { _id: 'post', title: 'Tittel', availableFrom: '2022-12-01', content: 'Innhold.' }
+          : { assetId: 'file-gammel-mp3' },
+      delete: async (id: string) => {
+        deleted.push(id)
+      },
+    } as unknown as SanityClient
+    const openai = fakeOpenAI(async () => 'lyd')
+
+    await expect(generatePostAudio('post', { sanity, openai, dryRun: true })).resolves.toEqual({
+      status: 'not-eligible',
+    })
+    expect(deleted).toEqual([])
+    await expect(generatePostAudio('post', { sanity, openai })).resolves.toEqual({ status: 'removed' })
+    expect(deleted).toEqual(['audio-post', 'file-gammel-mp3'])
+  })
 })
