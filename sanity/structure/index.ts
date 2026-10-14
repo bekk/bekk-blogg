@@ -1,5 +1,7 @@
 import {StructureResolver} from 'sanity/structure'
 
+import {contextDocumentTypeName} from '@sanity/assist'
+
 export const structure: StructureResolver = (S) =>
   S.list()
     .title('Content')
@@ -8,4 +10,6 @@ export const structure: StructureResolver = (S) =>
       S.documentTypeListItem('author').title('Forfattere'),
       S.documentTypeListItem('tag').title('Kategorier'),
       S.documentTypeListItem('series').title('Serier'),
+      S.divider(),
+      S.documentTypeListItem(contextDocumentTypeName).title('AI-kontekst'),
     ])

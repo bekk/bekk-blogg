@@ -8,6 +8,7 @@ import {nbNOLocale} from '@sanity/locale-nb-no'
 import {table} from '@sanity/table'
 import {visionTool} from '@sanity/vision'
 
+import {assistPlugin} from './assist'
 import schemas from './schemas/schema'
 import {defaultDocumentNode} from './structure/defaultDocumentNode'
 import {structure} from './structure'
@@ -33,6 +34,7 @@ const config = defineConfig({
     media(),
     codeInput(),
     table(),
+    assistPlugin(),
     presentationTool({
       devMode: process.env.NODE_ENV !== 'production',
       previewUrl: {

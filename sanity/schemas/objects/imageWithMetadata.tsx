@@ -30,7 +30,8 @@ const imageWithMetadata = defineType({
       name: 'alt',
       type: 'string',
       title: 'Alternative text',
-      description: 'Important for SEO and accessiblity.',
+      description:
+        'Important for SEO and accessiblity. Choose «Lag alt-tekst» in the ✨ menu to get a suggestion.',
       validation: (rule) => rule.error('You have to fill out the alternative text.').required(),
     },
   ],
