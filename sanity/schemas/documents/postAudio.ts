@@ -61,7 +61,9 @@ const postAudio = defineType({
     select: {title: 'post.title', generatedAt: 'generatedAt'},
     prepare: ({title, generatedAt}) => ({
       title: title ?? 'Ukjent innlegg',
-      subtitle: generatedAt ? `Generert ${new Date(generatedAt).toLocaleString('nb-NO')}` : undefined,
+      subtitle: generatedAt
+        ? `Generert ${new Date(generatedAt).toLocaleString('nb-NO')}`
+        : undefined,
     }),
   },
 })

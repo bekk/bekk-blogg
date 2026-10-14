@@ -1,13 +1,14 @@
 import { Link } from 'react-router'
+import { isDoorOpen } from 'utils/calendar'
 
 type DayNavigationProps = {
   day: number
   year: number
+  /** Dagens dato i norsk tid (YYYY-MM-DD) */
+  today: string
 }
-export const DayNavigation = ({ day, year }: DayNavigationProps) => {
-  const today = new Date()
-  const nextDate = new Date(year, 11, day + 1)
-  const canShowNextDay = nextDate <= today
+export const DayNavigation = ({ day, year, today }: DayNavigationProps) => {
+  const canShowNextDay = isDoorOpen(year, day + 1, today)
 
   return (
     <div className="flex justify-center gap-4 my-8">

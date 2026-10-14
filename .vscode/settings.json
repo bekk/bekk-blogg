@@ -1,9 +1,7 @@
 {
+  "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "always"
-  },
-  "eslint.options": {
-    "overrideConfigFile": "./web/.eslintrc.cjs"
+    "source.fixAll.oxc": "always"
   }
 }

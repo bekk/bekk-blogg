@@ -22,7 +22,7 @@ Kartlagt 2026-10-12, og ryddet 2026-10-13 på branchen `teknisk-gjeld`.
 | 1 | Forsiden sendte alle til 2025 (hardkodet år). Teaseren lenket ikke noe sted. | ✅ `utils/calendar.ts`: nedtelling fra 1. oktober, ellers siste kalender. Enhetstestet. |
 | 2 | Lukene åpnet feil ved midnatt (UTC på serveren, `today` frosset per instans, låst luke cachet i CDN-en). GROQ `now()` slapp innhold først kl. 01. | ✅ Alt regnes i norsk tid per request. CDN-cachen utløper ved midnatt. `now()` er byttet med `$today`. |
 | 3 | TTS-endepunktet er åpent og caches ikke. | ✅ Opplesningene forhåndsgenereres ved publisering og lagres i Sanity (#367). Alle artikler fra 2023 har lyd. `tts`-appen og Vercel-prosjektet `bekk-blogg-tts` er slettet. |
-| 4 | CI testet ingenting. | ✅ `ci.yml` kjører typecheck, lint og bygg for `web` og `sanity`, og prettier og Vitest for `web`. E2E-testene er gjenopplivet og utvidet. |
+| 4 | CI testet ingenting. | ✅ `ci.yml` kjører typecheck, lint, formatsjekk og bygg for `web` og `sanity`, og Vitest for `web`. E2E-testene er gjenopplivet og utvidet. |
 | 5 | Den delte Sanity-klienten ble endret per request. | ✅ Settes én gang, og preview-options sendes eksplisitt. Verifisert at preview viser utkast og at offentlige sider ikke gjør det. |
 
 ## 🟠 Burde fikses før desember
