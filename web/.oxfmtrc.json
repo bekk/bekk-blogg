@@ -5,7 +5,5 @@
   "semi": false,
   "singleQuote": true,
   "sortPackageJson": false,
-  "ignorePatterns": [
-    "utils/sanity/types/sanity.types.ts"
-  ]
+  "ignorePatterns": ["utils/sanity/types/sanity.types.ts"]
 }

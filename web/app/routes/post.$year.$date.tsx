@@ -81,7 +81,8 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     })
   }
 
-  if (!preview && !isDoorOpen(year, date, getOsloDate())) {
+  const today = getOsloDate()
+  if (!preview && !isDoorOpen(year, date, today)) {
     throw new Response('Date not yet available', {
       status: 425,
       headers: {
@@ -101,6 +102,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       posts: posts ?? [],
       year,
       date,
+      today,
     }
   } catch (error) {
     console.error('Error loading posts:', error)
@@ -111,7 +113,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 export const headers = combinedHeaders
 
 export default function DateRoute() {
-  const { date, year, posts } = useLoaderData<typeof loader>()
+  const { date, year, posts, today } = useLoaderData<typeof loader>()
 
   return (
     <div className="flex flex-col">
@@ -125,7 +127,7 @@ export default function DateRoute() {
         </div>
         <div>
           <PostPreviewList posts={posts} />
-          <DayNavigation day={Number(date)} year={Number(year)} />
+          <DayNavigation day={Number(date)} year={Number(year)} today={today} />
         </div>
         <div className="hidden xl:block w-[300px]" aria-hidden="true">
           <GiftRightSideArticle />

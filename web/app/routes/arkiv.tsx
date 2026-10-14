@@ -1,8 +1,10 @@
-import { Link, MetaFunction } from 'react-router'
+import { Link, MetaFunction, useRouteLoaderData } from 'react-router'
 import { GiftsWithBadge } from '~/features/archive/svgs/GiftsWithBadge'
 import { motion } from 'motion/react'
 
 import { useTextZoomScale } from '~/hooks/useTextZoomScale'
+import type { loader as rootLoader } from '~/root'
+import { FIRST_CALENDAR_YEAR } from 'utils/calendar'
 
 export const meta: MetaFunction = () => {
   const title = `Julekalendere fra Bekk Christmas`
@@ -24,12 +26,7 @@ export const meta: MetaFunction = () => {
 }
 
 export default function ArchiveRoute() {
-  let currentYear = new Date().getFullYear()
-  if (new Date().getMonth() < 11) {
-    currentYear -= 1
-  }
-
-  const startYear = 2017
+  const latestCalendarYear = useRouteLoaderData<typeof rootLoader>('root')?.latestCalendarYear ?? FIRST_CALENDAR_YEAR
   const availableYears: number[] = []
 
   const textZoomScale = useTextZoomScale()
@@ -37,7 +34,7 @@ export default function ArchiveRoute() {
   const giftWidth = Math.round(340 * textZoomScale)
   const giftHeight = Math.round(160 * textZoomScale)
 
-  for (let i = currentYear; i >= startYear; i--) {
+  for (let i = latestCalendarYear; i >= FIRST_CALENDAR_YEAR; i--) {
     availableYears.push(i)
   }
 

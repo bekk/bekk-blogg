@@ -86,6 +86,8 @@ Alle fire er verifisert empirisk, ikke antatt. De ble kodet inn i `.github/renov
 | `typescript` (i `web`) | 6.0.3 | `typescript-eslint@8.70` peer-er `typescript <6.1.0`. TS 7 ville brekke linting. |
 | `algoliasearch` | 4.25.3 | `sanity-algolia@1.1.0` avhenger av `algoliasearch: ^4`, er sist oppdatert feb. 2025 og har ingen etterfølger. Se under. |
 
+> **Oppdatering:** ESLint er byttet ut med oxlint (#371). Pinningen av `eslint` gjelder dermed ikke lenger, og `typescript` er ikke lenger blokkert av `typescript-eslint`.
+
 ### Oppdatering: React Router 8 ble likevel tatt inn
 
 *Lagt til 2026-10-13.* Tabellen over sa først at React Router ble holdt på 7.18.3. Det

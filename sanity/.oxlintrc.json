@@ -1,21 +1,13 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": [
-    "react",
-    "jsx-a11y",
-    "typescript"
-  ],
+  "plugins": ["react", "jsx-a11y", "typescript"],
   "categories": {
     "correctness": "off"
   },
   "env": {
     "builtin": true
   },
-  "ignorePatterns": [
-    ".sanity/",
-    "dist/",
-    "node_modules/"
-  ],
+  "ignorePatterns": [".sanity/", "dist/", "node_modules/"],
   "rules": {
     "constructor-super": "error",
     "for-direction": "error",
@@ -23,10 +15,7 @@
     "no-case-declarations": "warn",
     "no-class-assign": "warn",
     "no-compare-neg-zero": "warn",
-    "no-cond-assign": [
-      "warn",
-      "except-parens"
-    ],
+    "no-cond-assign": ["warn", "except-parens"],
     "no-const-assign": "error",
     "no-constant-condition": [
       "warn",
@@ -202,9 +191,7 @@
   },
   "overrides": [
     {
-      "files": [
-        "**/*.ts?(x)"
-      ],
+      "files": ["**/*.ts?(x)"],
       "rules": {
         "no-dupe-class-members": "off",
         "typescript/no-dupe-class-members": "error",
@@ -245,9 +232,7 @@
       }
     },
     {
-      "files": [
-        "migrations/**/*.js"
-      ],
+      "files": ["migrations/**/*.js"],
       "env": {
         "node": true
       }

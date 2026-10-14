@@ -1,25 +1,16 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": [
-    "react",
-    "jsx-a11y",
-    "typescript"
-  ],
+  "plugins": ["react", "jsx-a11y", "typescript"],
+  "categories": {
+    "correctness": "off"
+  },
   "env": {
     "builtin": true,
     "es2026": true,
     "browser": true,
     "node": true
   },
-  "ignorePatterns": [
-    "**/.server",
-    "**/.client",
-    "build/**",
-    "dist/",
-    "node_modules/",
-    "*.min.js",
-    ".react-router/"
-  ],
+  "ignorePatterns": ["**/.server", "**/.client", "build/**", "dist/", "node_modules/", "*.min.js", ".react-router/"],
   "rules": {
     "constructor-super": "error",
     "for-direction": "error",
@@ -115,15 +106,7 @@
     "jsx-a11y/interactive-supports-focus": [
       "error",
       {
-        "tabbable": [
-          "button",
-          "checkbox",
-          "link",
-          "searchbox",
-          "spinbutton",
-          "switch",
-          "textbox"
-        ]
+        "tabbable": ["button", "checkbox", "link", "searchbox", "spinbutton", "switch", "textbox"]
       }
     ],
     "jsx-a11y/label-has-associated-control": "error",
@@ -135,101 +118,37 @@
     "jsx-a11y/no-interactive-element-to-noninteractive-role": [
       "error",
       {
-        "tr": [
-          "none",
-          "presentation"
-        ],
-        "canvas": [
-          "img"
-        ]
+        "tr": ["none", "presentation"],
+        "canvas": ["img"]
       }
     ],
     "jsx-a11y/no-noninteractive-element-interactions": [
       "error",
       {
-        "handlers": [
-          "onClick",
-          "onError",
-          "onLoad",
-          "onMouseDown",
-          "onMouseUp",
-          "onKeyPress",
-          "onKeyDown",
-          "onKeyUp"
-        ],
-        "alert": [
-          "onKeyUp",
-          "onKeyDown",
-          "onKeyPress"
-        ],
-        "body": [
-          "onError",
-          "onLoad"
-        ],
-        "dialog": [
-          "onKeyUp",
-          "onKeyDown",
-          "onKeyPress"
-        ],
-        "iframe": [
-          "onError",
-          "onLoad"
-        ],
-        "img": [
-          "onError",
-          "onLoad"
-        ]
+        "handlers": ["onClick", "onError", "onLoad", "onMouseDown", "onMouseUp", "onKeyPress", "onKeyDown", "onKeyUp"],
+        "alert": ["onKeyUp", "onKeyDown", "onKeyPress"],
+        "body": ["onError", "onLoad"],
+        "dialog": ["onKeyUp", "onKeyDown", "onKeyPress"],
+        "iframe": ["onError", "onLoad"],
+        "img": ["onError", "onLoad"]
       }
     ],
     "jsx-a11y/no-noninteractive-element-to-interactive-role": [
       "error",
       {
-        "ul": [
-          "listbox",
-          "menu",
-          "menubar",
-          "radiogroup",
-          "tablist",
-          "tree",
-          "treegrid"
-        ],
-        "ol": [
-          "listbox",
-          "menu",
-          "menubar",
-          "radiogroup",
-          "tablist",
-          "tree",
-          "treegrid"
-        ],
-        "li": [
-          "menuitem",
-          "menuitemradio",
-          "menuitemcheckbox",
-          "option",
-          "row",
-          "tab",
-          "treeitem"
-        ],
-        "table": [
-          "grid"
-        ],
-        "td": [
-          "gridcell"
-        ],
-        "fieldset": [
-          "radiogroup",
-          "presentation"
-        ]
+        "ul": ["listbox", "menu", "menubar", "radiogroup", "tablist", "tree", "treegrid"],
+        "ol": ["listbox", "menu", "menubar", "radiogroup", "tablist", "tree", "treegrid"],
+        "li": ["menuitem", "menuitemradio", "menuitemcheckbox", "option", "row", "tab", "treeitem"],
+        "table": ["grid"],
+        "td": ["gridcell"],
+        "fieldset": ["radiogroup", "presentation"]
       }
     ],
     "jsx-a11y/no-noninteractive-tabindex": [
       "error",
       {
         "tags": [],
-        "roles": [
-          "tabpanel"
-        ],
+        "roles": ["tabpanel"],
         "allowExpressionValues": true
       }
     ],
@@ -238,14 +157,7 @@
       "error",
       {
         "allowExpressionValues": true,
-        "handlers": [
-          "onClick",
-          "onMouseDown",
-          "onMouseUp",
-          "onKeyPress",
-          "onKeyDown",
-          "onKeyUp"
-        ]
+        "handlers": ["onClick", "onMouseDown", "onMouseUp", "onKeyPress", "onKeyDown", "onKeyUp"]
       }
     ],
     "jsx-a11y/role-has-required-aria-props": "error",
@@ -269,9 +181,7 @@
   },
   "overrides": [
     {
-      "files": [
-        "**/*.{ts,tsx}"
-      ],
+      "files": ["**/*.{ts,tsx}"],
       "rules": {
         "no-array-constructor": "error",
         "no-unused-expressions": "error",
@@ -293,7 +203,7 @@
         "typescript/prefer-namespace-keyword": "error",
         "typescript/triple-slash-reference": "error",
         "no-unused-vars": [
-          "warn",
+          "error",
           {
             "vars": "all",
             "varsIgnorePattern": "^_",
@@ -307,9 +217,7 @@
   ],
   "settings": {
     "react": {
-      "formComponents": [
-        "Form"
-      ],
+      "formComponents": ["Form"],
       "linkComponents": [
         {
           "name": "Link",
