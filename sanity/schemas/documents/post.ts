@@ -12,6 +12,10 @@ const post = defineType({
       name: 'author',
     },
     {
+      title: 'Deling',
+      name: 'sharing',
+    },
+    {
       title: 'Admin',
       name: 'admin',
     },
@@ -126,7 +130,8 @@ const post = defineType({
     },
     {
       title: 'Preview-tekst',
-      description: 'Tekst som vises i dagsoppsummeringen og på sosiale medier',
+      description:
+        'Tekst som vises i dagsoppsummeringen og på sosiale medier. Velg «Foreslå preview-tekst» i ✨-menyen for å få et forslag.',
       name: 'previewText',
       type: 'text',
       group: 'author',
@@ -149,7 +154,8 @@ const post = defineType({
           name: 'alt',
           type: 'string',
           title: 'Alternativ tekst',
-          description: 'Viktig for SEO og tilgjengelighet.',
+          description:
+            'Viktig for SEO og tilgjengelighet. Velg «Lag alt-tekst» i ✨-menyen for å få et forslag.',
           validation: (rule) =>
             rule
               .custom((alt, context) => {
@@ -300,6 +306,16 @@ const post = defineType({
       ],
       hidden: ({document}) => document?.type !== 'article',
       group: 'author',
+    },
+    {
+      title: 'LinkedIn-post',
+      name: 'linkedInPost',
+      description:
+        'Utkast til en LinkedIn-post du kan kopiere og poste selv. Velg «Skriv LinkedIn-post» i ✨-menyen for å få et forslag. Vises ikke på nettsiden.',
+      type: 'text',
+      rows: 8,
+      group: 'sharing',
+      hidden: ({document}) => document?.type !== 'article',
     },
     {
       title: 'Publiseringsdato',

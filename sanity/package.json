@@ -21,6 +21,7 @@
   ],
   "dependencies": {
     "@opengraphninja/react": "0.2.2",
+    "@sanity/assist": "6.2.5",
     "@sanity/code-input": "7.3.8",
     "@sanity/locale-nb-no": "1.1.39",
     "@sanity/table": "3.1.16",

@@ -14,6 +14,8 @@ const postSummary = defineType({
   name: 'postSummary',
   type: 'document',
   readOnly: true,
+  // Skrives av webhooken, så AI Assist skal ikke røre dem
+  options: {aiAssist: {exclude: true}},
   fields: [
     defineField({
       title: 'Innlegg',
