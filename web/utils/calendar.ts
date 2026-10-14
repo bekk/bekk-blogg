@@ -76,3 +76,9 @@ export function getSecondsUntilOsloMidnight(now: Date = new Date()): number {
   const tomorrow = new Date(Date.UTC(year, month - 1, day + 1)).toISOString().slice(0, 10)
   return Math.max(0, Math.ceil((getOsloMidnight(tomorrow).getTime() - now.getTime()) / 1000))
 }
+
+/** Stien til en post, f.eks. `/post/2024/03/min-artikkel` */
+export function getPostPath(availableFrom: string, slug: string): string {
+  const { year, day } = parseIsoDate(availableFrom)
+  return `/post/${year}/${String(day).padStart(2, '0')}/${encodeURIComponent(slug)}`
+}

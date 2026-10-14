@@ -208,3 +208,43 @@ export const SITEMAP_QUERY = defineQuery(`{
     _updatedAt
   }
 }`)
+
+// Markdown-versjonen av en post, se routes/post.markdown.ts
+export const POST_MARKDOWN_BY_SLUG = defineQuery(`*[_type == "post" && slug.current == $slug][0] {
+  title,
+  "slug": slug.current,
+  type,
+  language,
+  embedUrl,
+  podcastLength,
+  description,
+  previewText,
+  availableFrom,
+  _updatedAt,
+  canonicalUrl,
+  keywords,
+  "authors": authors[]->fullName,
+  "tags": tags[]->name,
+  "series": series->title,
+  relatedLinks,
+  content[] {
+    ...,
+    _type == 'imageWithMetadata' => {
+      ...,
+      "assetUrl": asset->url
+    }
+  }
+}`)
+
+// Samme utvalg som dagsoversikten, så alle lenkene i llms.txt peker på åpne luker med innhold
+export const LLMS_TXT_QUERY = defineQuery(`*[
+  _type == "post" &&
+  defined(slug.current) &&
+  availableFrom <= $today &&
+  (length(string::split(pt::text(content), ' ')) > 0 || podcastLength != null)
+] | order(availableFrom desc) {
+  title,
+  "slug": slug.current,
+  availableFrom,
+  "summary": coalesce(previewText, pt::text(description))
+}`)

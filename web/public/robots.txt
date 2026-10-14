@@ -14,8 +14,9 @@ Disallow: /resource/preview
 Disallow: /api/
 Disallow: /_remix/
 
-# Add sitemap once implemented
-Sitemap: https://bekk.christmas/sitemap.xml
+Sitemap: https://www.bekk.christmas/sitemap.xml
+
+# Oversikt over innholdet for språkmodeller: https://www.bekk.christmas/llms.txt
 
 # Crawl-delay to be nice to servers
 Crawl-delay: 1
