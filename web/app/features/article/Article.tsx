@@ -105,11 +105,8 @@ export const Article = ({ post }: ArticleProps) => {
             <Border />
           </>
         )}
-        {post.type === 'article' && (
-          <AudioPlayer
-            src={`https://bekk-blogg-tts.vercel.app/tts?id=${post._id}`}
-            slug={post.slug?.current ?? 'unknown'}
-          />
+        {post.type === 'article' && post.audioUrl && (
+          <AudioPlayer src={post.audioUrl} slug={post.slug?.current ?? 'unknown'} />
         )}
         {shouldShowSeriesBlock && post.series && <Series postId={post._id} series={post.series} mobileOnly={false} />}
       </aside>

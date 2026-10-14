@@ -70,6 +70,8 @@ const POST_PROJECTION = groq`{
     }
   },
   priority,
+  // Forhåndsgenerert opplesning, se utils/tts. Mangler den, vises ikke avspilleren.
+  "audioUrl": *[_type == "postAudio" && _id == "audio-" + ^._id][0].audio.asset->url,
   
   authors[]->{
     _id,
