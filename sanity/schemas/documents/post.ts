@@ -52,7 +52,12 @@ const post = defineType({
       group: 'author',
       validation: (rule) => [
         rule.required(),
-        rule.max(96).warning('Lange slugs gir lange og uleselige URL-er'),
+        // Slug er et objekt, så `max()` virker ikke her. Den krasjer valideringen.
+        rule
+          .custom((slug?: {current?: string}) =>
+            (slug?.current?.length ?? 0) > 96 ? 'Lange slugs gir lange og uleselige URL-er' : true,
+          )
+          .warning(),
       ],
     },
     {
