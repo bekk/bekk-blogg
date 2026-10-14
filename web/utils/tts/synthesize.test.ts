@@ -129,11 +129,12 @@ describe('getSourceHash', () => {
 })
 
 describe('isAudioEligible', () => {
-  it('gjelder bare luke-datoer fra og med 2024', () => {
+  it('gjelder bare luke-datoer fra og med 2023', () => {
     expect(isAudioEligible('2025-12-01')).toBe(true)
     expect(isAudioEligible('2026-12-24')).toBe(true)
     expect(isAudioEligible('2024-12-24')).toBe(true)
-    expect(isAudioEligible('2023-12-24')).toBe(false)
+    expect(isAudioEligible('2023-12-24')).toBe(true)
+    expect(isAudioEligible('2022-12-24')).toBe(false)
     expect(isAudioEligible('2025-12-25')).toBe(false)
     expect(isAudioEligible(null)).toBe(false)
   })

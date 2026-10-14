@@ -16,7 +16,7 @@ import {
 import { isDoorDate } from '../calendar'
 
 /** Bare artikler fra og med denne datoen får opplesning. Eldre artikler vises uten avspiller. */
-export const AUDIO_FROM_DATE = '2024-01-01'
+export const AUDIO_FROM_DATE = '2023-01-01'
 
 /** Om et innlegg skal ha opplesning, ut fra datoen */
 export const isAudioEligible = (availableFrom: string | null | undefined) =>
