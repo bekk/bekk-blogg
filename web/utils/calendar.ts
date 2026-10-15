@@ -82,3 +82,14 @@ export function getPostPath(availableFrom: string, slug: string): string {
   const { year, day } = parseIsoDate(availableFrom)
   return `/post/${year}/${String(day).padStart(2, '0')}/${encodeURIComponent(slug)}`
 }
+
+/** Hvor mange kalendere gammel en post må være før vi varsler om at den kan være utdatert */
+export const OLD_POST_AGE_IN_CALENDARS = 3
+
+/**
+ * Om en post er så gammel at innholdet kan være utdatert. Regnes i kalendere, ikke
+ * kalenderår: før 1. desember er fjorårets kalender den nyeste.
+ */
+export function isOldPost(availableFrom: string, today: string): boolean {
+  return getLatestCalendarYear(today) - parseIsoDate(availableFrom).year >= OLD_POST_AGE_IN_CALENDARS
+}

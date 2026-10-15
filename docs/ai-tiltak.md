@@ -15,6 +15,8 @@ Prinsipper uansett hva vi gjør:
 
 - [ ] **1. Relaterte artikler basert på innhold** – embeddings av hver artikkel ved publisering,
       brukt til «les også». Sanity har innebygde embeddings-indekser. Grunnmuren for #2, #5 og #10.
+      «Les også» finnes allerede via Algolia Recommend (`RelatedPosts.tsx`), så embeddings trengs
+      først og fremst for #2 og #5.
 - [ ] **2. Semantisk søk / «Spør julekalenderen»** – søk på mening, evt. korte svar med kildehenvisninger.
 - [ ] **3. Oversettelse norsk ↔ engelsk** – merket som maskinoversatt, med opplesning. Forfatter kan reservere seg.
 - [x] **4. «Kort fortalt» og forkunnskaper** – TL;DR, målgruppe og hva du bør kunne fra før.
@@ -38,6 +40,8 @@ Prinsipper uansett hva vi gjør:
       over hull. Kobles til `temabank`-skillen.
 - [ ] **11. Arkivvedlikehold** – finn utdaterte artikler, vis «denne artikkelen er fra 2018»-varsel
       eller be forfatteren oppdatere.
+  - [x] Varsel på innlegg fra tre kalendere siden eller eldre (`isOldPost` i `utils/calendar.ts`)
+  - [ ] Bruk AI til å finne artikler som faktisk er utdatert, og varsle forfatteren
 
 ## Distribusjon og synlighet
 
