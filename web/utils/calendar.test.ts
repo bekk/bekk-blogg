@@ -7,6 +7,7 @@ import {
   getSecondsUntilOsloMidnight,
   isDoorDate,
   isDoorOpen,
+  isOldPost,
   isTeaserPeriod,
 } from './calendar'
 
@@ -80,5 +81,19 @@ describe('isDoorDate', () => {
     expect(isDoorDate('2025-12-24')).toBe(true)
     expect(isDoorDate('2025-12-25')).toBe(false)
     expect(isDoorDate('2025-11-30')).toBe(false)
+  })
+})
+
+describe('isOldPost', () => {
+  it('varsler for poster fra tre kalendere siden eller eldre', () => {
+    expect(isOldPost('2022-12-10', '2025-12-01')).toBe(true)
+    expect(isOldPost('2019-12-10', '2025-12-01')).toBe(true)
+    expect(isOldPost('2023-12-10', '2025-12-01')).toBe(false)
+    expect(isOldPost('2025-12-01', '2025-12-01')).toBe(false)
+  })
+
+  it('regner årets kalender med først fra 1. desember', () => {
+    expect(isOldPost('2022-12-10', '2025-11-30')).toBe(false)
+    expect(isOldPost('2022-12-10', '2025-12-01')).toBe(true)
   })
 })

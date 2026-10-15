@@ -1,6 +1,7 @@
 import { PortableText } from '@portabletext/react'
 import { Fragment } from 'react'
 import { Link, useActionData, useNavigation } from 'react-router'
+import { isOldPost } from 'utils/calendar'
 import { formatDate } from 'utils/date'
 import { readingTime } from 'utils/readingTime'
 import { POST_BY_SLUG_RESULT, SanityImageAsset } from 'utils/sanity/types/sanity.types'
@@ -9,6 +10,7 @@ import { resolveShortSummary } from 'utils/summary/shortSummary'
 
 import { AudioPlayer } from './AudioPlayer'
 import { LikeContent } from './LikeContent'
+import { OldPostNotice } from './OldPostNotice'
 import { RelatedLinks } from './RelatedLinks'
 import { ShortSummary } from './ShortSummary'
 
@@ -20,9 +22,11 @@ import Series, { shouldShowSeries } from './Series'
 
 type ArticleProps = {
   post: POST_BY_SLUG_RESULT
+  /** Dagens dato i norsk tid fra loaderen, så varselet ikke avhenger av klokka i nettleseren */
+  today: string
 }
 
-export const Article = ({ post }: ArticleProps) => {
+export const Article = ({ post, today }: ArticleProps) => {
   const { state } = useNavigation()
   const actionResponse = useActionData<typeof action>()
 
@@ -114,6 +118,9 @@ export const Article = ({ post }: ArticleProps) => {
         {shouldShowSeriesBlock && post.series && <Series postId={post._id} series={post.series} mobileOnly={false} />}
       </aside>
       <article className="flex flex-col col-start-2 col-end-2 row-start-2 row-end-2 max-md:max-w-(--breakpoint-xl) max-lg:max-w-[475px] max-2lg:max-w-[550px] 2lg:max-w-[675px] xl:pr-10 xl:max-w-3xl 2xl:max-w-4xl">
+        {post.availableFrom && isOldPost(post.availableFrom, today) && (
+          <OldPostNotice availableFrom={post.availableFrom} type={post.type} language={post.language} />
+        )}
         {post?.description ? (
           <div className="text-xl remove-margin">
             <PortableText value={post.description} components={components} />

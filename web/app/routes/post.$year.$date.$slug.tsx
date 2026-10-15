@@ -254,7 +254,7 @@ export default function ArticleRoute() {
           <div className="md:p-8">
             <div className="striped-frame mx-auto max-w-(--breakpoint-2xl)">
               <ArticleHeader />
-              <Article post={data} />
+              <Article post={data} today={params.today} />
             </div>
           </div>
           <div className="w-full flex justify-center">
