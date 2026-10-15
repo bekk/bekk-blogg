@@ -14,7 +14,8 @@ import {
  *
  * Instruksjonene ligger her i stedet for som instruksjoner i Studio, så de er
  * versjonert og like for alle. Aksjonene bruker Agent Actions, som krever at
- * skjemaet er deployet (`sanity schemas deploy`, gjøres også av `sanity deploy`).
+ * skjemaet er deployet med `npx sanity schemas deploy` i `sanity/`. Studio hostes på Vercel,
+ * så `sanity deploy` er ikke riktig kommando her.
  */
 
 const LANGUAGE_NAMES: Record<string, string> = {
