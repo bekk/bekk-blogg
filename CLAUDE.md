@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Prosjektet
 
-bekk.christmas – Bekks julekalender med fagartikler. Alt ligger i npm-prosjektet `web/`: nettsiden (React Router 8 i framework mode med SSR, på Vercel, Tailwind 4) og Sanity Studio (prosjekt `ah2n1vfr`, dataset `bekk-blogg-prod`) i `web/studio/`, servert på `/studio`. `sanity/` inneholder bare en `vercel.json` som videresender det gamle Studio-domenet (bekk-blogg-sanity.vercel.app) til `/studio`.
+bekk.christmas – Bekks julekalender med fagartikler. Alt ligger i npm-prosjektet `web/`: nettsiden (React Router 8 i framework mode med SSR, på Vercel, Tailwind 4) og Sanity Studio (prosjekt `ah2n1vfr`, dataset `bekk-blogg-prod`) i `web/studio/`, servert på `/studio`.
 
 Kode, kommentarer, commit-meldinger og dokumentasjon skrives på norsk. Miljøvariabler ligger i `web/.env` (fra 1Password, se README).
 

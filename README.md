@@ -13,7 +13,7 @@ Applikasjonen hostes i Vercel:
 
 ## Struktur
 
-Alt ligger i [`web/`](web): nettsiden, og Sanity Studio (der innholdet skrives) i [`web/studio/`](web/studio), servert på `/studio`. Mappen [`sanity/`](sanity) videresender bare det gamle Studio-domenet dit.
+Alt ligger i [`web/`](web): nettsiden, og Sanity Studio (der innholdet skrives) i [`web/studio/`](web/studio), servert på `/studio`.
 
 Se [`web/README.md`](web/README.md) for mer om hva som ligger hvor. Oversikter over teknisk gjeld og avhengigheter finner du i [`TEKNISK-GJELD.md`](TEKNISK-GJELD.md) og [`AVHENGIGHETSANALYSE.md`](AVHENGIGHETSANALYSE.md).
 
