@@ -120,9 +120,28 @@ export function ErrorBoundary() {
   return <ErrorPage title={title} description={message} />
 }
 
+const isStudioPath = (pathname: string) => pathname === '/studio' || pathname.startsWith('/studio/')
+
 export function Layout({ children }: { children: React.ReactNode }) {
   const matches = useMatches()
   const { pathname } = useLocation()
+
+  // Studioet har sin egen styling, så det får verken header, Tailwind eller sporing
+  if (isStudioPath(pathname)) {
+    return (
+      <html lang="nb-NO">
+        <head>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <Meta />
+        </head>
+        <body style={{ margin: 0 }}>
+          {children}
+          <Scripts />
+        </body>
+      </html>
+    )
+  }
 
   type PotentialPostData = { initial: { data: { language?: string } } } | undefined
   const postData = (
@@ -171,6 +190,11 @@ const LiveVisualEditing = lazy(() => import('utils/sanity/LiveVisualEditing'))
 
 export default function App() {
   const { ENV, isPreview } = useLoaderData<typeof loader>()
+  const { pathname } = useLocation()
+
+  if (isStudioPath(pathname)) {
+    return <Outlet />
+  }
 
   return (
     <>

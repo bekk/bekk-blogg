@@ -14,6 +14,8 @@ export default [
   route('post/:year/:date/:slug', 'routes/post.$year.$date.$slug.tsx'),
   route('skjerm', 'routes/screen.tsx'),
   route('resource/preview', 'routes/resource.preview.tsx'),
+  // Matcher både /studio og alle understier, som Studioet ruter selv
+  route('studio/*', 'routes/studio.tsx'),
   route('julesveiper', 'routes/julesveiper.tsx'),
   route('rss.xml', 'routes/rss.xml.tsx'),
   route('feed.xml', 'routes/rss.xml.tsx', { id: 'feed' }),
