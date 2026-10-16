@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState, type PointerEvent } from 'react'
 import { createPortal } from 'react-dom'
 import { trackEvent } from 'utils/analytics'
+import { NisseFigur } from '~/components/NisseFigur'
 import { Button } from '~/components/ui/button'
 
 import { harNaddBunnen, steg, type Flate, type Nisse } from './fysikk'
-import { NisseFigur } from './NisseFigur'
 import './nisseregn.css'
 
 /** Hvor mange nisser man kan slippe unna før spillet er over */
