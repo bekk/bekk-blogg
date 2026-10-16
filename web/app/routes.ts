@@ -17,6 +17,8 @@ export default [
   // Matcher både /studio og alle understier, som Studioet ruter selv
   route('studio/*', 'routes/studio.tsx'),
   route('julesveiper', 'routes/julesveiper.tsx'),
+  // Oversikt over easter eggene, som ikke lenkes til fra noe sted
+  route('jule-egg', 'routes/jule-egg.tsx'),
   route('rss.xml', 'routes/rss.xml.tsx'),
   route('feed.xml', 'routes/rss.xml.tsx', { id: 'feed' }),
   route('sitemap.xml', 'routes/sitemap.xml.tsx'),
