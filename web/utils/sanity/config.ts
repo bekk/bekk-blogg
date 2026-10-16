@@ -3,29 +3,22 @@ declare global {
     ENV: {
       SANITY_STUDIO_PROJECT_ID: string
       SANITY_STUDIO_DATASET: string
-      SANITY_STUDIO_URL: string
     }
   }
 }
 
-const {
-  SANITY_STUDIO_PROJECT_ID,
-  SANITY_STUDIO_DATASET,
-  SANITY_STUDIO_URL = 'http://localhost:3333',
-} = typeof document === 'undefined' ? process.env : window.ENV
+const { SANITY_STUDIO_PROJECT_ID, SANITY_STUDIO_DATASET } = typeof document === 'undefined' ? process.env : window.ENV
 
 export const projectId = SANITY_STUDIO_PROJECT_ID!
 export const dataset = SANITY_STUDIO_DATASET!
-export const studioUrl = SANITY_STUDIO_URL!
+// Studioet ligger i web-appen, så stega-lenkene kan peke relativt dit
+export const studioUrl = '/studio'
 
 if (!projectId) {
   throw new Error('Missing SANITY_STUDIO_PROJECT_ID in .env')
 }
 if (!dataset) {
   throw new Error('Missing SANITY_STUDIO_DATASET in .env')
-}
-if (!studioUrl) {
-  throw new Error('Missing SANITY_STUDIO_URL in .env')
 }
 
 export const sanityConfig = {

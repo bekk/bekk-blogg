@@ -13,7 +13,6 @@ env:
   SANITY_WRITE_API_TOKEN: ${{ secrets.SANITY_WRITE_API_TOKEN }}
   SANITY_SESSION_SECRET: ${{ secrets.SANITY_SESSION_SECRET }}
   SANITY_SESSION_API_TOKEN: ${{ secrets.SANITY_SESSION_API_TOKEN }}
-  SANITY_STUDIO_URL: ${{ secrets.SANITY_STUDIO_URL }}
   # Valgfrie: mangler de, skjules søket i stedet for at sidene feiler
   ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
   ALGOLIA_SEARCH_KEY: ${{ secrets.ALGOLIA_SEARCH_KEY }}

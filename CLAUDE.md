@@ -4,21 +4,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Prosjektet
 
-bekk.christmas – Bekks julekalender med fagartikler. Monorepo uten felles rot-`package.json`; to separate npm-prosjekter med hver sin `package-lock.json`:
+bekk.christmas – Bekks julekalender med fagartikler. Alt ligger i npm-prosjektet `web/`: nettsiden (React Router 8 i framework mode med SSR, på Vercel, Tailwind 4) og Sanity Studio (prosjekt `ah2n1vfr`, dataset `bekk-blogg-prod`) i `web/studio/`, servert på `/studio`. `sanity/` inneholder bare en `vercel.json` som videresender det gamle Studio-domenet (bekk-blogg-sanity.vercel.app) til `/studio`.
 
-- `web/` – nettsiden, React Router 8 (framework mode, SSR) på Vercel, Tailwind 4
-- `sanity/` – Sanity Studio (prosjekt `ah2n1vfr`, dataset `bekk-blogg-prod`)
-
-Kode, kommentarer, commit-meldinger og dokumentasjon skrives på norsk. Miljøvariabler ligger i `web/.env` og `sanity/.env.local` (fra 1Password, se README).
+Kode, kommentarer, commit-meldinger og dokumentasjon skrives på norsk. Miljøvariabler ligger i `web/.env` (fra 1Password, se README).
 
 ## Kommandoer
 
-Kjør alltid fra riktig undermappe.
-
-`web/`:
+Kjør fra `web/`:
 
 ```
-npm run dev            # http://localhost:5173
+npm run dev            # http://localhost:5173, Studioet på /studio
 npm run typecheck      # react-router typegen && tsc
 npm run lint           # oxlint
 npm run format:check   # oxfmt --check (npm run format for å fikse)
@@ -28,26 +23,23 @@ npx vitest run -t "testnavn"            # én test
 npm run test:e2e       # Playwright (firefox + webkit), starter dev-serveren selv
 BASE_URL=https://... npm run test:e2e   # mot en kjørende server/preview-deploy
 npm run audio:generate # tørrkjøring av opplesninger, se README
-```
-
-`sanity/`:
-
-```
-npm run dev            # http://localhost:3333
-npx tsc --noEmit
-npm run lint && npm run format:check
 npm run typegen        # se under
+npm run schema:deploy  # deployer skjemaet til Sanity (trengs av AI Assist)
 ```
 
-CI (`.github/workflows/ci.yml`) kjører typecheck, lint, format:check, test og build for begge prosjektene; Playwright kjøres i egen workflow. Husky pre-commit kjører `lint` og `format:check` i `web/`.
+CI (`.github/workflows/ci.yml`) kjører typecheck, lint, format:check, test og build; Playwright kjøres i egen workflow. Husky pre-commit kjører `lint` og `format:check`.
 
-Formatering er ulik i de to prosjektene (`.oxfmtrc.json`): `web` bruker printWidth 120, `sanity` bruker printWidth 100 og ingen mellomrom i `{}`. Ingen semikolon, enkle anførselstegn i begge.
+Formatering (`.oxfmtrc.json`): printWidth 120, ingen semikolon, enkle anførselstegn.
 
 ## Arkitektur
 
 ### Sanity → typer → web
 
-GROQ-spørringene ligger i `web/utils/sanity/queries/*.ts`. `npm run typegen` i `sanity/` ekstraherer skjemaet til `sanity/schema.json`, genererer `web/utils/sanity/types/sanity.types.ts` (resultat-typer som `POST_BY_SLUG_RESULT`, og overloads på klientmetodene) og formaterer filen med webs oxfmt-config. Kjør den etter endringer i skjema (`sanity/schemas/`) eller spørringer, og ikke rediger `sanity.types.ts` for hånd.
+GROQ-spørringene ligger i `web/utils/sanity/queries/*.ts`. `npm run typegen` ekstraherer skjemaet til `web/studio/schema.json`, genererer `web/utils/sanity/types/sanity.types.ts` (resultat-typer som `POST_BY_SLUG_RESULT`, og overloads på klientmetodene) og formaterer filen. Kjør den etter endringer i skjema (`web/studio/schemas/`) eller spørringer, og ikke rediger `sanity.types.ts` for hånd. Sanity CLI bruker mappen med `sanity.config.ts` som prosjektrot, så CLI-kommandoer (typegen, schema deploy, migreringer) kjøres fra `web/studio/`.
+
+### Studioet i web-appen
+
+`web/app/routes/studio.tsx` monterer Studioet på `/studio/*`. Det rendres bare i nettleseren (`clientLoader.hydrate` + `HydrateFallback`) og lastes med `lazy()`, så `sanity` aldri havner i serverbundelen eller i bundlene til resten av siden. `root.tsx` gir `/studio` en egen enkel layout uten header, Tailwind og sporing. Studioet får en utvidet CSP via `generateSecurityHeaders({ studio: true })` i `utils/security.ts`; ser du «Refused to …»-feil i Studioet, er det der det skal inn. Studio-koden kjører i nettleseren, så den kan ikke lese `process.env`. CORS-origins i Sanity er `https://www.bekk.christmas` og `http://localhost:5173`, så Studioet virker ikke på andre porter eller på preview-deploys.
 
 ### Datahenting og forhåndsvisning
 
@@ -61,7 +53,7 @@ All logikk som avgjør hvilke luker som er åpne, ligger i `web/utils/calendar.t
 
 `web/app/routes/api.webhook.sanity.ts` mottar Sanity-webhooks ved publisering og gjør to ting: oppdaterer Algolia-indeksen (søk) og genererer/sletter opplesninger med OpenAI TTS (`web/utils/tts/`) og «Kort fortalt»-sammendrag (`web/utils/summary/`) i bakgrunnen via `waitUntil`. Lyden lagres i Sanity (`postAudio`-dokumenter), og en hash av teksten gjør at uendrede artikler hoppes over. Stemmen avhenger av første forfatter, så forfatterendringer trigger regenerering av forfatterens innlegg. `web/scripts/generate-audio.ts` gjenbruker samme logikk for batch-generering.
 
-En egen webhook på utkast (`web/app/routes/api.webhook.review.ts`) lager AI-tilbakemelding når en forfatter trykker «Be om tilbakemelding» i Studio (`sanity/actions/requestReview.tsx`), som setter `reviewRequestedAt`. Tilbakemeldingen lagres i `review.<postId>` – punktumet gjør dokumentet privat, siden datasettet er offentlig og tilbakemeldingen siterer upubliserte utkast. Bruk samme triks for andre dokumenter som ikke skal kunne leses anonymt.
+En egen webhook på utkast (`web/app/routes/api.webhook.review.ts`) lager AI-tilbakemelding når en forfatter trykker «Be om tilbakemelding» i Studio (`web/studio/actions/requestReview.tsx`), som setter `reviewRequestedAt`. Tilbakemeldingen lagres i `review.<postId>` – punktumet gjør dokumentet privat, siden datasettet er offentlig og tilbakemeldingen siterer upubliserte utkast. Bruk samme triks for andre dokumenter som ikke skal kunne leses anonymt.
 
 ### Innhold for maskiner
 

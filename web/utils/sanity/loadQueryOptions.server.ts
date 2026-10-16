@@ -1,6 +1,7 @@
 import type { loadQuery } from '@sanity/react-loader'
 import { getSession } from 'utils/sessions'
 
+import { studioUrl } from './config'
 import { readClient } from './sanity.server'
 
 export async function loadQueryOptions(
@@ -20,7 +21,7 @@ export async function loadQueryOptions(
     options: {
       perspective: preview ? 'drafts' : 'published',
       useCdn: !preview,
-      stega: preview ? { enabled: true, studioUrl: process.env.SANITY_STUDIO_URL } : false,
+      stega: preview ? { enabled: true, studioUrl } : false,
     },
   }
 }

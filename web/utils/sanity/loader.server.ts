@@ -1,4 +1,5 @@
 import { queryStore } from './loader'
+import { studioUrl } from './config'
 import { readClient } from './sanity.server'
 
 type LoadQueryOptions = NonNullable<Parameters<typeof queryStore.loadQuery>[2]>
@@ -19,7 +20,7 @@ export const publishedQueryOptions: LoadQueryOptions = {
 queryStore.setServerClient(
   readClient.withConfig({
     perspective: 'published',
-    stega: { enabled: false, studioUrl: process.env.SANITY_STUDIO_URL },
+    stega: { enabled: false, studioUrl },
   })
 )
 

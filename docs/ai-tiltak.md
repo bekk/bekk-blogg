@@ -30,7 +30,7 @@ Prinsipper uansett hva vi gjør:
 
 - [ ] **8. Metadata-hjelp i Studio** – forslag til `description`, `previewText`, `keywords`, tags og
       ikke minst alt-tekst på bilder (UU). Se Sanity AI Assist.
-  - [x] AI Assist med egne feltaksjoner (`sanity/assist.ts`): alt-tekst på artikkelens språk,
+  - [x] AI Assist med egne feltaksjoner (`web/studio/assist.ts`): alt-tekst på artikkelens språk,
         `previewText`, `keywords` og utkast til LinkedIn-post (en del av #13)
   - [ ] Forslag til kategori – AI Assist trenger embeddings-indeks for referanser, så vent på #1
   - [ ] Alt-tekst på bilder i arkivet som mangler det (batch med Agent Actions)

@@ -5,7 +5,7 @@ Denne README-filen inneholder informasjon om hvordan du kjører opp applikasjone
 Applikasjonen hostes i Vercel:
 
 - Nettsiden: https://www.bekk.christmas
-- Sanity Studio: https://bekk-blogg-sanity.vercel.app
+- Sanity Studio: https://www.bekk.christmas/studio
 - Vercel: https://vercel.com/bekk/bekk-blogg
 - Logger: https://vercel.com/bekk/bekk-blogg/logs?live=true
 - Plausible: https://plausible.io/bekk.christmas
@@ -13,12 +13,9 @@ Applikasjonen hostes i Vercel:
 
 ## Struktur
 
-Repoet består av to separate npm-prosjekter:
+Alt ligger i [`web/`](web): nettsiden, og Sanity Studio (der innholdet skrives) i [`web/studio/`](web/studio), servert på `/studio`. Mappen [`sanity/`](sanity) videresender bare det gamle Studio-domenet dit.
 
-- [`web/`](web) – nettsiden
-- [`sanity/`](sanity) – Sanity Studio, der innholdet skrives
-
-Hver mappe har sin egen README med mer om hva som ligger hvor. Oversikter over teknisk gjeld og avhengigheter finner du i [`TEKNISK-GJELD.md`](TEKNISK-GJELD.md) og [`AVHENGIGHETSANALYSE.md`](AVHENGIGHETSANALYSE.md).
+Se [`web/README.md`](web/README.md) for mer om hva som ligger hvor. Oversikter over teknisk gjeld og avhengigheter finner du i [`TEKNISK-GJELD.md`](TEKNISK-GJELD.md) og [`AVHENGIGHETSANALYSE.md`](AVHENGIGHETSANALYSE.md).
 
 ## Teknologier
 
@@ -42,9 +39,7 @@ Når du har fått tilgang, gjør følgende:
 
 1. Opprett en fil `.env` i web-mappen.
 2. Kopier innholdet i notatet med samme navn i 1Password og lim det inn i filen din.
-3. Opprett en fil `.env.local` i sanity-mappen.
-4. Kopier innholdet i notatet med samme navn i 1Password og lim det inn i filen din.
-5. Legg til `OPENAI_API_KEY` i `.env` i web-mappen hvis du skal generere opplesninger (se under).
+3. Legg til `OPENAI_API_KEY` i `.env` i web-mappen hvis du skal generere opplesninger (se under).
 
 ### Installasjon
 
@@ -70,15 +65,7 @@ npm run test:e2e  # ende-til-ende-tester (Playwright)
 
 All logikk som avgjør hvilke luker som er åpne ligger i `web/utils/calendar.ts`, og regner i norsk tid.
 
-For å kjøre opp Sanity Studio:
-
-```
-cd sanity
-npm install
-npm run dev
-```
-
-Sanity Studio kjører på [http://localhost:3333](http://localhost:3333)
+Sanity Studio kjører sammen med nettsiden, på [http://localhost:5173/studio](http://localhost:5173/studio). Det må være på port 5173, siden det er den som er godkjent som CORS-origin i Sanity.
 
 ## Annet
 

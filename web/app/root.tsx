@@ -45,7 +45,6 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
       ENV: {
         SANITY_STUDIO_PROJECT_ID: process.env.SANITY_STUDIO_PROJECT_ID,
         SANITY_STUDIO_DATASET: process.env.SANITY_STUDIO_DATASET,
-        SANITY_STUDIO_URL: process.env.SANITY_STUDIO_URL,
         SANITY_STUDIO_API_VERSION: process.env.SANITY_API_VERSION,
       },
       algolia: securedSearchKey && {

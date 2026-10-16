@@ -4,5 +4,6 @@
   "printWidth": 120,
   "semi": false,
   "singleQuote": true,
-  "sortPackageJson": false
+  "sortPackageJson": false,
+  "ignorePatterns": ["studio/schema.json"]
 }

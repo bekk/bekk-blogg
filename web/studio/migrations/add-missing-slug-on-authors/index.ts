@@ -1,4 +1,4 @@
-import {at, defineMigration, patch, setIfMissing} from 'sanity/migrate'
+import { at, defineMigration, patch, setIfMissing } from 'sanity/migrate'
 import slugify from 'slugify'
 
 /**
@@ -13,7 +13,7 @@ export default defineMigration({
       const authorName = document.fullName
       if (authorName && !document.slug) {
         console.log('Missing slug for author:', authorName)
-        const authorSlug = slugify(authorName.toString(), {lower: true, strict: true, trim: true})
+        const authorSlug = slugify(authorName.toString(), { lower: true, strict: true, trim: true })
         yield patch(document._id, [at('slug.current', setIfMissing(authorSlug))])
       }
     }

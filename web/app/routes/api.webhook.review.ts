@@ -15,7 +15,7 @@ const PayloadSchema = z.object({
 /**
  * Tar imot webhooken som Sanity sender når en forfatter trykker «Be om
  * tilbakemelding» i Studio, og lager tilbakemeldingen i bakgrunnen. Se
- * utils/review og dokumentaksjonen i sanity/actions.
+ * utils/review og dokumentaksjonen i studio/actions.
  */
 export const action: ActionFunction = async ({ request }) => {
   const webhook = await readSanityWebhook(request)
