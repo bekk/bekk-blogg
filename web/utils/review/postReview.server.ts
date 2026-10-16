@@ -107,13 +107,19 @@ export async function generatePostReview(
     model: REVIEW_MODEL,
   }
 
-  const markdown = [portableTextToMarkdown(source.description), portableTextToMarkdown(source.content)]
-    .filter(Boolean)
-    .join('\n\n')
+  const description = portableTextToMarkdown(source.description)
+  const content = portableTextToMarkdown(source.content)
+  const markdown = [description, content].filter(Boolean).join('\n\n')
 
   try {
     const [review, deadLinks] = await Promise.all([
-      reviewPost(openai, { title: source.title, markdown, language: source.language, today: getOsloDate() }),
+      reviewPost(openai, {
+        title: source.title,
+        description,
+        content,
+        language: source.language,
+        today: getOsloDate(),
+      }),
       findDeadLinks(extractLinks(markdown, source.relatedLinks ?? [])),
     ])
     // En nyere forespørsel kan ha blitt ferdig mens vi jobbet. Da skal ikke denne overskrive den.
@@ -124,8 +130,9 @@ export async function generatePostReview(
       ...base,
       status: 'done',
       summary: review.summary,
-      strengths: review.strengths,
       items: withKeys(review.items),
+      factChecks: withKeys(review.factChecks),
+      nextStep: review.nextStep,
       deadLinks: withKeys(deadLinks),
       generatedAt: new Date().toISOString(),
     })

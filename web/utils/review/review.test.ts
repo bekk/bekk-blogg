@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import { classifyLinkResult, extractLinks } from './links'
 import { getReviewDecision, getReviewDocumentId } from './postReview.server'
-import { getReviewInstructions } from './review'
+import { countWords, getReviewInput, getReviewInstructions } from './review'
 
 describe('getReviewDocumentId', () => {
   it('bruker samme private id for utkast og publisert innlegg', () => {
@@ -55,5 +55,26 @@ describe('getReviewInstructions', () => {
   it('svarer på artikkelens språk og kjenner dagens dato', () => {
     expect(getReviewInstructions({ language: 'en-US', today: '2026-10-15' })).toContain('Svar på English')
     expect(getReviewInstructions({ language: null, today: '2026-10-15' })).toContain('Dagens dato er 2026-10-15')
+  })
+
+  it('tar med begge skillene', () => {
+    const instructions = getReviewInstructions({ language: null, today: '2026-10-15' })
+    expect(instructions).toContain('### Modul 3 – kvalitetssikring')
+    expect(instructions).toContain('## Norsk typografi')
+  })
+})
+
+describe('countWords', () => {
+  it('teller ord i brødteksten, men ikke kode eller tegnsetting', () => {
+    expect(countWords('Hei på deg – dette er *fem* ord.\n\n```ts\nconst a = 1\n```\n\n## Slutt')).toBe(8)
+  })
+})
+
+describe('getReviewInput', () => {
+  it('skiller tittel, ingress og brødtekst og oppgir antall ord', () => {
+    const input = getReviewInput({ title: null, description: 'Kort ingress', content: 'To ord' })
+    expect(input).toContain('<tittel>(uten tittel)</tittel>')
+    expect(input).toContain('<ingress>\nKort ingress\n</ingress>')
+    expect(input).toContain('<brødtekst ord="2">')
   })
 })

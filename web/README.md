@@ -27,9 +27,9 @@ Siden kjører på [http://localhost:5173](http://localhost:5173), og Studioet p�
 | `npm run audio:generate`   | Genererer opplesninger for eksisterende artikler (se rot-README)   |
 | `npm run summary:generate` | Genererer «Kort fortalt» for eksisterende artikler (se rot-README) |
 | `npm run typegen`          | Genererer typer fra skjemaet og GROQ-spørringene (se under)        |
-| `npm run schema:deploy`    | Deployer skjemaet til Sanity, som AI Assist trenger                |
+| `npm run schema:deploy`    | Deployer skjemaet til Sanity, som AI Assist trenger (CI gjør det)  |
 
-Når du endrer skjemaet (`studio/schemas/`) eller spørringene (`utils/sanity/queries/`), kjør `npm run typegen` og commit både `studio/schema.json` og `utils/sanity/types/sanity.types.ts`. Kjør `npm run schema:deploy` etter at skjemaendringer er merget. Legger du til en ny blokktype i artikkelinnholdet, må den rendres både i `app/portable-text/` og i `utils/markdown.ts`.
+Når du endrer skjemaet (`studio/schemas/`) eller spørringene (`utils/sanity/queries/`), kjør `npm run typegen` og commit både `studio/schema.json` og `utils/sanity/types/sanity.types.ts`. Skjemaet deployes til Sanity av CI når endringene er merget til main. Legger du til en ny blokktype i artikkelinnholdet, må den rendres både i `app/portable-text/` og i `utils/markdown.ts`.
 
 Sett `BASE_URL` for å kjøre ende-til-ende-testene mot en server som allerede kjører, f.eks. en preview-deploy: `BASE_URL=https://... npm run test:e2e`.
 

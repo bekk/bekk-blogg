@@ -24,10 +24,10 @@ npm run test:e2e       # Playwright (firefox + webkit), starter dev-serveren sel
 BASE_URL=https://... npm run test:e2e   # mot en kjørende server/preview-deploy
 npm run audio:generate # tørrkjøring av opplesninger, se README
 npm run typegen        # se under
-npm run schema:deploy  # deployer skjemaet til Sanity (trengs av AI Assist)
+npm run schema:deploy  # deployer skjemaet til Sanity (trengs av AI Assist), gjøres av CI ved push til main
 ```
 
-CI (`.github/workflows/ci.yml`) kjører typecheck, lint, format:check, test og build; Playwright kjøres i egen workflow. Husky pre-commit kjører `lint` og `format:check`.
+CI (`.github/workflows/ci.yml`) kjører typecheck, lint, format:check, test og build, og deployer Sanity-skjemaet ved push til main (krever secreten `SANITY_DEPLOY_TOKEN`); Playwright kjøres i egen workflow. Husky pre-commit kjører `lint` og `format:check`.
 
 Formatering (`.oxfmtrc.json`): printWidth 120, ingen semikolon, enkle anførselstegn.
 
