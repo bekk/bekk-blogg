@@ -21,6 +21,8 @@ import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
 import { ErrorPage } from './features/error-boundary/ErrorPage'
 import { JumpToContent } from './features/jump-to-content/JumpToContent'
+import { Konsollhilsen } from './features/konsollhilsen/Konsollhilsen'
+import { Snofall } from './features/snofall/Snofall'
 
 import styles from '~/styles/main.css?url'
 import { Route } from './+types/root'
@@ -198,6 +200,8 @@ export default function App() {
   return (
     <>
       <Outlet />
+      <Konsollhilsen />
+      <Snofall />
       {isPreview ? (
         <Suspense fallback={null}>
           <LiveVisualEditing />

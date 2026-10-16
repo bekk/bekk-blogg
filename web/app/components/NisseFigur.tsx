@@ -1,4 +1,6 @@
-/** En liten nisse som står med føttene nederst i midten av viewBoxen */
+import './nisse.css'
+
+/** En liten nisse som står med føttene nederst i midten av viewBoxen. Se `nisse.css` for animasjonene. */
 export const NisseFigur = () => (
   <svg viewBox="0 0 40 52" width="100%" height="100%" aria-hidden="true" className="overflow-visible">
     {/* Bein */}

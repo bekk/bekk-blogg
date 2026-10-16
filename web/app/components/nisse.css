@@ -1,0 +1,49 @@
+/*
+ * Animasjoner for NisseFigur. Elementet rundt figuren skal ha klassen `nisse`, og styres med
+ * `data-tilstand` (`loper` eller `faller`) og `data-retning` (`venstre` eller `hoyre`).
+ * Figuren må ligge i et element med klassen `nisse-kropp` for å kunne snu seg.
+ */
+
+@keyframes nisse-steg {
+  from {
+    transform: rotate(-25deg);
+  }
+  to {
+    transform: rotate(25deg);
+  }
+}
+
+@keyframes nisse-vift {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-6px);
+  }
+}
+
+.nisse-bein-venstre,
+.nisse-bein-hoyre {
+  transform-box: fill-box;
+  transform-origin: top center;
+}
+
+.nisse[data-tilstand='loper'] .nisse-bein-venstre {
+  animation: nisse-steg 0.18s ease-in-out infinite alternate;
+}
+
+.nisse[data-tilstand='loper'] .nisse-bein-hoyre {
+  animation: nisse-steg 0.18s ease-in-out infinite alternate-reverse;
+}
+
+.nisse[data-tilstand='faller'] .nisse-armer {
+  animation: nisse-vift 0.12s ease-in-out infinite alternate;
+}
+
+.nisse-kropp {
+  transition: transform 0.15s;
+}
+
+.nisse[data-retning='venstre'] .nisse-kropp {
+  transform: scaleX(-1);
+}

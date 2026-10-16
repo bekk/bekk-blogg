@@ -1,5 +1,6 @@
 import { LoaderFunctionArgs } from 'react-router'
 import { cleanControlCharacters } from 'utils/controlCharacters'
+import { greetingToLanguageModels } from 'utils/markdown'
 import {
   FIRST_CALENDAR_YEAR,
   getOsloDate,
@@ -54,6 +55,8 @@ export const loader = async ({ url }: LoaderFunctionArgs) => {
 Alle poster finnes som markdown ved å legge til \`.md\` på slutten av URL-en, og lenkene under går dit. Artiklene er skrevet av ansatte i Bekk, de fleste på norsk og noen på engelsk.
 
 ${sections.join('\n\n')}
+
+${greetingToLanguageModels()}
 `
 
   return new Response(body, {

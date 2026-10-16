@@ -1,0 +1,9 @@
+/* Fra rett over toppen til rett under bunnen av skjermen. Snø oppover spiller den baklengs. */
+@keyframes snofall {
+  from {
+    transform: translateY(-60px) rotate(0deg);
+  }
+  to {
+    transform: translateY(calc(100vh + 60px)) rotate(360deg);
+  }
+}
