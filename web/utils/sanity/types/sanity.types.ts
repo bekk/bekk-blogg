@@ -238,6 +238,36 @@ export type PostReference = {
   [internalGroqTypeReferenceTo]?: 'post'
 }
 
+export type PostReview = {
+  _id: string
+  _type: 'postReview'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  post?: PostReference
+  requestedAt?: string
+  status?: 'done' | 'failed'
+  error?: string
+  summary?: string
+  strengths?: Array<string>
+  items?: Array<{
+    category?: string
+    severity?: string
+    quote?: string
+    comment?: string
+    _type: 'reviewItem'
+    _key: string
+  }>
+  deadLinks?: Array<{
+    url?: string
+    reason?: string
+    _type: 'deadLink'
+    _key: string
+  }>
+  model?: string
+  generatedAt?: string
+}
+
 export type PostSummary = {
   _id: string
   _type: 'postSummary'
@@ -352,6 +382,7 @@ export type Post = {
     prerequisites?: string
   }
   linkedInPost?: string
+  reviewRequestedAt?: string
   availableFrom: string
   priority?: number
   points?: number
@@ -671,6 +702,7 @@ export type AllSanitySchemaTypes =
   | SanityImageHotspot
   | Slug
   | PostReference
+  | PostReview
   | PostSummary
   | SanityFileAssetReference
   | PostAudio

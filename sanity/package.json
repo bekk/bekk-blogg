@@ -25,6 +25,7 @@
     "@sanity/code-input": "7.3.8",
     "@sanity/locale-nb-no": "1.1.39",
     "@sanity/table": "3.1.16",
+    "@sanity/ui": "4.4.5",
     "@sanity/vision": "6.13.2",
     "get-youtube-id": "1.0.1",
     "react": "19.3.0",
