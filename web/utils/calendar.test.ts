@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import {
+  isLastDayBeforeChristmas,
   getCalendarStart,
   getLatestCalendarYear,
   getOsloDate,
@@ -95,5 +96,14 @@ describe('isOldPost', () => {
   it('regner årets kalender med først fra 1. desember', () => {
     expect(isOldPost('2022-12-10', '2025-11-30')).toBe(false)
     expect(isOldPost('2022-12-10', '2025-12-01')).toBe(true)
+  })
+})
+
+describe('isLastDayBeforeChristmas', () => {
+  it('er sann bare på lille julaften', () => {
+    expect(isLastDayBeforeChristmas('2026-12-23')).toBe(true)
+    expect(isLastDayBeforeChristmas('2026-12-22')).toBe(false)
+    expect(isLastDayBeforeChristmas('2026-12-24')).toBe(false)
+    expect(isLastDayBeforeChristmas('2026-11-23')).toBe(false)
   })
 })

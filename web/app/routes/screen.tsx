@@ -6,7 +6,7 @@ import {
   useLoaderData,
   useRouteError,
 } from 'react-router'
-import { getDoorDate, getOsloDate, isDoorOpen, parseIsoDate } from 'utils/calendar'
+import { getDoorDate, getOsloDate, isDoorOpen, isLastDayBeforeChristmas, parseIsoDate } from 'utils/calendar'
 import { combinedHeaders } from 'utils/headers'
 import { isNumericString } from 'utils/numbers'
 import { loadQuery } from 'utils/sanity/loader.server'
@@ -14,7 +14,9 @@ import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { POSTS_BY_YEAR_AND_DATE } from 'utils/sanity/queries/postQueries'
 import { POSTS_BY_YEAR_AND_DATE_RESULT } from 'utils/sanity/types/sanity.types'
 
+import { SnowAnimation } from '~/features/calendar/SnowAnimation'
 import { ErrorPage } from '~/features/error-boundary/ErrorPage'
+import { ForbigaendeNisse } from '~/features/screen/ForbigaendeNisse'
 import { useScreenPagination } from '../hooks/useScreenPagination'
 import { LandscapeView } from '~/features/screen/LandscapeView'
 import { PortraitView } from '~/features/screen/PortraitView'
@@ -30,6 +32,8 @@ type ScreenLoaderData = {
   articlePage: number
   rotationIntervalMs: number
   hasDateOverride: boolean
+  /** Lille julaften snør det hele dagen */
+  snow: boolean
 }
 
 export const meta: MetaFunction = () => {
@@ -105,6 +109,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       articlePage,
       rotationIntervalMs,
       hasDateOverride: Boolean(dateOverrideParam),
+      snow: isLastDayBeforeChristmas(formatDate),
     }
 
     // When dateOverride is not present, the same URL should not be cached across days.
@@ -124,7 +129,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export const headers = combinedHeaders
 
 export default function ScreenPreviewRoute() {
-  const { posts, year, date, articleAmount, articlePage, rotationIntervalMs, hasDateOverride } =
+  const { posts, year, date, articleAmount, articlePage, rotationIntervalMs, hasDateOverride, snow } =
     useLoaderData<ScreenLoaderData>()
   const { visiblePosts, currentPage } = useScreenPagination(posts, articleAmount, articlePage, rotationIntervalMs)
   useMidnightRevalidate(hasDateOverride)
@@ -133,6 +138,8 @@ export default function ScreenPreviewRoute() {
     <>
       <div className="landscape:hidden">{PortraitView(visiblePosts, year, date, currentPage)}</div>
       <div className="hidden landscape:block">{LandscapeView(visiblePosts, year, date, currentPage)}</div>
+      {snow && <SnowAnimation />}
+      <ForbigaendeNisse />
     </>
   )
 }

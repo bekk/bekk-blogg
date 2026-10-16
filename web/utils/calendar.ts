@@ -42,6 +42,12 @@ export function isDoorDate(isoDate: string): boolean {
   return month === 12 && day >= 1 && day <= 24
 }
 
+/** Om datoen er lille julaften (23. desember), siste dag før jul */
+export function isLastDayBeforeChristmas(isoDate: string): boolean {
+  const { month, day } = parseIsoDate(isoDate)
+  return month === 12 && day === 23
+}
+
 /** Det siste året der kalenderen har startet (altså 1. desember har passert) */
 export function getLatestCalendarYear(today: string): number {
   const { year, month } = parseIsoDate(today)

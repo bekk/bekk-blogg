@@ -1,12 +1,15 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ClosedDoorSvg } from './doorsSVG/ClosedDoorSVG'
 import { Link } from 'react-router'
 import { motion, Variants } from 'motion/react'
 
 import useMediaQuery from '~/hooks/useMediaQuery'
 import { useTextZoomScale } from '~/hooks/useTextZoomScale'
+import { trackEvent } from 'utils/analytics'
 import { getDoorDate, isDoorOpen } from 'utils/calendar'
 import { OpenDoor } from './doorsSVG/OpenDoor'
+import { Kikkenisse, VARIGHET } from './kikkenisse/Kikkenisse'
+import { replikkFor, stadiumFor, type Stadium } from './kikkenisse/stadier'
 
 type DoorProps = {
   date: number
@@ -21,6 +24,17 @@ const giftRibbonPalette = ['#ED7E87', '#ED7E87', '#D9DCCF']
 export const Door = ({ date, year, today }: DoorProps) => {
   const [isShaking, setIsShaking] = useState(false)
   const [colorIndex] = useState(() => Math.floor(Math.random() * giftWrappingPalette.length))
+  // Easter egg: klikker man mye på en lukket luke, dukker det opp en stadig mer sassy nisse
+  const [klikk, setKlikk] = useState(0)
+  const [nisse, setNisse] = useState<{ id: number; stadium: Stadium; replikk: string | null } | null>(null)
+
+  useEffect(() => {
+    if (!nisse) {
+      return
+    }
+    const timeout = setTimeout(() => setNisse(null), VARIGHET[nisse.stadium] * 1000)
+    return () => clearTimeout(timeout)
+  }, [nisse])
 
   const smallScreen = useMediaQuery('(max-width: 640px)')
   const textZoomScale = useTextZoomScale()
@@ -48,6 +62,18 @@ export const Door = ({ date, year, today }: DoorProps) => {
     if (!isOpenable) {
       setIsShaking(true)
       setTimeout(() => setIsShaking(false), 500)
+
+      const antall = klikk + 1
+      const stadium = stadiumFor(antall)
+      if (stadium) {
+        setNisse({ id: antall, stadium, replikk: replikkFor(antall, date) })
+      }
+      if (stadium === 'rumpe') {
+        trackEvent('easter_egg_kikkenisse_rumpe', { luke: date })
+        setKlikk(0)
+      } else {
+        setKlikk(antall)
+      }
     }
   }
 
@@ -85,7 +111,13 @@ export const Door = ({ date, year, today }: DoorProps) => {
         <motion.div animate={isShaking ? 'shaking' : ''} variants={shakeAnimation} initial={{ x: 0 }} exit={{ x: 0 }}>
           <ClosedDoorSvg date={date} {...doorSize} />
         </motion.div>
+        {nisse && (
+          <Kikkenisse key={nisse.id} stadium={nisse.stadium} replikk={nisse.replikk} bredde={doorSize.width * 0.5} />
+        )}
       </div>
+      <span role="status" className="sr-only">
+        {nisse?.replikk ? `Nissen sier: ${nisse.replikk}` : ''}
+      </span>
     </button>
   )
 }

@@ -13,6 +13,7 @@ type CustomEvent =
   | 'christmas_game_won'
   | 'easter_egg_nisseregn_started'
   | 'easter_egg_nisseregn_lost'
+  | 'easter_egg_kikkenisse_rumpe'
 
 export const trackEvent = (eventName: CustomEvent, options?: Record<string, string | number>) => {
   // Check if DNT is enabled (returns true if user has requested not to be tracked)

@@ -12,6 +12,7 @@ import { AudioPlayer } from './AudioPlayer'
 import { LikeContent } from './LikeContent'
 import { OldPostNotice } from './OldPostNotice'
 import { RelatedLinks } from './RelatedLinks'
+import { Rudolf } from './Rudolf'
 import { ShortSummary } from './ShortSummary'
 
 import { components } from '~/portable-text/Components'
@@ -179,6 +180,7 @@ export const Article = ({ post, today }: ArticleProps) => {
           </div>
         )}
 
+        {post.type === 'article' && <Rudolf key={post._id} language={post.language} />}
         <LikeContent id={post._id} language={post.language} />
       </article>
     </section>

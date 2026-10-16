@@ -47,3 +47,13 @@
 .nisse[data-retning='venstre'] .nisse-kropp {
   transform: scaleX(-1);
 }
+
+/* Fra rett utenfor venstre kant til rett utenfor høyre kant av skjermen */
+@keyframes nisse-gar-forbi {
+  from {
+    transform: translateX(-10rem);
+  }
+  to {
+    transform: translateX(calc(100vw + 2rem));
+  }
+}
