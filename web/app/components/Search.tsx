@@ -96,6 +96,8 @@ function CustomSearchBox({
         Søk etter en artikkel
       </label>
       <input
+        // Nissene i nisseregn-spillet på venteskjermen kan løpe på søkefeltet
+        data-nisse-flate
         id="search"
         type="search"
         value={query}

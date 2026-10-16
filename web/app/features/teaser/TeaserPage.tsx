@@ -1,10 +1,16 @@
+import { lazy, Suspense, useCallback, useState } from 'react'
 import Countdown, { CountdownRendererFn } from 'react-countdown'
 import { Link } from 'react-router'
+import { trackEvent } from 'utils/analytics'
 
 import { PostPreview } from '../post-preview/PostPreview'
 
 import { useHydrated } from '~/hooks/useHydrated'
+import { useKonamiCode } from '~/hooks/useKonamiCode'
 import { TeaserPageFooter } from './TeaserPageFooter'
+
+// Lastes først når noen taster konamikoden
+const Nisseregn = lazy(() => import('./nisseregn/Nisseregn'))
 
 interface CountdownRendererFnProps {
   days: number
@@ -25,7 +31,10 @@ const CountdownRenderer: CountdownRendererFn = ({
     return <h1>Nå skjer det!</h1>
   } else {
     return (
-      <div className="flex justify-center mb-8 gap-2 sm:gap-8 text-lg text-red-berry sm:text-4xl md:text-4xl">
+      <div
+        data-nisse-flate
+        className="flex justify-center mb-8 gap-2 sm:gap-8 text-lg text-red-berry sm:text-4xl md:text-4xl"
+      >
         <NumberWithLabel number={days} label="Dager" />
         <NumberWithLabel number={hours} label="Timer" />
         <NumberWithLabel number={minutes} label="Minutter" />
@@ -51,12 +60,20 @@ type TeaserPageProps = {
 
 export const TeaserPage = ({ launchDate, previousYear }: TeaserPageProps) => {
   const isClientSide = useHydrated()
+  const [nisseregn, setNisseregn] = useState(false)
+  useKonamiCode(() => {
+    if (!nisseregn) {
+      setNisseregn(true)
+      trackEvent('easter_egg_nisseregn_started')
+    }
+  })
+  const lukkNisseregn = useCallback(() => setNisseregn(false), [])
 
   return (
     <div className="flex flex-col justify-between items-center">
       <div className="w-full flex flex-col items-center sm:max-w-4xl flex-grow justify-center mt-6">
         {isClientSide && <Countdown date={launchDate} renderer={CountdownRenderer} />}
-        <div className="mb-12 lg:mb-0">
+        <div data-nisse-flate className="mb-12 lg:mb-0">
           <Link to={`/post/${previousYear}`}>
             <PostPreview
               title="bekk.christmas"
@@ -73,6 +90,11 @@ export const TeaserPage = ({ launchDate, previousYear }: TeaserPageProps) => {
         </div>
       </div>
       <TeaserPageFooter />
+      {nisseregn && (
+        <Suspense fallback={null}>
+          <Nisseregn onLukk={lukkNisseregn} />
+        </Suspense>
+      )}
     </div>
   )
 }

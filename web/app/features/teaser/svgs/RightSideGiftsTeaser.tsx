@@ -5,7 +5,14 @@ export const RightSideGiftsTeaser = () => {
   const width = smallScreen ? 215 : 322
   const height = smallScreen ? 213 : 319
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 322 319" fill="none">
+    <svg
+      data-nisse-flater
+      xmlns="http://www.w3.org/2000/svg"
+      width={width}
+      height={height}
+      viewBox="0 0 322 319"
+      fill="none"
+    >
       <g clipPath="url(#clip0_1_476)">
         <rect width="117.682" height="180.652" transform="translate(114.5 319.086) rotate(-90)" fill="#ED7E87" />
         <rect x="235.278" y="201.404" width="11.3553" height="124.908" fill="#6D0D22" />
