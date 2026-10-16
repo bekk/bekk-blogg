@@ -18,6 +18,8 @@ type Review = {
   summary: string | null
   strengths: string[] | null
   items: ReviewItem[] | null
+  factChecks: Array<{ _key: string; claim: string; hasSource: boolean }> | null
+  nextStep: string | null
   deadLinks: Array<{ _key: string; url: string; reason: string }> | null
   generatedAt: string | null
 }
@@ -31,8 +33,12 @@ const categoryTitles: Record<string, string> = {
   kode: 'Kode',
   fakta: 'Fakta og versjoner',
   struktur: 'Struktur',
+  resonnement: 'Resonnement',
+  særpreg: 'Særpreg',
   ingress: 'Tittel og ingress',
   språk: 'Språk',
+  typografi: 'Typografi',
+  'ai-lyd': 'AI-lyd',
 }
 
 /** Etter så lang tid uten svar har nok noe gått galt, f.eks. at webhooken mangler */
@@ -91,8 +97,9 @@ export function ReviewView({ documentId, document }: Props) {
   if (!review) {
     return (
       <Message>
-        Velg «Be om tilbakemelding» i menyen nederst for å få tilbakemelding på utkastet: kode, fakta, struktur, tittel
-        og ingress, språk og døde lenker. Tilbakemeldingen er generert med AI og gir råd – den endrer ikke teksten.
+        Velg «Be om tilbakemelding» i menyen nederst for å få tilbakemelding på utkastet: struktur, resonnement, fakta,
+        kode, tittel og ingress, språk og døde lenker. Tilbakemeldingen er generert med AI og gir råd – den endrer ikke
+        teksten.
       </Message>
     )
   }
@@ -153,6 +160,20 @@ export function ReviewView({ documentId, document }: Props) {
           </Stack>
         )}
 
+        {(review.factChecks?.length ?? 0) > 0 && (
+          <Stack gap={3}>
+            <Heading size={1}>Faktasjekkliste</Heading>
+            {review.factChecks?.map((check) => (
+              <Text key={check._key}>
+                ☐ {check.claim}{' '}
+                <Text as="span" muted size={1}>
+                  ({check.hasSource ? 'kan sjekkes i oppgitt kilde' : 'mangler kilde'})
+                </Text>
+              </Text>
+            ))}
+          </Stack>
+        )}
+
         {(review.deadLinks?.length ?? 0) > 0 && (
           <Stack gap={3}>
             <Heading size={1}>Døde lenker</Heading>
@@ -164,6 +185,13 @@ export function ReviewView({ documentId, document }: Props) {
                 – {link.reason}
               </Text>
             ))}
+          </Stack>
+        )}
+
+        {review.nextStep && (
+          <Stack gap={3}>
+            <Heading size={1}>Neste steg</Heading>
+            <Text>{review.nextStep}</Text>
           </Stack>
         )}
 

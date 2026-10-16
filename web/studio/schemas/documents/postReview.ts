@@ -45,6 +45,7 @@ const postReview = defineType({
     }),
     defineField({
       title: 'Dette fungerer',
+      description: 'Lages ikke lenger, men finnes i eldre tilbakemeldinger',
       name: 'strengths',
       type: 'array',
       of: [defineArrayMember({ type: 'string' })],
@@ -65,6 +66,26 @@ const postReview = defineType({
           ],
         }),
       ],
+    }),
+    defineField({
+      title: 'Faktasjekkliste',
+      name: 'factChecks',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'factCheck',
+          fields: [
+            defineField({ name: 'claim', title: 'Påstand', type: 'text' }),
+            defineField({ name: 'hasSource', title: 'Har kilde', type: 'boolean' }),
+          ],
+        }),
+      ],
+    }),
+    defineField({
+      title: 'Neste steg',
+      name: 'nextStep',
+      type: 'text',
     }),
     defineField({
       title: 'Døde lenker',

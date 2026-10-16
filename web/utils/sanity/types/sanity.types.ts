@@ -258,6 +258,13 @@ export type PostReview = {
     _type: 'reviewItem'
     _key: string
   }>
+  factChecks?: Array<{
+    claim?: string
+    hasSource?: boolean
+    _type: 'factCheck'
+    _key: string
+  }>
+  nextStep?: string
   deadLinks?: Array<{
     url?: string
     reason?: string
