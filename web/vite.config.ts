@@ -7,6 +7,11 @@ export default defineConfig({
   resolve: {
     tsconfigPaths: true,
   },
+  optimizeDeps: {
+    // Uten entries finner Vite avhengighetene først når de lastes, og må da laste siden på nytt
+    // midt i et besøk. Det gjelder særlig Studioet, som importeres dynamisk.
+    entries: ['./app/**/*.tsx', './studio/Studio.tsx'],
+  },
   plugins: [
     reactRouter(),
     cjsInterop({

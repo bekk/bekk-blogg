@@ -31,7 +31,9 @@ export function isAllowedEmbedHost(hostname: string) {
 // - `unsafe-inline` trengs for React Router sine inline-skript. Nonce hjelper lite så
 //   lenge HTML-en caches i CDN-en, siden samme nonce da gjenbrukes.
 // - `img-src *` trengs fordi lenkeforhåndsvisninger viser bilder fra vilkårlige nettsteder.
-export function generateSecurityHeaders() {
+// - `studio` gir Sanity Studio på /studio tilgang til API-et (inkludert websockets for
+//   sanntidsoppdateringer), uten at resten av siden får det samme.
+export function generateSecurityHeaders({ studio = false }: { studio?: boolean } = {}) {
   const csp = getCSP({
     directives: {
       'default-src': [SELF],
@@ -71,13 +73,16 @@ export function generateSecurityHeaders() {
         'ws-us3.pusher.com',
         '*.algolia.io',
         '*.algolianet.com',
+        ...(studio ? ['*.api.sanity.io', 'wss://*.api.sanity.io', '*.apicdn.sanity.io'] : []),
       ],
       'frame-src': [SELF, ...EMBED_FRAME_HOSTS, 'vercel.live'],
-      'font-src': [SELF],
+      'font-src': [SELF, ...(studio ? ['design-system-static.sanity.io'] : [])],
       'object-src': [NONE],
       'media-src': [SELF, 'cdn.sanity.io'],
       'child-src': [SELF, '*.youtube.com'],
-      'frame-ancestors': ['bekk-blogg-sanity.vercel.app', 'localhost:3333'],
+      // `self` lar Presentation-verktøyet i /studio vise siden i en iframe. De to andre er det
+      // gamle Studioet, som kan fjernes når det er videresendt hit.
+      'frame-ancestors': [SELF, 'bekk-blogg-sanity.vercel.app', 'localhost:3333'],
     },
   })
 
