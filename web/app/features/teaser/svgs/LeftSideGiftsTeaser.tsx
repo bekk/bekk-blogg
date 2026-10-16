@@ -6,7 +6,14 @@ export const LeftSideGiftsTeaser = () => {
   const width = smallScreen ? 465 : 697
   const height = smallScreen ? 173 : 259
   return (
-    <svg width={width} height={height} viewBox="0 0 697 259" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      data-nisse-flater
+      width={width}
+      height={height}
+      viewBox="0 0 697 259"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <path
         d="M322.894 87.1752C299.917 90.6622 268.85 85.7819 285.618 77.1873C299.033 70.3116 316.058 80.981 322.894 87.1752Z"
         stroke="#ED7E87"
