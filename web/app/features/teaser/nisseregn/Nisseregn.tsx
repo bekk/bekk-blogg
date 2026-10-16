@@ -4,6 +4,8 @@ import { trackEvent } from 'utils/analytics'
 import { NisseFigur } from '~/components/NisseFigur'
 import { Button } from '~/components/ui/button'
 
+import { finnEgg } from '~/features/jule-egg/lager'
+
 import { harNaddBunnen, steg, type Flate, type Nisse } from './fysikk'
 import './nisseregn.css'
 
@@ -12,6 +14,8 @@ const MAKS_BOM = 10
 const NISSE_BREDDE = 48
 const NISSE_HOYDE = 56
 const REKORD_NOKKEL = 'nisseregn-rekord'
+/** Så mange nisser må man fange i én runde for å finne jule-egget «Nissefanger» */
+const NISSEFANGER = 25
 
 /**
  * Elementer med `data-nisse-flate` blir flater nissene kan løpe på. For elementer med `data-nisse-flater`
@@ -160,6 +164,12 @@ export default function Nisseregn({ onLukk }: NisseregnProps) {
     }
     // oxlint-disable-next-line react-hooks/exhaustive-deps -- skal bare kjøre når spillet slutter
   }, [ferdig])
+
+  useEffect(() => {
+    if (poeng >= NISSEFANGER) {
+      finnEgg('nissefanger')
+    }
+  }, [poeng])
 
   const fang = (id: number, event: PointerEvent) => {
     // Hindrer at klikket også treffer lenker under nissen

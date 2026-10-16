@@ -20,6 +20,7 @@ import { getSecuredSearchKey } from 'utils/algolia.server'
 import { loadQueryOptions } from 'utils/sanity/loadQueryOptions.server'
 import { generateSecurityHeaders } from 'utils/security'
 import { ErrorPage } from './features/error-boundary/ErrorPage'
+import { JuleEgg } from './features/jule-egg/JuleEgg'
 import { JumpToContent } from './features/jump-to-content/JumpToContent'
 import { Konsollhilsen } from './features/konsollhilsen/Konsollhilsen'
 import { Snofall } from './features/snofall/Snofall'
@@ -202,6 +203,7 @@ export default function App() {
       <Outlet />
       <Konsollhilsen />
       <Snofall />
+      <JuleEgg />
       {isPreview ? (
         <Suspense fallback={null}>
           <LiveVisualEditing />

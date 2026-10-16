@@ -11,7 +11,7 @@ type CustomEvent =
   | 'christmas_game_powerup_used'
   | 'christmas_game_lost'
   | 'christmas_game_won'
-  | 'easter_egg_nisseregn_started'
+  | 'easter_egg_found'
   | 'easter_egg_nisseregn_lost'
   | 'easter_egg_kikkenisse_rumpe'
 

@@ -120,7 +120,13 @@ const POST_PROJECTION = groq`{
       "slug": select(availableFrom <= $today => slug),
       "isAvailable": availableFrom <= $today
     }
-  }
+  },
+  // Alle postene samme dag, med samme filter som dagssiden. Brukes til kudos for å ha lest alt fra én dag.
+  "sameDayPostIds": *[
+    _type == "post" &&
+    availableFrom == ^.availableFrom &&
+    (length(string::split(pt::text(content), ' ')) > 0 || podcastLength != null)
+  ]._id
 }`
 
 export const POST_SEARCH_PROJECTION = groq`{

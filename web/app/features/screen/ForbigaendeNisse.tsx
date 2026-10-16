@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { NisseFigur } from '~/components/NisseFigur'
+import { finnEgg } from '~/features/jule-egg/lager'
 
 /** Hvor lang tid nissen bruker over skjermen, i sekunder */
 const GANGTID = 25
@@ -30,6 +31,7 @@ export const ForbigaendeNisse = () => {
     if (tur === null) {
       return
     }
+    finnEgg('skjermnisse')
     const timeout = setTimeout(() => setTur(null), GANGTID * 1000)
     return () => clearTimeout(timeout)
   }, [tur])

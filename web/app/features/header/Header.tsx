@@ -17,7 +17,7 @@ export const Header = () => {
   return (
     <div className={`flex flex-col gap-8 p-4 md:pb-8 px-4 md:px-10 md:pt-8`}>
       <div className="flex flex-row justify-between items-center gap-4 md:gap-8">
-        <Link to="/" aria-label="Gå til forsiden">
+        <Link to="/" aria-label="Gå til forsiden" data-jule-egg="logo">
           <BekkLogo className="h-auto w-10 md:auto md:w-16 text-red-berry" />
         </Link>
 

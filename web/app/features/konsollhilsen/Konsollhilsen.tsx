@@ -1,4 +1,12 @@
 import { useEffect } from 'react'
+import { finnEgg } from '~/features/jule-egg/lager'
+import { startSnofall } from '~/features/snofall/Snofall'
+
+declare global {
+  interface Window {
+    jul?: () => string
+  }
+}
 
 const NISSE = String.raw`
         *
@@ -26,6 +34,12 @@ export const Konsollhilsen = () => {
       '%cBekk ansetter! Se ledige stillinger på https://www.bekk.no/jobb',
       'color: #a7060e; font-size: 14px; font-weight: bold'
     )
+    console.log('%cPsst! Skriv jul() her og trykk Enter.', 'color: #714319; font-style: italic')
+    window.jul = () => {
+      startSnofall()
+      finnEgg('konsoll')
+      return '🎄 God jul fra alle oss i Bekk!'
+    }
   }, [])
 
   return null
