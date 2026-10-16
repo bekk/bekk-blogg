@@ -1,4 +1,4 @@
-import {createAuthStore, defineConfig, SchemaTypeDefinition} from 'sanity'
+import {defineConfig, SchemaTypeDefinition} from 'sanity'
 import {media} from 'sanity-plugin-media'
 import {defineDocuments, defineLocations, presentationTool} from 'sanity/presentation'
 import {structureTool} from 'sanity/structure'
@@ -94,11 +94,8 @@ const config = defineConfig({
     actions: (prev, {schemaType}) =>
       schemaType === 'post' ? [...prev, RequestReviewAction] : prev,
   },
-  auth: createAuthStore({
-    projectId,
-    dataset,
-    // `mode` ble fjernet i Studio v6 — å erstatte de innebygde providerne
-    // er nå standardoppførselen for en statisk providers-array.
+  auth: {
+    // En statisk providers-array erstatter de innebygde providerne
     providers: [
       {
         name: 'saml',
@@ -107,7 +104,7 @@ const config = defineConfig({
         url: 'https://api.sanity.io/v2021-10-01/auth/saml/login/46187778',
       },
     ],
-  }),
+  },
 })
 
 export default config
