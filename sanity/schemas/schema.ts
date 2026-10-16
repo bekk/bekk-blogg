@@ -2,6 +2,7 @@ import {SchemaTypeDefinition} from 'sanity'
 import author from './documents/author'
 import post from './documents/post'
 import postAudio from './documents/postAudio'
+import postReview from './documents/postReview'
 import postSummary from './documents/postSummary'
 import series from './documents/series'
 import tag from './documents/tag'
@@ -23,6 +24,7 @@ const schema: SchemaTypeDefinition[] = [
   post,
   postAudio,
   postSummary,
+  postReview,
   author,
   tag,
   series,

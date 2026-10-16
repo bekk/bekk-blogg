@@ -1,6 +1,8 @@
 import DocumentsPane from 'sanity-plugin-documents-pane'
 import type {DefaultDocumentNodeResolver} from 'sanity/structure'
 
+import {ReviewView} from './ReviewView'
+
 export const defaultDocumentNode: DefaultDocumentNodeResolver = (S, {schemaType}) => {
   switch (schemaType) {
     case `author`:
@@ -37,6 +39,7 @@ export const defaultDocumentNode: DefaultDocumentNodeResolver = (S, {schemaType}
             params: {id: `_id`},
           })
           .title('Kort fortalt (AI)'),
+        S.view.component(ReviewView).title('Tilbakemelding (AI)'),
       ])
     default:
       return S.document().views([S.view.form()])

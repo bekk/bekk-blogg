@@ -34,8 +34,9 @@ Prinsipper uansett hva vi gjør:
         `previewText`, `keywords` og utkast til LinkedIn-post (en del av #13)
   - [ ] Forslag til kategori – AI Assist trenger embeddings-indeks for referanser, så vent på #1
   - [ ] Alt-tekst på bilder i arkivet som mangler det (batch med Agent Actions)
-- [ ] **9. Redaktør-agent** – leser utkast og gir tilbakemelding på kode som ikke kompilerer,
+- [x] **9. Redaktør-agent** – leser utkast og gir tilbakemelding på kode som ikke kompilerer,
       utdaterte versjoner, døde lenker, språk og ingress. Gir råd, skriver ikke om.
+      «Be om tilbakemelding» i Studio, egen webhook på utkast, `web/utils/review/`.
 - [ ] **10. Kalenderplanlegging** – forslag til publiseringsdato for jevn temafordeling, og oversikt
       over hull. Kobles til `temabank`-skillen.
 - [ ] **11. Arkivvedlikehold** – finn utdaterte artikler, vis «denne artikkelen er fra 2018»-varsel

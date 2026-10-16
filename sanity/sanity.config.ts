@@ -8,6 +8,7 @@ import {nbNOLocale} from '@sanity/locale-nb-no'
 import {table} from '@sanity/table'
 import {visionTool} from '@sanity/vision'
 
+import {RequestReviewAction} from './actions/requestReview'
 import {assistPlugin} from './assist'
 import schemas from './schemas/schema'
 import {defaultDocumentNode} from './structure/defaultDocumentNode'
@@ -88,6 +89,10 @@ const config = defineConfig({
   ],
   schema: {
     types: schemaTypes,
+  },
+  document: {
+    actions: (prev, {schemaType}) =>
+      schemaType === 'post' ? [...prev, RequestReviewAction] : prev,
   },
   auth: createAuthStore({
     projectId,

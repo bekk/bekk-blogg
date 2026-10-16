@@ -318,6 +318,15 @@ const post = defineType({
       hidden: ({document}) => document?.type !== 'article',
     },
     {
+      title: 'Tilbakemelding bestilt',
+      description:
+        'Settes av «Be om tilbakemelding», og trigger webhooken som lager tilbakemeldingen',
+      name: 'reviewRequestedAt',
+      type: 'datetime',
+      hidden: true,
+      options: {aiAssist: {exclude: true}},
+    },
+    {
       title: 'Publiseringsdato',
       name: 'availableFrom',
       description: 'Når innlegget skal publiseres',

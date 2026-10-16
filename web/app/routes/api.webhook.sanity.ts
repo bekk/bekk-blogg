@@ -1,6 +1,5 @@
 // serverless function for handling webhooks
 
-import { isValidSignature, SIGNATURE_HEADER_NAME } from '@sanity/webhook'
 import { waitUntil } from '@vercel/functions'
 import algoliasearch from 'algoliasearch'
 import OpenAI from 'openai'
@@ -8,6 +7,7 @@ import { ActionFunction } from 'react-router'
 import indexer from 'sanity-algolia'
 import { POST_SEARCH_PROJECTION } from '../../utils/sanity/queries/postQueries'
 import { readClient, writeClient } from '../../utils/sanity/sanity.server'
+import { readSanityWebhook } from '../../utils/sanity/webhook.server'
 import { deletePostSummary, generatePostSummary } from '../../utils/summary/postSummary.server'
 import { deletePostAudio, generatePostAudio } from '../../utils/tts/postAudio.server'
 import { mapWithConcurrency } from '../../utils/tts/synthesize'
@@ -101,28 +101,9 @@ async function syncPostSummaries({ ids }: WebhookBody) {
  *  pre-recorded audio and summaries for articles.
  */
 export const action: ActionFunction = async ({ request }) => {
-  if (request.method !== 'POST') {
-    return new Response('Method not allowed', { status: 405 })
-  }
-  const signature = request.headers.get(SIGNATURE_HEADER_NAME)
-  if (typeof signature !== 'string') {
-    return new Response('Missing or malformed signature', { status: 400 })
-  }
-
-  if (!request.body) {
-    return new Response('Missing body', { status: 400 })
-  }
-
-  const secret = process.env.SANITY_WEBHOOK_SECRET
-  if (!secret) {
-    // Uten hemmelighet kan hvem som helst signere med en tom nøkkel, så avvis alt
-    console.error('SANITY_WEBHOOK_SECRET is not set, rejecting webhook')
-    return new Response('Webhook not configured', { status: 500 })
-  }
-
-  const body = await request.text()
-  if (!(await isValidSignature(body, signature, secret))) {
-    return new Response('Invalid signature', { status: 401 })
+  const webhook = await readSanityWebhook(request)
+  if ('error' in webhook) {
+    return webhook.error
   }
 
   const algolia = algoliasearch(process.env.ALGOLIA_APP_ID ?? '', process.env.ALGOLIA_ADMIN_API_KEY ?? '')
@@ -137,7 +118,7 @@ export const action: ActionFunction = async ({ request }) => {
     },
     (post) => ({ ...post, availableFromMillis: new Date(post.availableFrom).getTime() })
   )
-  const payload: WebhookBody = JSON.parse(body)
+  const payload: WebhookBody = JSON.parse(webhook.body)
   // Svarer før lyden og sammendragene er ferdige, så Sanity ikke gir opp og sender
   // webhooken på nytt. De kjøres hver for seg, så sammendragene ikke venter på lyden.
   waitUntil(syncPostAudio(payload))

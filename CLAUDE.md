@@ -61,6 +61,8 @@ All logikk som avgjør hvilke luker som er åpne, ligger i `web/utils/calendar.t
 
 `web/app/routes/api.webhook.sanity.ts` mottar Sanity-webhooks ved publisering og gjør to ting: oppdaterer Algolia-indeksen (søk) og genererer/sletter opplesninger med OpenAI TTS (`web/utils/tts/`) og «Kort fortalt»-sammendrag (`web/utils/summary/`) i bakgrunnen via `waitUntil`. Lyden lagres i Sanity (`postAudio`-dokumenter), og en hash av teksten gjør at uendrede artikler hoppes over. Stemmen avhenger av første forfatter, så forfatterendringer trigger regenerering av forfatterens innlegg. `web/scripts/generate-audio.ts` gjenbruker samme logikk for batch-generering.
 
+En egen webhook på utkast (`web/app/routes/api.webhook.review.ts`) lager AI-tilbakemelding når en forfatter trykker «Be om tilbakemelding» i Studio (`sanity/actions/requestReview.tsx`), som setter `reviewRequestedAt`. Tilbakemeldingen lagres i `review.<postId>` – punktumet gjør dokumentet privat, siden datasettet er offentlig og tilbakemeldingen siterer upubliserte utkast. Bruk samme triks for andre dokumenter som ikke skal kunne leses anonymt.
+
 ### Innhold for maskiner
 
 I tillegg til HTML-sidene finnes `rss.xml`/`feed.xml`, `sitemap.xml`, `llms.txt` og en markdown-versjon av hver artikkel (`/post/:year/:date/:slug.md`, `utils/markdown.ts`). Portable Text rendres i `web/app/portable-text/` for HTML og i `utils/markdown.ts` for markdown – nye blokktyper i skjemaet må håndteres begge steder.
