@@ -9,7 +9,7 @@ import { assist, type AssistFieldActionProps, defineAssistFieldAction, useUserIn
  *
  * Instruksjonene ligger her i stedet for som instruksjoner i Studio, så de er
  * versjonert og like for alle. Aksjonene bruker Agent Actions, som krever at
- * skjemaet er deployet med `npx sanity schemas deploy` i `sanity/`. Studio hostes på Vercel,
+ * skjemaet er deployet med `npm run schema:deploy` i `web/`. Studio hostes i web-appen,
  * så `sanity deploy` er ikke riktig kommando her.
  */
 

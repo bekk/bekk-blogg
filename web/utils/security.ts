@@ -85,9 +85,8 @@ export function generateSecurityHeaders({ studio = false }: { studio?: boolean }
       'object-src': [NONE],
       'media-src': [SELF, 'cdn.sanity.io'],
       'child-src': [SELF, '*.youtube.com'],
-      // `self` lar Presentation-verktøyet i /studio vise siden i en iframe. De to andre er det
-      // gamle Studioet, som kan fjernes når det er videresendt hit.
-      'frame-ancestors': [SELF, 'bekk-blogg-sanity.vercel.app', 'localhost:3333'],
+      // Lar Presentation-verktøyet i /studio vise siden i en iframe
+      'frame-ancestors': [SELF],
     },
   })
 

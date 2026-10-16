@@ -8,3 +8,6 @@ node_modules
 /blob-report/
 /playwright/.cache/
 /.react-router/
+# Midlertidige filer fra Sanity CLI (kjøres fra studio/)
+/studio/.sanity
+/studio/dist

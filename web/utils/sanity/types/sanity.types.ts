@@ -739,7 +739,7 @@ export type AllSanitySchemaTypes =
   | SanityImageAsset
   | Geopoint
 
-// Source: ../web/utils/sanity/queries/postQueries.ts
+// Source: ../utils/sanity/queries/postQueries.ts
 // Variable: COVER_IMAGE_WITH_METADATA_PROJECTION
 // Query: {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost}
 export type COVER_IMAGE_WITH_METADATA_PROJECTION_RESULT = {
@@ -752,7 +752,7 @@ export type COVER_IMAGE_WITH_METADATA_PROJECTION_RESULT = {
   hideFromPost: never
 }
 
-// Source: ../web/utils/sanity/queries/postQueries.ts
+// Source: ../utils/sanity/queries/postQueries.ts
 // Variable: POST_PREVIEW_PROJECTION
 // Query: {  _id,  title,  slug,  coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  availableFrom,  "tags": tags[]->.name,  "authors": authors[]->.fullName,  "summary": coalesce(previewText, pt::text(description)),  "wordCount": length(string::split(pt::text(content), ' ')),  podcastLength,  type,}
 export type POST_PREVIEW_PROJECTION_RESULT = {
@@ -769,7 +769,7 @@ export type POST_PREVIEW_PROJECTION_RESULT = {
   type: never
 }
 
-// Source: ../web/utils/sanity/queries/postQueries.ts
+// Source: ../utils/sanity/queries/postQueries.ts
 // Variable: POST_PROJECTION
 // Query: {  _id,  _type,  _createdAt,  _updatedAt,  _rev,  type,  language,  embedUrl,  podcastLength,  title,  slug,  canonicalUrl,  description,  previewText,  availableFrom,  keywords,  points,  "wordCount": length(string::split(pt::text(content), ' ')),  content[] {    ...,    _type == 'imageWithMetadata' => {      ...,      asset->{        _id,        url,        metadata {          dimensions {            aspectRatio,            width,            height          }        }      }    }  },  priority,  // Forhåndsgenerert opplesning, se utils/tts. Mangler den, vises ikke avspilleren.  "audioUrl": *[_type == "postAudio" && _id == "audio-" + ^._id][0].audio.asset->url,    summaryOverride,  "generatedSummary": select(    type == "article" => *[_type == "postSummary" && _id == "summary-" + ^._id][0]{ tldr, audience, prerequisites }  ),    authors[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    fullName,    slug,    companyName,    profilePicture,    socialMediaLinks  },    coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  tags[]->{    _id,    slug,    name  },  relatedLinks,  series->{    _id,     title,     description,    slug,    shouldListNonPublishedContent,    // Uåpnede poster tas bare med hvis serien skal vise dem, og aldri med slug    "posts": *[      _type == "post" &&      references(^._id) &&      (availableFrom <= $today || ^.shouldListNonPublishedContent == true)    ] | order(availableFrom asc) {      _id,      title,      availableFrom,      "slug": select(availableFrom <= $today => slug),      "isAvailable": availableFrom <= $today    }  }}
 export type POST_PROJECTION_RESULT = {
@@ -803,7 +803,7 @@ export type POST_PROJECTION_RESULT = {
   series: never
 }
 
-// Source: ../web/utils/sanity/queries/postQueries.ts
+// Source: ../utils/sanity/queries/postQueries.ts
 // Variable: POST_SEARCH_PROJECTION
 // Query: {  _id,  _type,  _rev,  "objectID": _id,  title,  slug,  coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  availableFrom,  "tags": tags[]->.name,  "authors": authors[]->.fullName,  "summary": coalesce(previewText, pt::text(description)),  "wordCount": length(string::split(pt::text(content), ' ')),  podcastLength,}
 export type POST_SEARCH_PROJECTION_RESULT = {
@@ -822,7 +822,7 @@ export type POST_SEARCH_PROJECTION_RESULT = {
   podcastLength: never
 }
 
-// Source: ../web/utils/sanity/queries/postQueries.ts
+// Source: ../utils/sanity/queries/postQueries.ts
 // Variable: POST_BY_SLUG
 // Query: *[_type == "post" && slug.current == $slug][0]{  _id,  _type,  _createdAt,  _updatedAt,  _rev,  type,  language,  embedUrl,  podcastLength,  title,  slug,  canonicalUrl,  description,  previewText,  availableFrom,  keywords,  points,  "wordCount": length(string::split(pt::text(content), ' ')),  content[] {    ...,    _type == 'imageWithMetadata' => {      ...,      asset->{        _id,        url,        metadata {          dimensions {            aspectRatio,            width,            height          }        }      }    }  },  priority,  // Forhåndsgenerert opplesning, se utils/tts. Mangler den, vises ikke avspilleren.  "audioUrl": *[_type == "postAudio" && _id == "audio-" + ^._id][0].audio.asset->url,    summaryOverride,  "generatedSummary": select(    type == "article" => *[_type == "postSummary" && _id == "summary-" + ^._id][0]{ tldr, audience, prerequisites }  ),    authors[]->{    _id,    _type,    _createdAt,    _updatedAt,    _rev,    fullName,    slug,    companyName,    profilePicture,    socialMediaLinks  },    coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  tags[]->{    _id,    slug,    name  },  relatedLinks,  series->{    _id,     title,     description,    slug,    shouldListNonPublishedContent,    // Uåpnede poster tas bare med hvis serien skal vise dem, og aldri med slug    "posts": *[      _type == "post" &&      references(^._id) &&      (availableFrom <= $today || ^.shouldListNonPublishedContent == true)    ] | order(availableFrom asc) {      _id,      title,      availableFrom,      "slug": select(availableFrom <= $today => slug),      "isAvailable": availableFrom <= $today    }  }}
 export type POST_BY_SLUG_RESULT = {
@@ -1039,7 +1039,7 @@ export type POST_BY_SLUG_RESULT = {
   } | null
 } | null
 
-// Source: ../web/utils/sanity/queries/postQueries.ts
+// Source: ../utils/sanity/queries/postQueries.ts
 // Variable: POSTS_BY_YEAR_AND_DATE
 // Query: *[_type == "post" && availableFrom == $date && (length(string::split(pt::text(content), ' ')) > 0 || podcastLength != null)] | order(priority desc) {  _id,  title,  slug,  coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  availableFrom,  "tags": tags[]->.name,  "authors": authors[]->.fullName,  "summary": coalesce(previewText, pt::text(description)),  "wordCount": length(string::split(pt::text(content), ' ')),  podcastLength,  type,}
 export type POSTS_BY_YEAR_AND_DATE_RESULT = Array<{
@@ -1075,7 +1075,7 @@ export type POSTS_BY_YEAR_AND_DATE_RESULT = Array<{
   type: 'article' | 'podcast' | 'video'
 }>
 
-// Source: ../web/utils/sanity/queries/postQueries.ts
+// Source: ../utils/sanity/queries/postQueries.ts
 // Variable: ALL_CATEGORIES
 // Query: {  "tags": *[_type == "tag"] | order(name asc),  "tagRefs": *[_type == "post" && defined(tags)].tags[]._ref}
 export type ALL_CATEGORIES_RESULT = {
@@ -1092,7 +1092,7 @@ export type ALL_CATEGORIES_RESULT = {
   tagRefs: Array<string>
 }
 
-// Source: ../web/utils/sanity/queries/postQueries.ts
+// Source: ../utils/sanity/queries/postQueries.ts
 // Variable: TAG_WITH_POSTS_QUERY
 // Query: {  "posts": *[    _type == "post" &&     $t in tags[]->.slug &&    availableFrom <= $today  ] | order(availableFrom desc)[$start...$end] {  _id,  title,  slug,  coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  availableFrom,  "tags": tags[]->.name,  "authors": authors[]->.fullName,  "summary": coalesce(previewText, pt::text(description)),  "wordCount": length(string::split(pt::text(content), ' ')),  podcastLength,  type,},  "totalCount": count(*[    _type == "post" &&     $t in tags[]->.slug &&    availableFrom <= $today  ]),  "tag": *[_type == "tag" && slug == $t][0] {    name,    slug  }}
 export type TAG_WITH_POSTS_QUERY_RESULT = {
@@ -1135,7 +1135,7 @@ export type TAG_WITH_POSTS_QUERY_RESULT = {
   } | null
 }
 
-// Source: ../web/utils/sanity/queries/postQueries.ts
+// Source: ../utils/sanity/queries/postQueries.ts
 // Variable: AUTHOR_WITH_POSTS_QUERY
 // Query: {  "posts": *[    _type == "post" &&     $slug in authors[]->slug.current &&     availableFrom <= $today  ] | order(availableFrom desc)[$start...$end] {  _id,  title,  slug,  coverImage {  _type,  asset->{    _id,    _type,    url,    metadata {      dimensions {        aspectRatio,        width,        height      }    }  },  hotspot,  crop,  src,  alt,  hideFromPost},  availableFrom,  "tags": tags[]->.name,  "authors": authors[]->.fullName,  "summary": coalesce(previewText, pt::text(description)),  "wordCount": length(string::split(pt::text(content), ' ')),  podcastLength,  type,},  "totalCount": count(*[    _type == "post" &&     $slug in authors[]->slug.current &&     availableFrom <= $today  ]),  "author": *[_type == "author" && slug.current == $slug][0] {    fullName,    description,    image,    slug,    companyName,    socialMediaLinks  }}
 export type AUTHOR_WITH_POSTS_QUERY_RESULT = {
@@ -1192,7 +1192,7 @@ export type AUTHOR_WITH_POSTS_QUERY_RESULT = {
   } | null
 }
 
-// Source: ../web/utils/sanity/queries/postQueries.ts
+// Source: ../utils/sanity/queries/postQueries.ts
 // Variable: RSS_FEED_QUERY
 // Query: *[  _type == "post" &&   availableFrom <= $today] | order(availableFrom desc)[0...250] {  _id,  title,  "slug": slug.current,  language,  "description": coalesce(previewText, pt::text(description)),  availableFrom,  "authors": authors[]->.fullName,  type,  "content": pt::text(content)}
 export type RSS_FEED_QUERY_RESULT = Array<{
@@ -1207,7 +1207,7 @@ export type RSS_FEED_QUERY_RESULT = Array<{
   content: string
 }>
 
-// Source: ../web/utils/sanity/queries/postQueries.ts
+// Source: ../utils/sanity/queries/postQueries.ts
 // Variable: SITEMAP_QUERY
 // Query: {  "posts": *[_type == "post" && defined(slug.current) && availableFrom <= $today] {    "slug": slug.current,    availableFrom,    _updatedAt  },  "authors": *[_type == "author" && defined(slug.current)] {    "slug": slug.current,    _updatedAt  },  "tags": *[_type == "tag" && defined(slug)] {    slug,    _updatedAt  }}
 export type SITEMAP_QUERY_RESULT = {
@@ -1226,7 +1226,7 @@ export type SITEMAP_QUERY_RESULT = {
   }>
 }
 
-// Source: ../web/utils/sanity/queries/postQueries.ts
+// Source: ../utils/sanity/queries/postQueries.ts
 // Variable: POST_MARKDOWN_BY_SLUG
 // Query: *[_type == "post" && slug.current == $slug][0] {  title,  "slug": slug.current,  type,  language,  embedUrl,  podcastLength,  description,  previewText,  availableFrom,  _updatedAt,  canonicalUrl,  keywords,  "authors": authors[]->fullName,  "tags": tags[]->name,  "series": series->title,  relatedLinks,    summaryOverride,  "generatedSummary": select(    type == "article" => *[_type == "postSummary" && _id == "summary-" + ^._id][0]{ tldr, audience, prerequisites }  ),  content[] {    ...,    _type == 'imageWithMetadata' => {      ...,      "assetUrl": asset->url    }  }}
 export type POST_MARKDOWN_BY_SLUG_RESULT = {
@@ -1374,7 +1374,7 @@ export type POST_MARKDOWN_BY_SLUG_RESULT = {
   >
 } | null
 
-// Source: ../web/utils/sanity/queries/postQueries.ts
+// Source: ../utils/sanity/queries/postQueries.ts
 // Variable: LLMS_TXT_QUERY
 // Query: *[  _type == "post" &&  defined(slug.current) &&  availableFrom <= $today &&  (length(string::split(pt::text(content), ' ')) > 0 || podcastLength != null)] | order(availableFrom desc) {  title,  "slug": slug.current,  availableFrom,  // Forfatterens egen tekst først, så sammendraget fra «Kort fortalt» hvis det ikke er skjult  "summary": coalesce(    previewText,    select(summaryOverride.hide != true => coalesce(      summaryOverride.tldr,      *[_type == "postSummary" && _id == "summary-" + ^._id][0].tldr    )),    pt::text(description)  )}
 export type LLMS_TXT_QUERY_RESULT = Array<{
