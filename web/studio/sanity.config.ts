@@ -9,6 +9,7 @@ import { table } from '@sanity/table'
 import { visionTool } from '@sanity/vision'
 
 import { RequestReviewAction } from './actions/requestReview'
+import { withSnowCannon } from './actions/snowCannon'
 import { assistPlugin } from './assist'
 import schemas from './schemas/schema'
 import { defaultDocumentNode } from './structure/defaultDocumentNode'
@@ -91,7 +92,11 @@ const config = defineConfig({
     types: schemaTypes,
   },
   document: {
-    actions: (prev, { schemaType }) => (schemaType === 'post' ? [...prev, RequestReviewAction] : prev),
+    actions: (prev, { schemaType }) => {
+      // Easter egg: snøkanon når man publiserer
+      const actions = prev.map((action) => (action.action === 'publish' ? withSnowCannon(action) : action))
+      return schemaType === 'post' ? [...actions, RequestReviewAction] : actions
+    },
   },
   auth: {
     // En statisk providers-array erstatter de innebygde providerne
