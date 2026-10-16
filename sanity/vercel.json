@@ -5,6 +5,11 @@
   "buildCommand": "",
   "redirects": [
     {
+      "source": "/",
+      "destination": "https://www.bekk.christmas/studio",
+      "permanent": false
+    },
+    {
       "source": "/:path*",
       "destination": "https://www.bekk.christmas/studio/:path*",
       "permanent": false
