@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { trackEvent } from 'utils/analytics'
 import { Button } from '~/components/ui/button'
+import { finnEgg } from '~/features/jule-egg/lager'
 
 type GameHeaderProps = {
   gameStatus: 'playing' | 'won' | 'lost'
@@ -13,6 +14,7 @@ export function GameHeader({ gameStatus, onReset, onSantaHelper, santaHelperAvai
   useEffect(() => {
     if (gameStatus === 'won') {
       trackEvent('christmas_game_won')
+      finnEgg('julesveiper')
     } else if (gameStatus === 'lost') {
       trackEvent('christmas_game_lost')
     }

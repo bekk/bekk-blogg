@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import {
   isRouteErrorResponse,
   LoaderFunctionArgs,
@@ -16,6 +17,7 @@ import { POSTS_BY_YEAR_AND_DATE_RESULT } from 'utils/sanity/types/sanity.types'
 
 import { SnowAnimation } from '~/features/calendar/SnowAnimation'
 import { ErrorPage } from '~/features/error-boundary/ErrorPage'
+import { finnEgg } from '~/features/jule-egg/lager'
 import { ForbigaendeNisse } from '~/features/screen/ForbigaendeNisse'
 import { useScreenPagination } from '../hooks/useScreenPagination'
 import { LandscapeView } from '~/features/screen/LandscapeView'
@@ -133,6 +135,11 @@ export default function ScreenPreviewRoute() {
     useLoaderData<ScreenLoaderData>()
   const { visiblePosts, currentPage } = useScreenPagination(posts, articleAmount, articlePage, rotationIntervalMs)
   useMidnightRevalidate(hasDateOverride)
+  useEffect(() => {
+    if (snow) {
+      finnEgg('lille-julaften')
+    }
+  }, [snow])
 
   return (
     <>

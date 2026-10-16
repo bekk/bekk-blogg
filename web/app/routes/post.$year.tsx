@@ -1,10 +1,11 @@
 import { isRouteErrorResponse, LoaderFunctionArgs, MetaFunction, useLoaderData, useRouteError } from 'react-router'
-import { FIRST_CALENDAR_YEAR, getOsloDate, parseIsoDate } from 'utils/calendar'
+import { FIRST_CALENDAR_YEAR, getOsloDate, isDoorOpen, parseIsoDate } from 'utils/calendar'
 import { z } from 'zod'
 
 import { CalendarWithDoors } from '~/features/calendar/CalendarWithDoors'
 import { CalendarPageFooter } from '~/features/calendar/CalendarPageFooter'
 import { ErrorPage } from '~/features/error-boundary/ErrorPage'
+import { Slede } from '~/features/calendar/Slede'
 
 const ParamsSchema = z.object({
   year: z.string().min(4).max(4),
@@ -77,6 +78,7 @@ export default function YearRoute() {
         <div className="2lg:h-auto flex justify-center relative z-0">
           <CalendarWithDoors year={Number(data.year)} today={data.today} />
         </div>
+        {isDoorOpen(data.year, 24, data.today) && <Slede />}
       </div>
       <CalendarPageFooter />
     </div>

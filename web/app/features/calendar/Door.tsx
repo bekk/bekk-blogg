@@ -6,6 +6,7 @@ import { motion, Variants } from 'motion/react'
 import useMediaQuery from '~/hooks/useMediaQuery'
 import { useTextZoomScale } from '~/hooks/useTextZoomScale'
 import { trackEvent } from 'utils/analytics'
+import { finnEgg } from '~/features/jule-egg/lager'
 import { getDoorDate, isDoorOpen } from 'utils/calendar'
 import { OpenDoor } from './doorsSVG/OpenDoor'
 import { Kikkenisse, VARIGHET } from './kikkenisse/Kikkenisse'
@@ -68,7 +69,11 @@ export const Door = ({ date, year, today }: DoorProps) => {
       if (stadium) {
         setNisse({ id: antall, stadium, replikk: replikkFor(antall, date) })
       }
+      if (stadium) {
+        finnEgg('kikkenisse')
+      }
       if (stadium === 'rumpe') {
+        finnEgg('nisserumpa')
         trackEvent('easter_egg_kikkenisse_rumpe', { luke: date })
         setKlikk(0)
       } else {

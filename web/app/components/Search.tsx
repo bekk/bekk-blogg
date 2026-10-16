@@ -2,7 +2,16 @@ import { useEffect, useRef, useState } from 'react'
 import { Configure, Hits, InstantSearch, InstantSearchSSRProvider, useSearchBox } from 'react-instantsearch'
 import { Link } from 'react-router'
 import { useAlgoliaClient, useAlgoliaConfig, useAvailableFilter } from '~/hooks/useAlgolia'
+import { finnEgg } from '~/features/jule-egg/lager'
 import { postUrl } from '~/lib/format'
+
+/** Jule-egg: noen søkeord gir et ekstra svar øverst i treffene */
+const HEMMELIGE_SOK: Record<string, string> = {
+  nisse: '🎅 Ho ho ho! Du fant meg.',
+  julenissen: '🎅 Ho ho ho! Du fant meg.',
+  hjelp: '🛠️ Har du prøvd å slå den av og på igjen?',
+  kristofer: '✍️ Han skriver for mye uansett.',
+}
 
 type SearchProps = {
   transparent?: boolean
@@ -72,6 +81,7 @@ const SearchBoxWithDropdown = ({ transparent }: SearchProps) => {
       />
       {query && showResults && (
         <div className="absolute top-full z-100 mt-1 w-full bg-white bg-opacity-90 shadow-lg rounded-lg max-h-[290px] overflow-y-scroll">
+          <HemmeligTreff query={query} />
           <Hits hitComponent={Hit} />
         </div>
       )}
@@ -145,4 +155,16 @@ const Hit = ({
       </Link>
     </div>
   )
+}
+
+const HemmeligTreff = ({ query }: { query: string }) => {
+  const svar = HEMMELIGE_SOK[query.trim().toLowerCase()]
+
+  useEffect(() => {
+    if (svar) {
+      finnEgg('sok')
+    }
+  }, [svar])
+
+  return svar ? <div className="px-4 py-3 border-b bg-soft-pink text-base text-black">{svar}</div> : null
 }

@@ -8,11 +8,13 @@ import { POST_BY_SLUG_RESULT, SanityImageAsset } from 'utils/sanity/types/sanity
 import { urlFor } from 'utils/sanity/utils'
 import { resolveShortSummary } from 'utils/summary/shortSummary'
 
+import { ArtikkelEgg } from './ArtikkelEgg'
 import { AudioPlayer } from './AudioPlayer'
 import { LikeContent } from './LikeContent'
+import { Nisselue } from './Nisselue'
 import { OldPostNotice } from './OldPostNotice'
 import { RelatedLinks } from './RelatedLinks'
-import { Rudolf } from './Rudolf'
+import { LestTilBunnen } from './LestTilBunnen'
 import { ShortSummary } from './ShortSummary'
 
 import { components } from '~/portable-text/Components'
@@ -138,35 +140,39 @@ export const Article = ({ post, today }: ArticleProps) => {
         )}
         {post.coverImage && !post.coverImage.hideFromPost && (
           <div className="mb-7">
-            {post.coverImage.asset ? (
-              <img
-                src={urlFor(post.coverImage.asset as SanityImageAsset)
-                  .width(1700)
-                  .quality(80)
-                  .url()}
-                srcSet={[400, 800, 1200, 1700]
-                  .map((width) => {
-                    const url = urlFor(post.coverImage!.asset as SanityImageAsset)
-                      .width(width)
-                      .quality(80)
-                      .url()
-                    return `${url} ${width}w`
-                  })
-                  .join(', ')}
-                sizes="(max-width: 400px) 400px, (max-width: 800px) 800px, (max-width: 1200px) 1200px, 1700px"
-                alt={post.coverImage.alt || ''}
-                className="w-full rounded-2xl object-cover max-w-full"
-                style={{
-                  aspectRatio: post.coverImage.asset?.metadata?.dimensions?.aspectRatio ?? undefined,
-                }}
-              />
-            ) : (
-              <img
-                src={post.coverImage.src ?? ''}
-                alt={post.coverImage.alt || ''}
-                className="w-full rounded-2xl object-cover max-w-full"
-              />
-            )}
+            <Nisselue>
+              {post.coverImage.asset ? (
+                <img
+                  src={urlFor(post.coverImage.asset as SanityImageAsset)
+                    .width(1700)
+                    .quality(80)
+                    .url()}
+                  srcSet={[400, 800, 1200, 1700]
+                    .map((width) => {
+                      const url = urlFor(post.coverImage!.asset as SanityImageAsset)
+                        .width(width)
+                        .quality(80)
+                        .url()
+                      return `${url} ${width}w`
+                    })
+                    .join(', ')}
+                  sizes="(max-width: 400px) 400px, (max-width: 800px) 800px, (max-width: 1200px) 1200px, 1700px"
+                  alt={post.coverImage.alt || ''}
+                  draggable={false}
+                  className="w-full rounded-2xl object-cover max-w-full"
+                  style={{
+                    aspectRatio: post.coverImage.asset?.metadata?.dimensions?.aspectRatio ?? undefined,
+                  }}
+                />
+              ) : (
+                <img
+                  src={post.coverImage.src ?? ''}
+                  alt={post.coverImage.alt || ''}
+                  draggable={false}
+                  className="w-full rounded-2xl object-cover max-w-full"
+                />
+              )}
+            </Nisselue>
           </div>
         )}
         {post.content && (
@@ -180,7 +186,15 @@ export const Article = ({ post, today }: ArticleProps) => {
           </div>
         )}
 
-        {post.type === 'article' && <Rudolf key={post._id} language={post.language} />}
+        <LestTilBunnen
+          key={post._id}
+          postId={post._id}
+          type={post.type}
+          language={post.language}
+          availableFrom={post.availableFrom}
+          sameDayPostIds={post.sameDayPostIds}
+        />
+        <ArtikkelEgg key={`egg-${post._id}`} language={post.language} />
         <LikeContent id={post._id} language={post.language} />
       </article>
     </section>

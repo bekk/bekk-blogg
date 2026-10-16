@@ -11,6 +11,8 @@ export const CalendarWithDoors = ({ year, today }: CalendarWithDoorsProps) => {
     <ol
       className="grid h-full 2lg:grid-cols-[repeat(6,auto)] 2lg:grid-rows-[repeat(4,auto)] md:grid-cols-[repeat(4,auto)] md:grid-rows-[repeat(6,auto)] grid-cols-[repeat(3,auto)] grid-rows-[repeat(8,auto)] justify-center border-14 border-mid-green bg-mid-green"
       aria-label="Julekalender med 24 luker"
+      // Nissene i nisseregnet kan løpe på toppen av kalenderen
+      data-nisse-flate
     >
       {Array.from({ length: 24 }, (_, i) => {
         const date = i + 1

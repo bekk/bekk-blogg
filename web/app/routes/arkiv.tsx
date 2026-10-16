@@ -2,6 +2,7 @@ import { Link, MetaFunction, useRouteLoaderData } from 'react-router'
 import { GiftsWithBadge } from '~/features/archive/svgs/GiftsWithBadge'
 import { motion } from 'motion/react'
 
+import { Stovete } from '~/features/archive/Stovete'
 import { useTextZoomScale } from '~/hooks/useTextZoomScale'
 import type { loader as rootLoader } from '~/root'
 import { FIRST_CALENDAR_YEAR } from 'utils/calendar'
@@ -48,6 +49,19 @@ export default function ArchiveRoute() {
 
           const colorRibbonSmallPackage = index % 2 ? '#ED7E87' : '#6D0D22'
           const colorWrappingSmallPackage = index % 2 ? '#A7060E' : '#ED7E87'
+          const gave = (
+            <Link to={`/post/${availableYears[index]}`} aria-label={`Julekalender fra ${availableYears[index]}`}>
+              <GiftsWithBadge
+                year={availableYears[index]}
+                width={giftWidth}
+                height={giftHeight}
+                colorRibbonBigPackage={colorRibbonBigPackage}
+                colorWrappingBigPackage={colorWrappingBigPackage}
+                colorRibbonSmallPackage={colorRibbonSmallPackage}
+                colorWrappingSmallPackage={colorWrappingSmallPackage}
+              />
+            </Link>
+          )
           return (
             <div className="grid justify-items-center w-full pt-8" key={index}>
               <motion.div
@@ -56,17 +70,7 @@ export default function ArchiveRoute() {
                   transition: { duration: 0.2 },
                 }}
               >
-                <Link to={`/post/${availableYears[index]}`} aria-label={`Julekalender fra ${availableYears[index]}`}>
-                  <GiftsWithBadge
-                    year={availableYears[index]}
-                    width={giftWidth}
-                    height={giftHeight}
-                    colorRibbonBigPackage={colorRibbonBigPackage}
-                    colorWrappingBigPackage={colorWrappingBigPackage}
-                    colorRibbonSmallPackage={colorRibbonSmallPackage}
-                    colorWrappingSmallPackage={colorWrappingSmallPackage}
-                  />
-                </Link>
+                {availableYears[index] <= FIRST_CALENDAR_YEAR + 1 ? <Stovete>{gave}</Stovete> : gave}
               </motion.div>
             </div>
           )

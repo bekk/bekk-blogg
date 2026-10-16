@@ -1,6 +1,8 @@
 import { Loader, Pause, Play } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { trackEvent } from 'utils/analytics'
+import { visBeskjed } from '~/features/jule-egg/Beskjeder'
+import { finnEgg } from '~/features/jule-egg/lager'
 
 export const AudioPlayer = ({ src, slug }: { src: string; slug: string }) => {
   const [isPlaying, setIsPlaying] = useState(false)
@@ -56,6 +58,11 @@ export const AudioPlayer = ({ src, slug }: { src: string; slug: string }) => {
         onPause={() => setIsPlaying(false)}
         onWaiting={() => setIsLoading(true)}
         onPlaying={() => setIsLoading(false)}
+        onEnded={() => {
+          // Jule-egg for dem som hører helt til slutten
+          visBeskjed({ figur: 'nisse', tekst: 'Ho ho ho! Takk for at du lyttet helt til slutten.' })
+          finnEgg('lytter')
+        }}
       />
     </div>
   )

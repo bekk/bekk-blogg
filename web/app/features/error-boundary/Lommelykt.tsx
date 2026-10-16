@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { NisseFigur } from '~/components/NisseFigur'
+import { finnEgg } from '~/features/jule-egg/lager'
 
 const NISSE_BREDDE = 72
 const NISSE_HOYDE = 84
@@ -25,6 +26,10 @@ export const Lommelykt = () => {
   const gradient = useRef<SVGLinearGradientElement>(null)
   const lykt = useRef<SVGGElement>(null)
   const nisse = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    finnEgg('lommelykt')
+  }, [])
 
   useEffect(() => {
     const overskrift = document.querySelector('h1')

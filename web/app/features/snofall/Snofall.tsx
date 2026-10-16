@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { SNOFNUGG } from '~/features/calendar/SnowAnimation'
+import { finnEgg } from '~/features/jule-egg/lager'
+import { registrerBevegelse } from '~/features/jule-egg/sensorer'
 import { useTastesekvens } from '~/hooks/useTastesekvens'
 
 import './snofall.css'
@@ -9,6 +11,12 @@ const ANTALL_FNUGG = 80
 const VARIGHET_MS = 14_000
 
 type Retning = 'ned' | 'opp'
+
+const SNOFALL_HENDELSE = 'snofall'
+
+/** Starter en snøbyge fra hvor som helst, for eksempel fra konsollen */
+export const startSnofall = (retning: Retning = 'ned') =>
+  window.dispatchEvent(new CustomEvent<Retning>(SNOFALL_HENDELSE, { detail: retning }))
 
 type Fnugg = { id: number; storrelse: number; venstre: number; varighet: number; forsinkelse: number }
 
@@ -47,12 +55,46 @@ const Snobyge = ({ retning }: { retning: Retning }) => {
   )
 }
 
-/** Easter egg: skriver man «snø» et sted på siden, snør det. Skriver man «øns», snør det oppover. */
+/**
+ * Easter egg: skriver man «snø» et sted på siden, snør det. Skriver man «øns», snør det oppover.
+ * Det snør også når man rister telefonen, og når noen kaller `startSnofall`.
+ */
 export const Snofall = () => {
   const [byge, setByge] = useState<{ id: number; retning: Retning } | null>(null)
 
-  useTastesekvens(['s', 'n', 'ø'], () => setByge({ id: Date.now(), retning: 'ned' }))
-  useTastesekvens(['ø', 'n', 's'], () => setByge({ id: Date.now(), retning: 'opp' }))
+  useTastesekvens(['s', 'n', 'ø'], () => {
+    setByge({ id: Date.now(), retning: 'ned' })
+    finnEgg('sno')
+  })
+  useTastesekvens(['ø', 'n', 's'], () => {
+    setByge({ id: Date.now(), retning: 'opp' })
+    finnEgg('sno-opp')
+  })
+
+  useEffect(() => {
+    const onSnofall = (event: Event) => setByge({ id: Date.now(), retning: (event as CustomEvent<Retning>).detail })
+    window.addEventListener(SNOFALL_HENDELSE, onSnofall)
+    return () => window.removeEventListener(SNOFALL_HENDELSE, onSnofall)
+  }, [])
+
+  // Snøkule: rister man telefonen, snør det. På iOS må man først gi lov, se /jule-egg.
+  useEffect(() => {
+    let topper: number[] = []
+    const onBevegelse = (event: DeviceMotionEvent) => {
+      const { x, y, z } = event.acceleration ?? {}
+      if (x == null || y == null || z == null) {
+        return
+      }
+      const resultat = registrerBevegelse(topper, Math.hypot(x, y, z), event.timeStamp)
+      topper = resultat.topper
+      if (resultat.ristes) {
+        setByge({ id: Date.now(), retning: 'ned' })
+        finnEgg('risting')
+      }
+    }
+    window.addEventListener('devicemotion', onBevegelse)
+    return () => window.removeEventListener('devicemotion', onBevegelse)
+  }, [])
 
   useEffect(() => {
     if (!byge) {
