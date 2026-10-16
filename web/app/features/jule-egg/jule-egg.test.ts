@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { ALLE_EGG, antallFunnet, VANLIGE_EGG } from './egg'
 import { leggTil } from './lager'
 import { registrerLestPost } from './leste'
-import { erLeet, erNatt, registrerBevegelse } from './sensorer'
+import { erLeet, erNatt, NY_MUSETILSTAND, registrerBevegelse, registrerMusebevegelse, tolkBeroring } from './sensorer'
 
 describe('eggene', () => {
   it('er 24 vanlige egg, ett for hver luke', () => {
@@ -107,5 +107,52 @@ describe('registrerLestPost', () => {
   it('teller ikke samme post to ganger', () => {
     const igjen = registrerLestPost({ [dag]: ['a'] }, dag, 'a', dagensIder)
     expect(igjen.leste[dag]).toEqual(['a'])
+  })
+})
+
+describe('registrerMusebevegelse', () => {
+  const ristMus = (punkter: [number, number][]) =>
+    punkter.reduce(
+      (forrige, [x, tid]) => {
+        const neste = registrerMusebevegelse(forrige.tilstand, x, tid)
+        return { tilstand: neste.tilstand, ristes: forrige.ristes || neste.ristes }
+      },
+      { tilstand: NY_MUSETILSTAND, ristes: false }
+    ).ristes
+
+  it('kjenner igjen at musa ristes fram og tilbake', () => {
+    expect(ristMus(Array.from({ length: 9 }, (_, i) => [i % 2 ? 300 : 200, i * 80] as [number, number]))).toBe(true)
+  })
+
+  it('bryr seg ikke om vanlig bevegelse i én retning', () => {
+    expect(ristMus(Array.from({ length: 9 }, (_, i) => [200 + i * 40, i * 80] as [number, number]))).toBe(false)
+  })
+
+  it('bryr seg ikke om skjelving', () => {
+    expect(ristMus(Array.from({ length: 9 }, (_, i) => [i % 2 ? 210 : 200, i * 80] as [number, number]))).toBe(false)
+  })
+
+  it('bryr seg ikke om sakte frem og tilbake', () => {
+    expect(ristMus(Array.from({ length: 9 }, (_, i) => [i % 2 ? 300 : 200, i * 600] as [number, number]))).toBe(false)
+  })
+})
+
+describe('tolkBeroring', () => {
+  it('kjenner igjen sveip i alle retninger', () => {
+    expect(tolkBeroring(0, -120, 200)).toBe('arrowup')
+    expect(tolkBeroring(0, 120, 200)).toBe('arrowdown')
+    expect(tolkBeroring(-120, 10, 200)).toBe('arrowleft')
+    expect(tolkBeroring(120, -10, 200)).toBe('arrowright')
+  })
+
+  it('kjenner igjen korte trykk', () => {
+    expect(tolkBeroring(2, 3, 100)).toBe('trykk')
+  })
+
+  it('ignorerer skrå, korte og langsomme bevegelser', () => {
+    expect(tolkBeroring(80, 80, 200)).toBeNull()
+    expect(tolkBeroring(0, 20, 200)).toBeNull()
+    expect(tolkBeroring(0, 120, 2000)).toBeNull()
+    expect(tolkBeroring(2, 3, 800)).toBeNull()
   })
 })

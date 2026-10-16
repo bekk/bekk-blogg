@@ -10,11 +10,12 @@ export const Stovete = ({ children }: { children: ReactNode }) => {
   const [blast, setBlast] = useState(false)
   const timeout = useRef<ReturnType<typeof setTimeout>>(undefined)
 
+  const blas = () => {
+    setBlast(true)
+    finnEgg('arkivstov')
+  }
   const start = () => {
-    timeout.current = setTimeout(() => {
-      setBlast(true)
-      finnEgg('arkivstov')
-    }, BLASETID_MS)
+    timeout.current = setTimeout(blas, BLASETID_MS)
   }
   const avbryt = () => clearTimeout(timeout.current)
 
@@ -24,12 +25,12 @@ export const Stovete = ({ children }: { children: ReactNode }) => {
       <AnimatePresence>
         {!blast && (
           <motion.div
-            aria-hidden="true"
             className="pointer-events-none absolute -inset-2"
             exit={{ opacity: 0, x: 80, y: -30, rotate: 8, filter: 'blur(6px)' }}
             transition={{ duration: 1.2, ease: 'easeOut' }}
           >
             <div
+              aria-hidden="true"
               className="absolute inset-0 rounded-lg opacity-70"
               style={{
                 backgroundImage:
@@ -39,8 +40,23 @@ export const Stovete = ({ children }: { children: ReactNode }) => {
                 backgroundColor: 'rgba(200,190,180,0.25)',
               }}
             />
-            <span className="absolute -left-1 -top-2 text-3xl">🕸️</span>
-            <span className="absolute -bottom-2 -right-1 rotate-180 text-2xl">🕸️</span>
+            {/* På mobil kan man ikke holde musa over, så der tørker man støv ved å trykke på spindelvevet */}
+            <button
+              type="button"
+              aria-label="Tørk av støvet"
+              className="pointer-events-auto absolute -left-1 -top-2 text-3xl"
+              onClick={blas}
+            >
+              🕸️
+            </button>
+            <button
+              type="button"
+              aria-label="Tørk av støvet"
+              className="pointer-events-auto absolute -bottom-2 -right-1 rotate-180 text-2xl"
+              onClick={blas}
+            >
+              🕸️
+            </button>
           </motion.div>
         )}
       </AnimatePresence>

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { KONAMIKODE } from './useKonamiCode'
+import { KONAMIKODE, KONAMIKODE_SVEIP } from './useKonamiCode'
 import { erModifikator, nesteSteg } from './useTastesekvens'
 
 // Samme filtrering som hooken gjør før den kaller nesteSteg
@@ -36,5 +36,11 @@ describe('nesteSteg', () => {
   it('virker for andre sekvenser', () => {
     expect(tast(['ø', 'n', 's'], ['ø', 'n', 's'])).toBe(3)
     expect(tast(['s', 'n', 'ø'], ['ø', 'n', 's'])).toBe(1)
+  })
+})
+
+describe('konamikoden med sveip', () => {
+  it('fullføres med åtte sveip og to trykk', () => {
+    expect(tast([...KONAMIKODE.slice(0, 8), 'trykk', 'trykk'], KONAMIKODE_SVEIP)).toBe(KONAMIKODE_SVEIP.length)
   })
 })

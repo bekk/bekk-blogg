@@ -59,8 +59,9 @@ const forklaringer = (year: number): Record<EggId, { hvor: ReactNode; hvordan: R
     hvordan: (
       <>
         Tast konamikoden: <Tast>↑</Tast> <Tast>↑</Tast> <Tast>↓</Tast> <Tast>↓</Tast> <Tast>←</Tast> <Tast>→</Tast>{' '}
-        <Tast>←</Tast> <Tast>→</Tast> <Tast>B</Tast> <Tast>A</Tast>. Det regner nisser som løper rundt på flatene på
-        siden, og du må klikke på dem før de når bunnen. Slipper 10 unna, har du tapt.
+        <Tast>←</Tast> <Tast>→</Tast> <Tast>B</Tast> <Tast>A</Tast>. På mobil sveiper du i de samme retningene og
+        trykker to ganger til slutt. Det regner nisser som løper rundt på flatene på siden, og du må trykke på dem før
+        de når bunnen. Slipper 10 unna, har du tapt.
       </>
     ),
   },
@@ -72,7 +73,7 @@ const forklaringer = (year: number): Record<EggId, { hvor: ReactNode; hvordan: R
     hvor: 'Hvor som helst på siden, men ikke i et tekstfelt',
     hvordan: (
       <>
-        Skriv <Tast>s</Tast> <Tast>n</Tast> <Tast>ø</Tast>, så kommer det en snøbyge.
+        Skriv <Tast>s</Tast> <Tast>n</Tast> <Tast>ø</Tast>, så kommer det en snøbyge. På mobil søker du etter «snø».
       </>
     ),
   },
@@ -80,7 +81,7 @@ const forklaringer = (year: number): Record<EggId, { hvor: ReactNode; hvordan: R
     hvor: 'Hvor som helst på siden, men ikke i et tekstfelt',
     hvordan: (
       <>
-        Skriv <Tast>ø</Tast> <Tast>n</Tast> <Tast>s</Tast>, så snør det oppover.
+        Skriv <Tast>ø</Tast> <Tast>n</Tast> <Tast>s</Tast>, så snør det oppover. På mobil søker du etter «øns».
       </>
     ),
   },
@@ -112,7 +113,8 @@ const forklaringer = (year: number): Record<EggId, { hvor: ReactNode; hvordan: R
     hvor: 'Alle sider',
     hvordan: (
       <>
-        Åpne utviklerverktøyene i nettleseren, les hilsenen i konsollen og skriv <code>jul()</code>.
+        Åpne utviklerverktøyene i nettleseren, les hilsenen i konsollen og skriv <code>jul()</code>. Uten konsoll kan du
+        søke etter <code>jul()</code> i stedet.
       </>
     ),
   },
@@ -140,10 +142,10 @@ const forklaringer = (year: number): Record<EggId, { hvor: ReactNode; hvordan: R
     hvordan: 'Bytt til en annen fane og se på fanetittelen. Kom tilbake, så teller det.',
   },
   risting: {
-    hvor: 'Alle sider, på mobil',
+    hvor: 'Alle sider',
     hvordan: (
       <>
-        Rist telefonen, så snør det. På iPhone må du gi lov først:
+        Rist telefonen, så snør det. På desktop rister du musa raskt fram og tilbake. På iPhone må du gi lov først:
         <RisteTillatelse />
       </>
     ),
@@ -174,7 +176,8 @@ const forklaringer = (year: number): Record<EggId, { hvor: ReactNode; hvordan: R
         Arkivet
       </Link>
     ),
-    hvordan: 'Hold musepekeren over en av de to eldste kalenderne en liten stund, så blåser støvet vekk.',
+    hvordan:
+      'Hold musepekeren over en av de to eldste kalenderne en liten stund, så blåser støvet vekk. På mobil trykker du på spindelvevet.',
   },
   sleden: {
     hvor: 'Kalendere der alle lukene er åpnet, som alle fra tidligere år',
@@ -200,7 +203,7 @@ const forklaringer = (year: number): Record<EggId, { hvor: ReactNode; hvordan: R
     hvordan: (
       <>
         Nederst ligger en hilsen til språkmodellene, med en hemmelighet til menneskene: Skriv <Tast>h</Tast>{' '}
-        <Tast>o</Tast> <Tast>h</Tast> <Tast>o</Tast> <Tast>h</Tast> <Tast>o</Tast> på siden.
+        <Tast>o</Tast> <Tast>h</Tast> <Tast>o</Tast> <Tast>h</Tast> <Tast>o</Tast> på siden, eller søk etter «hohoho».
       </>
     ),
   },

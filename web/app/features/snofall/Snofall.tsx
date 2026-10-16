@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { SNOFNUGG } from '~/features/calendar/SnowAnimation'
 import { finnEgg } from '~/features/jule-egg/lager'
-import { registrerBevegelse } from '~/features/jule-egg/sensorer'
+import { NY_MUSETILSTAND, registrerBevegelse, registrerMusebevegelse } from '~/features/jule-egg/sensorer'
 import { useTastesekvens } from '~/hooks/useTastesekvens'
 
 import './snofall.css'
@@ -77,7 +77,7 @@ export const Snofall = () => {
     return () => window.removeEventListener(SNOFALL_HENDELSE, onSnofall)
   }, [])
 
-  // Snøkule: rister man telefonen, snør det. På iOS må man først gi lov, se /jule-egg.
+  // Snøkule: rister man telefonen (eller musa på desktop), snør det. På iOS må man først gi lov, se /jule-egg.
   useEffect(() => {
     let topper: number[] = []
     const onBevegelse = (event: DeviceMotionEvent) => {
@@ -92,8 +92,24 @@ export const Snofall = () => {
         finnEgg('risting')
       }
     }
+    let mus = NY_MUSETILSTAND
+    const onMus = (event: PointerEvent) => {
+      if (event.pointerType !== 'mouse') {
+        return
+      }
+      const resultat = registrerMusebevegelse(mus, event.clientX, event.timeStamp)
+      mus = resultat.tilstand
+      if (resultat.ristes) {
+        setByge({ id: Date.now(), retning: 'ned' })
+        finnEgg('risting')
+      }
+    }
     window.addEventListener('devicemotion', onBevegelse)
-    return () => window.removeEventListener('devicemotion', onBevegelse)
+    window.addEventListener('pointermove', onMus)
+    return () => {
+      window.removeEventListener('devicemotion', onBevegelse)
+      window.removeEventListener('pointermove', onMus)
+    }
   }, [])
 
   useEffect(() => {

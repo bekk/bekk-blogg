@@ -41,7 +41,12 @@ export const ALLE_EGG = [
     hint: 'Hvordan ser storskjermen ut dagen før julaften?',
   },
   { id: 'fanetittel', emoji: '🥺', tittel: 'Fanetittelen', hint: 'Gå fra oss en liten stund.' },
-  { id: 'risting', emoji: '📳', tittel: 'Rist meg', hint: 'Snøkuler blir finest når man rister dem.' },
+  {
+    id: 'risting',
+    emoji: '📳',
+    tittel: 'Rist meg',
+    hint: 'Snøkuler blir finest når man rister dem. Det gjelder musa også.',
+  },
   { id: 'nattnisse', emoji: '😴', tittel: 'Nattnissen', hint: 'Les en artikkel når du egentlig burde sove.' },
   { id: 'leet', emoji: '👾', tittel: '1337', hint: 'Kikk innom på det mest elitære klokkeslettet.' },
   { id: 'nisselue', emoji: '🧢', tittel: 'Nisselue', hint: 'Hold lenge inne på bildet øverst i en artikkel.' },
