@@ -1,8 +1,0 @@
-{
-  "name": "sanity-redirect",
-  "private": true,
-  "description": "Videresender det gamle Studio-domenet til /studio, se README.md",
-  "engines": {
-    "node": "24.x"
-  }
-}
