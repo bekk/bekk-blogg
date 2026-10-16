@@ -33,6 +33,9 @@ export function isAllowedEmbedHost(hostname: string) {
 // - `img-src *` trengs fordi lenkeforhåndsvisninger viser bilder fra vilkårlige nettsteder.
 // - `studio` gir Sanity Studio på /studio tilgang til API-et (inkludert websockets for
 //   sanntidsoppdateringer), uten at resten av siden får det samme.
+// YouTube-forhåndsvisningen i Studioet (react-youtube) laster IFrame-API-et fra youtube.com
+const STUDIO_SCRIPT_HOSTS = ['www.youtube.com']
+
 export function generateSecurityHeaders({ studio = false }: { studio?: boolean } = {}) {
   const csp = getCSP({
     directives: {
@@ -48,6 +51,7 @@ export function generateSecurityHeaders({ studio = false }: { studio?: boolean }
         'plausible.io',
         'vercel.live',
         '*.vercel-scripts.com',
+        ...(studio ? STUDIO_SCRIPT_HOSTS : []),
       ],
       'script-src-elem': [
         SELF,
@@ -61,6 +65,7 @@ export function generateSecurityHeaders({ studio = false }: { studio?: boolean }
         'vercel.live',
         '*.vercel-scripts.com',
         'cdn.jsdelivr.net',
+        ...(studio ? STUDIO_SCRIPT_HOSTS : []),
       ],
       'style-src': [SELF, UNSAFE_INLINE],
       'img-src': [SELF, UNSAFE_INLINE, 'data:', 'cdn.sanity.io', '*'],
