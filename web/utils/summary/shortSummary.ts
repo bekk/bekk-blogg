@@ -1,5 +1,5 @@
 // «Kort fortalt»: slår sammen det genererte sammendraget med redaksjonens
-// overstyring, så artikkelsiden og markdown-versjonen alltid viser det samme.
+// overstyring. Vises ikke på artikkelsiden, men brukes i markdown-versjonen og llms.txt.
 
 type SummaryFields = { tldr?: string | null; audience?: string | null; prerequisites?: string | null }
 

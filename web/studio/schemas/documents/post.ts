@@ -273,7 +273,7 @@ const post = defineType({
       title: 'Kort fortalt',
       name: 'summaryOverride',
       description:
-        'Artikler får et AI-generert sammendrag øverst, se fanen «Kort fortalt (AI)». Fyll inn feltene her for å overstyre det som er generert, eller skjul det helt.',
+        'Artikler får et AI-generert sammendrag, se fanen «Kort fortalt (AI)». Det vises ikke på nettsiden, men brukes i markdown-versjonen og llms.txt. Fyll inn feltene her for å overstyre det som er generert, eller skjul det helt.',
       type: 'object',
       options: { collapsible: true, collapsed: true },
       fields: [
