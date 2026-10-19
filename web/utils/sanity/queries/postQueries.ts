@@ -34,7 +34,8 @@ const POST_PREVIEW_PROJECTION = groq`{
   type,
 }`
 // «Kort fortalt» for artikler, se utils/summary. Det genererte sammendraget og
-// redaksjonens overstyring slås sammen med resolveShortSummary.
+// redaksjonens overstyring slås sammen med resolveShortSummary. Vises ikke på
+// artikkelsiden, bare i flater for maskiner som markdown-versjonen.
 const SHORT_SUMMARY_FIELDS = `
   summaryOverride,
   "generatedSummary": select(
@@ -79,7 +80,6 @@ const POST_PROJECTION = groq`{
   priority,
   // Forhåndsgenerert opplesning, se utils/tts. Mangler den, vises ikke avspilleren.
   "audioUrl": *[_type == "postAudio" && _id == "audio-" + ^._id][0].audio.asset->url,
-  ${SHORT_SUMMARY_FIELDS},
   
   authors[]->{
     _id,
