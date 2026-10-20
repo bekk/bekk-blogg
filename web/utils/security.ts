@@ -33,8 +33,9 @@ export function isAllowedEmbedHost(hostname: string) {
 // - `img-src *` trengs fordi lenkeforhåndsvisninger viser bilder fra vilkårlige nettsteder.
 // - `studio` gir Sanity Studio på /studio tilgang til API-et (inkludert websockets for
 //   sanntidsoppdateringer), uten at resten av siden får det samme.
-// YouTube-forhåndsvisningen i Studioet (react-youtube) laster IFrame-API-et fra youtube.com
-const STUDIO_SCRIPT_HOSTS = ['www.youtube.com']
+// YouTube-forhåndsvisningen i Studioet (react-youtube) laster IFrame-API-et fra youtube.com,
+// og Studioet laster bridge.js fra core.sanity-cdn.com når det vises i Sanity-dashboardet
+const STUDIO_SCRIPT_HOSTS = ['www.youtube.com', 'core.sanity-cdn.com']
 
 export function generateSecurityHeaders({ studio = false }: { studio?: boolean } = {}) {
   const csp = getCSP({
@@ -78,7 +79,10 @@ export function generateSecurityHeaders({ studio = false }: { studio?: boolean }
         'ws-us3.pusher.com',
         '*.algolia.io',
         '*.algolianet.com',
-        ...(studio ? ['*.api.sanity.io', 'wss://*.api.sanity.io', '*.apicdn.sanity.io'] : []),
+        // sanity-cdn.com brukes av Studioet til å sjekke etter nye versjoner
+        ...(studio
+          ? ['*.api.sanity.io', 'wss://*.api.sanity.io', '*.apicdn.sanity.io', 'sanity-cdn.com', '*.sanity-cdn.com']
+          : []),
       ],
       'frame-src': [SELF, ...EMBED_FRAME_HOSTS, 'vercel.live'],
       'font-src': [SELF, ...(studio ? ['design-system-static.sanity.io'] : [])],
