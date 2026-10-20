@@ -85,8 +85,9 @@ export function generateSecurityHeaders({ studio = false }: { studio?: boolean }
       'object-src': [NONE],
       'media-src': [SELF, 'cdn.sanity.io'],
       'child-src': [SELF, '*.youtube.com'],
-      // Lar Presentation-verktøyet i /studio vise siden i en iframe
-      'frame-ancestors': [SELF],
+      // Lar Presentation-verktøyet i /studio vise siden i en iframe, og lar Sanity sitt
+      // dashboard på sanity.io vise Studioet i en iframe
+      'frame-ancestors': [SELF, ...(studio ? ['https://www.sanity.io'] : [])],
     },
   })
 
