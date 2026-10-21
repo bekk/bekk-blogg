@@ -64,7 +64,7 @@ export const TeaserPage = ({ launchDate, previousYear }: TeaserPageProps) => {
             <PostPreview
               title="bekk.christmas"
               authors={['Bekk']}
-              summary="Hver dag en luke, en liten sak, som en bekk som renner, sakte og smak. Åpne med glede, se hva du får, snart er det jul, vi feirer i år!"
+              summary="24 dager med feiring av fagmiljøet og delingskulturen vår – for tiende år på rad"
               _id="123"
               slug={null}
               coverImage={null}
