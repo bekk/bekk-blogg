@@ -8,7 +8,7 @@ test('forsiden viser nedtelling før desember, og ellers siste kalender', async 
 
   if (isTeaserPeriod(today)) {
     await expect(page).toHaveURL(/\/$/)
-    await expect(page.getByText('Dager')).toBeVisible()
+    await expect(page.getByText('Dager', { exact: true })).toBeVisible()
     // Teaseren lenker til fjorårets kalender mens man venter
     await expect(page.locator(`a[href="/post/${getLatestCalendarYear(today)}"]`)).toBeVisible()
   } else {
