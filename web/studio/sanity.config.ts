@@ -9,6 +9,7 @@ import { table } from '@sanity/table'
 import { visionTool } from '@sanity/vision'
 
 import { RequestReviewAction } from './actions/requestReview'
+import { ShareForFeedbackAction } from './actions/shareForFeedback'
 import { withSnowCannon } from './actions/snowCannon'
 import { assistPlugin } from './assist'
 import schemas from './schemas/schema'
@@ -95,7 +96,7 @@ const config = defineConfig({
     actions: (prev, { schemaType }) => {
       // Easter egg: snøkanon når man publiserer
       const actions = prev.map((action) => (action.action === 'publish' ? withSnowCannon(action) : action))
-      return schemaType === 'post' ? [...actions, RequestReviewAction] : actions
+      return schemaType === 'post' ? [...actions, RequestReviewAction, ShareForFeedbackAction] : actions
     },
   },
   auth: {
