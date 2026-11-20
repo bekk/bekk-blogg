@@ -92,10 +92,25 @@ Alle fire er verifisert empirisk, ikke antatt. De ble kodet inn i `.github/renov
 
 *Lagt til 2026-10-13.* Tabellen over sa først at React Router ble holdt på 7.18.3. Det
 stemmer ikke lenger: RR8 ble tatt inn i #364 (merget inn i #363), etter at preview-deployet
-viste at `vercelPreset()` virker med RR8. `@vercel/react-router` 1.3.6 peer-er fortsatt
+viste at `vercelPreset()` virker med RR8. `@vercel/react-router` 1.3.7 peer-er fortsatt
 `@react-router/dev: "7"`, så den tvinges over på RR8 med en `overrides`-blokk i
 `web/package.json`. Peer-rangen er konservativ, ikke en reell inkompatibilitet, men
 **overriden må fjernes når Vercel slipper en versjon med `"8"`**.
+
+### Oppdatering: avhengighetsrunde november 2026
+
+*Lagt til 2026-11-20.* Alt er oppdatert til nyeste versjon, inkludert `motion` 14, som bare
+fjernet interne API-er. Unntaket er `algoliasearch`, som er løftet til 4.27.0, den nyeste v4-versjonen.
+`package-lock.json` er generert på nytt. Fire overrides tvinger transitive avhengigheter opp på
+versjoner uten kjente sårbarheter, så `npm audit` blir ren:
+
+| Override | Hvorfor | Kan fjernes når |
+|---|---|---|
+| `@vercel/frameworks` → `js-yaml` 3.15.2, `smol-toml` 1.9.1 | Pinner sårbare 3.13.1/1.5.2 (dras inn av `@sanity/cli`) | `@vercel/frameworks` løfter versjonene |
+| `@tailwindcss/typography` → `postcss-selector-parser` 6.1.6 | Pinner sårbar 6.0.10 | Typography-pluginen løfter den |
+| `@oclif/core` → `minimatch` 11.0.9 | `@sanity/cli` bruker `@oclif/core` 4, som krever sårbar `minimatch` 10 | `@sanity/cli` går over på `@oclif/core` ≥ 5.1.12 |
+
+`minimatch`-overriden går over en major, men Sanity CLI (`npm run typegen`) er verifisert med den.
 
 ### Hvorfor `sanity-algolia` ble stående
 
