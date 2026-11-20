@@ -23,6 +23,14 @@ const tag = defineType({
       },
     },
     {
+      title: 'Tidligere slugs',
+      name: 'previousSlugs',
+      description: 'Gamle adresser (/kategori/<slug>) som videresendes hit, f.eks. etter at kategorier er slått sammen',
+      type: 'array',
+      options: { layout: 'tags' },
+      of: [{ type: 'string' }],
+    },
+    {
       title: 'Synonymer',
       name: 'synonyms',
       description: 'Alternative ord eller uttrykk',
