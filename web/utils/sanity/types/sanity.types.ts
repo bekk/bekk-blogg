@@ -1029,7 +1029,7 @@ export type POST_BY_SLUG_RESULT = {
       _id: string
       title: string
       availableFrom: string
-      slug: Slug
+      slug: Slug | null
       isAvailable: boolean | null
     }>
   } | null
