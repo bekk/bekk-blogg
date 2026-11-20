@@ -7,7 +7,7 @@ import { loadQuery } from 'utils/sanity/loader.server'
 import { TAG_WITH_POSTS_QUERY } from '../../utils/sanity/queries/postQueries'
 import { TAG_WITH_POSTS_QUERY_RESULT } from '../../utils/sanity/types/sanity.types'
 
-import { LoaderFunctionArgs } from 'react-router'
+import { LoaderFunctionArgs, redirect } from 'react-router'
 import { Spinner } from '~/components/Spinner'
 import { ErrorPage } from '~/features/error-boundary/ErrorPage'
 import { Pagination } from '~/features/pagination/Pagination'
@@ -34,6 +34,10 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     start: offset,
     end: offset + perPage,
   })
+
+  if (!response.data?.tag && response.data?.movedTo) {
+    return redirect(`/kategori/${encodeURIComponent(response.data.movedTo)}`, { status: 301 })
+  }
 
   if (!response.data || !response.data.tag) {
     throw new Response('No category with this name', {

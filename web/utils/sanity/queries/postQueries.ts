@@ -168,7 +168,9 @@ export const TAG_WITH_POSTS_QUERY = defineQuery(`{
   "tag": *[_type == "tag" && slug == $t][0] {
     name,
     slug
-  }
+  },
+  // Kategorien som har overtatt en gammel slug, for å kunne videresende gamle lenker
+  "movedTo": *[_type == "tag" && $t in previousSlugs][0].slug
 }`)
 
 export const AUTHOR_WITH_POSTS_QUERY = defineQuery(`{
